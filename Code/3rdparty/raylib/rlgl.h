@@ -12,7 +12,6 @@
 *
 *   CONFIGURATION:
 *
-*   #define GRAPHICS_API_OPENGL_21
 *   #define GRAPHICS_API_OPENGL_33
 *   #define GRAPHICS_API_OPENGL_ES2
 *       Use selected OpenGL graphics backend, should be supported by platform
@@ -74,16 +73,9 @@
 #include "raymath.h"            // Required for: Vector3, Matrix
 
 // Security check in case no GRAPHICS_API_OPENGL_* defined
-#if !defined(GRAPHICS_API_OPENGL_21) && \
-    !defined(GRAPHICS_API_OPENGL_33) && \
+#if !defined(GRAPHICS_API_OPENGL_33) && \
     !defined(GRAPHICS_API_OPENGL_ES2)
         #define GRAPHICS_API_OPENGL_33
-#endif
-
-// OpenGL 2.1 uses most of OpenGL 3.3 Core functionality
-// WARNING: Specific parts are checked with #if defines
-#if defined(GRAPHICS_API_OPENGL_21)
-    #define GRAPHICS_API_OPENGL_33
 #endif
 
 #define SUPPORT_RENDER_TEXTURES_HINT
@@ -676,11 +668,6 @@ RLAPI void rlLoadDrawQuad(void);     // Load and draw a quad
 #endif
 #ifndef GL_TEXTURE_MAX_ANISOTROPY_EXT
     #define GL_TEXTURE_MAX_ANISOTROPY_EXT       0x84FE
-#endif
-
-#if defined(GRAPHICS_API_OPENGL_21)
-    #define GL_LUMINANCE                        0x1909
-    #define GL_LUMINANCE_ALPHA                  0x190A
 #endif
 
 #if defined(GRAPHICS_API_OPENGL_ES2)
@@ -1536,7 +1523,7 @@ void rlglClose(void)
 // NOTE: External loader function must be provided
 void rlLoadExtensions(void *loader)
 {
-#if defined(GRAPHICS_API_OPENGL_33)     // Also defined for GRAPHICS_API_OPENGL_21
+#if defined(GRAPHICS_API_OPENGL_33)
     // NOTE: glad is generated and contains only required OpenGL 3.3 Core extensions (and lower versions)
     #if !defined(__APPLE__)
         if (!gladLoadGLLoader((GLADloadproc)loader)) TRACELOG(LOG_WARNING, "GLAD: Cannot load OpenGL extensions");
@@ -1760,13 +1747,7 @@ void rlLoadExtensions(void *loader)
 // Get current OpenGL version
 int rlGetVersion(void)
 {
-#if defined(GRAPHICS_API_OPENGL_21)
-    #if defined(__APPLE__)
-        return OPENGL_33;           // NOTE: Force OpenGL 3.3 on OSX
-    #else
-        return OPENGL_21;
-    #endif
-#elif defined(GRAPHICS_API_OPENGL_33)
+#if defined(GRAPHICS_API_OPENGL_33)
     return OPENGL_33;
 #endif
 #if defined(GRAPHICS_API_OPENGL_ES2)
@@ -2288,9 +2269,7 @@ unsigned int rlLoadTexture(void *data, int width, int height, int format, int mi
             }
             else if (format == PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA)
             {
-#if defined(GRAPHICS_API_OPENGL_21)
-                GLint swizzleMask[] = { GL_RED, GL_RED, GL_RED, GL_ALPHA };
-#elif defined(GRAPHICS_API_OPENGL_33)
+#if defined(GRAPHICS_API_OPENGL_33)
                 GLint swizzleMask[] = { GL_RED, GL_RED, GL_RED, GL_GREEN };
 #endif
                 glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzleMask);
@@ -2455,9 +2434,7 @@ unsigned int rlLoadTextureCubemap(void *data, int size, int format)
             }
             else if (format == PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA)
             {
-#if defined(GRAPHICS_API_OPENGL_21)
-                GLint swizzleMask[] = { GL_RED, GL_RED, GL_RED, GL_ALPHA };
-#elif defined(GRAPHICS_API_OPENGL_33)
+#if defined(GRAPHICS_API_OPENGL_33)
                 GLint swizzleMask[] = { GL_RED, GL_RED, GL_RED, GL_GREEN };
 #endif
                 glTexParameteriv(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_SWIZZLE_RGBA, swizzleMask);
@@ -2509,7 +2486,7 @@ void rlGetGlTextureFormats(int format, unsigned int *glInternalFormat, unsigned 
 
     switch (format)
     {
-    #if defined(GRAPHICS_API_OPENGL_21) || defined(GRAPHICS_API_OPENGL_ES2)
+    #if defined(GRAPHICS_API_OPENGL_ES2)
         // NOTE: on OpenGL ES 2.0 (WebGL), internalFormat must match format and options allowed are: GL_LUMINANCE, GL_RGB, GL_RGBA
         case PIXELFORMAT_UNCOMPRESSED_GRAYSCALE: *glInternalFormat = GL_LUMINANCE; *glFormat = GL_LUMINANCE; *glType = GL_UNSIGNED_BYTE; break;
         case PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA: *glInternalFormat = GL_LUMINANCE_ALPHA; *glFormat = GL_LUMINANCE_ALPHA; *glType = GL_UNSIGNED_BYTE; break;
@@ -3503,14 +3480,7 @@ static void rlLoadShaderDefault(void)
 
     // Vertex shader directly defined, no external file required
     const char *vShaderDefault =
-#if defined(GRAPHICS_API_OPENGL_21)
-    "#version 120                       \n"
-    "attribute vec3 vertexPosition;     \n"
-    "attribute vec2 vertexTexCoord;     \n"
-    "attribute vec4 vertexColor;        \n"
-    "varying vec2 fragTexCoord;         \n"
-    "varying vec4 fragColor;            \n"
-#elif defined(GRAPHICS_API_OPENGL_33)
+#if defined(GRAPHICS_API_OPENGL_33)
     "#version 330                       \n"
     "in vec3 vertexPosition;            \n"
     "in vec2 vertexTexCoord;            \n"
@@ -3536,18 +3506,7 @@ static void rlLoadShaderDefault(void)
 
     // Fragment shader directly defined, no external file required
     const char *fShaderDefault =
-#if defined(GRAPHICS_API_OPENGL_21)
-    "#version 120                       \n"
-    "varying vec2 fragTexCoord;         \n"
-    "varying vec4 fragColor;            \n"
-    "uniform sampler2D texture0;        \n"
-    "uniform vec4 colDiffuse;           \n"
-    "void main()                        \n"
-    "{                                  \n"
-    "    vec4 texelColor = texture2D(texture0, fragTexCoord); \n"
-    "    gl_FragColor = texelColor*colDiffuse*fragColor;      \n"
-    "}                                  \n";
-#elif defined(GRAPHICS_API_OPENGL_33)
+#if defined(GRAPHICS_API_OPENGL_33)
     "#version 330       \n"
     "in vec2 fragTexCoord;              \n"
     "in vec4 fragColor;                 \n"
