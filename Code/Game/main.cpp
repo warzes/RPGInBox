@@ -9,7 +9,10 @@
 #endif // SE_COMPILER_MSVC
 
 
-//http://bedroomcoders.co.uk/animating-sky-with-raylib/
+http://bedroomcoders.co.uk/animating-sky-with-raylib/
+
+вот тут фрустум:
+https://github.com/JeffM2501/raylibExtras
 
 //-----------------------------------------------------------------------------
 void GameMain() noexcept
