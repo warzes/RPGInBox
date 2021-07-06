@@ -129,7 +129,7 @@
 #define RAYMATH_IMPLEMENTATION      // Define external out-of-line implementation of raymath here
 #include "raymath.h"                // Required for: Vector3 and Matrix functions
 
-#define RLGL_IMPLEMENTATION
+//#define RLGL_IMPLEMENTATION
 #include "rlgl.h"                   // raylib OpenGL abstraction layer to OpenGL 1.1, 3.3+ or ES2
 
 #if defined(SUPPORT_GESTURES_SYSTEM)
@@ -2317,7 +2317,7 @@ Shader LoadShader(const char *vsFileName, const char *fsFileName)
 }
 
 // Load shader from code strings and bind default locations
-RLAPI Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode)
+Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode)
 {
     Shader shader = { 0 };
     shader.locs = (int *)RL_CALLOC(MAX_SHADER_LOCATIONS, sizeof(int));

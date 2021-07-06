@@ -1526,7 +1526,7 @@ char *TextToUtf8(int *codepoints, int length)
 }
 
 // Encode codepoint into utf8 text (char array length returned as parameter)
-RLAPI const char *CodepointToUtf8(int codepoint, int *byteLength)
+const char *CodepointToUtf8(int codepoint, int *byteLength)
 {
     static char utf8[6] = { 0 };
     int length = 0;

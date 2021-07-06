@@ -1,50 +1,11 @@
-/**********************************************************************************************
-*
-*   raylib.utils - Some common utility functions
-*
-*   CONFIGURATION:
-*
-*   #define SUPPORT_TRACELOG
-*       Show TraceLog() output messages
-*       NOTE: By default LOG_DEBUG traces not shown
-*
-*
-*   LICENSE: zlib/libpng
-*
-*   Copyright (c) 2014-2021 Ramon Santamaria (@raysan5)
-*
-*   This software is provided "as-is", without any express or implied warranty. In no event
-*   will the authors be held liable for any damages arising from the use of this software.
-*
-*   Permission is granted to anyone to use this software for any purpose, including commercial
-*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
-*
-*     1. The origin of this software must not be misrepresented; you must not claim that you
-*     wrote the original software. If you use this software in a product, an acknowledgment
-*     in the product documentation would be appreciated but is not required.
-*
-*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
-*     as being the original software.
-*
-*     3. This notice may not be removed or altered from any source distribution.
-*
-**********************************************************************************************/
-
-#include "raylib.h"                     // WARNING: Required for: LogType enum
-
-// Check if config flags have been externally provided on compilation line
-#if !defined(EXTERNAL_CONFIG_FLAGS)
-    #include "config.h"                 // Defines module configuration flags
-#endif
-
+#include "raylib.h" // WARNING: Required for: LogType enum
+#include "config.h" // Defines module configuration flags
 #include "utils.h"
-
 #if defined(PLATFORM_ANDROID)
     #include <errno.h>                  // Required for: Android error types
     #include <android/log.h>            // Required for: Android log system: __android_log_vprint()
     #include <android/asset_manager.h>  // Required for: Android assets manager: AAsset, AAssetManager_open(), ...
 #endif
-
 #include <stdlib.h>                     // Required for: exit()
 #include <stdio.h>                      // Required for: FILE, fopen(), fseek(), ftell(), fread(), fwrite(), fprintf(), vprintf(), fclose()
 #include <stdarg.h>                     // Required for: va_list, va_start(), va_end()
@@ -79,7 +40,6 @@ void SetLoadFileDataCallback(LoadFileDataCallback callback) { loadFileData = cal
 void SetSaveFileDataCallback(SaveFileDataCallback callback) { saveFileData = callback; }  // Set custom file data saver
 void SetLoadFileTextCallback(LoadFileTextCallback callback) { loadFileText = callback; }  // Set custom file text loader
 void SetSaveFileTextCallback(SaveFileTextCallback callback) { saveFileText = callback; }  // Set custom file text saver
-
 
 #if defined(PLATFORM_ANDROID)
 static AAssetManager *assetManager = NULL;              // Android assets manager pointer

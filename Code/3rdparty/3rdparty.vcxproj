@@ -33,6 +33,7 @@
     <ClCompile Include="raylib\core.c" />
     <ClCompile Include="raylib\models.c" />
     <ClCompile Include="raylib\raudio.c" />
+    <ClCompile Include="raylib\rlgl.c" />
     <ClCompile Include="raylib\shapes.c" />
     <ClCompile Include="raylib\text.c" />
     <ClCompile Include="raylib\textures.c" />

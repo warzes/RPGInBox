@@ -24,6 +24,9 @@
     <ClCompile Include="raylib\utils.c">
       <Filter>raylib</Filter>
     </ClCompile>
+    <ClCompile Include="raylib\rlgl.c">
+      <Filter>raylib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="raylib">
