@@ -1,1 +1,1 @@
-# RPGInBox
+Шаблон для движка с проектом на Visual Studio 2019
