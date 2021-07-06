@@ -10,37 +10,6 @@
 *       Generates the implementation of the library into the included file.
 *       If not defined, the library is in header only mode and can be included in other headers
 *       or source files without problems. But only ONE file should hold the implementation.
-*
-*   #define GESTURES_STANDALONE
-*       If defined, the library can be used as standalone to process gesture events with
-*       no external dependencies.
-*
-*   CONTRIBUTORS:
-*       Marc Palau:         Initial implementation (2014)
-*       Albert Martos:      Complete redesign and testing (2015)
-*       Ian Eito:           Complete redesign and testing (2015)
-*       Ramon Santamaria:   Supervision, review, update and maintenance
-*
-*
-*   LICENSE: zlib/libpng
-*
-*   Copyright (c) 2014-2021 Ramon Santamaria (@raysan5)
-*
-*   This software is provided "as-is", without any express or implied warranty. In no event
-*   will the authors be held liable for any damages arising from the use of this software.
-*
-*   Permission is granted to anyone to use this software for any purpose, including commercial
-*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
-*
-*     1. The origin of this software must not be misrepresented; you must not claim that you
-*     wrote the original software. If you use this software in a product, an acknowledgment
-*     in the product documentation would be appreciated but is not required.
-*
-*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
-*     as being the original software.
-*
-*     3. This notice may not be removed or altered from any source distribution.
-*
 **********************************************************************************************/
 
 #ifndef GESTURES_H
@@ -48,44 +17,6 @@
 
 #ifndef PI
     #define PI 3.14159265358979323846
-#endif
-
-//----------------------------------------------------------------------------------
-// Defines and Macros
-//----------------------------------------------------------------------------------
-//...
-
-//----------------------------------------------------------------------------------
-// Types and Structures Definition
-// NOTE: Below types are required for GESTURES_STANDALONE usage
-//----------------------------------------------------------------------------------
-#if defined(GESTURES_STANDALONE)
-    #ifndef __cplusplus
-        // Boolean type
-        typedef enum { false, true } bool;
-    #endif
-
-    // Vector2 type
-    typedef struct Vector2 {
-        float x;
-        float y;
-    } Vector2;
-
-    // Gestures type
-    // NOTE: It could be used as flags to enable only some gestures
-    typedef enum {
-        GESTURE_NONE        = 0,
-        GESTURE_TAP         = 1,
-        GESTURE_DOUBLETAP   = 2,
-        GESTURE_HOLD        = 4,
-        GESTURE_DRAG        = 8,
-        GESTURE_SWIPE_RIGHT = 16,
-        GESTURE_SWIPE_LEFT  = 32,
-        GESTURE_SWIPE_UP    = 64,
-        GESTURE_SWIPE_DOWN  = 128,
-        GESTURE_PINCH_IN    = 256,
-        GESTURE_PINCH_OUT   = 512
-    } Gestures;
 #endif
 
 typedef enum { TOUCH_UP, TOUCH_DOWN, TOUCH_MOVE } TouchAction;
@@ -113,18 +44,6 @@ extern "C" {            // Prevents name mangling of functions
 //----------------------------------------------------------------------------------
 void ProcessGestureEvent(GestureEvent event);           // Process gesture event and translate it into gestures
 void UpdateGestures(void);                              // Update gestures detected (must be called every frame)
-
-#if defined(GESTURES_STANDALONE)
-void SetGesturesEnabled(unsigned int flags);     // Enable a set of gestures using flags
-bool IsGestureDetected(int gesture);                    // Check if a gesture have been detected
-int GetGestureDetected(void);                           // Get latest detected gesture
-int GetTouchPointsCount(void);                          // Get touch points count
-float GetGestureHoldDuration(void);                     // Get gesture hold time in milliseconds
-Vector2 GetGestureDragVector(void);                     // Get gesture drag vector
-float GetGestureDragAngle(void);                        // Get gesture drag angle
-Vector2 GetGesturePinchVector(void);                    // Get gesture pinch delta
-float GetGesturePinchAngle(void);                       // Get gesture pinch angle
-#endif
 
 #ifdef __cplusplus
 }
@@ -222,11 +141,6 @@ static GesturesData GESTURES = {
 //----------------------------------------------------------------------------------
 // Module specific Functions Declaration
 //----------------------------------------------------------------------------------
-#if defined(GESTURES_STANDALONE)
-// Some required math functions provided by raymath.h
-static float Vector2Angle(Vector2 initialPosition, Vector2 finalPosition);
-static float Vector2Distance(Vector2 v1, Vector2 v2);
-#endif
 static double GetCurrentTime(void);
 
 //----------------------------------------------------------------------------------
@@ -485,34 +399,6 @@ float GetGesturePinchAngle(void)
 
     return GESTURES.Pinch.angle;
 }
-
-//----------------------------------------------------------------------------------
-// Module specific Functions Definition
-//----------------------------------------------------------------------------------
-#if defined(GESTURES_STANDALONE)
-// Get angle from two-points vector with X-axis
-static float Vector2Angle(Vector2 v1, Vector2 v2)
-{
-    float angle = atan2f(v2.y - v1.y, v2.x - v1.x)*(180.0f/PI);
-
-    if (angle < 0) angle += 360.0f;
-
-    return angle;
-}
-
-// Calculate distance between two Vector2
-static float Vector2Distance(Vector2 v1, Vector2 v2)
-{
-    float result;
-
-    float dx = v2.x - v1.x;
-    float dy = v2.y - v1.y;
-
-    result = (float)sqrt(dx*dx + dy*dy);
-
-    return result;
-}
-#endif
 
 // Time measure returned are milliseconds
 static double GetCurrentTime(void)

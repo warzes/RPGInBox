@@ -1,59 +1,4 @@
-/**********************************************************************************************
-*
-*   raylib - A simple and easy-to-use library to enjoy videogames programming (www.raylib.com)
-*
-*   FEATURES:
-*       - NO external dependencies, all required libraries included with raylib
-*       - Multiplatform: Windows, Linux, FreeBSD, OpenBSD, NetBSD, DragonFly,
-*                        MacOS, Haiku, UWP, Android, Raspberry Pi, HTML5.
-*       - Written in plain C code (C99) in PascalCase/camelCase notation
-*       - Hardware accelerated with OpenGL (1.1, 2.1, 3.3 or ES2 - choose at compile)
-*       - Unique OpenGL abstraction layer (usable as standalone module): [rlgl]
-*       - Multiple Fonts formats supported (TTF, XNA fonts, AngelCode fonts)
-*       - Outstanding texture formats support, including compressed formats (DXT, ETC, ASTC)
-*       - Full 3d support for 3d Shapes, Models, Billboards, Heightmaps and more!
-*       - Flexible Materials system, supporting classic maps and PBR maps
-*       - Animated 3D models supported (skeletal bones animation) (IQM, glTF)
-*       - Shaders support, including Model shaders and Postprocessing shaders
-*       - Powerful math module for Vector, Matrix and Quaternion operations: [raymath]
-*       - Audio loading and playing with streaming support (WAV, OGG, MP3, FLAC, XM, MOD)
-*       - VR stereo rendering with configurable HMD device parameters
-*       - Bindings to multiple programming languages available!
-*
-*   NOTES:
-*       One default Font is loaded on InitWindow()->LoadFontDefault() [core, text]
-*       One default Texture2D is loaded on rlglInit() [rlgl] (OpenGL 3.3 or ES2)
-*       One default Shader is loaded on rlglInit()->rlLoadShaderDefault() [rlgl] (OpenGL 3.3 or ES2)
-*       One default RenderBatch is loaded on rlglInit()->rlLoadRenderBatch() [rlgl] (OpenGL 3.3 or ES2)
-*
-*   DEPENDENCIES (included):
-*       [core] rglfw (Camilla Löwy - github.com/glfw/glfw) for window/context management and input (PLATFORM_DESKTOP)
-*       [rlgl] glad (David Herberth - github.com/Dav1dde/glad) for OpenGL 3.3 extensions loading (PLATFORM_DESKTOP)
-*       [raudio] miniaudio (David Reid - github.com/mackron/miniaudio) for audio device/context management
-*
-*   OPTIONAL DEPENDENCIES (included):
-*       [core] msf_gif (Miles Fogle) for GIF recording
-*       [core] sinfl (Micha Mettke) for DEFLATE decompression algorythm
-*       [core] sdefl (Micha Mettke) for DEFLATE compression algorythm
-*       [textures] stb_image (Sean Barret) for images loading (BMP, TGA, PNG, JPEG, HDR...)
-*       [textures] stb_image_write (Sean Barret) for image writting (BMP, TGA, PNG, JPG)
-*       [textures] stb_image_resize (Sean Barret) for image resizing algorithms
-*       [textures] stb_perlin (Sean Barret) for Perlin noise image generation
-*       [text] stb_truetype (Sean Barret) for ttf fonts loading
-*       [text] stb_rect_pack (Sean Barret) for rectangles packing
-*       [models] par_shapes (Philip Rideout) for parametric 3d shapes generation
-*       [models] tinyobj_loader_c (Syoyo Fujita) for models loading (OBJ, MTL)
-*       [models] cgltf (Johannes Kuhlmann) for models loading (glTF)
-*       [raudio] dr_wav (David Reid) for WAV audio file loading
-*       [raudio] dr_flac (David Reid) for FLAC audio file loading
-*       [raudio] dr_mp3 (David Reid) for MP3 audio file loading
-*       [raudio] stb_vorbis (Sean Barret) for OGG audio loading
-*       [raudio] jar_xm (Joshua Reisenauer) for XM audio module loading
-*       [raudio] jar_mod (Joshua Reisenauer) for MOD audio module loading
-**********************************************************************************************/
-
-#ifndef RAYLIB_H
-#define RAYLIB_H
+#pragma once
 
 #define PLATFORM_DESKTOP
 #define GRAPHICS_API_OPENGL_33
@@ -126,11 +71,8 @@
 
 // WARNING: Temporal hacks to avoid breaking old codebases using
 // deprecated raylib implementations or definitions
-#define GetImageData            LoadImageColors
-#define FILTER_POINT            TEXTURE_FILTER_POINT
 #define FILTER_BILINEAR         TEXTURE_FILTER_BILINEAR
 #define MAP_DIFFUSE             MATERIAL_MAP_DIFFUSE
-#define UNCOMPRESSED_R8G8B8A8   PIXELFORMAT_UNCOMPRESSED_R8G8B8A8
 
 //----------------------------------------------------------------------------------
 // Structures Definition
@@ -592,11 +534,6 @@ typedef enum {
     KEY_VOLUME_DOWN     = 25        // Key: Android volume down button
 } KeyboardKey;
 
-// Add backwards compatibility support for deprecated names
-#define MOUSE_LEFT_BUTTON   MOUSE_BUTTON_LEFT
-#define MOUSE_RIGHT_BUTTON  MOUSE_BUTTON_RIGHT
-#define MOUSE_MIDDLE_BUTTON MOUSE_BUTTON_MIDDLE
-
 // Mouse buttons
 typedef enum {
     MOUSE_BUTTON_LEFT    = 0,       // Mouse button left
@@ -846,7 +783,6 @@ typedef bool (*SaveFileDataCallback)(const char *fileName, void *data, unsigned 
 typedef char *(*LoadFileTextCallback)(const char *fileName);       // FileIO: Load text data
 typedef bool (*SaveFileTextCallback)(const char *fileName, char *text);     // FileIO: Save text data
 
-
 #if defined(__cplusplus)
 extern "C" {            // Prevents name mangling of functions
 #endif
@@ -863,7 +799,7 @@ extern "C" {            // Prevents name mangling of functions
 // Window-related functions
 void InitWindow(int width, int height, const char *title);  // Initialize window and OpenGL context
 bool WindowShouldClose(void);                               // Check if KEY_ESCAPE pressed or Close icon pressed
-void CloseWindowRaylib(void);                                     // Close window and unload OpenGL context
+void CloseWindowRaylib(void);                               // Close window and unload OpenGL context
 bool IsWindowReady(void);                                   // Check if window has been initialized successfully
 bool IsWindowFullscreen(void);                              // Check if window is currently fullscreen
 bool IsWindowHidden(void);                                  // Check if window is currently hidden (only PLATFORM_DESKTOP)
@@ -1428,7 +1364,6 @@ void UpdateSound(Sound sound, const void *data, int samplesCount);// Update soun
 void UnloadWave(Wave wave);                                     // Unload wave data
 void UnloadSound(Sound sound);                                  // Unload sound
 bool ExportWave(Wave wave, const char *fileName);               // Export wave data to file, returns true on success
-bool ExportWaveAsCode(Wave wave, const char *fileName);         // Export wave sample data to code (.h), returns true on success
 
 // Wave/Sound management functions
 void PlaySound(Sound sound);                                    // Play a sound
@@ -1479,5 +1414,3 @@ void SetAudioStreamBufferSizeDefault(int size);                 // Default size 
 #if defined(__cplusplus)
 }
 #endif
-
-#endif // RAYLIB_H

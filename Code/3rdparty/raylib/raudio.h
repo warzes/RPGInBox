@@ -1,57 +1,4 @@
-/**********************************************************************************************
-*
-*   raudio v1.0 - A simple and easy-to-use audio library based on miniaudio
-*
-*   FEATURES:
-*       - Manage audio device (init/close)
-*       - Load and unload audio files
-*       - Format wave data (sample rate, size, channels)
-*       - Play/Stop/Pause/Resume loaded audio
-*       - Manage mixing channels
-*       - Manage raw audio context
-*
-*   DEPENDENCIES:
-*       miniaudio.h  - Audio device management lib (https://github.com/dr-soft/miniaudio)
-*       stb_vorbis.h - Ogg audio files loading (http://www.nothings.org/stb_vorbis/)
-*       dr_mp3.h     - MP3 audio file loading (https://github.com/mackron/dr_libs)
-*       dr_flac.h    - FLAC audio file loading (https://github.com/mackron/dr_libs)
-*       jar_xm.h     - XM module file loading
-*       jar_mod.h    - MOD audio file loading
-*
-*   CONTRIBUTORS:
-*       David Reid (github: @mackron) (Nov. 2017):
-*           - Complete port to miniaudio library
-*
-*       Joshua Reisenauer (github: @kd7tck) (2015)
-*           - XM audio module support (jar_xm)
-*           - MOD audio module support (jar_mod)
-*           - Mixing channels support
-*           - Raw audio context support
-*
-*
-*   LICENSE: zlib/libpng
-*
-*   Copyright (c) 2014-2021 Ramon Santamaria (@raysan5)
-*
-*   This software is provided "as-is", without any express or implied warranty. In no event
-*   will the authors be held liable for any damages arising from the use of this software.
-*
-*   Permission is granted to anyone to use this software for any purpose, including commercial
-*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
-*
-*     1. The origin of this software must not be misrepresented; you must not claim that you
-*     wrote the original software. If you use this software in a product, an acknowledgment
-*     in the product documentation would be appreciated but is not required.
-*
-*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
-*     as being the original software.
-*
-*     3. This notice may not be removed or altered from any source distribution.
-*
-**********************************************************************************************/
-
-#ifndef RAUDIO_H
-#define RAUDIO_H
+#pragma once
 
 //----------------------------------------------------------------------------------
 // Defines and Macros
@@ -196,5 +143,3 @@ void SetAudioStreamBufferSizeDefault(int size);                 // Default size 
 #ifdef __cplusplus
 }
 #endif
-
-#endif // RAUDIO_H

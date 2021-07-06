@@ -10,120 +10,7 @@
 *       Generates the implementation of the library into the included file.
 *       If not defined, the library is in header only mode and can be included in other headers
 *       or source files without problems. But only ONE file should hold the implementation.
-*
-*   #define CAMERA_STANDALONE
-*       If defined, the library can be used as standalone as a camera system but some
-*       functions must be redefined to manage inputs accordingly.
-*
-*   CONTRIBUTORS:
-*       Ramon Santamaria:   Supervision, review, update and maintenance
-*       Marc Palau:         Initial implementation (2014)
-*
-*
-*   LICENSE: zlib/libpng
-*
-*   Copyright (c) 2015-2021 Ramon Santamaria (@raysan5)
-*
-*   This software is provided "as-is", without any express or implied warranty. In no event
-*   will the authors be held liable for any damages arising from the use of this software.
-*
-*   Permission is granted to anyone to use this software for any purpose, including commercial
-*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
-*
-*     1. The origin of this software must not be misrepresented; you must not claim that you
-*     wrote the original software. If you use this software in a product, an acknowledgment
-*     in the product documentation would be appreciated but is not required.
-*
-*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
-*     as being the original software.
-*
-*     3. This notice may not be removed or altered from any source distribution.
-*
 **********************************************************************************************/
-
-#ifndef CAMERA_H
-#define CAMERA_H
-
-//----------------------------------------------------------------------------------
-// Defines and Macros
-//----------------------------------------------------------------------------------
-//...
-
-//----------------------------------------------------------------------------------
-// Types and Structures Definition
-// NOTE: Below types are required for CAMERA_STANDALONE usage
-//----------------------------------------------------------------------------------
-#if defined(CAMERA_STANDALONE)
-    // Vector2 type
-    typedef struct Vector2 {
-        float x;
-        float y;
-    } Vector2;
-
-    // Vector3 type
-    typedef struct Vector3 {
-        float x;
-        float y;
-        float z;
-    } Vector3;
-
-    // Camera type, defines a camera position/orientation in 3d space
-    typedef struct Camera3D {
-        Vector3 position;       // Camera position
-        Vector3 target;         // Camera target it looks-at
-        Vector3 up;             // Camera up vector (rotation over its axis)
-        float fovy;             // Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic
-        int type;               // Camera type, defines projection type: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
-    } Camera3D;
-
-    typedef Camera3D Camera;    // Camera type fallback, defaults to Camera3D
-
-    // Camera system modes
-    typedef enum {
-        CAMERA_CUSTOM = 0,
-        CAMERA_FREE,
-        CAMERA_ORBITAL,
-        CAMERA_FIRST_PERSON,
-        CAMERA_THIRD_PERSON
-    } CameraMode;
-
-    // Camera projection modes
-    typedef enum {
-        CAMERA_PERSPECTIVE = 0,
-        CAMERA_ORTHOGRAPHIC
-    } CameraProjection;
-#endif
-
-#ifdef __cplusplus
-extern "C" {            // Prevents name mangling of functions
-#endif
-
-//----------------------------------------------------------------------------------
-// Global Variables Definition
-//----------------------------------------------------------------------------------
-//...
-
-//----------------------------------------------------------------------------------
-// Module Functions Declaration
-//----------------------------------------------------------------------------------
-#if defined(CAMERA_STANDALONE)
-void SetCameraMode(Camera camera, int mode);                // Set camera mode (multiple camera modes available)
-void UpdateCamera(Camera *camera);                          // Update camera position for selected mode
-
-void SetCameraPanControl(int keyPan);                       // Set camera pan key to combine with mouse movement (free camera)
-void SetCameraAltControl(int keyAlt);                       // Set camera alt key to combine with mouse movement (free camera)
-void SetCameraSmoothZoomControl(int szoomKey);              // Set camera smooth zoom key to combine with mouse (free camera)
-void SetCameraMoveControls(int keyFront, int keyBack,
-                           int keyRight, int keyLeft,
-                           int keyUp, int keyDown);         // Set camera move controls (1st person and 3rd person cameras)
-#endif
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif // CAMERA_H
-
 
 /***********************************************************************************
 *
@@ -224,21 +111,6 @@ static CameraData CAMERA = {        // Global CAMERA state context
     .altControl = 342,              // raylib: KEY_LEFT_ALT
     .panControl = 2                 // raylib: MOUSE_BUTTON_MIDDLE
 };
-
-//----------------------------------------------------------------------------------
-// Module specific Functions Declaration
-//----------------------------------------------------------------------------------
-#if defined(CAMERA_STANDALONE)
-// NOTE: Camera controls depend on some raylib input functions
-static void EnableCursor() {}       // Unlock cursor
-static void DisableCursor() {}      // Lock cursor
-
-static int IsKeyDown(int key) { return 0; }
-
-static int IsMouseButtonDown(int button) { return 0;}
-static float GetMouseWheelMove() { return 0.0f; }
-static Vector2 GetMousePosition() { return (Vector2){ 0.0f, 0.0f }; }
-#endif
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition

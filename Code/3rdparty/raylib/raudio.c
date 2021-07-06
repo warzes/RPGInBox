@@ -11,11 +11,7 @@
 *       - Play/Stop/Pause/Resume loaded audio
 *
 *   CONFIGURATION:
-*
-*   #define RAUDIO_STANDALONE
-*       Define to use the module as standalone library (independently of raylib).
-*       Required types and functions are defined in the same module.
-*
+
 *   #define SUPPORT_FILEFORMAT_WAV
 *   #define SUPPORT_FILEFORMAT_OGG
 *   #define SUPPORT_FILEFORMAT_XM
@@ -24,59 +20,10 @@
 *   #define SUPPORT_FILEFORMAT_MP3
 *       Selected desired fileformats to be supported for loading. Some of those formats are
 *       supported by default, to remove support, just comment unrequired #define in this module
-*
-*   DEPENDENCIES:
-*       miniaudio.h  - Audio device management lib (https://github.com/dr-soft/miniaudio)
-*       stb_vorbis.h - Ogg audio files loading (http://www.nothings.org/stb_vorbis/)
-*       dr_mp3.h     - MP3 audio file loading (https://github.com/mackron/dr_libs)
-*       dr_flac.h    - FLAC audio file loading (https://github.com/mackron/dr_libs)
-*       jar_xm.h     - XM module file loading
-*       jar_mod.h    - MOD audio file loading
-*
-*   CONTRIBUTORS:
-*       David Reid (github: @mackron) (Nov. 2017):
-*           - Complete port to miniaudio library
-*
-*       Joshua Reisenauer (github: @kd7tck) (2015)
-*           - XM audio module support (jar_xm)
-*           - MOD audio module support (jar_mod)
-*           - Mixing channels support
-*           - Raw audio context support
-*
-*
-*   LICENSE: zlib/libpng
-*
-*   Copyright (c) 2013-2021 Ramon Santamaria (@raysan5)
-*
-*   This software is provided "as-is", without any express or implied warranty. In no event
-*   will the authors be held liable for any damages arising from the use of this software.
-*
-*   Permission is granted to anyone to use this software for any purpose, including commercial
-*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
-*
-*     1. The origin of this software must not be misrepresented; you must not claim that you
-*     wrote the original software. If you use this software in a product, an acknowledgment
-*     in the product documentation would be appreciated but is not required.
-*
-*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
-*     as being the original software.
-*
-*     3. This notice may not be removed or altered from any source distribution.
-*
 **********************************************************************************************/
-
-#if defined(RAUDIO_STANDALONE)
-    #include "raudio.h"
-    #include <stdarg.h>         // Required for: va_list, va_start(), vfprintf(), va_end()
-#else
-    #include "raylib.h"         // Declares module functions
-
-// Check if config flags have been externally provided on compilation line
-#if !defined(EXTERNAL_CONFIG_FLAGS)
-    #include "config.h"         // Defines module configuration flags
-#endif
-    #include "utils.h"          // Required for: fopen() Android mapping
-#endif
+#include "raylib.h"         // Declares module functions
+#include "config.h"         // Defines module configuration flags
+#include "utils.h"          // Required for: fopen() Android mapping
 
 #if defined(_WIN32)
 // To avoid conflicting windows.h symbols with raylib, some flags are defined
@@ -169,28 +116,6 @@ typedef struct tagBITMAPINFOHEADER {
 
 #include <stdlib.h>                     // Required for: malloc(), free()
 #include <stdio.h>                      // Required for: FILE, fopen(), fclose(), fread()
-
-#if defined(RAUDIO_STANDALONE)
-    #include <string.h>                 // Required for: strcmp() [Used in IsFileExtension()]
-
-    #if !defined(TRACELOG)
-        #define TRACELOG(level, ...) (void)0
-    #endif
-
-    // Allow custom memory allocators
-    #ifndef RL_MALLOC
-        #define RL_MALLOC(sz)       malloc(sz)
-    #endif
-    #ifndef RL_CALLOC
-        #define RL_CALLOC(n,sz)     calloc(n,sz)
-    #endif
-    #ifndef RL_REALLOC
-        #define RL_REALLOC(ptr,sz)  realloc(ptr,sz)
-    #endif
-    #ifndef RL_FREE
-        #define RL_FREE(ptr)        free(ptr)
-    #endif
-#endif
 
 #if defined(SUPPORT_FILEFORMAT_OGG)
     // TODO: Remap malloc()/free() calls to RL_MALLOC/RL_FREE
@@ -285,21 +210,6 @@ typedef enum {
     MUSIC_MODULE_MOD        // MOD module audio context
 } MusicContextType;
 
-#if defined(RAUDIO_STANDALONE)
-// Trace log level
-// NOTE: Organized by priority level
-typedef enum {
-    LOG_ALL = 0,        // Display all logs
-    LOG_TRACE,          // Trace logging, intended for internal use only
-    LOG_DEBUG,          // Debug logging, used for internal debugging, it should be disabled on release builds
-    LOG_INFO,           // Info logging, used for program execution info
-    LOG_WARNING,        // Warning logging, used on recoverable failures
-    LOG_ERROR,          // Error logging, used on unrecoverable failures
-    LOG_FATAL,          // Fatal logging, used to abort program: exit(EXIT_FAILURE)
-    LOG_NONE            // Disable logging
-} TraceLogLevel;
-#endif
-
 // NOTE: Different logic is used when feeding data to the playback device
 // depending on whether or not data is streamed (Music vs Sound)
 typedef enum {
@@ -370,17 +280,6 @@ static AudioData AUDIO = {          // Global AUDIO context
 static void OnLog(ma_context *pContext, ma_device *pDevice, ma_uint32 logLevel, const char *message);
 static void OnSendAudioDataToDevice(ma_device *pDevice, void *pFramesOut, const void *pFramesInput, ma_uint32 frameCount);
 static void MixAudioFrames(float *framesOut, const float *framesIn, ma_uint32 frameCount, float localVolume);
-
-#if defined(RAUDIO_STANDALONE)
-static bool IsFileExtension(const char *fileName, const char *ext); // Check file extension
-static const char *GetFileExtension(const char *fileName);          // Get pointer to extension for a filename string (includes the dot: .png)
-static bool TextIsEqual(const char *text1, const char *text2);      // Check if two text string are equal
-static const char *TextToLower(const char *text);                   // Get lower case version of provided string
-
-static unsigned char *LoadFileData(const char *fileName, unsigned int *bytesRead);     // Load file data as byte array (read)
-static bool SaveFileData(const char *fileName, void *data, unsigned int bytesToWrite); // Save data to file from byte array (write)
-static bool SaveFileText(const char *fileName, char *text);         // Save text data to file (write), string must be '\0' terminated
-#endif
 
 //----------------------------------------------------------------------------------
 // AudioBuffer management functions declaration
@@ -926,61 +825,6 @@ bool ExportWave(Wave wave, const char *fileName)
 
     if (success) TRACELOG(LOG_INFO, "FILEIO: [%s] Wave data exported successfully", fileName);
     else TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to export wave data", fileName);
-
-    return success;
-}
-
-// Export wave sample data to code (.h)
-bool ExportWaveAsCode(Wave wave, const char *fileName)
-{
-    bool success = false;
-
-#ifndef TEXT_BYTES_PER_LINE
-    #define TEXT_BYTES_PER_LINE     20
-#endif
-
-    int waveDataSize = wave.sampleCount*wave.channels*wave.sampleSize/8;
-
-    // NOTE: Text data buffer size is estimated considering wave data size in bytes
-    // and requiring 6 char bytes for every byte: "0x00, "
-    char *txtData = (char *)RL_CALLOC(6*waveDataSize + 2000, sizeof(char));
-
-    int bytesCount = 0;
-    bytesCount += sprintf(txtData + bytesCount, "\n//////////////////////////////////////////////////////////////////////////////////\n");
-    bytesCount += sprintf(txtData + bytesCount, "//                                                                              //\n");
-    bytesCount += sprintf(txtData + bytesCount, "// WaveAsCode exporter v1.0 - Wave data exported as an array of bytes           //\n");
-    bytesCount += sprintf(txtData + bytesCount, "//                                                                              //\n");
-    bytesCount += sprintf(txtData + bytesCount, "// more info and bugs-report:  github.com/raysan5/raylib                        //\n");
-    bytesCount += sprintf(txtData + bytesCount, "// feedback and support:       ray[at]raylib.com                                //\n");
-    bytesCount += sprintf(txtData + bytesCount, "//                                                                              //\n");
-    bytesCount += sprintf(txtData + bytesCount, "// Copyright (c) 2018 Ramon Santamaria (@raysan5)                               //\n");
-    bytesCount += sprintf(txtData + bytesCount, "//                                                                              //\n");
-    bytesCount += sprintf(txtData + bytesCount, "//////////////////////////////////////////////////////////////////////////////////\n\n");
-
-    char varFileName[256] = { 0 };
-#if !defined(RAUDIO_STANDALONE)
-    // Get file name from path and convert variable name to uppercase
-    strcpy(varFileName, GetFileNameWithoutExt(fileName));
-    for (int i = 0; varFileName[i] != '\0'; i++) if (varFileName[i] >= 'a' && varFileName[i] <= 'z') { varFileName[i] = varFileName[i] - 32; }
-#else
-    strcpy(varFileName, fileName);
-#endif
-
-    bytesCount += sprintf(txtData + bytesCount, "// Wave data information\n");
-    bytesCount += sprintf(txtData + bytesCount, "#define %s_SAMPLE_COUNT     %u\n", varFileName, wave.sampleCount);
-    bytesCount += sprintf(txtData + bytesCount, "#define %s_SAMPLE_RATE      %u\n", varFileName, wave.sampleRate);
-    bytesCount += sprintf(txtData + bytesCount, "#define %s_SAMPLE_SIZE      %u\n", varFileName, wave.sampleSize);
-    bytesCount += sprintf(txtData + bytesCount, "#define %s_CHANNELS         %u\n\n", varFileName, wave.channels);
-
-    // Write byte data as hexadecimal text
-    bytesCount += sprintf(txtData + bytesCount, "static unsigned char %s_DATA[%i] = { ", varFileName, waveDataSize);
-    for (int i = 0; i < waveDataSize - 1; i++) bytesCount += sprintf(txtData + bytesCount, ((i%TEXT_BYTES_PER_LINE == 0)? "0x%x,\n" : "0x%x, "), ((unsigned char *)wave.data)[i]);
-    bytesCount += sprintf(txtData + bytesCount, "0x%x };\n", ((unsigned char *)wave.data)[waveDataSize - 1]);
-
-    // NOTE: Text data length exported is determined by '\0' (NULL) character
-    success = SaveFileText(fileName, txtData);
-
-    RL_FREE(txtData);
 
     return success;
 }
@@ -2219,147 +2063,5 @@ static void MixAudioFrames(float *framesOut, const float *framesIn, ma_uint32 fr
         }
     }
 }
-
-// Some required functions for audio standalone module version
-#if defined(RAUDIO_STANDALONE)
-// Check file extension
-static bool IsFileExtension(const char *fileName, const char *ext)
-{
-    bool result = false;
-    const char *fileExt;
-
-    if ((fileExt = strrchr(fileName, '.')) != NULL)
-    {
-        if (strcmp(fileExt, ext) == 0) result = true;
-    }
-
-    return result;
-}
-
-// Get pointer to extension for a filename string (includes the dot: .png)
-static const char *GetFileExtension(const char *fileName)
-{
-    const char *dot = strrchr(fileName, '.');
-
-    if (!dot || dot == fileName) return NULL;
-
-    return dot;
-}
-
-// Check if two text string are equal
-// REQUIRES: strcmp()
-static bool TextIsEqual(const char *text1, const char *text2)
-{
-    bool result = false;
-
-    if (strcmp(text1, text2) == 0) result = true;
-
-    return result;
-}
-
-// Get lower case version of provided string
-// REQUIRES: tolower()
-static const char *TextToLower(const char *text)
-{
-    #define MAX_TEXT_BUFFER_LENGTH      1024
-
-    static char buffer[MAX_TEXT_BUFFER_LENGTH] = { 0 };
-
-    for (int i = 0; i < MAX_TEXT_BUFFER_LENGTH; i++)
-    {
-        if (text[i] != '\0')
-        {
-            buffer[i] = (char)tolower(text[i]);
-            //if ((text[i] >= 'A') && (text[i] <= 'Z')) buffer[i] = text[i] + 32;
-        }
-        else { buffer[i] = '\0'; break; }
-    }
-
-    return buffer;
-}
-
-// Load data from file into a buffer
-static unsigned char *LoadFileData(const char *fileName, unsigned int *bytesRead)
-{
-    unsigned char *data = NULL;
-    *bytesRead = 0;
-
-    if (fileName != NULL)
-    {
-        FILE *file = fopen(fileName, "rb");
-
-        if (file != NULL)
-        {
-            // WARNING: On binary streams SEEK_END could not be found,
-            // using fseek() and ftell() could not work in some (rare) cases
-            fseek(file, 0, SEEK_END);
-            int size = ftell(file);
-            fseek(file, 0, SEEK_SET);
-
-            if (size > 0)
-            {
-                data = (unsigned char *)RL_MALLOC(size*sizeof(unsigned char));
-
-                // NOTE: fread() returns number of read elements instead of bytes, so we read [1 byte, size elements]
-                unsigned int count = (unsigned int)fread(data, sizeof(unsigned char), size, file);
-                *bytesRead = count;
-
-                if (count != size) TRACELOG(LOG_WARNING, "FILEIO: [%s] File partially loaded", fileName);
-                else TRACELOG(LOG_INFO, "FILEIO: [%s] File loaded successfully", fileName);
-            }
-            else TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to read file", fileName);
-
-            fclose(file);
-        }
-        else TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to open file", fileName);
-    }
-    else TRACELOG(LOG_WARNING, "FILEIO: File name provided is not valid");
-
-    return data;
-}
-
-// Save data to file from buffer
-static bool SaveFileData(const char *fileName, void *data, unsigned int bytesToWrite)
-{
-    if (fileName != NULL)
-    {
-        FILE *file = fopen(fileName, "wb");
-
-        if (file != NULL)
-        {
-            unsigned int count = (unsigned int)fwrite(data, sizeof(unsigned char), bytesToWrite, file);
-
-            if (count == 0) TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to write file", fileName);
-            else if (count != bytesToWrite) TRACELOG(LOG_WARNING, "FILEIO: [%s] File partially written", fileName);
-            else TRACELOG(LOG_INFO, "FILEIO: [%s] File saved successfully", fileName);
-
-            fclose(file);
-        }
-        else TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to open file", fileName);
-    }
-    else TRACELOG(LOG_WARNING, "FILEIO: File name provided is not valid");
-}
-
-// Save text data to file (write), string must be '\0' terminated
-static bool SaveFileText(const char *fileName, char *text)
-{
-    if (fileName != NULL)
-    {
-        FILE *file = fopen(fileName, "wt");
-
-        if (file != NULL)
-        {
-            int count = fprintf(file, "%s", text);
-
-            if (count == 0) TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to write text file", fileName);
-            else TRACELOG(LOG_INFO, "FILEIO: [%s] Text file saved successfully", fileName);
-
-            fclose(file);
-        }
-        else TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to open text file", fileName);
-    }
-    else TRACELOG(LOG_WARNING, "FILEIO: File name provided is not valid");
-}
-#endif
 
 #undef AudioBuffer
