@@ -41,14 +41,6 @@
 //#include <EGL/egl.h>              // EGL library -> not required, platform layer
 #include <GLES2/gl2.h>              // OpenGL ES 2.0 library
 #include <GLES2/gl2ext.h>           // OpenGL ES 2.0 extensions library
-
-// It seems OpenGL ES 2.0 instancing entry points are not defined on Raspberry Pi
-// provided headers (despite being defined in official Khronos GLES2 headers)
-#if defined(PLATFORM_RPI) || defined(PLATFORM_DRM)
-typedef void (GL_APIENTRYP PFNGLDRAWARRAYSINSTANCEDEXTPROC) (GLenum mode, GLint start, GLsizei count, GLsizei primcount);
-typedef void (GL_APIENTRYP PFNGLDRAWELEMENTSINSTANCEDEXTPROC) (GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei primcount);
-typedef void (GL_APIENTRYP PFNGLVERTEXATTRIBDIVISOREXTPROC) (GLuint index, GLuint divisor);
-#endif
 #endif
 
 //----------------------------------------------------------------------------------

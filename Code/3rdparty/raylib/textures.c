@@ -32,11 +32,10 @@
 **********************************************************************************************/
 
 #include "raylib.h"             // Declares module functions
-#include "config.h"         // Defines module configuration flags
+#include "config.h"             // Defines module configuration flags
 #include <stdlib.h>             // Required for: malloc(), free()
 #include <string.h>             // Required for: strlen() [Used in ImageTextEx()]
 #include <math.h>               // Required for: fabsf()
-#include <stdio.h>              // Required for: sprintf() [Used in ExportImageAsCode()]
 #include "utils.h"              // Required for: fopen() Android mapping
 #include "rlgl.h"               // raylib OpenGL abstraction layer to OpenGL 1.1, 3.3 or ES2
                                 // Required for: rlLoadTexture() rlUnloadTexture(),
@@ -457,63 +456,6 @@ bool ExportImage(Image image, const char *fileName)
     }
 
     if (allocatedData) RL_FREE(imgData);
-#endif      // SUPPORT_IMAGE_EXPORT
-
-    if (success != 0) TRACELOG(LOG_INFO, "FILEIO: [%s] Image exported successfully", fileName);
-    else TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to export image", fileName);
-
-    return success;
-}
-
-// Export image as code file (.h) defining an array of bytes
-bool ExportImageAsCode(Image image, const char *fileName)
-{
-    bool success = false;
-
-#if defined(SUPPORT_IMAGE_EXPORT)
-
-#ifndef TEXT_BYTES_PER_LINE
-    #define TEXT_BYTES_PER_LINE     20
-#endif
-
-    int dataSize = GetPixelDataSize(image.width, image.height, image.format);
-
-    // NOTE: Text data buffer size is estimated considering image data size in bytes
-    // and requiring 6 char bytes for every byte: "0x00, "
-    char *txtData = (char *)RL_CALLOC(6*dataSize + 2000, sizeof(char));
-
-    int bytesCount = 0;
-    bytesCount += sprintf(txtData + bytesCount, "////////////////////////////////////////////////////////////////////////////////////////\n");
-    bytesCount += sprintf(txtData + bytesCount, "//                                                                                    //\n");
-    bytesCount += sprintf(txtData + bytesCount, "// ImageAsCode exporter v1.0 - Image pixel data exported as an array of bytes         //\n");
-    bytesCount += sprintf(txtData + bytesCount, "//                                                                                    //\n");
-    bytesCount += sprintf(txtData + bytesCount, "// more info and bugs-report:  github.com/raysan5/raylib                              //\n");
-    bytesCount += sprintf(txtData + bytesCount, "// feedback and support:       ray[at]raylib.com                                      //\n");
-    bytesCount += sprintf(txtData + bytesCount, "//                                                                                    //\n");
-    bytesCount += sprintf(txtData + bytesCount, "// Copyright (c) 2020 Ramon Santamaria (@raysan5)                                     //\n");
-    bytesCount += sprintf(txtData + bytesCount, "//                                                                                    //\n");
-    bytesCount += sprintf(txtData + bytesCount, "////////////////////////////////////////////////////////////////////////////////////////\n\n");
-
-    // Get file name from path and convert variable name to uppercase
-    char varFileName[256] = { 0 };
-    strcpy(varFileName, GetFileNameWithoutExt(fileName));
-    for (int i = 0; varFileName[i] != '\0'; i++) if ((varFileName[i] >= 'a') && (varFileName[i] <= 'z')) { varFileName[i] = varFileName[i] - 32; }
-
-    // Add image information
-    bytesCount += sprintf(txtData + bytesCount, "// Image data information\n");
-    bytesCount += sprintf(txtData + bytesCount, "#define %s_WIDTH    %i\n", varFileName, image.width);
-    bytesCount += sprintf(txtData + bytesCount, "#define %s_HEIGHT   %i\n", varFileName, image.height);
-    bytesCount += sprintf(txtData + bytesCount, "#define %s_FORMAT   %i          // raylib internal pixel format\n\n", varFileName, image.format);
-
-    bytesCount += sprintf(txtData + bytesCount, "static unsigned char %s_DATA[%i] = { ", varFileName, dataSize);
-    for (int i = 0; i < dataSize - 1; i++) bytesCount += sprintf(txtData + bytesCount, ((i%TEXT_BYTES_PER_LINE == 0)? "0x%x,\n" : "0x%x, "), ((unsigned char *)image.data)[i]);
-    bytesCount += sprintf(txtData + bytesCount, "0x%x };\n", ((unsigned char *)image.data)[dataSize - 1]);
-
-    // NOTE: Text data length exported is determined by '\0' (NULL) character
-    success = SaveFileText(fileName, txtData);
-
-    RL_FREE(txtData);
-
 #endif      // SUPPORT_IMAGE_EXPORT
 
     if (success != 0) TRACELOG(LOG_INFO, "FILEIO: [%s] Image exported successfully", fileName);

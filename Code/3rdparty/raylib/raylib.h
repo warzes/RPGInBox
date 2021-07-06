@@ -50,30 +50,6 @@
 *       [raudio] stb_vorbis (Sean Barret) for OGG audio loading
 *       [raudio] jar_xm (Joshua Reisenauer) for XM audio module loading
 *       [raudio] jar_mod (Joshua Reisenauer) for MOD audio module loading
-*
-*
-*   LICENSE: zlib/libpng
-*
-*   raylib is licensed under an unmodified zlib/libpng license, which is an OSI-certified,
-*   BSD-like license that allows static linking with closed source software:
-*
-*   Copyright (c) 2013-2021 Ramon Santamaria (@raysan5)
-*
-*   This software is provided "as-is", without any express or implied warranty. In no event
-*   will the authors be held liable for any damages arising from the use of this software.
-*
-*   Permission is granted to anyone to use this software for any purpose, including commercial
-*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
-*
-*     1. The origin of this software must not be misrepresented; you must not claim that you
-*     wrote the original software. If you use this software in a product, an acknowledgment
-*     in the product documentation would be appreciated but is not required.
-*
-*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
-*     as being the original software.
-*
-*     3. This notice may not be removed or altered from any source distribution.
-*
 **********************************************************************************************/
 
 #ifndef RAYLIB_H
@@ -1183,7 +1159,6 @@ Image LoadImageFromTexture(Texture2D texture);                                  
 Image LoadImageFromScreen(void);                                                                   // Load image from screen buffer and (screenshot)
 void UnloadImage(Image image);                                                                     // Unload image from CPU memory (RAM)
 bool ExportImage(Image image, const char *fileName);                                               // Export image data to file, returns true on success
-bool ExportImageAsCode(Image image, const char *fileName);                                         // Export image as code file defining an array of bytes, returns true on success
 
 // Image generation functions
 Image GenImageColor(int width, int height, Color color);                                           // Generate image: plain color
