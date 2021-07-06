@@ -7,6 +7,10 @@
 #		pragma comment(lib, "winmm.lib")
 #	endif
 #endif // SE_COMPILER_MSVC
+
+
+//http://bedroomcoders.co.uk/animating-sky-with-raylib/
+
 //-----------------------------------------------------------------------------
 void GameMain() noexcept
 {

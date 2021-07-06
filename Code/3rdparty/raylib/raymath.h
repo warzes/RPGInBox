@@ -1,20 +1,3 @@
-/**********************************************************************************************
-*
-*   raymath v1.2 - Math functions to work with Vector3, Matrix and Quaternions
-*
-*   CONFIGURATION:
-*
-*   #define RAYMATH_IMPLEMENTATION
-*       Generates the implementation of the library into the included file.
-*       If not defined, the library is in header only mode and can be included in other headers
-*       or source files without problems. But only ONE file should hold the implementation.
-*
-*   #define RAYMATH_HEADER_ONLY
-*       Define static inline functions code, so #include header suffices for use.
-*       This may use up lots of memory.
-
-**********************************************************************************************/
-
 #pragma once
 
 #include "raylib.h"             // Required for structs: Vector3, Matrix

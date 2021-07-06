@@ -6,10 +6,13 @@
 //=============================================================================
 #if SE_PLATFORM_WINDOWS && SE_DEBUG
 extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA(const char*);
-extern "C" __declspec(dllimport) int __stdcall MessageBoxA(void*, const char*, const char*, unsigned int);
 extern "C" __declspec(dllimport) void* __stdcall GetStdHandle(unsigned long);
 extern "C" __declspec(dllimport) int __stdcall SetConsoleTextAttribute(void*, unsigned short);
 #endif
+#if SE_PLATFORM_WINDOWS
+extern "C" __declspec(dllimport) int __stdcall MessageBoxA(void*, const char*, const char*, unsigned int);
+#endif
+
 //-----------------------------------------------------------------------------
 Log::~Log()
 {

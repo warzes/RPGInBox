@@ -40,11 +40,6 @@
 *   #define SUPPORT_TOUCH_AS_MOUSE
 *       Touch input and mouse input are shared. Mouse functions also return touch information.
 *
-*   #define SUPPORT_SSH_KEYBOARD_RPI (Raspberry Pi only)
-*       Reconfigure standard input to receive key inputs, works with SSH connection.
-*       WARNING: Reconfiguring standard input could lead to undesired effects, like breaking other running processes or
-*       blocking the device if not restored properly. Use with care.
-*
 *   #define SUPPORT_MOUSE_CURSOR_POINT
 *       Draw a mouse pointer on screen
 *
@@ -70,22 +65,10 @@
 *
 *   #define SUPPORT_DATA_STORAGE
 *       Support saving binary data automatically to a generated storage.data file. This file is managed internally
-*
-*   DEPENDENCIES:
-*       rglfw    - Manage graphic device, OpenGL context and inputs on PLATFORM_DESKTOP (Windows, Linux, OSX. FreeBSD, OpenBSD, NetBSD, DragonFly)
-*       raymath  - 3D math functionality (Vector2, Vector3, Matrix, Quaternion)
-*       camera   - Multiple 3D camera modes (free, orbital, 1st person, 3rd person)
-*       gestures - Gestures system for touch-ready devices (or simulated from mouse inputs)
-*
+
 **********************************************************************************************/
-
 #include "raylib.h"                 // Declares module functions
-
-// Check if config flags have been externally provided on compilation line
-#if !defined(EXTERNAL_CONFIG_FLAGS)
-    #include "config.h"             // Defines module configuration flags
-#endif
-
+#include "config.h"             // Defines module configuration flags
 #include "utils.h"                  // Required for: TRACELOG macros
 
 #if (defined(__linux__) || defined(PLATFORM_WEB)) && _POSIX_C_SOURCE < 199309L
@@ -93,10 +76,8 @@
     #define _POSIX_C_SOURCE 199309L // Required for CLOCK_MONOTONIC if compiled with c99 without gnu ext.
 #endif
 
-#define RAYMATH_IMPLEMENTATION      // Define external out-of-line implementation of raymath here
 #include "raymath.h"                // Required for: Vector3 and Matrix functions
 
-//#define RLGL_IMPLEMENTATION
 #include "rlgl.h"                   // raylib OpenGL abstraction layer to OpenGL 1.1, 3.3+ or ES2
 
 #if defined(SUPPORT_GESTURES_SYSTEM)
@@ -307,7 +288,6 @@ typedef struct CoreData {
     } Storage;
     struct {
         struct {
-            int exitKey;                    // Default exit key
             char currentKeyState[MAX_KEYBOARD_KEYS];        // Registers current frame key state
             char previousKeyState[MAX_KEYBOARD_KEYS];       // Registers previous frame key state
 
@@ -467,7 +447,6 @@ void InitWindow(int width, int height, const char *title)
     if ((title != NULL) && (title[0] != 0)) CORE.Window.title = title;
 
     // Initialize required global values different than 0
-    CORE.Input.Keyboard.exitKey = KEY_ESCAPE;
     CORE.Input.Mouse.scale = (Vector2){ 1.0f, 1.0f };
     CORE.Input.Mouse.cursor = MOUSE_CURSOR_ARROW;
     CORE.Input.Gamepad.lastButtonPressed = -1;
@@ -2838,15 +2817,6 @@ int GetCharPressed(void)
     return value;
 }
 
-// Set a custom key to exit program
-// NOTE: default exitKey is ESCAPE
-void SetExitKey(int key)
-{
-#if !defined(PLATFORM_ANDROID)
-    CORE.Input.Keyboard.exitKey = key;
-#endif
-}
-
 // NOTE: Gamepad support not implemented in emscripten GLFW3 (PLATFORM_WEB)
 
 // Check if a gamepad is available
@@ -4087,14 +4057,8 @@ static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
 {
     //TRACELOG(LOG_DEBUG, "Key Callback: KEY:%i(%c) - SCANCODE:%i (STATE:%i)", key, key, scancode, action);
 
-    if (key == CORE.Input.Keyboard.exitKey && action == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(CORE.Window.handle, GLFW_TRUE);
-
-        // NOTE: Before closing window, while loop must be left!
-    }
 #if defined(SUPPORT_SCREEN_CAPTURE)
-    else if (key == GLFW_KEY_F12 && action == GLFW_PRESS)
+    if (key == GLFW_KEY_F12 && action == GLFW_PRESS)
     {
 #if defined(SUPPORT_GIF_RECORDING)
         if (mods == GLFW_MOD_CONTROL)

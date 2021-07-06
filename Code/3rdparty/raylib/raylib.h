@@ -964,7 +964,6 @@ bool IsKeyPressed(int key);                             // Check if a key has be
 bool IsKeyDown(int key);                                // Check if a key is being pressed
 bool IsKeyReleased(int key);                            // Check if a key has been released once
 bool IsKeyUp(int key);                                  // Check if a key is NOT being pressed
-void SetExitKey(int key);                               // Set a custom key to exit program (default is ESC)
 int GetKeyPressed(void);                                // Get key pressed (keycode), call it multiple times for keys queued
 int GetCharPressed(void);                               // Get char pressed (unicode), call it multiple times for chars queued
 
@@ -1291,7 +1290,6 @@ void UpdateMeshBuffer(Mesh mesh, int index, void *data, int dataSize, int offset
 void DrawMesh(Mesh mesh, Material material, Matrix transform);                        // Draw a 3d mesh with material and transform
 void DrawMeshInstanced(Mesh mesh, Material material, Matrix *transforms, int instances); // Draw multiple mesh instances with material and different transforms
 void UnloadMesh(Mesh mesh);                                                           // Unload mesh data from CPU and GPU
-bool ExportMesh(Mesh mesh, const char *fileName);                                     // Export mesh data to file, returns true on success
 
 // Material loading/unloading functions
 Material *LoadMaterials(const char *fileName, int *materialCount);                    // Load materials from model file

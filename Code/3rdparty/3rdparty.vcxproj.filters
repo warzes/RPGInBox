@@ -58,5 +58,8 @@
     <ClInclude Include="raylib\config.h">
       <Filter>raylib</Filter>
     </ClInclude>
+    <ClInclude Include="raylib\rayutils.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

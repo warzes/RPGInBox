@@ -4,11 +4,9 @@
 // Camera module is included (camera.h) and multiple predefined cameras are available: free, 1st/3rd person, orbital
 #define SUPPORT_CAMERA_SYSTEM       1
 // Gestures module is included (gestures.h) to support gestures detection: tap, hold, swipe, drag
-#define SUPPORT_GESTURES_SYSTEM     1
+//#define SUPPORT_GESTURES_SYSTEM     1
 // Mouse gestures are directly mapped like touches and processed by gestures system
-#define SUPPORT_MOUSE_GESTURES      1
-// Reconfigure standard input to receive key inputs, works with SSH connection.
-#define SUPPORT_SSH_KEYBOARD_RPI    1
+//#define SUPPORT_MOUSE_GESTURES      1
 // Draw a mouse pointer on screen
 //#define SUPPORT_MOUSE_CURSOR_POINT   1
 // Setting a higher resolution can improve the accuracy of time-out intervals in wait functions.
