@@ -23,54 +23,12 @@
 *       If not defined, the library is in header only mode and can be included in other headers
 *       or source files without problems. But only ONE file should hold the implementation.
 *
-*   #define RLGL_STANDALONE
-*       Use rlgl as standalone library (no raylib dependency)
-*
 *   #define SUPPORT_GL_DETAILS_INFO
 *       Show OpenGL extensions and capabilities detailed logs on init
 **********************************************************************************************/
-
-#ifndef RLGL_H
-#define RLGL_H
-
-#if defined(RLGL_STANDALONE)
-    #define RAYMATH_STANDALONE
-    #define RAYMATH_HEADER_ONLY
-
-    #define   // We are building or using rlgl as a static library (or Linux shared library)
-
-    #if defined(_WIN32)
-        #if defined(BUILD_LIBTYPE_SHARED)
-            #define __declspec(dllexport)         // We are building raylib as a Win32 shared library (.dll)
-        #elif defined(USE_LIBTYPE_SHARED)
-            #define __declspec(dllimport)         // We are using raylib as a Win32 shared library (.dll)
-        #endif
-    #endif
-
-    // Support TRACELOG macros
-    #if !defined(TRACELOG)
-        #define TRACELOG(level, ...) (void)0
-        #define TRACELOGD(...) (void)0
-    #endif
-
-    // Allow custom memory allocators
-    #ifndef RL_MALLOC
-        #define RL_MALLOC(sz)       malloc(sz)
-    #endif
-    #ifndef RL_CALLOC
-        #define RL_CALLOC(n,sz)     calloc(n,sz)
-    #endif
-    #ifndef RL_REALLOC
-        #define RL_REALLOC(n,sz)    realloc(n,sz)
-    #endif
-    #ifndef RL_FREE
-        #define RL_FREE(p)          free(p)
-    #endif
-#else
-    #include "raylib.h"         // Required for: Shader, Texture2D
-#endif
-
-#include "raymath.h"            // Required for: Vector3, Matrix
+#pragma once
+#include "raylib.h"         // Required for: Shader, Texture2D
+#include "raymath.h"        // Required for: Vector3, Matrix
 
 // Security check in case no GRAPHICS_API_OPENGL_* defined
 #if !defined(GRAPHICS_API_OPENGL_33) && \
@@ -169,7 +127,7 @@
 //----------------------------------------------------------------------------------
 // Types and Structures Definition
 //----------------------------------------------------------------------------------
-typedef enum { OPENGL_11 = 1, OPENGL_21, OPENGL_33, OPENGL_ES_20 } GlVersion;
+typedef enum { OPENGL_33, OPENGL_ES_20 } GlVersion;
 
 typedef enum {
     RL_ATTACHMENT_COLOR_CHANNEL0 = 0,
@@ -242,151 +200,6 @@ typedef struct RenderBatch {
     int drawsCounter;           // Draw calls counter
     float currentDepth;         // Current depth value for next draw
 } RenderBatch;
-
-#if defined(RLGL_STANDALONE)
-    #ifndef __cplusplus
-    // Boolean type
-    typedef enum { false, true } bool;
-    #endif
-
-    // Texture type
-    // NOTE: Data stored in GPU memory
-    typedef struct Texture2D {
-        unsigned int id;        // OpenGL texture id
-        int width;              // Texture base width
-        int height;             // Texture base height
-        int mipmaps;            // Mipmap levels, 1 by default
-        int format;             // Data format (PixelFormat)
-    } Texture2D;
-
-    // Shader type (generic)
-    typedef struct Shader {
-        unsigned int id;        // Shader program id
-        int *locs;              // Shader locations array (MAX_SHADER_LOCATIONS)
-    } Shader;
-
-    // Trace log level
-    // NOTE: Organized by priority level
-    typedef enum {
-        LOG_ALL = 0,            // Display all logs
-        LOG_TRACE,              // Trace logging, intended for internal use only
-        LOG_DEBUG,              // Debug logging, used for internal debugging, it should be disabled on release builds
-        LOG_INFO,               // Info logging, used for program execution info
-        LOG_WARNING,            // Warning logging, used on recoverable failures
-        LOG_ERROR,              // Error logging, used on unrecoverable failures
-        LOG_FATAL,              // Fatal logging, used to abort program: exit(EXIT_FAILURE)
-        LOG_NONE                // Disable logging
-    } TraceLogLevel;
-
-    // Texture formats (support depends on OpenGL version)
-    typedef enum {
-        PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1,     // 8 bit per pixel (no alpha)
-        PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA,        // 8*2 bpp (2 channels)
-        PIXELFORMAT_UNCOMPRESSED_R5G6B5,            // 16 bpp
-        PIXELFORMAT_UNCOMPRESSED_R8G8B8,            // 24 bpp
-        PIXELFORMAT_UNCOMPRESSED_R5G5B5A1,          // 16 bpp (1 bit alpha)
-        PIXELFORMAT_UNCOMPRESSED_R4G4B4A4,          // 16 bpp (4 bit alpha)
-        PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,          // 32 bpp
-        PIXELFORMAT_UNCOMPRESSED_R32,               // 32 bpp (1 channel - float)
-        PIXELFORMAT_UNCOMPRESSED_R32G32B32,         // 32*3 bpp (3 channels - float)
-        PIXELFORMAT_UNCOMPRESSED_R32G32B32A32,      // 32*4 bpp (4 channels - float)
-        PIXELFORMAT_COMPRESSED_DXT1_RGB,            // 4 bpp (no alpha)
-        PIXELFORMAT_COMPRESSED_DXT1_RGBA,           // 4 bpp (1 bit alpha)
-        PIXELFORMAT_COMPRESSED_DXT3_RGBA,           // 8 bpp
-        PIXELFORMAT_COMPRESSED_DXT5_RGBA,           // 8 bpp
-        PIXELFORMAT_COMPRESSED_ETC1_RGB,            // 4 bpp
-        PIXELFORMAT_COMPRESSED_ETC2_RGB,            // 4 bpp
-        PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA,       // 8 bpp
-        PIXELFORMAT_COMPRESSED_PVRT_RGB,            // 4 bpp
-        PIXELFORMAT_COMPRESSED_PVRT_RGBA,           // 4 bpp
-        PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA,       // 8 bpp
-        PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA        // 2 bpp
-    } PixelFormat;
-
-    // Texture parameters: filter mode
-    // NOTE 1: Filtering considers mipmaps if available in the texture
-    // NOTE 2: Filter is accordingly set for minification and magnification
-    typedef enum {
-        TEXTURE_FILTER_POINT = 0,               // No filter, just pixel aproximation
-        TEXTURE_FILTER_BILINEAR,                // Linear filtering
-        TEXTURE_FILTER_TRILINEAR,               // Trilinear filtering (linear with mipmaps)
-        TEXTURE_FILTER_ANISOTROPIC_4X,          // Anisotropic filtering 4x
-        TEXTURE_FILTER_ANISOTROPIC_8X,          // Anisotropic filtering 8x
-        TEXTURE_FILTER_ANISOTROPIC_16X,         // Anisotropic filtering 16x
-    } TextureFilter;
-
-    // Texture parameters: wrap mode
-    typedef enum {
-        TEXTURE_WRAP_REPEAT = 0,        // Repeats texture in tiled mode
-        TEXTURE_WRAP_CLAMP,             // Clamps texture to edge pixel in tiled mode
-        TEXTURE_WRAP_MIRROR_REPEAT,     // Mirrors and repeats the texture in tiled mode
-        TEXTURE_WRAP_MIRROR_CLAMP       // Mirrors and clamps to border the texture in tiled mode
-    } TextureWrap;
-
-    // Color blending modes (pre-defined)
-    typedef enum {
-        BLEND_ALPHA = 0,                // Blend textures considering alpha (default)
-        BLEND_ADDITIVE,                 // Blend textures adding colors
-        BLEND_MULTIPLIED,               // Blend textures multiplying colors
-        BLEND_ADD_COLORS,               // Blend textures adding colors (alternative)
-        BLEND_SUBTRACT_COLORS,          // Blend textures subtracting colors (alternative)
-        BLEND_CUSTOM                    // Belnd textures using custom src/dst factors (use SetBlendModeCustom())
-    } BlendMode;
-
-    // Shader location point type
-    typedef enum {
-        SHADER_LOC_VERTEX_POSITION = 0, // Shader location: vertex attribute: position
-        SHADER_LOC_VERTEX_TEXCOORD01,   // Shader location: vertex attribute: texcoord01
-        SHADER_LOC_VERTEX_TEXCOORD02,   // Shader location: vertex attribute: texcoord02
-        SHADER_LOC_VERTEX_NORMAL,       // Shader location: vertex attribute: normal
-        SHADER_LOC_VERTEX_TANGENT,      // Shader location: vertex attribute: tangent
-        SHADER_LOC_VERTEX_COLOR,        // Shader location: vertex attribute: color
-        SHADER_LOC_MATRIX_MVP,          // Shader location: matrix uniform: model-view-projection
-        SHADER_LOC_MATRIX_VIEW,         // Shader location: matrix uniform: view (camera transform)
-        SHADER_LOC_MATRIX_PROJECTION,   // Shader location: matrix uniform: projection
-        SHADER_LOC_MATRIX_MODEL,        // Shader location: matrix uniform: model (transform)
-        SHADER_LOC_MATRIX_NORMAL,       // Shader location: matrix uniform: normal
-        SHADER_LOC_VECTOR_VIEW,         // Shader location: vector uniform: view
-        SHADER_LOC_COLOR_DIFFUSE,       // Shader location: vector uniform: diffuse color
-        SHADER_LOC_COLOR_SPECULAR,      // Shader location: vector uniform: specular color
-        SHADER_LOC_COLOR_AMBIENT,       // Shader location: vector uniform: ambient color
-        SHADER_LOC_MAP_ALBEDO,          // Shader location: sampler2d texture: albedo (same as: SHADER_LOC_MAP_DIFFUSE)
-        SHADER_LOC_MAP_METALNESS,       // Shader location: sampler2d texture: metalness (same as: SHADER_LOC_MAP_SPECULAR)
-        SHADER_LOC_MAP_NORMAL,          // Shader location: sampler2d texture: normal
-        SHADER_LOC_MAP_ROUGHNESS,       // Shader location: sampler2d texture: roughness
-        SHADER_LOC_MAP_OCCLUSION,       // Shader location: sampler2d texture: occlusion
-        SHADER_LOC_MAP_EMISSION,        // Shader location: sampler2d texture: emission
-        SHADER_LOC_MAP_HEIGHT,          // Shader location: sampler2d texture: height
-        SHADER_LOC_MAP_CUBEMAP,         // Shader location: samplerCube texture: cubemap
-        SHADER_LOC_MAP_IRRADIANCE,      // Shader location: samplerCube texture: irradiance
-        SHADER_LOC_MAP_PREFILTER,       // Shader location: samplerCube texture: prefilter
-        SHADER_LOC_MAP_BRDF             // Shader location: sampler2d texture: brdf
-    } ShaderLocationIndex;
-
-    #define SHADER_LOC_MAP_DIFFUSE      SHADER_LOC_MAP_ALBEDO
-    #define SHADER_LOC_MAP_SPECULAR     SHADER_LOC_MAP_METALNESS
-
-    // Shader uniform data type
-    typedef enum {
-        SHADER_UNIFORM_FLOAT = 0,       // Shader uniform type: float
-        SHADER_UNIFORM_VEC2,            // Shader uniform type: vec2 (2 float)
-        SHADER_UNIFORM_VEC3,            // Shader uniform type: vec3 (3 float)
-        SHADER_UNIFORM_VEC4,            // Shader uniform type: vec4 (4 float)
-        SHADER_UNIFORM_INT,             // Shader uniform type: int
-        SHADER_UNIFORM_IVEC2,           // Shader uniform type: ivec2 (2 int)
-        SHADER_UNIFORM_IVEC3,           // Shader uniform type: ivec3 (3 int)
-        SHADER_UNIFORM_IVEC4,           // Shader uniform type: ivec4 (4 int)
-        SHADER_UNIFORM_SAMPLER2D        // Shader uniform type: sampler2d
-    } ShaderUniformDataType;
-
-    // Shader attribute data types
-    typedef enum {
-        SHADER_ATTRIB_FLOAT = 0,        // Shader attribute type: float
-        SHADER_ATTRIB_VEC2,             // Shader attribute type: vec2 (2 float)
-        SHADER_ATTRIB_VEC3,             // Shader attribute type: vec3 (3 float)
-        SHADER_ATTRIB_VEC4              // Shader attribute type: vec4 (4 float)
-    } ShaderAttributeDataType;
-#endif
 
 #if defined(__cplusplus)
 extern "C" {            // Prevents name mangling of functions
@@ -568,5 +381,3 @@ void rlLoadDrawQuad(void);     // Load and draw a quad
 #if defined(__cplusplus)
 }
 #endif
-
-#endif // RLGL_H

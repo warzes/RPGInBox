@@ -1,21 +1,7 @@
 #include "raylib.h"                 // Declares module functions
 #include "config.h"             // Defines module configuration flags
 #include "utils.h"                  // Required for: TRACELOG macros
-#include "rlgl.h"                   // raylib OpenGL abstraction layer to OpenGL 1.1, 3.3+ or ES2
-/***********************************************************************************
-*
-*   RLGL IMPLEMENTATION
-*
-************************************************************************************/
-
-#if !defined(RLGL_STANDALONE)
-// Check if config flags have been externally provided on compilation line
-#if !defined(EXTERNAL_CONFIG_FLAGS)
-#include "config.h"             // Defines module configuration flags
-#endif
-#include "raymath.h"                // Required for: Vector3 and Matrix functions
-#endif
-
+#include "rlgl.h"
 #include <stdlib.h>                     // Required for: malloc(), free()
 #include <string.h>                     // Required for: strcmp(), strlen() [Used in rlglInit(), on extensions loading]
 
@@ -28,11 +14,7 @@
 #define GLAD_FREE RL_FREE
 
 #define GLAD_IMPLEMENTATION
-#if defined(RLGL_STANDALONE)
-#include "glad.h"           // GLAD extensions loading library, includes OpenGL headers
-#else
 #include "external/glad.h"  // GLAD extensions loading library, includes OpenGL headers
-#endif
 #endif
 #endif
 
@@ -148,7 +130,6 @@
 //----------------------------------------------------------------------------------
 // Types and Structures Definition
 //----------------------------------------------------------------------------------
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
 typedef struct rlglData {
     RenderBatch* currentBatch;              // Current render batch
     RenderBatch defaultBatch;               // Default internal render batch
@@ -205,14 +186,10 @@ typedef struct rlglData {
 
 typedef void* (*rlglLoadProc)(const char* name);   // OpenGL extension functions loader signature (same as GLADloadproc)
 
-#endif  // GRAPHICS_API_OPENGL_33 || GRAPHICS_API_OPENGL_ES2
-
 //----------------------------------------------------------------------------------
 // Global Variables Definition
 //----------------------------------------------------------------------------------
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
 static rlglData RLGL = { 0 };
-#endif  // GRAPHICS_API_OPENGL_33 || GRAPHICS_API_OPENGL_ES2
 
 #if defined(GRAPHICS_API_OPENGL_ES2)
 // NOTE: VAO functionality is exposed through extensions (OES)
@@ -229,20 +206,17 @@ static PFNGLVERTEXATTRIBDIVISOREXTPROC glVertexAttribDivisor = NULL;
 //----------------------------------------------------------------------------------
 // Module specific Functions Declaration
 //----------------------------------------------------------------------------------
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
 static void rlLoadShaderDefault(void);      // Load default shader (RLGL.State.defaultShader)
 static void rlUnloadShaderDefault(void);    // Unload default shader (RLGL.State.defaultShader)
 #if defined(SUPPORT_GL_DETAILS_INFO)
 static char* rlGetCompressedFormatName(int format); // Get compressed format official GL identifier name
 #endif  // SUPPORT_GL_DETAILS_INFO
-#endif  // GRAPHICS_API_OPENGL_33 || GRAPHICS_API_OPENGL_ES2
 static int rlGetPixelDataSize(int width, int height, int format);   // Get pixel data size in bytes (image or texture)
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Matrix operations
 //----------------------------------------------------------------------------------
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
 // Choose the current matrix to be transformed
 void rlMatrixMode(int mode)
 {
@@ -350,7 +324,6 @@ void rlOrtho(double left, double right, double bottom, double top, double znear,
 
     *RLGL.State.currentMatrix = MatrixMultiply(*RLGL.State.currentMatrix, matOrtho);
 }
-#endif
 
 // Set the viewport area (transformation from normalized device coordinates to window coordinates)
 void rlViewport(int x, int y, int width, int height)
@@ -361,7 +334,6 @@ void rlViewport(int x, int y, int width, int height)
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vertex level operations
 //----------------------------------------------------------------------------------
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
 // Initialize drawing mode (how to organize vertex)
 void rlBegin(int mode)
 {
@@ -524,8 +496,6 @@ void rlColor3f(float x, float y, float z)
     rlColor4ub((unsigned char)(x * 255), (unsigned char)(y * 255), (unsigned char)(z * 255), 255);
 }
 
-#endif
-
 //--------------------------------------------------------------------------------------
 // Module Functions Definition - OpenGL style functions (common to 1.1, 3.3+, ES2)
 //--------------------------------------------------------------------------------------
@@ -578,9 +548,7 @@ void rlSetTexture(unsigned int id)
 // Select and active a texture slot
 void rlActiveTextureSlot(int slot)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glActiveTexture(GL_TEXTURE0 + slot);
-#endif
 }
 
 // Enable texture
@@ -598,19 +566,15 @@ void rlDisableTexture(void)
 // Enable texture cubemap
 void rlEnableTextureCubemap(unsigned int id)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glEnable(GL_TEXTURE_CUBE_MAP);   // Core in OpenGL 1.4
     glBindTexture(GL_TEXTURE_CUBE_MAP, id);
-#endif
 }
 
 // Disable texture cubemap
 void rlDisableTextureCubemap(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glDisable(GL_TEXTURE_CUBE_MAP);
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-#endif
 }
 
 // Set texture parameters (wrap mode/filter mode)
@@ -652,23 +616,19 @@ void rlTextureParameters(unsigned int id, int param, int value)
 // Enable shader program
 void rlEnableShader(unsigned int id)
 {
-#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2))
     glUseProgram(id);
-#endif
 }
 
 // Disable shader program
 void rlDisableShader(void)
 {
-#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2))
     glUseProgram(0);
-#endif
 }
 
 // Enable rendering to texture (fbo)
 void rlEnableFramebuffer(unsigned int id)
 {
-#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)) && defined(SUPPORT_RENDER_TEXTURES_HINT)
+#if defined(SUPPORT_RENDER_TEXTURES_HINT)
     glBindFramebuffer(GL_FRAMEBUFFER, id);
 #endif
 }
@@ -676,7 +636,7 @@ void rlEnableFramebuffer(unsigned int id)
 // Disable rendering to texture
 void rlDisableFramebuffer(void)
 {
-#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)) && defined(SUPPORT_RENDER_TEXTURES_HINT)
+#if defined(SUPPORT_RENDER_TEXTURES_HINT)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 #endif
 }
@@ -758,27 +718,19 @@ void rlDisableSmoothLines(void)
 // Enable stereo rendering
 void rlEnableStereoRender(void)
 {
-#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2))
     RLGL.State.stereoRender = true;
-#endif
 }
 
 // Disable stereo rendering
 void rlDisableStereoRender(void)
 {
-#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2))
     RLGL.State.stereoRender = false;
-#endif
 }
 
 // Check if stereo render is enabled
 bool rlIsStereoRenderEnabled(void)
 {
-#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2))
     return RLGL.State.stereoRender;
-#else
-    return false;
-#endif
 }
 
 // Clear color buffer with color
@@ -803,7 +755,6 @@ void rlClearScreenBuffers(void)
 // Check and log OpenGL error codes
 void rlCheckErrors()
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     int check = 1;
     while (check)
     {
@@ -821,13 +772,11 @@ void rlCheckErrors()
         default: TRACELOG(LOG_WARNING, "GL: Error detected: Unknown error code: %x", err); break;
         }
     }
-#endif
 }
 
 // Set blend mode
 void rlSetBlendMode(int mode)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     if (RLGL.State.currentBlendMode != mode)
     {
         rlDrawRenderBatch(RLGL.currentBatch);
@@ -845,17 +794,14 @@ void rlSetBlendMode(int mode)
 
         RLGL.State.currentBlendMode = mode;
     }
-#endif
 }
 
 // Set blending mode factor and equation
 void rlSetBlendFactors(int glSrcFactor, int glDstFactor, int glEquation)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     RLGL.State.glBlendSrcFactor = glSrcFactor;
     RLGL.State.glBlendDstFactor = glDstFactor;
     RLGL.State.glBlendEquation = glEquation;
-#endif
 }
 
 //----------------------------------------------------------------------------------
@@ -865,7 +811,6 @@ void rlSetBlendFactors(int glSrcFactor, int glDstFactor, int glEquation)
 // Initialize rlgl: OpenGL extensions, default buffers/shaders/textures, OpenGL states
 void rlglInit(int width, int height)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // Init default white texture
     unsigned char pixels[4] = { 255, 255, 255, 255 };   // 1 pixel RGBA (4 bytes)
     RLGL.State.defaultTextureId = rlLoadTexture(pixels, 1, 1, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8, 1);
@@ -889,7 +834,6 @@ void rlglInit(int width, int height)
     RLGL.State.projection = MatrixIdentity();
     RLGL.State.modelview = MatrixIdentity();
     RLGL.State.currentMatrix = &RLGL.State.modelview;
-#endif  // GRAPHICS_API_OPENGL_33 || GRAPHICS_API_OPENGL_ES2
 
     // Initialize OpenGL default states
     //----------------------------------------------------------
@@ -912,14 +856,12 @@ void rlglInit(int width, int height)
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);                 // Seamless cubemaps (not supported on OpenGL ES 2.0)
 #endif
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // Store screen size into global variables
     RLGL.State.framebufferWidth = width;
     RLGL.State.framebufferHeight = height;
 
     TRACELOG(LOG_INFO, "RLGL: Default OpenGL state initialized successfully");
     //----------------------------------------------------------
-#endif
 
     // Init state: Color/Depth buffers clear
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);                   // Set clear color (black)
@@ -930,14 +872,12 @@ void rlglInit(int width, int height)
 // Vertex Buffer Object deinitialization (memory free)
 void rlglClose(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     rlUnloadRenderBatch(RLGL.defaultBatch);
 
     rlUnloadShaderDefault();          // Unload default shader
 
     glDeleteTextures(1, &RLGL.State.defaultTextureId); // Unload default texture
     TRACELOG(LOG_INFO, "TEXTURE: [ID %i] Default texture unloaded successfully", RLGL.State.defaultTextureId);
-#endif
 }
 
 // Load OpenGL extensions
@@ -1107,7 +1047,6 @@ void rlLoadExtensions(void* loader)
     TRACELOG(LOG_INFO, "    > Version:  %s", glGetString(GL_VERSION));
     TRACELOG(LOG_INFO, "    > GLSL:     %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // NOTE: Anisotropy levels capability is an extension
 #ifndef GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT
 #define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
@@ -1161,8 +1100,6 @@ void rlLoadExtensions(void* loader)
     if (RLGL.ExtSupported.texCompPVRT) TRACELOG(LOG_INFO, "GL: PVRT compressed textures supported");
     if (RLGL.ExtSupported.texCompASTC) TRACELOG(LOG_INFO, "GL: ASTC compressed textures supported");
 #endif  // SUPPORT_GL_DETAILS_INFO
-
-#endif  // GRAPHICS_API_OPENGL_33 || GRAPHICS_API_OPENGL_ES2
 }
 
 // Get current OpenGL version
@@ -1179,45 +1116,30 @@ int rlGetVersion(void)
 // Get default framebuffer width
 int rlGetFramebufferWidth(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     return RLGL.State.framebufferWidth;
-#else
-    return 0;
-#endif
 }
 
 // Get default framebuffer height
 int rlGetFramebufferHeight(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     return RLGL.State.framebufferHeight;
-#else
-    return 0;
-#endif
 }
 
 // Get default internal shader (simple texture + tint color)
 Shader rlGetShaderDefault(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     return RLGL.State.defaultShader;
-#else
-    Shader shader = { 0 };
-    return shader;
-#endif
 }
 
 // Get default internal texture (white texture)
 Texture2D rlGetTextureDefault(void)
 {
     Texture2D texture = { 0 };
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     texture.id = RLGL.State.defaultTextureId;
     texture.width = 1;
     texture.height = 1;
     texture.mipmaps = 1;
     texture.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
-#endif
     return texture;
 }
 
@@ -1228,7 +1150,6 @@ RenderBatch rlLoadRenderBatch(int numBuffers, int bufferElements)
 {
     RenderBatch batch = { 0 };
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // Initialize CPU (RAM) vertex buffers (position, texcoord, color data and indexes)
     //--------------------------------------------------------------------------------------------
     batch.vertexBuffer = (VertexBuffer*)RL_MALLOC(numBuffers * sizeof(VertexBuffer));
@@ -1344,7 +1265,6 @@ RenderBatch rlLoadRenderBatch(int numBuffers, int bufferElements)
     batch.drawsCounter = 1;             // Reset draws counter
     batch.currentDepth = -1.0f;         // Reset depth value
     //--------------------------------------------------------------------------------------------
-#endif
 
     return batch;
 }
@@ -1352,7 +1272,6 @@ RenderBatch rlLoadRenderBatch(int numBuffers, int bufferElements)
 // Unload default internal buffers vertex data from CPU and GPU
 void rlUnloadRenderBatch(RenderBatch batch)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // Unbind everything
     if (RLGL.ExtSupported.vao) glBindVertexArray(0);
     glDisableVertexAttribArray(0);
@@ -1384,14 +1303,12 @@ void rlUnloadRenderBatch(RenderBatch batch)
     // Unload arrays
     RL_FREE(batch.vertexBuffer);
     RL_FREE(batch.draws);
-#endif
 }
 
 // Draw render batch
 // NOTE: We require a pointer to reset batch and increase current buffer (multi-buffer)
 void rlDrawRenderBatch(RenderBatch* batch)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // Update batch vertex buffers
     //------------------------------------------------------------------------------------------------------------
     // NOTE: If there is not vertex data, buffers doesn't need to be updated (vertexCount > 0)
@@ -1576,26 +1493,21 @@ void rlDrawRenderBatch(RenderBatch* batch)
     // Change to next buffer in the list (in case of multi-buffering)
     batch->currentBuffer++;
     if (batch->currentBuffer >= batch->buffersCount) batch->currentBuffer = 0;
-#endif
 }
 
 // Set the active render batch for rlgl
 void rlSetRenderBatchActive(RenderBatch* batch)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     rlDrawRenderBatch(RLGL.currentBatch);
 
     if (batch != NULL) RLGL.currentBatch = batch;
     else RLGL.currentBatch = &RLGL.defaultBatch;
-#endif
 }
 
 // Update and draw internal render batch
 void rlDrawRenderBatchActive(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     rlDrawRenderBatch(RLGL.currentBatch);    // NOTE: Stereo rendering is checked inside
-#endif
 }
 
 // Check internal buffer overflow for a given number of vertex
@@ -1604,14 +1516,12 @@ bool rlCheckRenderBatchLimit(int vCount)
 {
     bool overflow = false;
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     if ((RLGL.currentBatch->vertexBuffer[RLGL.currentBatch->currentBuffer].vCounter + vCount) >=
         (RLGL.currentBatch->vertexBuffer[RLGL.currentBatch->currentBuffer].elementsCount * 4))
     {
         overflow = true;
         rlDrawRenderBatch(RLGL.currentBatch);    // NOTE: Stereo rendering is checked inside
     }
-#endif
 
     return overflow;
 }
@@ -1631,7 +1541,6 @@ unsigned int rlLoadTexture(void* data, int width, int height, int format, int mi
         TRACELOG(LOG_WARNING, "GL: DXT compressed texture format not supported");
         return id;
     }
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     if ((!RLGL.ExtSupported.texCompETC1) && (format == PIXELFORMAT_COMPRESSED_ETC1_RGB))
     {
         TRACELOG(LOG_WARNING, "GL: ETC1 compressed texture format not supported");
@@ -1655,7 +1564,6 @@ unsigned int rlLoadTexture(void* data, int width, int height, int format, int mi
         TRACELOG(LOG_WARNING, "GL: ASTC compressed texture format not supported");
         return id;
     }
-#endif
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -1759,7 +1667,6 @@ unsigned int rlLoadTextureDepth(int width, int height, bool useRenderBuffer)
 {
     unsigned int id = 0;
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // In case depth textures not supported, we force renderbuffer usage
     if (!RLGL.ExtSupported.texDepth) useRenderBuffer = true;
 
@@ -1800,7 +1707,6 @@ unsigned int rlLoadTextureDepth(int width, int height, bool useRenderBuffer)
 
         TRACELOG(LOG_INFO, "TEXTURE: [ID %i] Depth renderbuffer loaded successfully (%i bits)", id, (RLGL.ExtSupported.maxDepthBits >= 24) ? RLGL.ExtSupported.maxDepthBits : 16);
     }
-#endif
 
     return id;
 }
@@ -1812,7 +1718,6 @@ unsigned int rlLoadTextureCubemap(void* data, int size, int format)
 {
     unsigned int id = 0;
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     unsigned int dataSize = rlGetPixelDataSize(size, size, format);
 
     glGenTextures(1, &id);
@@ -1874,7 +1779,6 @@ unsigned int rlLoadTextureCubemap(void* data, int size, int format)
 #endif
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-#endif
 
     if (id > 0) TRACELOG(LOG_INFO, "TEXTURE: [ID %i] Cubemap texture loaded successfully (%ix%i)", id, size, size);
     else TRACELOG(LOG_WARNING, "TEXTURE: Failed to load cubemap texture");
@@ -1964,7 +1868,6 @@ void rlGenerateMipmaps(Texture2D* texture)
     if (((texture->width > 0) && ((texture->width & (texture->width - 1)) == 0)) &&
         ((texture->height > 0) && ((texture->height & (texture->height - 1)) == 0))) texIsPOT = true;
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     if ((texIsPOT) || (RLGL.ExtSupported.texNPOT))
     {
         //glHint(GL_GENERATE_MIPMAP_HINT, GL_DONT_CARE);   // Hint for mipmaps generation algorythm: GL_FASTEST, GL_NICEST, GL_DONT_CARE
@@ -1979,7 +1882,6 @@ void rlGenerateMipmaps(Texture2D* texture)
         texture->mipmaps = 1 + (int)floor(log(MAX(texture->width, texture->height)) / log(2));
         TRACELOG(LOG_INFO, "TEXTURE: [ID %i] Mipmaps generated automatically, total: %i", texture->id, texture->mipmaps);
     }
-#endif
     else TRACELOG(LOG_WARNING, "TEXTURE: [ID %i] Failed to generate mipmaps", texture->id);
 
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -2090,7 +1992,7 @@ unsigned int rlLoadFramebuffer(int width, int height)
 {
     unsigned int fboId = 0;
 
-#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)) && defined(SUPPORT_RENDER_TEXTURES_HINT)
+#if defined(SUPPORT_RENDER_TEXTURES_HINT)
     glGenFramebuffers(1, &fboId);       // Create the framebuffer object
     glBindFramebuffer(GL_FRAMEBUFFER, 0);   // Unbind any framebuffer
 #endif
@@ -2102,7 +2004,7 @@ unsigned int rlLoadFramebuffer(int width, int height)
 // NOTE: Attach type: 0-Color, 1-Depth renderbuffer, 2-Depth texture
 void rlFramebufferAttach(unsigned int fboId, unsigned int texId, int attachType, int texType, int mipLevel)
 {
-#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)) && defined(SUPPORT_RENDER_TEXTURES_HINT)
+#if defined(SUPPORT_RENDER_TEXTURES_HINT)
     glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
     switch (attachType)
@@ -2176,7 +2078,7 @@ bool rlFramebufferComplete(unsigned int id)
 // NOTE: All attached textures/cubemaps/renderbuffers are also deleted
 void rlUnloadFramebuffer(unsigned int id)
 {
-#if (defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)) && defined(SUPPORT_RENDER_TEXTURES_HINT)
+#if defined(SUPPORT_RENDER_TEXTURES_HINT)
 
     // Query depth attachment to automatically delete texture/renderbuffer
     int depthType = 0, depthId = 0;
@@ -2204,13 +2106,9 @@ void rlUnloadFramebuffer(unsigned int id)
 unsigned int rlLoadVertexBuffer(void* buffer, int size, bool dynamic)
 {
     unsigned int id = 0;
-
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glGenBuffers(1, &id);
     glBindBuffer(GL_ARRAY_BUFFER, id);
     glBufferData(GL_ARRAY_BUFFER, size, buffer, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-#endif
-
     return id;
 }
 
@@ -2218,86 +2116,64 @@ unsigned int rlLoadVertexBuffer(void* buffer, int size, bool dynamic)
 unsigned int rlLoadVertexBufferElement(void* buffer, int size, bool dynamic)
 {
     unsigned int id = 0;
-
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glGenBuffers(1, &id);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, buffer, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-#endif
-
     return id;
 }
 
 void rlEnableVertexBuffer(unsigned int id)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glBindBuffer(GL_ARRAY_BUFFER, id);
-#endif
 }
 
 void rlDisableVertexBuffer(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-#endif
 }
 
 void rlEnableVertexBufferElement(unsigned int id)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-#endif
 }
 
 void rlDisableVertexBufferElement(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-#endif
 }
 
 // Update GPU buffer with new data
 // NOTE: dataSize and offset must be provided in bytes
 void rlUpdateVertexBuffer(int bufferId, void* data, int dataSize, int offset)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glBindBuffer(GL_ARRAY_BUFFER, bufferId);
     glBufferSubData(GL_ARRAY_BUFFER, offset, dataSize, data);
-#endif
 }
 
 bool rlEnableVertexArray(unsigned int vaoId)
 {
     bool result = false;
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     if (RLGL.ExtSupported.vao)
     {
         glBindVertexArray(vaoId);
         result = true;
     }
-#endif
     return result;
 }
 
 void rlDisableVertexArray(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     if (RLGL.ExtSupported.vao) glBindVertexArray(0);
-#endif
 }
 
 void rlEnableVertexAttribute(unsigned int index)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glEnableVertexAttribArray(index);
-#endif
 }
 
 void rlDisableVertexAttribute(unsigned int index)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glDisableVertexAttribArray(index);
-#endif
 }
 
 void rlDrawVertexArray(int offset, int count)
@@ -2312,62 +2188,48 @@ void rlDrawVertexArrayElements(int offset, int count, void* buffer)
 
 void rlDrawVertexArrayInstanced(int offset, int count, int instances)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glDrawArraysInstanced(GL_TRIANGLES, 0, count, instances);
-#endif
 }
 
 void rlDrawVertexArrayElementsInstanced(int offset, int count, void* buffer, int instances)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glDrawElementsInstanced(GL_TRIANGLES, count, GL_UNSIGNED_SHORT, (unsigned short*)buffer + offset, instances);
-#endif
 }
 
 unsigned int rlLoadVertexArray(void)
 {
     unsigned int vaoId = 0;
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     if (RLGL.ExtSupported.vao)
     {
         glGenVertexArrays(1, &vaoId);
     }
-#endif
     return vaoId;
 }
 
 void rlSetVertexAttribute(unsigned int index, int compSize, int type, bool normalized, int stride, void* pointer)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glVertexAttribPointer(index, compSize, type, normalized, stride, pointer);
-#endif
 }
 
 void rlSetVertexAttributeDivisor(unsigned int index, int divisor)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glVertexAttribDivisor(index, divisor);
-#endif
 }
 
 void rlUnloadVertexArray(unsigned int vaoId)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     if (RLGL.ExtSupported.vao)
     {
         glBindVertexArray(0);
         glDeleteVertexArrays(1, &vaoId);
         TRACELOG(LOG_INFO, "VAO: [ID %i] Unloaded vertex array data from VRAM (GPU)", vaoId);
     }
-#endif
 }
 
 void rlUnloadVertexBuffer(unsigned int vboId)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glDeleteBuffers(1, &vboId);
     //TRACELOG(LOG_INFO, "VBO: Unloaded vertex data from VRAM (GPU)");
-#endif
 }
 
 // Shaders management
@@ -2378,7 +2240,6 @@ unsigned int rlLoadShaderCode(const char* vsCode, const char* fsCode)
 {
     unsigned int id = 0;
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     unsigned int vertexShaderId = RLGL.State.defaultVShaderId;
     unsigned int fragmentShaderId = RLGL.State.defaultFShaderId;
 
@@ -2430,7 +2291,6 @@ unsigned int rlLoadShaderCode(const char* vsCode, const char* fsCode)
 
         TRACELOGD("SHADER: [ID %i] Active uniform (%s) set at location: %i", id, name, glGetUniformLocation(id, name));
     }
-#endif
 
     return id;
 }
@@ -2440,7 +2300,6 @@ unsigned int rlCompileShader(const char* shaderCode, int type)
 {
     unsigned int shader = 0;
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     shader = glCreateShader(type);
     glShaderSource(shader, 1, &shaderCode, NULL);
 
@@ -2482,7 +2341,6 @@ unsigned int rlCompileShader(const char* shaderCode, int type)
         default: break;
         }
     }
-#endif
 
     return shader;
 }
@@ -2492,7 +2350,6 @@ unsigned int rlLoadShaderProgram(unsigned int vShaderId, unsigned int fShaderId)
 {
     unsigned int program = 0;
 
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     GLint success = 0;
     program = glCreateProgram();
 
@@ -2536,30 +2393,25 @@ unsigned int rlLoadShaderProgram(unsigned int vShaderId, unsigned int fShaderId)
         program = 0;
     }
     else TRACELOG(LOG_INFO, "SHADER: [ID %i] Program shader loaded successfully", program);
-#endif
     return program;
 }
 
 // Unload shader program
 void rlUnloadShaderProgram(unsigned int id)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glDeleteProgram(id);
 
     TRACELOG(LOG_INFO, "SHADER: [ID %i] Unloaded shader program data from VRAM (GPU)", id);
-#endif
 }
 
 // Get shader location uniform
 int rlGetLocationUniform(unsigned int shaderId, const char* uniformName)
 {
     int location = -1;
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     location = glGetUniformLocation(shaderId, uniformName);
 
     if (location == -1) TRACELOG(LOG_WARNING, "SHADER: [ID %i] Failed to find shader uniform: %s", shaderId, uniformName);
     else TRACELOG(LOG_INFO, "SHADER: [ID %i] Shader uniform (%s) set at location: %i", shaderId, uniformName, location);
-#endif
     return location;
 }
 
@@ -2567,19 +2419,16 @@ int rlGetLocationUniform(unsigned int shaderId, const char* uniformName)
 int rlGetLocationAttrib(unsigned int shaderId, const char* attribName)
 {
     int location = -1;
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     location = glGetAttribLocation(shaderId, attribName);
 
     if (location == -1) TRACELOG(LOG_WARNING, "SHADER: [ID %i] Failed to find shader attribute: %s", shaderId, attribName);
     else TRACELOG(LOG_INFO, "SHADER: [ID %i] Shader attribute (%s) set at location: %i", shaderId, attribName, location);
-#endif
     return location;
 }
 
 // Set shader value uniform
 void rlSetUniform(int locIndex, const void* value, int uniformType, int count)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     switch (uniformType)
     {
     case SHADER_UNIFORM_FLOAT: glUniform1fv(locIndex, count, (float*)value); break;
@@ -2593,13 +2442,11 @@ void rlSetUniform(int locIndex, const void* value, int uniformType, int count)
     case SHADER_UNIFORM_SAMPLER2D: glUniform1iv(locIndex, count, (int*)value); break;
     default: TRACELOG(LOG_WARNING, "SHADER: Failed to set uniform value, data type not recognized");
     }
-#endif
 }
 
 // Set shader value attribute
 void rlSetVertexAttributeDefault(int locIndex, const void* value, int attribType, int count)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     switch (attribType)
     {
     case SHADER_ATTRIB_FLOAT: if (count == 1) glVertexAttrib1fv(locIndex, (float*)value); break;
@@ -2608,21 +2455,17 @@ void rlSetVertexAttributeDefault(int locIndex, const void* value, int attribType
     case SHADER_ATTRIB_VEC4: if (count == 4) glVertexAttrib4fv(locIndex, (float*)value); break;
     default: TRACELOG(LOG_WARNING, "SHADER: Failed to set attrib default value, data type not recognized");
     }
-#endif
 }
 
 // Set shader value uniform matrix
 void rlSetUniformMatrix(int locIndex, Matrix mat)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     glUniformMatrix4fv(locIndex, 1, false, MatrixToFloat(mat));
-#endif
 }
 
 // Set shader value uniform sampler
 void rlSetUniformSampler(int locIndex, unsigned int textureId)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // Check if texture is already active
     for (int i = 0; i < MAX_BATCH_ACTIVE_TEXTURES; i++) if (RLGL.State.activeTextureId[i] == textureId) return;
 
@@ -2637,19 +2480,16 @@ void rlSetUniformSampler(int locIndex, unsigned int textureId)
             break;
         }
     }
-#endif
 }
 
 // Set shader currently active
 void rlSetShader(Shader shader)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     if (RLGL.State.currentShader.id != shader.id)
     {
         rlDrawRenderBatch(RLGL.currentBatch);
         RLGL.State.currentShader = shader;
     }
-#endif
 }
 
 // Matrix state management
@@ -2672,13 +2512,11 @@ Matrix rlGetMatrixProjection(void)
 Matrix rlGetMatrixTransform(void)
 {
     Matrix mat = MatrixIdentity();
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // TODO: Consider possible transform matrices in the RLGL.State.stack
     // Is this the right order? or should we start with the first stored matrix instead of the last one?
     //Matrix matStackTransform = MatrixIdentity();
     //for (int i = RLGL.State.stackCounter; i > 0; i--) matStackTransform = MatrixMultiply(RLGL.State.stack[i], matStackTransform);
     mat = RLGL.State.transform;
-#endif
     return mat;
 }
 
@@ -2686,9 +2524,7 @@ Matrix rlGetMatrixTransform(void)
 Matrix rlGetMatrixProjectionStereo(int eye)
 {
     Matrix mat = MatrixIdentity();
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     mat = RLGL.State.projectionStereo[eye];
-#endif
     return mat;
 }
 
@@ -2696,50 +2532,39 @@ Matrix rlGetMatrixProjectionStereo(int eye)
 Matrix rlGetMatrixViewOffsetStereo(int eye)
 {
     Matrix mat = MatrixIdentity();
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     mat = RLGL.State.viewOffsetStereo[eye];
-#endif
     return mat;
 }
 
 // Set a custom modelview matrix (replaces internal modelview matrix)
 void rlSetMatrixModelview(Matrix view)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     RLGL.State.modelview = view;
-#endif
 }
 
 // Set a custom projection matrix (replaces internal projection matrix)
 void rlSetMatrixProjection(Matrix projection)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     RLGL.State.projection = projection;
-#endif
 }
 
 // Set eyes projection matrices for stereo rendering
 void rlSetMatrixProjectionStereo(Matrix right, Matrix left)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     RLGL.State.projectionStereo[0] = right;
     RLGL.State.projectionStereo[1] = left;
-#endif
 }
 
 // Set eyes view offsets matrices for stereo rendering
 void rlSetMatrixViewOffsetStereo(Matrix right, Matrix left)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     RLGL.State.viewOffsetStereo[0] = right;
     RLGL.State.viewOffsetStereo[1] = left;
-#endif
 }
 
 // Load and draw a 1x1 XY quad in NDC
 void rlLoadDrawQuad(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     unsigned int quadVAO = 0;
     unsigned int quadVBO = 0;
 
@@ -2774,13 +2599,11 @@ void rlLoadDrawQuad(void)
     // Delete buffers (VBO and VAO)
     glDeleteBuffers(1, &quadVBO);
     glDeleteVertexArrays(1, &quadVAO);
-#endif
 }
 
 // Load and draw a 1x1 3D cube in NDC
 void rlLoadDrawCube(void)
 {
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     unsigned int cubeVAO = 0;
     unsigned int cubeVBO = 0;
 
@@ -2852,7 +2675,6 @@ void rlLoadDrawCube(void)
     // Delete VBO and VAO
     glDeleteBuffers(1, &cubeVBO);
     glDeleteVertexArrays(1, &cubeVAO);
-#endif
 }
 
 // Get name string for pixel format
@@ -2888,7 +2710,6 @@ const char* rlGetPixelFormatName(unsigned int format)
 //----------------------------------------------------------------------------------
 // Module specific Functions Definition
 //----------------------------------------------------------------------------------
-#if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
 // Load default shader (just vertex positioning and texture coloring)
 // NOTE: This shader program is used for internal buffers
 // NOTE: It uses global variable: RLGL.State.defaultShader
@@ -3075,8 +2896,6 @@ static char* rlGetCompressedFormatName(int format)
     return compName;
 }
 #endif  // SUPPORT_GL_DETAILS_INFO
-
-#endif  // GRAPHICS_API_OPENGL_33 || GRAPHICS_API_OPENGL_ES2
 
 // Get pixel data size in bytes (image or texture)
 // NOTE: Size depends on pixel format
