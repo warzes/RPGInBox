@@ -9,18 +9,6 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Platform.cpp">
-      <Filter>Platform</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="OGLRenderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -37,18 +25,6 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="Platform.h">
-      <Filter>Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="OGLRenderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -56,15 +32,6 @@
     </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{9add766f-18ae-41ba-9dfc-34838f0fca14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Platform">
-      <UniqueIdentifier>{7d125825-6988-4e85-afd6-f106544ecd37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer">
-      <UniqueIdentifier>{bda3c3f6-244e-4d42-a79f-96c7876db488}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{64d7b8ea-7474-46f2-8903-85d07b7a13bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

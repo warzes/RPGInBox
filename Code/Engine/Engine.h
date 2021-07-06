@@ -1,7 +1,15 @@
 #pragma once
 
-#include "Renderer.h"
-#include "Scene.h"
+#include "Core.h"
+
+struct WindowConfig final
+{
+	int width = 1024;
+	int height = 768;
+	bool fullscreen = false;
+	bool resizable = true;
+	bool vsync = false;
+};
 
 struct EngineConfig final
 {
@@ -25,8 +33,4 @@ public:
 	bool IsEnd() const noexcept;
 
 	Log log;
-	Input input;
-	Window window;
-	Renderer renderer;
-	Scene scene;
 };
