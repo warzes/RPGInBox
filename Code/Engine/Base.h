@@ -64,6 +64,18 @@
 #	error Unknown platform.
 #endif
 
+#define SE_PLATFORM_DESKTOP 0
+#define SE_PLATFORM_WEB 0
+#if SE_PLATFORM_WINDOWS || SE_PLATFORM_LINUX
+#undef SE_PLATFORM_DESKTOP
+#define SE_PLATFORM_DESKTOP 1
+#endif
+
+#if SE_PLATFORM_EMSCRIPTEN
+#undef SE_PLATFORM_WEB
+#define SE_PLATFORM_WEB 1
+#endif
+
 //=============================================================================
 // Macros Utility
 //=============================================================================

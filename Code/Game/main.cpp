@@ -3,6 +3,9 @@
 #if SE_COMPILER_MSVC
 #	pragma comment(lib, "3rdparty.lib")
 #	pragma comment(lib, "Engine.lib")
+#	if SE_PLATFORM_WINDOWS
+#		pragma comment(lib, "winmm.lib")
+#	endif
 #endif // SE_COMPILER_MSVC
 //-----------------------------------------------------------------------------
 void GameMain() noexcept

@@ -17,6 +17,15 @@ private:
 //=============================================================================
 // Window
 //=============================================================================
+struct WindowConfig final
+{
+	int width = 1024;
+	int height = 768;
+	bool fullscreen = false;
+	bool resizable = true;
+	bool vsync = false;
+};
+
 class Window final : NonCopyable, NonMovable
 {
 	friend class Engine;
@@ -29,10 +38,22 @@ public:
 
 private:
 	Window(Log& log) noexcept;
-	bool init() noexcept;
+	bool init(const WindowConfig& config) noexcept;
+	void setupFramebuffer(int width, int height) noexcept;
+
 	void update() noexcept;
 
 	Log& m_log;
+	struct pimpl;
+	pimpl* m_impl = nullptr;
+
+	int m_displayWidth = 0;
+	int m_displayHeight = 0;
+	int m_width = 0;
+	int m_height = 0;
+	int m_positionX = 0;
+	int m_positionY = 0;
+	bool m_fullscreen = false;
 
 	bool m_isClose = true;
 	bool m_isActive = true;

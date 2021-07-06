@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="GladImpl.c" />
+    <ClCompile Include="GLFWImpl.c" />
+    <ClCompile Include="raylib\core.c">
+      <Filter>raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="raylib\models.c">
+      <Filter>raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="raylib\raudio.c">
+      <Filter>raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="raylib\shapes.c">
+      <Filter>raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="raylib\text.c">
+      <Filter>raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="raylib\textures.c">
+      <Filter>raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="raylib\utils.c">
+      <Filter>raylib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="raylib">
+      <UniqueIdentifier>{8ed0fdfd-4aa5-4184-aa79-5283aeb19eef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="raylib\gestures.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\raudio.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\raylib.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\raymath.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\rlgl.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\utils.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\camera.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\config.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

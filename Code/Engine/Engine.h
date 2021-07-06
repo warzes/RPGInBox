@@ -1,10 +1,13 @@
 #pragma once
 
 #include "Renderer.h"
+#include "Scene.h"
 
 struct EngineConfig final
 {
 	const char* LogName = "Log.txt";
+
+	WindowConfig window;
 };
 
 class Engine final : NonCopyable, NonMovable
@@ -25,6 +28,5 @@ public:
 	Input input;
 	Window window;
 	Renderer renderer;
-private:
-	EngineConfig m_config;
+	Scene scene;
 };

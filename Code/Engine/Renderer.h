@@ -5,15 +5,16 @@
 //=============================================================================
 // Renderer
 //=============================================================================
+class OGLRenderer;
 
 class Renderer final : NonCopyable, NonMovable
 {
 	friend class Engine;
 public:
-	Renderer(Log& log, Window& window) noexcept;
 	~Renderer();
 
 private:
+	Renderer(Log& log, Window& window) noexcept;
 	bool init() noexcept;
 	void beginFrame() noexcept;
 	void endFrame() noexcept;
@@ -21,5 +22,7 @@ private:
 
 	Log& m_log;
 	Window& m_window;
+
+	OGLRenderer* m_render = nullptr;
 };
 

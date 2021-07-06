@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Renderer.h"
+#include "OGLRenderer.h"
 #include "DebugNew.h"
 
 //=============================================================================
@@ -15,15 +16,18 @@ Renderer::Renderer(Log& log, Window& window) noexcept
 //-----------------------------------------------------------------------------
 Renderer::~Renderer()
 {
+	delete m_render;
 }
 //-----------------------------------------------------------------------------
 bool Renderer::init() noexcept
 {
+	m_render = new OGLRenderer(m_log);
 	return true;
 }
 //-----------------------------------------------------------------------------
 void Renderer::beginFrame() noexcept
 {
+	m_render->ClearMainFrame();	
 }
 //-----------------------------------------------------------------------------
 void Renderer::endFrame() noexcept
