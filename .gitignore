@@ -6,3 +6,8 @@ Thumbs.db
 /_obj/
 /*/.vs/
 /*/ipch/
+
+/bin/x64/Game_*
+/bin/x64/Log.txt
+/bin/x86/Game_*
+/bin/x86/Log.txt

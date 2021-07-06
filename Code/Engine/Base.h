@@ -84,23 +84,10 @@
 //=============================================================================
 #if SE_COMPILER_MSVC
 #	define SE_PRAGMA_WARNING_PUSH             __pragma(warning(push))
+#	define SE_PRAGMA_WARNING_PUSH_LEVEL(id)   __pragma(warning(push, id))
 #	define SE_PRAGMA_WARNING_POP              __pragma(warning(pop))
 #	define SE_PRAGMA_WARNING_DISABLE_MSVC(id) __pragma(warning(disable: id))
-#	define SE_PRAGMA_WARNING_DISABLE_CLANG(id)
-#	define SE_PRAGMA_WARNING_DISABLE_GCC(id)
-#elif SE_COMPILER_CLANG
-#	define SE_PRAGMA_WARNING_PUSH             _Pragma("clang diagnostic push")
-#	define SE_PRAGMA_WARNING_POP              _Pragma("clang diagnostic pop")
-#	define SE_PRAGMA_WARNING_DISABLE_MSVC(id)
-#	define SE_PRAGMA_WARNING_DISABLE_CLANG(id)_Pragma(SE_STRINGIZE_2(clang diagnostic ignored id) )
-#	define SE_PRAGMA_WARNING_DISABLE_GCC(id)
-#elif SE_COMPILER_GNUC
-#	define SE_PRAGMA_WARNING_PUSH             _Pragma("GCC diagnostic push")
-#	define SE_PRAGMA_WARNING_POP              _Pragma("GCC diagnostic pop")
-#	define SE_PRAGMA_WARNING_DISABLE_MSVC(id)
-#	define SE_PRAGMA_WARNING_DISABLE_CLANG(id)
-#	define SE_PRAGMA_WARNING_DISABLE_GCC(id)  _Pragma(SE_STRINGIZE_2(GCC diagnostic ignored id) )
-#endif
+#endif // SE_COMPILER_MSVC
 
 //=============================================================================
 // Platform macros
@@ -110,11 +97,15 @@
 // Set Windows version to Windows 7 (0x0601)
 #	ifdef _WIN32_WINNT
 #		undef _WIN32_WINNT
-#	endif
+#	endif // _WIN32_WINNT
 #	define _WIN32_WINNT 0x0601
+#	ifdef _WIN32_WINDOWS
+#		undef _WIN32_WINDOWS
+#	endif // _WIN32_WINDOWS
+#	define _WIN32_WINDOWS _WIN32_WINNT
 #	ifdef WINVER
 #		undef WINVER
-#	endif
+#	endif // WINVER
 #	define WINVER _WIN32_WINNT
 
 #	define WIN32_LEAN_AND_MEAN      // 
@@ -168,7 +159,7 @@
 #	define NOCRYPT                  // 
 #	define NOKERNEL                 // All KERNEL defines and routines
 #	define NONLS                    // All NLS defines and routines
-#endif
+#endif // SE_PLATFORM_WINDOWS
 
 //=============================================================================
 // inline global func
@@ -181,3 +172,35 @@ template<typename T, size_t N>
 	return N;
 }
 
+//=============================================================================
+// Base template
+//=============================================================================
+
+// TODO:
+SE_PRAGMA_WARNING_DISABLE_MSVC(4625)
+SE_PRAGMA_WARNING_DISABLE_MSVC(4626)
+// Base class with copy constructor and assignment disabled. Polymorphic deletion via pointer to this class is forbidden -
+// virtual destructor is omitted for performance reasons.
+class NonCopyable
+{
+public:
+	NonCopyable(const NonCopyable&) = delete;
+	NonCopyable& operator=(const NonCopyable&) = delete;
+
+protected:
+	NonCopyable() = default;
+	~NonCopyable() = default;
+};
+
+// Base class with move constructor and assignment disabled. Polymorphic deletion via pointer to this class is forbidden -
+// virtual destructor is omitted for performance reasons
+class NonMovable
+{
+public:
+	NonMovable(NonMovable&&) = delete;
+	NonMovable& operator=(NonMovable&&) = delete;
+
+protected:
+	NonMovable() = default;
+	~NonMovable() = default;
+};
