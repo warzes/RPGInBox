@@ -945,38 +945,6 @@ void DrawMesh(Mesh mesh, Material material, Matrix transform)
 // Draw multiple mesh instances with material and different transforms
 void DrawMeshInstanced(Mesh mesh, Material material, Matrix *transforms, int instances)
 {
-#if defined(GRAPHICS_API_OPENGL_11)
-    #define GL_VERTEX_ARRAY         0x8074
-    #define GL_NORMAL_ARRAY         0x8075
-    #define GL_COLOR_ARRAY          0x8076
-    #define GL_TEXTURE_COORD_ARRAY  0x8078
-
-    rlEnableTexture(material.maps[MATERIAL_MAP_DIFFUSE].texture.id);
-
-    rlEnableStatePointer(GL_VERTEX_ARRAY, mesh.vertices);
-    rlEnableStatePointer(GL_TEXTURE_COORD_ARRAY, mesh.texcoords);
-    rlEnableStatePointer(GL_NORMAL_ARRAY, mesh.normals);
-    rlEnableStatePointer(GL_COLOR_ARRAY, mesh.colors);
-
-    rlPushMatrix();
-        rlMultMatrixf(MatrixToFloat(transforms[0]));
-        rlColor4ub(material.maps[MATERIAL_MAP_DIFFUSE].color.r,
-                   material.maps[MATERIAL_MAP_DIFFUSE].color.g,
-                   material.maps[MATERIAL_MAP_DIFFUSE].color.b,
-                   material.maps[MATERIAL_MAP_DIFFUSE].color.a);
-
-        if (mesh.indices != NULL) rlDrawVertexArrayElements(0, mesh.triangleCount*3, mesh.indices);
-        else rlDrawVertexArray(0, mesh.vertexCount);
-    rlPopMatrix();
-
-    rlDisableStatePointer(GL_VERTEX_ARRAY);
-    rlDisableStatePointer(GL_TEXTURE_COORD_ARRAY);
-    rlDisableStatePointer(GL_NORMAL_ARRAY);
-    rlDisableStatePointer(GL_COLOR_ARRAY);
-
-    rlDisableTexture();
-#endif
-
 #if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
     // Check instancing
     bool instancing = false;
