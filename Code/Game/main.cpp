@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "GameLogic.h"
 #include <Engine/DebugNew.h>
 #if SE_COMPILER_MSVC
 #	pragma comment(lib, "3rdparty.lib")
@@ -7,13 +8,6 @@
 #		pragma comment(lib, "winmm.lib")
 #	endif
 #endif // SE_COMPILER_MSVC
-
-
-http://bedroomcoders.co.uk/animating-sky-with-raylib/
-
-вот тут фрустум:
-https://github.com/JeffM2501/raylibExtras
-
 //-----------------------------------------------------------------------------
 void GameMain() noexcept
 {
@@ -21,12 +15,18 @@ void GameMain() noexcept
 	Engine engine;
 	if (engine.Init(engineConfig))
 	{
-		while (!engine.IsEnd())
+		GameLogic game(engine);
+		if (game.Init())
 		{
-			engine.Update();
-			engine.BeginFrame();
-			engine.EndFrame();
-		}
+			while (!engine.IsEnd())
+			{
+				engine.Update();
+				if (!game.Update()) break;
+				engine.BeginFrame();
+				game.Frame();
+				engine.EndFrame();
+			}
+		}		
 	}
 }
 //-----------------------------------------------------------------------------

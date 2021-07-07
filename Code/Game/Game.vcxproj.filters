@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="PlayerGameCamera.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="PlayerGameCamera.h">
+      <Filter>World</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="World">
+      <UniqueIdentifier>{225f0dcd-14e4-4dc7-942c-342095031a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle">
+      <UniqueIdentifier>{9ddda3b1-60af-4448-96a4-71e8766ca942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RPG">
+      <UniqueIdentifier>{a32976f2-a461-4254-bef2-6a2b00f5f26a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

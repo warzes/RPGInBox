@@ -14,10 +14,13 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 //#include <glfw/glfw3.h>
 #include <raylib/raylib.h>
 #include <raylib/rayutils.h>
+#include <raylib/rlgl.h>
+#include <raylib/raymath.h>
 
 #include <cstdint>
 #include <fstream>
 #include <chrono>
 #include <string>
+#include <functional>
 
 SE_PRAGMA_WARNING_POP

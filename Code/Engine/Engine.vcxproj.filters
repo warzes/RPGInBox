@@ -9,6 +9,9 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="FPCamera.cpp" />
+    <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -25,6 +28,10 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="FPCamera.h" />
+    <ClInclude Include="FreeCamera.h" />
+    <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">

@@ -1,14 +1,18 @@
 #include "stdafx.h"
 #include "Engine.h"
+#include "FPCamera.h"
 #include "DebugNew.h"
 
-#define SKYTEST 1
+
+#define SKYTEST 0
+#define OBJLOADTEST 0
+#define NEWCAMERATEST 1
 
 #if SKYTEST
 Camera camera = { 0 };
 Texture cubeTx;
 Model cube;
-Model mountain ;
+Model mountain;
 Texture mountTx;
 Model sky;
 Texture skyTx;
@@ -16,8 +20,15 @@ Shader shaderS;
 Shader shaderM;
 int frameLoc;
 float frame = 0;
+#elif OBJLOADTEST
+Camera camera = { 0 };
+Model model;
+Texture2D texture;
+Vector3 position = { 0.0f, 0.0f, 0.0f };                // Set model position
+BoundingBox bounds;
+bool selected = false;          // Selected object flag
+#elif NEWCAMERATEST
 #else
-
 Camera camera = { { 0.2f, 0.4f, 0.2f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0f, 0 };
 Image imMap;      // Load cubicmap image (RAM)
 Texture2D cubicmap;       // Convert image to texture to display (VRAM)
@@ -48,6 +59,11 @@ Engine::~Engine()
 	UnloadTexture(cubeTx);
 	UnloadShader(shaderS);
 	UnloadShader(shaderM);
+#elif OBJLOADTEST
+	UnloadTexture(texture);     // Unload texture
+	UnloadModel(model);         // Unload model
+#elif NEWCAMERATEST
+	
 #else
 	UnloadImageColors(mapPixels);   // Unload color array
 
@@ -91,11 +107,11 @@ bool Engine::Init(const EngineConfig& config) noexcept
 	cube = LoadModelFromMesh(GenMeshCube(.6, .6, .6));
 	cube.materials[0].maps[MAP_DIFFUSE].texture = cubeTx;
 
-	mountain = LoadModel("../resources/mountain.obj");
+	mountain = LoadModel("../resources/mountain.glb");
 	mountTx = LoadTexture("../resources/mountain.png");
 	mountain.materials[0].maps[MAP_DIFFUSE].texture = mountTx;
 
-	sky = LoadModel("../resources/sky.obj");
+	sky = LoadModel("../resources/sky.glb");
 	skyTx = LoadTexture("../resources/cloud.png");
 	SetTextureFilter(skyTx, FILTER_BILINEAR);
 	sky.materials[0].maps[MAP_DIFFUSE].texture = skyTx;
@@ -116,6 +132,27 @@ bool Engine::Init(const EngineConfig& config) noexcept
 
 	// frame counter
 	frameLoc = GetShaderLocation(shaderS, "frame");
+#elif OBJLOADTEST
+
+	// Define the camera to look into our 3d world	
+	camera.position = Vector3{ 50.0f, 50.0f, 50.0f }; // Camera position
+	camera.target = Vector3{ 0.0f, 10.0f, 0.0f };     // Camera looking at point
+	camera.up = Vector3{ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
+	camera.fovy = 45.0f;                                // Camera field-of-view Y
+	camera.projection = CAMERA_PERSPECTIVE;                   // Camera mode type
+
+	model = LoadModel("../resources/models/castle.obj");                 // Load model
+	model = LoadModel("../resources/mountain.glb");
+	texture = LoadTexture("../resources/models/castle_diffuse.png"); // Load model texture
+	model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;                 // Set map diffuse texture
+	
+	bounds = GetMeshBoundingBox(model.meshes[0]);  // Set model bounds
+
+	// NOTE: bounds are calculated from the original size of the model,
+	// if model is scaled on drawing, bounds must be also scaled
+
+	SetCameraMode(camera, CAMERA_FREE);     // Set a free camera mode	
+#elif NEWCAMERATEST
 
 #else
 	imMap = LoadImage("../resources/cubicmap.png");      // Load cubicmap image (RAM)
@@ -178,7 +215,7 @@ void Engine::Update() noexcept
 		DrawModel(cube, Vector3 { 0, .4, (float)i }, 1, WHITE);
 	}
 
-	DrawModel(mountain, camera.position, 1, WHITE);
+	//DrawModel(mountain, camera.position, 1, WHITE);
 	DrawModel(sky, camera.position, 1, WHITE);
 	DrawGrid(20, 1.0f);        // Draw a grid
 
@@ -192,6 +229,44 @@ void Engine::Update() noexcept
 	//DrawText(FormatText("Frame %d", frame), 20, 700, 20, WHITE);
 
 	EndDrawing();
+#elif OBJLOADTEST
+	UpdateCamera(&camera);
+
+	// Select model on mouse click
+	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+	{
+		// Check collision between ray and box
+		if (GetRayCollisionBox(GetMouseRay(GetMousePosition(), camera), bounds).hit) selected = !selected;
+		else selected = false;
+	}
+	//----------------------------------------------------------------------------------
+
+	// Draw
+	//----------------------------------------------------------------------------------
+	BeginDrawing();
+
+	ClearBackground(RAYWHITE);
+
+	BeginMode3D(camera);
+
+	DrawModel(model, position, 1.0f, WHITE);        // Draw 3d model with texture
+
+	DrawGrid(20, 10.0f);         // Draw a grid
+
+	if (selected) DrawBoundingBox(bounds, GREEN);   // Draw selection box
+
+	EndMode3D();
+
+	DrawText("Drag & drop model to load mesh/texture.", 10, GetScreenHeight() - 20, 10, DARKGRAY);
+	if (selected) DrawText("MODEL SELECTED", GetScreenWidth() - 110, 10, 10, GREEN);
+
+	DrawText("(c) Castle 3D model by Alberto Cano", 1024 - 200, 768 - 20, 10, GRAY);
+
+	DrawFPS(10, 10);
+
+	EndDrawing();
+#elif NEWCAMERATEST
+	
 #else
 	Vector3 oldCamPos = camera.position;    // Store old camera position
 

@@ -482,7 +482,10 @@ void InitWindow(int width, int height, const char *title)
     //AConfiguration_getScreenSize(CORE.Android.app->config);
     //AConfiguration_getScreenLong(CORE.Android.app->config);
 
+    // Initialize App command system
+    // NOTE: On APP_CMD_INIT_WINDOW -> InitGraphicsDevice(), InitTimer(), LoadFontDefault()...
     CORE.Android.app->onAppCmd = AndroidCommandCallback;
+    // Initialize input events system
     CORE.Android.app->onInputEvent = AndroidInputCallback;
 
     // Initialize assets manager
