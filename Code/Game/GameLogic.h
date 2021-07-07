@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PlayerGameCamera.h"
+
 class GameLogic final : NonCopyable, NonMovable
 {
 public:
@@ -16,5 +18,5 @@ private:
 
 	Image img;
 	Texture tx;
-	FPCamera cam;
+	PlayerGameCamera m_camera;
 };

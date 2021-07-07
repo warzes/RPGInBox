@@ -1534,9 +1534,6 @@ void BeginDrawing(void)
 
     rlLoadIdentity();                   // Reset current matrix (modelview)
     rlMultMatrixf(MatrixToFloat(CORE.Window.screenScale)); // Apply screen scaling
-
-    //rlTranslatef(0.375, 0.375, 0);    // HACK to have 2D pixel-perfect drawing on OpenGL 1.1
-                                        // NOTE: Not required with OpenGL 3.3+
 }
 
 // End canvas drawing and swap buffers (double buffering)

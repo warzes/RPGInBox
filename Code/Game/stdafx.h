@@ -24,4 +24,4 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 SE_PRAGMA_WARNING_POP
 
 #include <Engine/Engine.h>
-#include <Engine/FPCamera.h>
+#include <Engine/Frustum.h>
