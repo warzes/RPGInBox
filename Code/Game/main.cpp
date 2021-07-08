@@ -10,6 +10,12 @@
 #endif // SE_COMPILER_MSVC
 
 смотреть план и выполнять
+
+пойти в 2д - ведь у меня для того есть код
+	тогда за основу плана взять док по рогалику на бейске и вот этот док
+	https://bfnightly.bracketproductions.com/rustbook/chapter_2.html
+	https://github.com/andrewgasson/roguelike-7drl-2021
+
 //-----------------------------------------------------------------------------
 void GameMain() noexcept
 {
