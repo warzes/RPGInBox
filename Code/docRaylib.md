@@ -1,6 +1,5 @@
-﻿
-Commits on Jul 6, 2021
-    Update raylib.vcxproj
+﻿Commits on Jul 8, 2021
+Added a note
 
 
 

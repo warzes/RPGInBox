@@ -8,6 +8,18 @@ GameLogic::GameLogic(Engine& engine) noexcept
 //-----------------------------------------------------------------------------
 GameLogic::~GameLogic()
 {
+#if SKY_ENABLE
+	Texture cubeTx;
+	Model cube;
+	Model mountain;
+	Texture mountTx;
+	Model sky;
+	Texture skyTx;
+	Shader shaderS;
+	Shader shaderM;
+	int frameLoc;
+	float frame = 0;
+#endif
 	UnloadTexture(tx);
 }
 //-----------------------------------------------------------------------------
@@ -19,34 +31,96 @@ bool GameLogic::Init() noexcept
 	SetTextureFilter(tx, TEXTURE_FILTER_ANISOTROPIC_16X);
 	SetTextureWrap(tx, TEXTURE_WRAP_CLAMP);
 
-	m_camera.Setup(45.0f, Vector3{ 1.0f, 0.0f, 0.0f });
+	m_camera.Setup(45.0f, Vector3{ 0.0f, 0.0f, 0.0f });
 	m_camera.MoveSpeed.z = 10;
 	m_camera.MoveSpeed.x = 5;
-	m_camera.FarPlane = 5000;
 
+#if SKY_ENABLE
+	// texture and shade a models
+
+	cubeTx = LoadTexture("../resources/test.png");
+	cube = LoadModelFromMesh(GenMeshCube(.6, .6, .6));
+	cube.materials[0].maps[MAP_DIFFUSE].texture = cubeTx;
+
+	mountain = LoadModel("../resources/mountain.glb");
+	mountTx = LoadTexture("../resources/mountain.png");
+	mountain.materials[0].maps[MAP_DIFFUSE].texture = mountTx;
+
+	sky = LoadModel("../resources/sky.glb");
+	skyTx = LoadTexture("../resources/cloud.png");
+	SetTextureFilter(skyTx, FILTER_BILINEAR);
+	sky.materials[0].maps[MAP_DIFFUSE].texture = skyTx;
+
+	// sky shader (animated)
+	shaderS = LoadShader("../resources/shader.vs", "../resources/shader.fs");
+	shaderS.locs[SHADER_LOC_MATRIX_MODEL] = GetShaderLocation(shaderS, "matModel");
+	shaderS.locs[SHADER_LOC_MATRIX_VIEW] = GetShaderLocation(shaderS, "viewPos");
+
+	// mountain shader (discards)
+	shaderM = LoadShader("../resources/shader.vs", "../resources/discard.fs");
+	shaderM.locs[SHADER_LOC_MATRIX_MODEL] = GetShaderLocation(shaderM, "matModel");
+	shaderM.locs[SHADER_LOC_MATRIX_VIEW] = GetShaderLocation(shaderM, "viewPos");
+
+	// set the models shader
+	sky.materials[0].shader = shaderS;
+	mountain.materials[0].shader = shaderM;
+
+	// frame counter
+	frameLoc = GetShaderLocation(shaderS, "frame");
+#endif
+
+	m_isEnd = false;
 	return true;
 }
 //-----------------------------------------------------------------------------
-bool GameLogic::Update() noexcept
+void GameLogic::Update(float deltaTime) noexcept
 {
 	m_camera.Update();
-	return true;
+#if SKY_ENABLE
+	frame += 0.00004;
+	SetShaderValue(shaderS, frameLoc, &frame, SHADER_UNIFORM_FLOAT);
+#endif
 }
 //-----------------------------------------------------------------------------
 void GameLogic::Frame() noexcept
 {
-	int total = 0;
-	int vis = 0;
-
-	BeginDrawing(); // TODO: проверить - как там правильно делать отрисовку 2д
-	ClearBackground(WHITE);
+#if SKY_ENABLE
 	{
-		m_camera.BeginMode3D();
-		//BeginMode3D(cam.GetCamera());
-		//cam.ExtractFrustum();
+		BeginMode3D(m_camera.GetCamera());
+		m_camera.ExtractFrustum();
+
+		for (int i = -64; i < 64; i = i + 2)
+		{
+			{
+				Vector3 min = { i - 0.5f, 0, -0.5f };
+				Vector3 max = { i + 0.5f, 1, 0.5f };
+				if (m_camera.GetFrustum().AABBoxIn(min, max))
+				{
+					DrawModel(cube, Vector3{ (float)i, .4, 0 }, 1, WHITE);
+				}
+			}
+			{
+				Vector3 min = { -0.5f,0,i - 0.5f };
+				Vector3 max = { 0.5f,1,i + 0.5f };
+				if (m_camera.GetFrustum().AABBoxIn(min, max))
+				{
+					DrawModel(cube, Vector3{ 0, .4, (float)i }, 1, WHITE);
+				}
+			}
+		}
+
+		DrawModel(mountain, m_camera.GetCameraPosition(), 1, WHITE);
+		DrawModel(sky, m_camera.GetCameraPosition(), 1, WHITE);
+
+		EndMode3D();	
+	}
+#endif
+	{
+		BeginMode3D(m_camera.GetCamera());
+		m_camera.ExtractFrustum();
 
 		// grid of cube trees on a plane to make a "world"
-		DrawPlane(Vector3{ 0, 0, 0 }, Vector2{ 50, 50 }, PURPLE); // simple world plane
+		//DrawPlane(Vector3{ 0, 0, 0 }, Vector2{ 50, 50 }, PURPLE); // simple world plane
 		const float spacing = 4;
 		const int count = 5;
 		for (float x = -count * spacing; x <= count * spacing; x += spacing)
@@ -57,12 +131,10 @@ void GameLogic::Frame() noexcept
 
 				Vector3 min = { x - 0.5f,0,z - 0.5f };
 				Vector3 max = { x + 0.5f,1,z + 0.5f };
-				total++;
 				if (m_camera.GetFrustum().AABBoxIn(min, max))
 				{
 					DrawCubeTexture(tx, Vector3{ x, 1.5f, z }, 1, 1, 1, GREEN);
 					DrawCubeTexture(tx, Vector3{ x, 0.5f, z }, 0.25f, 1, 0.25f, BROWN);
-					vis++;
 				}
 			}
 		}
@@ -71,10 +143,5 @@ void GameLogic::Frame() noexcept
 
 		EndMode3D();
 	}
-
-	DrawText(TextFormat("%d visible of %d total", vis, total), 200, 0, 20, GREEN);
-
-	DrawFPS(0, 0);
-	EndDrawing();
 }
 //-----------------------------------------------------------------------------

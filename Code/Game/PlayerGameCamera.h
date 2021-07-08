@@ -1,5 +1,7 @@
 #pragma once
 
+#define TURN_STEP 1
+
 class PlayerGameCamera final
 {
 public:
@@ -22,24 +24,19 @@ public:
 	PlayerGameCamera() noexcept;
 
 	void Setup(const float fovY, Vector3&& position) noexcept;
-
-	void ViewResized() noexcept;
-
 	void Update() noexcept;
 
-	float GetFOVX() const noexcept;
-	Vector3 GetCameraPosition() const noexcept;
-	void SetCameraPosition(const Vector3&& pos) noexcept;
+	Vector3 GetCameraPosition() const noexcept
+	{
+		return m_cameraPosition;
+	}
 
-	inline Vector2 GetViewAngles() const noexcept { return Vector2Scale(m_angle, 1.0f / DEG2RAD); }
+	void SetCameraPosition(const Vector3&& pos) noexcept;
 
 	inline const Camera& GetCamera() const noexcept { return m_viewCamera; }
 	inline const Frustum& GetFrustum() const noexcept { return m_frustum; }
 
 	inline void ExtractFrustum() noexcept { m_frustum.Extract(); }
-
-	// start drawing using the camera, with near/far plane support
-	void BeginMode3D() noexcept;
 
 	int ControlsKeys[LAST_CONTROL];
 
@@ -51,46 +48,72 @@ public:
 	float MinimumViewY = -65.0f;
 	float MaximumViewY = 89.0f;
 
-	float ViewBobbleFreq = 0.0f;
-	float ViewBobbleMagnatude = 0.02f;
-	float ViewBobbleWaverMagnitude = 0.002f;
-
-	//clipping planes
-	// note must use BeginMode3D and EndMode3D on the camera object for clipping planes to work
-	double NearPlane = 0.01;
-	double FarPlane = 1000;
-
-	int ControlerForwardAxis = GAMEPAD_AXIS_LEFT_Y;
-	int ControllerSideAxis = GAMEPAD_AXIS_LEFT_X;
-	int ControllerPitchAxis = GAMEPAD_AXIS_RIGHT_Y;
-	int ControllerYawAxis = GAMEPAD_AXIS_RIGHT_X;
-	int ControlerSprintButton = GAMEPAD_BUTTON_LEFT_TRIGGER_1;
-
 	bool UseMouseX = true;
 	bool UseMouseY = true;
 	bool HideCursor = true;
-
 	bool UseKeyboard = true;
-
-	bool UseController = true;
-	bool ControlerID = 0;
-
-	typedef std::function<bool(PlayerGameCamera& camera, Vector3& newPosition, const Vector3& oldPosition)> PositionCallback;
-	PositionCallback ValidateCamPosition = nullptr;
 
 private:
 	float getSpeedForAxis(CameraControls axis, float speed) noexcept;
 
 	Vector3 m_cameraPosition = { 0.0f, 0.0f, 0.0f };
 	Camera m_viewCamera = { 0 };
-	const float m_playerEyesPosition = 0.5f;       // Player eyes position from ground (in meters)
+	const float m_playerEyesPosition = 0.75f;       // Player eyes position from ground (in meters)
 	bool m_windowFocused = true;
-	float m_targetDistance = 0.0f;               // Camera distance from position to target
+
 	Vector2 m_previousMousePosition = { 0.0f, 0.0f };
-	Vector2 m_FOV = { 0.0f, 0.0f };
 	Vector2 m_angle = { 0.0f, 0.0f };                // Camera angle in plane XZ
 
-	float m_currentBobble = 0.0f;
-
 	Frustum m_frustum;
+
+#if TURN_STEP
+	bool keyDown(int key)
+	{
+		return m_continuedWalk && !m_isMoving && !m_isTurning ? IsKeyReleased(key) : IsKeyDown(key);
+	}
+
+	bool isBlocked(Vector3 newPosition)
+	{
+		//if (_map.IsWall((int)newPosition.x, (int)newPosition.z))
+		//	return true;
+		//else
+			return false;
+	}
+
+	void move(Vector3 direction)
+	{
+		const Vector3 v = Vector3Add(m_targetPosition, direction);
+		if (!isBlocked(v) && !m_isMoving)
+		{
+			m_isMoving = true;
+			m_targetPosition = v;
+		}
+	}
+
+	void turn(float angle)
+	{
+		if (!m_isTurning)
+		{
+			m_isTurning = true;
+			m_targetRotation.x += m_targetRotation.x + m_viewCamera.up.x * angle;
+			m_targetRotation.y += m_targetRotation.y + m_viewCamera.up.y * angle;
+			m_targetRotation.z += m_targetRotation.z + m_viewCamera.up.z * angle;
+
+			if (m_targetRotation.y > 270.0f && m_targetRotation.y < 361.0f) m_targetRotation.y = 0.0f;
+			if (m_targetRotation.y < 0.0f) m_targetRotation.y = 270.0f;
+		}
+	}
+
+
+	bool m_continuedWalk = true;
+	float m_walkSpeed = 3.0f;
+	float m_turnSpeed = 200.0f;
+	float m_stepSize = 1.0f;
+
+	bool m_isMoving = false;
+	bool m_isTurning = false;
+
+	Vector3 m_targetPosition = { 0.0f, 0.0f, 0.0f };
+	Vector3 m_targetRotation = { 0.0f, 0.0f, 0.0f };
+#endif
 };

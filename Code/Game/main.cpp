@@ -8,6 +8,9 @@
 #		pragma comment(lib, "winmm.lib")
 #	endif
 #endif // SE_COMPILER_MSVC
+
+https://www.youtube.com/channel/UCNz9gHQeGOC26GVwPQzr9EQ/videos
+https://www.youtube.com/results?search_query=N64+Graphics
 //-----------------------------------------------------------------------------
 void GameMain() noexcept
 {
@@ -18,11 +21,11 @@ void GameMain() noexcept
 		GameLogic game(engine);
 		if (game.Init())
 		{
-			while (!engine.IsEnd())
+			while (!engine.IsEnd() && !game.IsEnd())
 			{
 				engine.Update();
-				if (!game.Update()) break;
-				engine.BeginFrame();
+				game.Update(engine.GetDeltaTime());
+				engine.BeginFrame({ 0, 60, 80, 0 });
 				game.Frame();
 				engine.EndFrame();
 			}

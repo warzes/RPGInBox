@@ -8,7 +8,7 @@ struct WindowConfig final
 	int height = 768;
 	bool fullscreen = false;
 	bool resizable = true;
-	bool vsync = false;
+	bool vsync = true;
 };
 
 struct EngineConfig final
@@ -27,10 +27,12 @@ public:
 	bool Init(const EngineConfig& config) noexcept;
 
 	void Update() noexcept;
-	void BeginFrame() noexcept;
+	void BeginFrame(Color&& color) noexcept;
 	void EndFrame() noexcept;
 
 	bool IsEnd() const noexcept;
+
+	float GetDeltaTime() const noexcept;
 
 	Log log;
 };
