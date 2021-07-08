@@ -1,19 +1,24 @@
 #include "stdafx.h"
 #include "PlayerGameCamera.h"
-#include "Engine/DebugNew.h"
+#include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------
 PlayerGameCamera::PlayerGameCamera() noexcept
 	: ControlsKeys{ 'W', 'S', 'D', 'A', 'E', 'Q', KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_LEFT_SHIFT }
 {
 }
 //-----------------------------------------------------------------------------
-void PlayerGameCamera::Setup(const float fovY, Vector3&& position) noexcept
+void PlayerGameCamera::Setup(const float fovY, Vector3&& position, float currentRotateY) noexcept
 {
+	m_currentRotateY = currentRotateY;
 	m_cameraPosition = std::move(position);
 
 	m_viewCamera.position = m_cameraPosition;
 	m_viewCamera.position.y += m_playerEyesPosition;
-	m_viewCamera.target = Vector3Add(m_viewCamera.position, Vector3{ 0.0f, 0.0f, 1.0f });
+	Vector3 target = Vector3Transform(Vector3{ 0, 0, 1 }, MatrixRotateY(m_currentRotateY * DEG2RAD));
+	m_viewCamera.target.x = m_viewCamera.position.x + target.x;
+	m_viewCamera.target.y = m_viewCamera.position.y + target.y;
+	m_viewCamera.target.z = m_viewCamera.position.z + target.z;
+
 	m_viewCamera.up = { 0.0f, 1.0f, 0.0f };
 	m_viewCamera.fovy = fovY;
 	m_viewCamera.projection = CAMERA_PERSPECTIVE;
@@ -62,13 +67,11 @@ void PlayerGameCamera::Update() noexcept
 			if (keyDown(ControlsKeys[MOVE_DOWN])) move({ -right.x, -right.y, -right.z }/*transform.right * m_stepSize*/);
 		}
 
-		if (keyDown(ControlsKeys[MOVE_RIGHT])) turn(-90.0f);
-		if (keyDown(ControlsKeys[MOVE_LEFT])) turn(90.0f);
+		if (keyDown(ControlsKeys[MOVE_LEFT])) turn(-90.0f);
+		if (keyDown(ControlsKeys[MOVE_RIGHT])) turn(90.0f);
 	}
 	if (m_isMoving)
 	{
-		printf("TP = %f %f %f\n", m_targetPosition.x, m_targetPosition.y, m_targetPosition.z);
-
 		m_cameraPosition.x = round(m_targetPosition.x);
 		m_cameraPosition.z = round(m_targetPosition.z);
 
@@ -82,33 +85,32 @@ void PlayerGameCamera::Update() noexcept
 		m_viewCamera.position = m_cameraPosition;
 		m_viewCamera.position.y += m_playerEyesPosition;
 
-		Vector3 target = Vector3Transform(Vector3{ 0, 0, 1 }, MatrixRotateXYZ(Vector3{ m_angle.y, -m_angle.x, 0 }));
+		/*Vector3 target = Vector3Transform(Vector3{ 0, 0, 1 }, MatrixRotateXYZ(Vector3{ m_angle.y, -m_angle.x, 0 }));
 		m_viewCamera.up.x = 0;
 		m_viewCamera.up.z = 0;
 		m_viewCamera.target.x = m_viewCamera.position.x + target.x;
 		m_viewCamera.target.y = m_viewCamera.position.y + target.y;
-		m_viewCamera.target.z = m_viewCamera.position.z + target.z;
+		m_viewCamera.target.z = m_viewCamera.position.z + target.z;*/
 
 		//m_viewCamera.target = Vector3Add(m_viewCamera.position, Vector3{ 0.0f, 0.0f, 1.0f });
 	}
 	if (m_isTurning)
 	{
-		m_angle.x -= m_targetRotation.y * DEG2RAD;
-		Vector3 target = Vector3Transform(Vector3{ 0, 0, 1 }, MatrixRotateXYZ(Vector3{ m_angle.y, -m_angle.x, 0 }));
-		m_viewCamera.up.x = 0;
-		m_viewCamera.up.z = 0;
-		m_viewCamera.target.x = m_viewCamera.position.x + target.x;
-		m_viewCamera.target.y = m_viewCamera.position.y + target.y;
-		m_viewCamera.target.z = m_viewCamera.position.z + target.z;
+		m_currentRotateY += m_speedRotate * m_rotateDir * GetFrameTime();
 
-		//transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(_targetRotation), Time.deltaTime * _turnSpeed);
-
-		//if (Vector3.Distance(transform.eulerAngles, _targetRotation) < 0.05f)
-		///{
+		if ((m_rotateDir > 0 && m_currentRotateY >= m_endRotateY) ||
+			(m_rotateDir < 0 && m_currentRotateY <= m_endRotateY))
+		{
 			m_isTurning = false;
-		//	transform.eulerAngles = _targetRotation;
-		//}
+			m_rotateDir = 0;
+			m_currentRotateY = m_endRotateY;
+		}
 	}
+
+	Vector3 target = Vector3Transform(Vector3{ 0, 0, 1 }, MatrixRotateY(m_currentRotateY*DEG2RAD));
+	m_viewCamera.target.x = m_viewCamera.position.x + target.x;
+	m_viewCamera.target.y = m_viewCamera.position.y + target.y;
+	m_viewCamera.target.z = m_viewCamera.position.z + target.z;
 
 #else
 	// Keys input detection

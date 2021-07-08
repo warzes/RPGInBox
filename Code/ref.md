@@ -1,4 +1,6 @@
-﻿https://github.com/Rabios/awesome-raylib
+﻿отсюда шейдер освещения https://github.com/mode777/DungeonCrawler
+
+https://github.com/Rabios/awesome-raylib
 
 стиль
 https://www.rpginabox.com/docs/doku.php

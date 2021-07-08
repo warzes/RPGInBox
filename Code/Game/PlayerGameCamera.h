@@ -23,7 +23,7 @@ public:
 
 	PlayerGameCamera() noexcept;
 
-	void Setup(const float fovY, Vector3&& position) noexcept;
+	void Setup(const float fovY, Vector3&& position, float currentRotateY = 0.0f) noexcept;
 	void Update() noexcept;
 
 	Vector3 GetCameraPosition() const noexcept
@@ -69,7 +69,7 @@ private:
 #if TURN_STEP
 	bool keyDown(int key)
 	{
-		return m_continuedWalk && !m_isMoving && !m_isTurning ? IsKeyReleased(key) : IsKeyDown(key);
+		return m_continuedWalk && !m_isMoving && !m_isTurning ? IsKeyDown(key) : IsKeyReleased(key);
 	}
 
 	bool isBlocked(Vector3 newPosition)
@@ -80,7 +80,7 @@ private:
 			return false;
 	}
 
-	void move(Vector3 direction)
+	void move(Vector3 direction) noexcept
 	{
 		const Vector3 v = Vector3Add(m_targetPosition, direction);
 		if (!isBlocked(v) && !m_isMoving)
@@ -90,30 +90,34 @@ private:
 		}
 	}
 
-	void turn(float angle)
+	void turn(float angle) noexcept
 	{
 		if (!m_isTurning)
-		{
+		{			
 			m_isTurning = true;
-			m_targetRotation.x += m_targetRotation.x + m_viewCamera.up.x * angle;
-			m_targetRotation.y += m_targetRotation.y + m_viewCamera.up.y * angle;
-			m_targetRotation.z += m_targetRotation.z + m_viewCamera.up.z * angle;
+			if (angle < 0) m_rotateDir = -1;
+			else m_rotateDir = 1;
 
-			if (m_targetRotation.y > 270.0f && m_targetRotation.y < 361.0f) m_targetRotation.y = 0.0f;
-			if (m_targetRotation.y < 0.0f) m_targetRotation.y = 270.0f;
+			if (angle < 0 && m_currentRotateY <= 0.0f) m_currentRotateY = 360.0f;
+			else if (angle > 0 && m_currentRotateY >= 360.0f) m_currentRotateY = 0.0f;
+
+			m_endRotateY = m_currentRotateY + angle;
 		}
 	}
 
 
 	bool m_continuedWalk = true;
 	float m_walkSpeed = 3.0f;
-	float m_turnSpeed = 200.0f;
 	float m_stepSize = 1.0f;
 
 	bool m_isMoving = false;
 	bool m_isTurning = false;
 
 	Vector3 m_targetPosition = { 0.0f, 0.0f, 0.0f };
-	Vector3 m_targetRotation = { 0.0f, 0.0f, 0.0f };
+
+	int m_rotateDir = 0; // -1 - left; 0 - no; +1 - right
+	float m_currentRotateY = 0.0f;
+	float m_endRotateY = 0.0f;
+	float m_speedRotate = 180.0f;
 #endif
 };

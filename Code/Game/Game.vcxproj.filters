@@ -6,12 +6,16 @@
     <ClCompile Include="PlayerGameCamera.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="GameData.cpp" />
+    <ClCompile Include="GameLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="PlayerGameCamera.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="GameData.h" />
+    <ClInclude Include="GameLogic.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -22,6 +26,9 @@
     </Filter>
     <Filter Include="RPG">
       <UniqueIdentifier>{a32976f2-a461-4254-bef2-6a2b00f5f26a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameUI">
+      <UniqueIdentifier>{a4b02d7c-2c40-4d64-a968-715e25f19c07}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

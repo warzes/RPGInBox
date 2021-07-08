@@ -9,8 +9,7 @@
 #	endif
 #endif // SE_COMPILER_MSVC
 
-https://www.youtube.com/channel/UCNz9gHQeGOC26GVwPQzr9EQ/videos
-https://www.youtube.com/results?search_query=N64+Graphics
+смотреть план и выполнять
 //-----------------------------------------------------------------------------
 void GameMain() noexcept
 {
