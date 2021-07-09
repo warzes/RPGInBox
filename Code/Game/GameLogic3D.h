@@ -1,14 +1,15 @@
 #pragma once
 
-#include "PlayerGameCamera.h"
+#include "PlayerGameCamera3D.h"
+#include "GameData.h"
 
 #define SKY_ENABLE 1
 
-class GameLogic final : NonCopyable, NonMovable
+class GameLogic3D final : NonCopyable, NonMovable
 {
 public:
-	GameLogic(Engine& engine) noexcept;
-	~GameLogic();
+	GameLogic3D(Engine& engine) noexcept;
+	~GameLogic3D();
 
 	bool Init() noexcept;
 
@@ -26,7 +27,9 @@ private:
 
 	Image img;
 	Texture tx;
-	PlayerGameCamera m_camera;
+	PlayerGameCamera3D m_camera;
+
+	GameData m_data;
 
 #if SKY_ENABLE
 	Texture cubeTx;

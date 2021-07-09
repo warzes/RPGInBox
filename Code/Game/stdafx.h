@@ -15,6 +15,10 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 #include <raylib/rlgl.h>
 #include <raylib/raymath.h>
 
+#include <terminal.h>
+
+#include <json/json.h>
+
 #include <cstdint>
 #include <fstream>
 #include <chrono>

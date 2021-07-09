@@ -22,5 +22,7 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 #include <chrono>
 #include <string>
 #include <functional>
+#include <codecvt>
+#include <locale>
 
 SE_PRAGMA_WARNING_POP

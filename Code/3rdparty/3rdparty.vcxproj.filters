@@ -27,10 +27,37 @@
     <ClCompile Include="raylib\rlgl.c">
       <Filter>raylib</Filter>
     </ClCompile>
+    <ClCompile Include="json\json_reader.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="json\json_value.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="json\json_writer.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="terminaldraw.c">
+      <Filter>terminal</Filter>
+    </ClCompile>
+    <ClCompile Include="terminalgui.c">
+      <Filter>terminal</Filter>
+    </ClCompile>
+    <ClCompile Include="terminalwrite.c">
+      <Filter>terminal</Filter>
+    </ClCompile>
+    <ClCompile Include="terminal.cpp">
+      <Filter>terminal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="raylib">
       <UniqueIdentifier>{8ed0fdfd-4aa5-4184-aa79-5283aeb19eef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="json">
+      <UniqueIdentifier>{02949af8-dc1d-4d49-b242-fc16c9bc5950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="terminal">
+      <UniqueIdentifier>{9562a8a5-d6b1-41d5-a58f-d83ca4edf331}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,5 +88,25 @@
     <ClInclude Include="raylib\rayutils.h">
       <Filter>raylib</Filter>
     </ClInclude>
+    <ClInclude Include="json\json_tool.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="terminaldraw.h">
+      <Filter>terminal</Filter>
+    </ClInclude>
+    <ClInclude Include="terminalgui.h">
+      <Filter>terminal</Filter>
+    </ClInclude>
+    <ClInclude Include="terminalwrite.h">
+      <Filter>terminal</Filter>
+    </ClInclude>
+    <ClInclude Include="terminal.h">
+      <Filter>terminal</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="json\json_valueiterator.inl">
+      <Filter>json</Filter>
+    </None>
   </ItemGroup>
 </Project>

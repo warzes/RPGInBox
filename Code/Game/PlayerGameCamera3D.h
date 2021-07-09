@@ -2,7 +2,7 @@
 
 #define TURN_STEP 1
 
-class PlayerGameCamera final
+class PlayerGameCamera3D final
 {
 public:
 	enum CameraControls
@@ -21,7 +21,7 @@ public:
 		LAST_CONTROL
 	};
 
-	PlayerGameCamera() noexcept;
+	PlayerGameCamera3D() noexcept;
 
 	void Setup(const float fovY, Vector3&& position, float currentRotateY = 0.0f) noexcept;
 	void Update() noexcept;

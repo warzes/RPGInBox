@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "GameLogic.h"
+#include "GameLogic3D.h"
 //-----------------------------------------------------------------------------
-GameLogic::GameLogic(Engine& engine) noexcept
+GameLogic3D::GameLogic3D(Engine& engine) noexcept
 	: m_engine(engine)
 {
 }
 //-----------------------------------------------------------------------------
-GameLogic::~GameLogic()
+GameLogic3D::~GameLogic3D()
 {
 #if SKY_ENABLE
 	Texture cubeTx;
@@ -23,8 +23,10 @@ GameLogic::~GameLogic()
 	UnloadTexture(tx);
 }
 //-----------------------------------------------------------------------------
-bool GameLogic::Init() noexcept
+bool GameLogic3D::Init() noexcept
 {
+	//m_data.Init();
+
 	img = GenImageChecked(256, 256, 32, 32, DARKGRAY, WHITE);
 	tx = LoadTextureFromImage(img);
 	UnloadImage(img);
@@ -73,7 +75,7 @@ bool GameLogic::Init() noexcept
 	return true;
 }
 //-----------------------------------------------------------------------------
-void GameLogic::Update(float deltaTime) noexcept
+void GameLogic3D::Update(float deltaTime) noexcept
 {
 	m_camera.Update();
 #if SKY_ENABLE
@@ -82,7 +84,7 @@ void GameLogic::Update(float deltaTime) noexcept
 #endif
 }
 //-----------------------------------------------------------------------------
-void GameLogic::Frame() noexcept
+void GameLogic3D::Frame() noexcept
 {
 #if SKY_ENABLE
 	{

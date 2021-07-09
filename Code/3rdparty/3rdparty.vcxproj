@@ -30,6 +30,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GLFWImpl.c" />
+    <ClCompile Include="json\json_reader.cpp" />
+    <ClCompile Include="json\json_value.cpp" />
+    <ClCompile Include="json\json_writer.cpp" />
     <ClCompile Include="raylib\core.c" />
     <ClCompile Include="raylib\models.c" />
     <ClCompile Include="raylib\raudio.c" />
@@ -38,8 +41,13 @@
     <ClCompile Include="raylib\text.c" />
     <ClCompile Include="raylib\textures.c" />
     <ClCompile Include="raylib\utils.c" />
+    <ClCompile Include="terminal.cpp" />
+    <ClCompile Include="terminaldraw.c" />
+    <ClCompile Include="terminalgui.c" />
+    <ClCompile Include="terminalwrite.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="json\json_tool.h" />
     <ClInclude Include="raylib\camera.h" />
     <ClInclude Include="raylib\config.h" />
     <ClInclude Include="raylib\gestures.h" />
@@ -49,6 +57,13 @@
     <ClInclude Include="raylib\rayutils.h" />
     <ClInclude Include="raylib\rlgl.h" />
     <ClInclude Include="raylib\utils.h" />
+    <ClInclude Include="terminal.h" />
+    <ClInclude Include="terminaldraw.h" />
+    <ClInclude Include="terminalgui.h" />
+    <ClInclude Include="terminalwrite.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="json\json_valueiterator.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

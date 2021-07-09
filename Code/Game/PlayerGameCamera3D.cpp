@@ -1,13 +1,13 @@
 #include "stdafx.h"
-#include "PlayerGameCamera.h"
+#include "PlayerGameCamera3D.h"
 #include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------
-PlayerGameCamera::PlayerGameCamera() noexcept
+PlayerGameCamera3D::PlayerGameCamera3D() noexcept
 	: ControlsKeys{ 'W', 'S', 'D', 'A', 'E', 'Q', KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_LEFT_SHIFT }
 {
 }
 //-----------------------------------------------------------------------------
-void PlayerGameCamera::Setup(const float fovY, Vector3&& position, float currentRotateY) noexcept
+void PlayerGameCamera3D::Setup(const float fovY, Vector3&& position, float currentRotateY) noexcept
 {
 	m_currentRotateY = currentRotateY;
 	m_cameraPosition = std::move(position);
@@ -33,7 +33,7 @@ void PlayerGameCamera::Setup(const float fovY, Vector3&& position, float current
 	m_previousMousePosition = GetMousePosition();
 }
 //-----------------------------------------------------------------------------
-void PlayerGameCamera::Update() noexcept
+void PlayerGameCamera3D::Update() noexcept
 {
 	if (HideCursor && IsWindowFocused() != m_windowFocused && (UseMouseX || UseMouseY))
 	{
@@ -184,7 +184,7 @@ void PlayerGameCamera::Update() noexcept
 #endif
 }
 //-----------------------------------------------------------------------------
-void PlayerGameCamera::SetCameraPosition(const Vector3&& pos) noexcept
+void PlayerGameCamera3D::SetCameraPosition(const Vector3&& pos) noexcept
 {
 	m_cameraPosition = std::move(pos);
 	const Vector3 forward = Vector3Subtract(m_viewCamera.target, m_viewCamera.position);
@@ -192,7 +192,7 @@ void PlayerGameCamera::SetCameraPosition(const Vector3&& pos) noexcept
 	m_viewCamera.target = Vector3Add(m_cameraPosition, forward);
 }
 //-----------------------------------------------------------------------------
-float PlayerGameCamera::getSpeedForAxis(CameraControls axis, float speed) noexcept
+float PlayerGameCamera3D::getSpeedForAxis(CameraControls axis, float speed) noexcept
 {
 	if (!UseKeyboard)
 		return 0;

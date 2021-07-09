@@ -43,5 +43,8 @@
     <Filter Include="Resource">
       <UniqueIdentifier>{dabdb48b-f2be-4c12-b632-dc9bf92fd3f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NewFilter1">
+      <UniqueIdentifier>{e0bb18ef-f9b1-458f-98e9-cf84444b153d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

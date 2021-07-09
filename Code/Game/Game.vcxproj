@@ -182,22 +182,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Action.cpp" />
+    <ClCompile Include="Directions.cpp" />
+    <ClCompile Include="EnemyUnit.cpp" />
     <ClCompile Include="GameData.cpp" />
-    <ClCompile Include="GameLogic.cpp" />
+    <ClCompile Include="GameLogic3D.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PlayerGameCamera.cpp" />
+    <ClCompile Include="MyJson.cpp" />
+    <ClCompile Include="PlayerGameCamera3D.cpp" />
+    <ClCompile Include="PlayerUnit.cpp" />
+    <ClCompile Include="Skills.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Action.h" />
+    <ClInclude Include="Directions.h" />
+    <ClInclude Include="EnemyUnit.h" />
     <ClInclude Include="GameData.h" />
-    <ClInclude Include="GameLogic.h" />
-    <ClInclude Include="PlayerGameCamera.h" />
+    <ClInclude Include="GameLogic3D.h" />
+    <ClInclude Include="MyJson.h" />
+    <ClInclude Include="PlayerGameCamera3D.h" />
+    <ClInclude Include="PlayerUnit.h" />
+    <ClInclude Include="Skills.h" />
+    <ClInclude Include="Stats.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Unit.h" />
+    <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
