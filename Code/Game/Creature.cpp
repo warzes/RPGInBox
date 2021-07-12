@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Creature.h"
 #include "Container.h"
 #include "Door.h"
@@ -502,3 +503,5 @@ static void CacheActiveCreatures(int* outLength, Handle* outHandles[])
 
 	*outLength = j;
 }
+
+#endif

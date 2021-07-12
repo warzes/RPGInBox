@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Dungeon.h"
 #include "Container.h"
 #include "Creature.h"
@@ -71,3 +72,4 @@ void GenerateCaveDungeon(void)
 {
 	//
 }
+#endif

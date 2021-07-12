@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Game.h"
 #include "Creature.h"
 #include "Dungeon.h"
@@ -58,3 +59,4 @@ Handle SpawnProtagonist(void)
 
 	return protagonist;
 }
+#endif

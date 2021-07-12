@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Sprite.h"
 
 static int spriteCapacity;
@@ -323,3 +324,4 @@ void RenderSprites(void)
 	for (i = 0; i < cacheLength; i++)
 		SetTerminalTileV(spriteData[cache[i].current.index].position, spriteData[cache[i].current.index].tile);
 }
+#endif

@@ -1,5 +1,7 @@
 #pragma once
 
+#if ASCII_DEFINE
+
 #include "Handle.h"
 
 void InitDoors(int capacity);
@@ -20,3 +22,4 @@ void SetDoorClosedTile(Handle door, TerminalTile closedTile);
 void SetDoorOpened(Handle door, bool opened);
 void SetDoorOpenedTile(Handle door, TerminalTile openedTile);
 void SetDoorPosition(Handle door, Vector2 position);
+#endif

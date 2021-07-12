@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Actor.h"
 
 static void SortActorTurnOrder(void);
@@ -222,3 +223,4 @@ static void SortActorTurnOrder(void)
 		actorOrder[j + 1] = currentActor;
 	}
 }
+#endif

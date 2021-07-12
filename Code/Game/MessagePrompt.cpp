@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "View.h"
 
 #include "Input.h"
@@ -93,3 +94,4 @@ static void OnRenderView(void)
 		DrawTerminalGuiButton(acceptPosX, acceptPosY, promptAcceptText, acceptLength, WHITE, BLACK);
 	}
 }
+#endif

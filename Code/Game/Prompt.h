@@ -1,5 +1,5 @@
 #pragma once
-
+#if ASCII_DEFINE
 typedef void (*BoolPromptCallback)(void);
 
 #define PROMPT_COLOR CLITERAL(Color){ 0, 0, 0, 128 }
@@ -13,3 +13,4 @@ void OpenLevelUpPrompt(int level);      // Message prompt that handles level mes
 void OpenNewGamePrompt(void);           // Bool prompt for starting a new game while a game is in play
 void OpenQuitGamePrompt(void);          // Bool prompt for quitting a game while a game is in play
 void OpenQuitPrompt(void);              // Bool prompt for quitting the application
+#endif

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "View.h"
 
 #include "Creature.h"
@@ -76,3 +77,4 @@ static void OnRenderView(void)
 		}
 	}
 }
+#endif

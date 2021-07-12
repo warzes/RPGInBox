@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Door.h"
 #include "Sprite.h"
 
@@ -258,3 +259,4 @@ static void CacheActiveDoors(int* outLength, Handle* outHandles[])
 
 	*outLength = j;
 }
+#endif

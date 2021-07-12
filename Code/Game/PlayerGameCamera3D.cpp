@@ -50,68 +50,82 @@ void PlayerGameCamera3D::Update() noexcept
 	}
 
 #if TURN_STEP
-	if (!m_isTurning)
+	if (!m_isTurning) // во время вращения камеры нельзя двигаться
 	{
 		if (!m_isMoving)
 		{
 			Vector3 forward = Vector3Subtract(m_viewCamera.target, m_viewCamera.position);
+			printf("CP = %f\n", forward.z);
 			forward.y = 0;
 			forward = Vector3Normalize(forward);
-			Vector3 right{ forward.z * -1.0f, 0, forward.x };
+			const Vector3 right{ forward.z * -1.0f, 0, forward.x };
 
+			if (keyDown(ControlsKeys[MOVE_FRONT])) move(forward, moveDir::Forward);
+			if (keyDown(ControlsKeys[MOVE_BACK])) move(forward, moveDir::Back);
 
-			if (keyDown(ControlsKeys[MOVE_FRONT])) move(forward/*transform.forward * m_stepSize*/);
-			if (keyDown(ControlsKeys[MOVE_BACK])) move({ -forward.x, -forward.y, -forward.z }/*-transform.forward * m_stepSize*/);
-
-			if (keyDown(ControlsKeys[MOVE_UP])) move(right/*-transform.right * m_stepSize*/);
-			if (keyDown(ControlsKeys[MOVE_DOWN])) move({ -right.x, -right.y, -right.z }/*transform.right * m_stepSize*/);
+			if (keyDown(ControlsKeys[MOVE_UP])) move(right, moveDir::Left);
+			if (keyDown(ControlsKeys[MOVE_DOWN])) move(right, moveDir::Right);
 		}
 
-		if (keyDown(ControlsKeys[MOVE_LEFT])) turn(-90.0f);
-		if (keyDown(ControlsKeys[MOVE_RIGHT])) turn(90.0f);
+		if (keyDown(ControlsKeys[MOVE_LEFT])) turn(rotateDirY::Left);
+		if (keyDown(ControlsKeys[MOVE_RIGHT])) turn(rotateDirY::Right);
 	}
 	if (m_isMoving)
 	{
-		m_cameraPosition.x = round(m_targetPosition.x);
-		m_cameraPosition.z = round(m_targetPosition.z);
+		m_cameraPosition.x += m_walkSpeed * m_direction.x * GetFrameTime();
+		m_cameraPosition.z += m_walkSpeed * m_direction.z * GetFrameTime();
 
-		//if (m_cameraPosition.z == m_targetPosition.z || m_cameraPosition.z > m_targetPosition.z)
+		if (m_direction.x > 0 && m_cameraPosition.x >= m_targetPosition.x)
 		{
 			m_isMoving = false;
-			m_targetPosition = m_cameraPosition;
+			m_cameraPosition.x = m_targetPosition.x;
+		}
+		if (m_direction.x < 0 && m_cameraPosition.x <= m_targetPosition.x)
+		{
+			m_isMoving = false;
+			m_cameraPosition.x = m_targetPosition.x;
 		}
 
-		printf("CP = %f %f %f\n", m_cameraPosition.x, m_cameraPosition.y, m_cameraPosition.z);
+		if (m_direction.z > 0 && m_cameraPosition.z >= m_targetPosition.z)
+		{
+			m_isMoving = false;
+			m_cameraPosition.z = m_targetPosition.z;
+		}
+		if (m_direction.z < 0 && m_cameraPosition.z <= m_targetPosition.z)
+		{
+			m_isMoving = false;
+			m_cameraPosition.z = m_targetPosition.z;
+		}
+
+		//m_cameraPosition.x = m_targetPosition.x;
+		//m_cameraPosition.z = m_targetPosition.z;
+		
+				
+		//printf("TP = %f %f\n", m_direction.x, m_direction.z);
+		printf("CP = %f %f\n", m_cameraPosition.x, m_cameraPosition.z);
 		m_viewCamera.position = m_cameraPosition;
-		m_viewCamera.position.y += m_playerEyesPosition;
-
-		/*Vector3 target = Vector3Transform(Vector3{ 0, 0, 1 }, MatrixRotateXYZ(Vector3{ m_angle.y, -m_angle.x, 0 }));
-		m_viewCamera.up.x = 0;
-		m_viewCamera.up.z = 0;
-		m_viewCamera.target.x = m_viewCamera.position.x + target.x;
-		m_viewCamera.target.y = m_viewCamera.position.y + target.y;
-		m_viewCamera.target.z = m_viewCamera.position.z + target.z;*/
-
-		//m_viewCamera.target = Vector3Add(m_viewCamera.position, Vector3{ 0.0f, 0.0f, 1.0f });
+		m_viewCamera.position.y = m_playerEyesPosition;
 	}
 	if (m_isTurning)
 	{
-		m_currentRotateY += m_speedRotate * m_rotateDir * GetFrameTime();
+		m_currentRotateY += m_speedRotate 
+			* (m_rotateDir == rotateDirY::Left ? -1.0f : 1.0f) 
+			* GetFrameTime();
 
-		if ((m_rotateDir > 0 && m_currentRotateY >= m_endRotateY) ||
-			(m_rotateDir < 0 && m_currentRotateY <= m_endRotateY))
+		if ((m_rotateDir == rotateDirY::Right && m_currentRotateY >= m_endRotateY) ||
+			(m_rotateDir == rotateDirY::Left  && m_currentRotateY <= m_endRotateY))
 		{
 			m_isTurning = false;
-			m_rotateDir = 0;
+			m_rotateDir = rotateDirY::No;
 			m_currentRotateY = m_endRotateY;
 		}
 	}
 
-	Vector3 target = Vector3Transform(Vector3{ 0, 0, 1 }, MatrixRotateY(m_currentRotateY*DEG2RAD));
+	const Vector3 target = Vector3Transform({ 0.0f, 0.0f, 1.0f }, MatrixRotateY(m_currentRotateY*DEG2RAD));
 	m_viewCamera.target.x = m_viewCamera.position.x + target.x;
 	m_viewCamera.target.y = m_viewCamera.position.y + target.y;
 	m_viewCamera.target.z = m_viewCamera.position.z + target.z;
-
+	
 #else
 	// Keys input detection
 	float direction[MOVE_DOWN + 1] = 

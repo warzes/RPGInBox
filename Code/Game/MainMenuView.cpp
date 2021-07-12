@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "View.h"
 
 #include "Game.h"
@@ -216,3 +217,4 @@ static void OnRenderView(void)
 		WriteTerminalText("CREATED BY ANDREW GASSON");
 	}
 }
+#endif

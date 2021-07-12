@@ -1,5 +1,5 @@
 #pragma once
-
+#if ASCII_DEFINE
 typedef enum Compass {
 	COMPASS_NORTH,
 	COMPASS_NORTH_EAST,
@@ -22,3 +22,4 @@ Vector2 CompassToVector2(Compass compass);
 bool IsCompassCardinal(Compass Compass);
 bool IsCompassOpposite(Compass c0, Compass c1);
 bool IsCompassOrdinal(Compass Compass);
+#endif

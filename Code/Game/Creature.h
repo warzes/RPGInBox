@@ -1,5 +1,5 @@
 #pragma once
-
+#if ASCII_DEFINE
 typedef enum {
 	CREATURE_STAT_LEVEL,
 	CREATURE_STAT_EXPERIENCE,
@@ -41,3 +41,4 @@ void CreaturePickUpFloorItem(Handle creature, int inventoryIndex);
 void CreatureWalk(Handle creature, Compass direction);
 void CreatureWalkOrInteract(Handle creature, Compass direction);
 void KillCreature(Handle creature);
+#endif

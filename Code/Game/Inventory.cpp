@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Inventory.h"
 
 static int inventoryCapacity;
@@ -227,3 +228,4 @@ int RemoveInventoryItem(Handle inventory, ItemPrefab itemPrefab, int quantity)
 
 	return totalRemoved;
 }
+#endif

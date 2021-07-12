@@ -1,5 +1,5 @@
 #pragma once
-
+#if ASCII_DEFINE
 #include "Handle.h"
 #include "Item.h"
 
@@ -23,3 +23,4 @@ float GetTotalInventoryWeight(Handle inventory);
 bool IsInventoryEmpty(Handle inventory);
 bool IsInventoryFull(Handle inventory);
 int RemoveInventoryItem(Handle inventory, ItemPrefab itemPrefab, int quantity); // Returns the amount of prefabs removed
+#endif

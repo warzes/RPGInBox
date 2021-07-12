@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameLogic3D.h"
 
+#if ASCII_DEFINE
 #include "Actor.h"
 #include "Container.h"
 #include "Creature.h"
@@ -12,6 +13,7 @@
 #include "Sprite.h"
 #include "Terrain.h"
 #include "View.h"
+#endif
 
 #include <Engine/DebugNew.h>
 #if SE_COMPILER_MSVC
@@ -22,13 +24,14 @@
 #	endif
 #endif // SE_COMPILER_MSVC
 
+#if ASCII_DEFINE
 #define CONTAINER_CAPACITY 32
 #define CREATURE_CAPACITY 16
 #define DOOR_CAPACITY 16
 #define ACTOR_CAPACITY (CREATURE_CAPACITY * CONTAINER_CAPACITY)
 #define INVENTORY_CAPACITY (CREATURE_CAPACITY * CONTAINER_CAPACITY)
 #define SPRITE_CAPACITY (CREATURE_CAPACITY * CONTAINER_CAPACITY * DOOR_CAPACITY)
-
+#endif
 //https://github.com/andrewgasson/roguelike-7drl-2021
 //http://rlgclub.ru/wiki/Давайте_сделаем_рогалик_-_Ричард_Д._Кларк
 //https://bfnightly.bracketproductions.com/rustbook/chapter_2.html
@@ -41,6 +44,8 @@
 void GameMain() noexcept
 {
 	EngineConfig engineConfig;
+	engineConfig.window.vsync = true;
+
 	Engine engine;
 	if (engine.Init(engineConfig))
 	{
@@ -58,7 +63,7 @@ void GameMain() noexcept
 		}		
 	}
 }
-
+#if ASCII_DEFINE
 static bool appRunning;
 
 void QuitApplication(void)
@@ -132,11 +137,16 @@ void GameMainRoguelike() noexcept
 	// instance is closed
 	CloseWindowRaylib();
 }
+#endif
 //-----------------------------------------------------------------------------
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[])
 {
-	//GameMain();
+	
+#if !ASCII_DEFINE
+	GameMain();
+#else
 	GameMainRoguelike();
+#endif
 	return 0;
 }
 //-----------------------------------------------------------------------------

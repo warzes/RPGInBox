@@ -1,5 +1,5 @@
 #pragma once
-
+#if ASCII_DEFINE
 #include "Handle.h"
 
 typedef void (*ActorTakeTurnCallback)(Handle actor);
@@ -19,3 +19,5 @@ bool IsActorsTurn(Handle actor);                        // Returns whether it is
 bool ProcessActorTurn(void);                            // Return true if an actor still has a turn to take, or false if a new round is neccessary
 bool ProcessActorRound(void);                           // Returns true if another round can be processed, and false if an actor can take a turn
 void SetActorTurnCooldown(Handle actor, int cooldown);  // Set the actors cooldown, but order is not applied until ProcessActorTurn is called
+
+#endif

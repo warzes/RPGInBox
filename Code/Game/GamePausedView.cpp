@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "View.h"
 
 #include "Compass.h"
@@ -163,3 +164,4 @@ static void OnRenderView(void)
 		WriteTerminalText("  Quit");
 	}
 }
+#endif

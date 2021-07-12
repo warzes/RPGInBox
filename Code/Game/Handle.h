@@ -1,5 +1,7 @@
 #pragma once
 
+#if ASCII_DEFINE
+
 typedef struct Handle 
 {
 	unsigned int version;
@@ -17,3 +19,5 @@ inline static bool AreHandlesEqual(Handle h0, Handle h1)
 {
 	return h0.version == h1.version && h0.index == h1.index;
 }
+
+#endif

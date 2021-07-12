@@ -1,7 +1,5 @@
 #pragma once
 
-#define TURN_STEP 1
-
 class PlayerGameCamera3D final
 {
 public:
@@ -67,6 +65,23 @@ private:
 	Frustum m_frustum;
 
 #if TURN_STEP
+	enum class rotateDirY
+	{
+		Left,
+		No,
+		Right
+	};
+
+	enum class moveDir
+	{
+		No, 
+		Forward,
+		Back, 
+		Left,
+		Right
+	};
+
+
 	bool keyDown(int key)
 	{
 		return m_continuedWalk && !m_isMoving && !m_isTurning ? IsKeyDown(key) : IsKeyReleased(key);
@@ -80,33 +95,42 @@ private:
 			return false;
 	}
 
-	void move(Vector3 direction) noexcept
+	void move(Vector3 direction, moveDir dir) noexcept
 	{
-		const Vector3 v = Vector3Add(m_targetPosition, direction);
-		if (!isBlocked(v) && !m_isMoving)
-		{
-			m_isMoving = true;
-			m_targetPosition = v;
-		}
-	}
+		if (dir == moveDir::Right) direction.x = -direction.x;
+		if (dir == moveDir::Back) direction.z = -direction.z;
 
-	void turn(float angle) noexcept
-	{
-		if (!m_isTurning)
+		m_direction = direction;
+		const Vector3 targetPos = Vector3Add(m_cameraPosition, direction);
+		if (!isBlocked(targetPos) && dir != moveDir::No)
 		{			
+			m_isMoving = true;
+			m_moveDir = dir;
+			m_targetPosition.x = round(targetPos.x);
+			m_targetPosition.y = round(targetPos.y);
+			m_targetPosition.z = round(targetPos.z);
+		}
+	}
+
+	void turn(const rotateDirY dir) noexcept
+	{
+		if (!m_isTurning && dir != rotateDirY::No)
+		{		
+			m_rotateDir = dir;
 			m_isTurning = true;
-			if (angle < 0) m_rotateDir = -1;
-			else m_rotateDir = 1;
 
-			if (angle < 0 && m_currentRotateY <= 0.0f) m_currentRotateY = 360.0f;
-			else if (angle > 0 && m_currentRotateY >= 360.0f) m_currentRotateY = 0.0f;
+			if (dir == rotateDirY::Left && m_currentRotateY <= 0.0f) m_currentRotateY = 360.0f;
+			else if (dir == rotateDirY::Right && m_currentRotateY >= 360.0f) m_currentRotateY = 0.0f;
 
-			m_endRotateY = m_currentRotateY + angle;
+			if (dir == rotateDirY::Left)
+				m_endRotateY = m_currentRotateY - 90.0f;
+			else if (dir == rotateDirY::Right)
+				m_endRotateY = m_currentRotateY + 90.0f;
 		}
 	}
 
 
-	bool m_continuedWalk = true;
+	bool m_continuedWalk = false;
 	float m_walkSpeed = 3.0f;
 	float m_stepSize = 1.0f;
 
@@ -114,10 +138,12 @@ private:
 	bool m_isTurning = false;
 
 	Vector3 m_targetPosition = { 0.0f, 0.0f, 0.0f };
+	moveDir m_moveDir = moveDir::No;
+	Vector3 m_direction = { 0 };
 
-	int m_rotateDir = 0; // -1 - left; 0 - no; +1 - right
-	float m_currentRotateY = 0.0f;
+	rotateDirY m_rotateDir = rotateDirY::No;
 	float m_endRotateY = 0.0f;
 	float m_speedRotate = 180.0f;
 #endif
+	float m_currentRotateY = 0.0f;
 };

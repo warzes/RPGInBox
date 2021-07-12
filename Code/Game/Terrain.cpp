@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Terrain.h"
 
 // Basically means that travel costs 1 action/turn
@@ -163,3 +164,4 @@ inline static int GetTerrainIndexFromXYZ(int x, int y, int z)
 {
 	return (z * terrainWidth * terrainHeight) + (y * terrainWidth) + x;
 }
+#endif

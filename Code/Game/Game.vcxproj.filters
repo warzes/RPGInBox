@@ -9,27 +9,23 @@
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GameLogic3D.cpp" />
     <ClCompile Include="Skills.cpp">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClCompile>
     <ClCompile Include="Unit.cpp">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClCompile>
     <ClCompile Include="PlayerUnit.cpp">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClCompile>
     <ClCompile Include="EnemyUnit.cpp">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClCompile>
     <ClCompile Include="Action.cpp">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClCompile>
     <ClCompile Include="Directions.cpp">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClCompile>
-    <ClCompile Include="WorldMap.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="MyJson.cpp" />
     <ClCompile Include="Actor.cpp">
       <Filter>_roguelkie</Filter>
     </ClCompile>
@@ -114,30 +110,26 @@
     <ClInclude Include="GameData.h" />
     <ClInclude Include="GameLogic3D.h" />
     <ClInclude Include="Stats.h">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClInclude>
     <ClInclude Include="Skills.h">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClInclude>
     <ClInclude Include="Unit.h">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClInclude>
     <ClInclude Include="PlayerUnit.h">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClInclude>
     <ClInclude Include="EnemyUnit.h">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClInclude>
     <ClInclude Include="Action.h">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClInclude>
     <ClInclude Include="Directions.h">
-      <Filter>RPG\Data</Filter>
+      <Filter>old\Data</Filter>
     </ClInclude>
-    <ClInclude Include="WorldMap.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="MyJson.h" />
     <ClInclude Include="Handle.h">
       <Filter>_roguelkie</Filter>
     </ClInclude>
@@ -183,6 +175,7 @@
     <ClInclude Include="Dungeon.h">
       <Filter>_roguelkie</Filter>
     </ClInclude>
+    <ClInclude Include="ConfigDefine.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -197,11 +190,14 @@
     <Filter Include="GameUI">
       <UniqueIdentifier>{a4b02d7c-2c40-4d64-a968-715e25f19c07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RPG\Data">
-      <UniqueIdentifier>{4533ff39-c7a9-4d92-9d90-88020ef5ef3a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="_roguelkie">
       <UniqueIdentifier>{b13bbfe9-3185-4640-8a55-90c37d6f51cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old">
+      <UniqueIdentifier>{bfa11f30-e63e-4874-8e79-17fd6283a7ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\Data">
+      <UniqueIdentifier>{4533ff39-c7a9-4d92-9d90-88020ef5ef3a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

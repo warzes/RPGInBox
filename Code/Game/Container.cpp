@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Container.h"
 #include "Inventory.h"
 #include "Sprite.h"
@@ -437,3 +438,4 @@ static void CacheActiveContainers(int* outLength, Handle* outHandles[])
 
 	*outLength = j;
 }
+#endif

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "View.h"
 
 static void OnOpenView(void);
@@ -46,3 +47,4 @@ static void OnRenderView(void)
 {
 	//
 }
+#endif

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Prompt.h"
 
 #include "Game.h"
@@ -14,3 +15,4 @@ void OpenNewGamePrompt(void)
 {
 	OpenBoolPrompt(OnAccept, NULL, "New Game", "Quit the current game to start a new game? Unsaved changes will be lost.", "Accept", "Decline");
 }
+#endif

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "View.h"
 
 #define MAX_VIEW_COUNT 4
@@ -143,3 +144,5 @@ void RenderViews(void)
 			activeViews[i]->Render();
 	}
 }
+
+#endif

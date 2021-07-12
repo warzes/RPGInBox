@@ -1,5 +1,6 @@
 #pragma once
 
+#if ASCII_DEFINE
 // TODO: Reconsider whether toggle pause menu input is actually necessary.
 // Because "Cancel" is essentially a "quit out of open tab" button, it makes 
 // sense that when play the game, escape is the quit out of game option.
@@ -25,3 +26,5 @@ void InitInput(void);
 bool IsInputActive(Input input);
 void LoadDefaultInputConfig(void);
 void UpdateInput(void);
+
+#endif

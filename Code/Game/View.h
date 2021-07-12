@@ -1,5 +1,6 @@
 #pragma once
 
+#if ASCII_DEFINE
 typedef struct View {
 	void (*Open)(void);
 	void (*Close)(void);
@@ -27,3 +28,4 @@ extern const View VIEW_GAME_DEFAULT;
 extern const View VIEW_GAME_INVENTORY;
 extern const View VIEW_GAME_PAUSED;
 extern const View VIEW_MAIN_MENU;
+#endif

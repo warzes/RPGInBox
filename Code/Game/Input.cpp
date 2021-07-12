@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Input.h"
 
 typedef enum {
@@ -222,3 +223,4 @@ void UpdateInput(void)
 		}
 	}
 }
+#endif

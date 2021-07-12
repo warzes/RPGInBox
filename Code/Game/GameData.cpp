@@ -18,41 +18,4 @@ void GameData::Init()
 	party[3].addSkill(Skills::fireball);
 	party[3].addSkill(Skills::cleave);
 	party[4].addSkill(Skills::fireball);
-
-	m_world.reset(new WorldMap("dungeon.json"));
-
-	// initial player state
-	playerState = PlayerState::standing;
-	playerFacing = m_world->getStartFacing();
-	radiansRotated = 0;
-	moveProgress = 0;
-	wallBumped = false;
-
-	playerPosition = { 0, 0 };
-
-	m_world->initializeScene();
-
-	Vector3 camPosition;
-	Vector3 initialTarget;
-	Directions::Value initialDirection;
-
-	bool totalReset = true;
-	if (totalReset)
-	{
-		camPosition = m_world->getCamStartPosition();
-		playerPosition = m_world->getStartPosition();
-
-		initialDirection = m_world->getStartFacing();
-	}
-	else
-	{
-		camPosition = m_world->getPosition(playerPosition.x, playerPosition.y);
-
-		initialDirection = playerFacing;
-	}
-
-	//camera->setPosition(camPosition);
-	//camera->setTarget(camera->getPosition() + directions.getVectorFloat(initialDirection));
-
-
 }

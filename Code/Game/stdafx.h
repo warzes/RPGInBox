@@ -17,8 +17,6 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 
 #include <terminal.h>
 
-#include <json/json.h>
-
 #include <cstdint>
 #include <fstream>
 #include <chrono>
@@ -29,3 +27,5 @@ SE_PRAGMA_WARNING_POP
 
 #include <Engine/Engine.h>
 #include <Engine/Frustum.h>
+
+#include "ConfigDefine.h"

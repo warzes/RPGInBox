@@ -1,5 +1,5 @@
 #pragma once
-
+#if ASCII_DEFINE
 #include "Handle.h"
 
 typedef enum SpriteLayer {
@@ -36,3 +36,4 @@ void SetSpriteLayerEnabled(SpriteLayer spriteLayer, bool enabled);
 void SetSpriteLayerPriority(SpriteLayer spriteLayer, int priority);
 
 void RenderSprites(void);
+#endif

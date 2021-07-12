@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Item.h"
 
 typedef struct ItemPrefabInfo {
@@ -61,3 +62,4 @@ float GetItemWeight(ItemPrefab item)
 {
 	return itemPrefabData[item].weight;
 }
+#endif

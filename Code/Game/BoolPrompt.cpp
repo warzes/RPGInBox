@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Game/Prompt.h"
 
 #include "Game/Input.h"
@@ -191,3 +192,5 @@ static void OnRenderView(void)
 		DrawTerminalGuiButton(declineStart, optionPosY, promptDeclineText, declineLength, declineBackground, declineForeground);
 	}
 }
+
+#endif

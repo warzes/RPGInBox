@@ -1,5 +1,7 @@
 #pragma once
 
+#if ASCII_DEFINE
+
 typedef enum TerrainType {
 	TERRAIN_TYPE_GRASS,
 	TERRAIN_TYPE_STONE,
@@ -28,3 +30,5 @@ void SetTerrainType(int x, int y, int depth, TerrainType type);
 void SetTerrainTypeTile(TerrainType type, TerminalTile tile);
 
 void RenderTerrain(int depth);
+
+#endif

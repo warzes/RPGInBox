@@ -79,7 +79,7 @@ void GameLogic3D::Update(float deltaTime) noexcept
 {
 	m_camera.Update();
 #if SKY_ENABLE
-	frame += 0.00004;
+	frame += 0.04 * deltaTime;
 	SetShaderValue(shaderS, frameLoc, &frame, SHADER_UNIFORM_FLOAT);
 #endif
 }

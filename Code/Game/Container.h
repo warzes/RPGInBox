@@ -1,5 +1,5 @@
 #pragma once
-
+#if ASCII_DEFINE
 typedef enum ContainerType {
 	CONTAINER_TYPE_CARCASS,
 	CONTAINER_TYPE_CHEST,
@@ -49,3 +49,4 @@ void SetLootContainerDecayDuration(Handle lootContainer, int decayDuration);
 void SetLootContainerTile(Handle lootContainer, TerminalTile tile);
 
 void RemoveDecayedContainers(void);
+#endif

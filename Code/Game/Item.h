@@ -1,5 +1,5 @@
 #pragma once
-
+#if ASCII_DEFINE
 typedef enum ItemType {
 	ITEM_TYPE_BOOK,
 	ITEM_TYPE_WEAPON,
@@ -27,3 +27,5 @@ const char* GetItemName(ItemPrefab item); // Owned return
 int GetItemPrice(ItemPrefab item);
 ItemType GetItemType(ItemPrefab item);
 float GetItemWeight(ItemPrefab item);
+
+#endif

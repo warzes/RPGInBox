@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#if ASCII_DEFINE
 #include "Compass.h"
 
 Compass CompassAnticlockwise(Compass compass)
@@ -202,3 +203,4 @@ bool IsCompassOrdinal(Compass compass)
 		return 0;
 	}
 }
+#endif
