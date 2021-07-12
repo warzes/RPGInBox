@@ -72,32 +72,32 @@ void ClearTerminal(void)
 	}
 }
 
-inline int GetTerminalXYtoI(int posX, int posY)
+int GetTerminalXYtoI(int posX, int posY)
 {
 	return (terminalWidth * posY) + posX;
 }
 
-inline int GetTerminalWidth(void)
+int GetTerminalWidth(void)
 {
 	return terminalWidth;
 }
 
-inline int GetTerminalHeight(void)
+int GetTerminalHeight(void)
 {
 	return terminalHeight;
 }
 
-inline int GetTerminalFontWidth(void)
+int GetTerminalFontWidth(void)
 {
 	return terminalFont.width / 16;
 }
 
-inline int GetTerminalFontHeight(void)
+int GetTerminalFontHeight(void)
 {
 	return terminalFont.height / 16;
 }
 
-inline int GetTerminalScreenWidth(void)
+int GetTerminalScreenWidth(void)
 {
 	return GetTerminalFontWidth() * terminalWidth;
 }
@@ -107,22 +107,22 @@ inline int GetTerminalScreenHeight(void)
 	return GetTerminalFontHeight() * terminalHeight;
 }
 
-inline int GetTerminalFontScale(void)
+int GetTerminalFontScale(void)
 {
 	return terminalFontScale;
 }
 
-inline TerminalTile GetTerminalTile(int posX, int posY)
+TerminalTile GetTerminalTile(int posX, int posY)
 {
 	return terminalBuffer[GetTerminalXYtoI(posX, posY)];
 }
 
-inline TerminalTile *GetTerminalTileBuffer(void)
+TerminalTile *GetTerminalTileBuffer(void)
 {
 	return terminalBuffer;
 }
 
-inline bool IsWithinTerminal(int posX, int posY)
+bool IsWithinTerminal(int posX, int posY)
 {
 	return posX >= 0
 		&& posX < terminalWidth
@@ -130,7 +130,7 @@ inline bool IsWithinTerminal(int posX, int posY)
 		&& posY < terminalHeight;
 }
 
-inline bool IsWithinTerminalV(Vector2 position)
+bool IsWithinTerminalV(Vector2 position)
 {
 	return (int)position.x >= 0
 		&& (int)position.x < terminalWidth
@@ -189,12 +189,12 @@ void SetTerminalSize(int width, int height)
 	ClearTerminal();
 }
 
-inline void SetTerminalTile(int posX, int posY, TerminalTile tile)
+void SetTerminalTile(int posX, int posY, TerminalTile tile)
 {
 	terminalBuffer[GetTerminalXYtoI(posX, posY)] = tile;
 }
 
-inline void SetTerminalTileV(Vector2 position, TerminalTile tile)
+void SetTerminalTileV(Vector2 position, TerminalTile tile)
 {
 	terminalBuffer[GetTerminalXYtoI((int)position.x, (int)position.y)] = tile;
 }

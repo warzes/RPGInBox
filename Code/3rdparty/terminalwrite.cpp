@@ -13,43 +13,43 @@ static Color terminalForePaint = { 80, 80, 80, 255 };// DARKGRAY;
 //----------------------------------------------------------------------------------
 // Terminal cursor functions
 //----------------------------------------------------------------------------------
-inline bool GetTerminalCursorWrapHorizontal(void)
+bool GetTerminalCursorWrapHorizontal(void)
 {
 	return terminalWrapHorizontal;
 }
 
-inline bool GetTerminalCursorWrapVertical(void)
+bool GetTerminalCursorWrapVertical(void)
 {
 	return terminalWrapVertical;
 }
 
-inline int GetTerminalCursorX(void)
+int GetTerminalCursorX(void)
 {
 	return terminalCursorX;
 }
 
-inline int GetTerminalCursorY(void)
+int GetTerminalCursorY(void)
 {
 	return terminalCursorY;
 }
 
-inline bool MoveTerminalCursorNext(void)
+bool MoveTerminalCursorNext(void)
 {
 	return MoveTerminalCursorRight(1);
 }
 
-inline bool MoveTerminalCursorBack(void)
+bool MoveTerminalCursorBack(void)
 {
 	return MoveTerminalCursorLeft(1);
 }
 
-inline bool MoveTerminalCursorNextLine(void)
+bool MoveTerminalCursorNextLine(void)
 {
 	SnapTerminalCursorLeft();
 	return MoveTerminalCursorDown(1);
 }
 
-inline bool MoveTerminalCursorPreviousLine(void)
+bool MoveTerminalCursorPreviousLine(void)
 {
 	SnapTerminalCursorLeft();
 	return MoveTerminalCursorUp(1);
@@ -119,49 +119,49 @@ bool MoveTerminalCursorLeft(int distance)
 	return true;
 }
 
-inline void SnapTerminalCursorBegin(void)
+void SnapTerminalCursorBegin(void)
 {
 	terminalCursorX = 0;
 	terminalCursorY = 0;
 }
 
-inline void SnapTerminalCursorEnd(void)
+void SnapTerminalCursorEnd(void)
 {
 	terminalCursorX = GetTerminalWidth() - 1;
 	terminalCursorY = GetTerminalHeight() - 1;
 }
 
-inline void SnapTerminalCursorLineBegin(void)
+void SnapTerminalCursorLineBegin(void)
 {
 	terminalCursorX = 0;
 }
 
-inline void SnapTerminalCursorLineEnd(void)
+void SnapTerminalCursorLineEnd(void)
 {
 	terminalCursorX = GetTerminalHeight() - 1;
 }
 
-inline void SnapTerminalCursorUp(void)
+void SnapTerminalCursorUp(void)
 {
 	terminalCursorY = 0;
 }
 
-inline void SnapTerminalCursorRight(void)
+void SnapTerminalCursorRight(void)
 {
 	terminalCursorX = GetTerminalWidth() - 1;
 }
 
-inline void SnapTerminalCursorDown(void)
+void SnapTerminalCursorDown(void)
 {
 	terminalCursorY = GetTerminalHeight() - 1;
 }
 
-inline void SnapTerminalCursorLeft(void)
+void SnapTerminalCursorLeft(void)
 {
 	terminalCursorX = 0;
 }
 
-inline void SetTerminalCursorWrap(bool wrapHorizontal, bool wrapVertical)
+void SetTerminalCursorWrap(bool wrapHorizontal, bool wrapVertical)
 {
 	terminalWrapHorizontal = wrapHorizontal;
 	terminalWrapVertical = wrapVertical;
@@ -178,22 +178,22 @@ inline void SetTerminalCursorXY(int x, int y)
 //----------------------------------------------------------------------------------
 // Tile writing functions
 //----------------------------------------------------------------------------------
-inline Color GetTerminalWriteBackPaint(void)
+Color GetTerminalWriteBackPaint(void)
 {
 	return terminalBackPaint;
 }
 
-inline Color GetTerminalWriteForePaint(void)
+Color GetTerminalWriteForePaint(void)
 {
 	return terminalForePaint;
 }
 
-inline void SetTerminalWriteBackPaint(Color backPaint)
+void SetTerminalWriteBackPaint(Color backPaint)
 {
 	terminalBackPaint = backPaint;
 }
 
-inline void SetTerminalWriteForePaint(Color forePaint)
+void SetTerminalWriteForePaint(Color forePaint)
 {
 	terminalForePaint = forePaint;
 }
@@ -215,7 +215,7 @@ void WriteTerminalLetter(char letter)
 	}
 }
 
-inline void WriteTerminalText(const char *text)
+void WriteTerminalText(const char *text)
 {
 	return WriteTerminalTextLength(text, INT32_MAX);
 }

@@ -36,13 +36,13 @@
     <ClCompile Include="json\json_writer.cpp">
       <Filter>json</Filter>
     </ClCompile>
-    <ClCompile Include="terminaldraw.c">
+    <ClCompile Include="terminaldraw.cpp">
       <Filter>terminal</Filter>
     </ClCompile>
-    <ClCompile Include="terminalgui.c">
+    <ClCompile Include="terminalgui.cpp">
       <Filter>terminal</Filter>
     </ClCompile>
-    <ClCompile Include="terminalwrite.c">
+    <ClCompile Include="terminalwrite.cpp">
       <Filter>terminal</Filter>
     </ClCompile>
     <ClCompile Include="terminal.cpp">

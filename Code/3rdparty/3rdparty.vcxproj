@@ -42,9 +42,9 @@
     <ClCompile Include="raylib\textures.c" />
     <ClCompile Include="raylib\utils.c" />
     <ClCompile Include="terminal.cpp" />
-    <ClCompile Include="terminaldraw.c" />
-    <ClCompile Include="terminalgui.c" />
-    <ClCompile Include="terminalwrite.c" />
+    <ClCompile Include="terminaldraw.cpp" />
+    <ClCompile Include="terminalgui.cpp" />
+    <ClCompile Include="terminalwrite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json\json_tool.h" />

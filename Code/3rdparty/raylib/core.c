@@ -91,19 +91,20 @@
 #endif
 
 #if defined(SUPPORT_GIF_RECORDING)
-    //#define MSF_GIF_MALLOC RL_MALLOC
-    //#define MSF_GIF_FREE RL_FREE
+#define MSF_GIF_MALLOC(contextPointer, newSize) RL_MALLOC(newSize)
+#define MSF_GIF_REALLOC(contextPointer, oldMemory, oldSize, newSize) RL_REALLOC(oldMemory, newSize)
+#define MSF_GIF_FREE(contextPointer, oldMemory, oldSize) RL_FREE(oldMemory)
 
     #define MSF_GIF_IMPL
-    #include "external/msf_gif.h"   // Support GIF recording
+    #include "external/msf_gif.h"   // GIF recording functionality
 #endif
 
 #if defined(SUPPORT_COMPRESSION_API)
     #define SINFL_IMPLEMENTATION
-    #include "external/sinfl.h"
+    #include "external/sinfl.h" // Deflate (RFC 1951) decompressor
 
     #define SDEFL_IMPLEMENTATION
-    #include "external/sdefl.h"
+    #include "external/sdefl.h" // Deflate (RFC 1951) compressor
 #endif
 
 #include <stdlib.h>                 // Required for: srand(), rand(), atexit()
@@ -555,11 +556,9 @@ void InitWindow(int width, int height, const char *title)
 #endif
 
 #if defined(PLATFORM_WEB)
-    // Check fullscreen change events(note this is done on the window since most
-    // browsers don't support this on #canvas)
-    emscripten_set_fullscreenchange_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, NULL, 1, EmscriptenResizeCallback);
-    // Check Resize event (note this is done on the window since most browsers
-    // don't support this on #canvas)
+    // Check fullscreen change events(note this is done on the window since most browsers don't support this on #canvas)
+    //emscripten_set_fullscreenchange_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, NULL, 1, EmscriptenResizeCallback);
+    // Check Resize event (note this is done on the window since most browsers don't support this on #canvas)
     emscripten_set_resize_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, NULL, 1, EmscriptenResizeCallback);
     // Trigger this once to get initial window sizing
     EmscriptenResizeCallback(EMSCRIPTEN_EVENT_RESIZE, NULL, NULL);
@@ -3987,7 +3986,7 @@ EM_JS(int, GetCanvasHeight, (), { return canvas.clientHeight; });
 static EM_BOOL EmscriptenResizeCallback(int eventType, const EmscriptenUiEvent *e, void *userData)
 {
     // Don't resize non-resizeable windows
-    if ((CORE.Window.flags & FLAG_WINDOW_RESIZABLE) == 0) return true;
+    if ((CORE.Window.flags & FLAG_WINDOW_RESIZABLE) == 0) return 1;
 
     // This event is called whenever the window changes sizes,
     // so the size of the canvas object is explicitly retrieved below
@@ -4001,13 +4000,14 @@ static EM_BOOL EmscriptenResizeCallback(int eventType, const EmscriptenUiEvent *
     CORE.Window.currentFbo.height = height;
     CORE.Window.resizedLastFrame = true;
 
-    if (IsWindowFullscreen()) return true;
+    if (IsWindowFullscreen()) return 1;
 
     // Set current screen size
     CORE.Window.screen.width = width;
     CORE.Window.screen.height = height;
 
     // NOTE: Postprocessing texture is not scaled to new size
+    return 0;
 }
 #endif
 

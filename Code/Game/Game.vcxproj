@@ -183,37 +183,77 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="BoolPrompt.cpp" />
+    <ClCompile Include="Compass.cpp" />
+    <ClCompile Include="Container.cpp" />
+    <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="DevSandboxView.cpp" />
     <ClCompile Include="Directions.cpp" />
+    <ClCompile Include="Door.cpp" />
+    <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="EnemyUnit.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameData.cpp" />
+    <ClCompile Include="GameDefaultView.cpp" />
+    <ClCompile Include="GameInventoryView.cpp" />
     <ClCompile Include="GameLogic3D.cpp" />
+    <ClCompile Include="GamePausedView.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="LevelUpPrompt.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenuView.cpp" />
+    <ClCompile Include="MessagePrompt.cpp" />
     <ClCompile Include="MyJson.cpp" />
+    <ClCompile Include="NewGamePrompt.cpp" />
     <ClCompile Include="PlayerGameCamera3D.cpp" />
     <ClCompile Include="PlayerUnit.cpp" />
+    <ClCompile Include="QuitGamePrompt.cpp" />
+    <ClCompile Include="QuitPrompt.cpp" />
     <ClCompile Include="Skills.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StringPrompt.cpp" />
+    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="View.cpp" />
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="Compass.h" />
+    <ClInclude Include="Container.h" />
+    <ClInclude Include="Creature.h" />
     <ClInclude Include="Directions.h" />
+    <ClInclude Include="Door.h" />
+    <ClInclude Include="Dungeon.h" />
     <ClInclude Include="EnemyUnit.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="GameLogic3D.h" />
+    <ClInclude Include="Handle.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="MyJson.h" />
     <ClInclude Include="PlayerGameCamera3D.h" />
     <ClInclude Include="PlayerUnit.h" />
+    <ClInclude Include="Prompt.h" />
     <ClInclude Include="Skills.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="Unit.h" />
+    <ClInclude Include="View.h" />
     <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

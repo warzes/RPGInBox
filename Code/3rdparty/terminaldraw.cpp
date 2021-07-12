@@ -3,7 +3,7 @@
 static int ClampInt(int i, int min, int max);
 static void SwapIntScalar(int *i0, int *i1);
 
-inline void DrawTerminalBox(int x, int y, int width, int height, TerminalTile fill, TerminalTile outline)
+void DrawTerminalBox(int x, int y, int width, int height, TerminalTile fill, TerminalTile outline)
 {
 	DrawTerminalBoxFill(x, y, width, height, fill);
 	DrawTerminalBoxOutline(x, y, width, height, outline);
@@ -84,12 +84,12 @@ void DrawTerminalBoxOutline(int x, int y, int width, int height, TerminalTile ou
 	}
 }
 
-inline static int ClampInt(int i, int min, int max)
+static int ClampInt(int i, int min, int max)
 {
 	return (i < min) ? min : (i > max) ? max : i;
 }
 
-inline static void SwapIntScalar(int *i0, int *i1)
+static void SwapIntScalar(int *i0, int *i1)
 {
 	int store;
 
