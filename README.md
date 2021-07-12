@@ -1,5 +1,5 @@
 Пошаговая рпг в жанре dungeon crawler
 
 <p align="center">
-   <img src ="screenrec001.gif" />
+   <img src ="screenrec002.gif" />
 </p>
