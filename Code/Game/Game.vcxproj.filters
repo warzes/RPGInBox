@@ -104,6 +104,12 @@
     <ClCompile Include="World.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -180,6 +186,12 @@
     </ClInclude>
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="World.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
       <Filter>World</Filter>
     </ClInclude>
   </ItemGroup>

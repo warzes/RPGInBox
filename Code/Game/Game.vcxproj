@@ -205,8 +205,10 @@
     <ClCompile Include="LevelUpPrompt.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuView.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MessagePrompt.cpp" />
     <ClCompile Include="NewGamePrompt.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerGameCamera3D.cpp" />
     <ClCompile Include="PlayerUnit.cpp" />
     <ClCompile Include="QuitGamePrompt.cpp" />
@@ -243,6 +245,8 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerGameCamera3D.h" />
     <ClInclude Include="PlayerUnit.h" />
     <ClInclude Include="Prompt.h" />
