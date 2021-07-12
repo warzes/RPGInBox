@@ -101,6 +101,9 @@
     <ClCompile Include="BoolPrompt.cpp">
       <Filter>_roguelkie</Filter>
     </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -176,6 +179,9 @@
       <Filter>_roguelkie</Filter>
     </ClInclude>
     <ClInclude Include="ConfigDefine.h" />
+    <ClInclude Include="World.h">
+      <Filter>World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">

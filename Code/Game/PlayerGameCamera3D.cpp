@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PlayerGameCamera3D.h"
+#include "World.h"
 #include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------
 PlayerGameCamera3D::PlayerGameCamera3D() noexcept
@@ -24,7 +25,7 @@ void PlayerGameCamera3D::Setup(const float fovY, const Vector3& position, const 
 #endif
 }
 //-----------------------------------------------------------------------------
-void PlayerGameCamera3D::Update() noexcept
+void PlayerGameCamera3D::Update(World& world) noexcept
 {
 #if !TURN_STEP
 	if (HideCursor && IsWindowFocused() != m_windowFocused && (UseMouseX || UseMouseY))
@@ -47,11 +48,11 @@ void PlayerGameCamera3D::Update() noexcept
 	{
 		if (!m_isMoving) // во время вращения камеры нельзя двигаться, поэтому условие вложенное
 		{
-			if (keyDown(ControlsKeys[MOVE_FRONT]) || keyDown(ControlsKeys[TURN_UP])) move(moveDir::Forward);
-			if (keyDown(ControlsKeys[MOVE_BACK]) || keyDown(ControlsKeys[TURN_DOWN])) move(moveDir::Back);
+			if (keyDown(ControlsKeys[MOVE_FRONT]) || keyDown(ControlsKeys[TURN_UP])) move(moveDir::Forward, world.openworld);
+			if (keyDown(ControlsKeys[MOVE_BACK]) || keyDown(ControlsKeys[TURN_DOWN])) move(moveDir::Back, world.openworld);
 
-			if (keyDown(ControlsKeys[MOVE_UP])) move(moveDir::Left);
-			if (keyDown(ControlsKeys[MOVE_DOWN])) move(moveDir::Right);
+			if (keyDown(ControlsKeys[MOVE_UP])) move(moveDir::Left, world.openworld);
+			if (keyDown(ControlsKeys[MOVE_DOWN])) move(moveDir::Right, world.openworld);
 		}
 
 		if (keyDown(ControlsKeys[MOVE_LEFT]) || keyDown(ControlsKeys[TURN_LEFT])) turn(rotateDirY::Left);
@@ -62,26 +63,16 @@ void PlayerGameCamera3D::Update() noexcept
 		m_cameraPosition.x += m_walkSpeed * m_direction.x * GetFrameTime();
 		m_cameraPosition.z += m_walkSpeed * m_direction.z * GetFrameTime();
 
-		if (m_direction.x > 0 && m_cameraPosition.x >= m_targetPosition.x)
+		if ((m_direction.x > 0 && m_cameraPosition.x >= m_targetPosition.x) || 
+			(m_direction.x < 0 && m_cameraPosition.x <= m_targetPosition.x) ||
+			(m_direction.z > 0 && m_cameraPosition.z >= m_targetPosition.z) || 
+			(m_direction.z < 0 && m_cameraPosition.z <= m_targetPosition.z))
 		{
 			m_isMoving = false;
 			m_cameraPosition.x = m_targetPosition.x;
-		}
-		if (m_direction.x < 0 && m_cameraPosition.x <= m_targetPosition.x)
-		{
-			m_isMoving = false;
-			m_cameraPosition.x = m_targetPosition.x;
-		}
+			m_cameraPosition.z = m_targetPosition.z;
 
-		if (m_direction.z > 0 && m_cameraPosition.z >= m_targetPosition.z)
-		{
-			m_isMoving = false;
-			m_cameraPosition.z = m_targetPosition.z;
-		}
-		if (m_direction.z < 0 && m_cameraPosition.z <= m_targetPosition.z)
-		{
-			m_isMoving = false;
-			m_cameraPosition.z = m_targetPosition.z;
+			world.Move(m_cameraPosition);
 		}
 		printf("CP = %f %f\n", m_cameraPosition.x, m_cameraPosition.z);
 	}
@@ -124,10 +115,6 @@ void PlayerGameCamera3D::Update() noexcept
 
 	m_viewCamera.position = m_cameraPosition;
 	m_viewCamera.position.y += m_playerEyesPosition;
-
-
-
-
 
 
 	// Mouse movement detection
@@ -183,6 +170,14 @@ void PlayerGameCamera3D::SetCameraPosition(const Vector3& pos, float currentRota
 	m_viewCamera.target.x = m_viewCamera.position.x + target.x;
 	m_viewCamera.target.y = m_viewCamera.position.y + target.y;
 	m_viewCamera.target.z = m_viewCamera.position.z + target.z;
+}
+//-----------------------------------------------------------------------------
+bool PlayerGameCamera3D::isBlocked(const Vector3& newPosition, const Map& map) noexcept
+{
+	if (map.tiles[(size_t)newPosition.x][(size_t)newPosition.z].isTree == true)
+		return true;
+
+	return false;
 }
 //-----------------------------------------------------------------------------
 #if !TURN_STEP

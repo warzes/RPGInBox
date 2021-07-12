@@ -2,8 +2,7 @@
 
 #include "PlayerGameCamera3D.h"
 #include "GameData.h"
-
-#define SKY_ENABLE 1
+#include "World.h"
 
 class GameLogic3D final : NonCopyable, NonMovable
 {
@@ -25,13 +24,12 @@ private:
 	Engine& m_engine;
 	bool m_isEnd = true;
 
+	GameData m_data;
+	PlayerGameCamera3D m_camera;
+	World m_world;
+
 	Image img;
 	Texture tx;
-	PlayerGameCamera3D m_camera;
-
-	GameData m_data;
-
-#if SKY_ENABLE
 	Texture cubeTx;
 	Model cube;
 	Model mountain;
@@ -42,5 +40,4 @@ private:
 	Shader shaderM;
 	int frameLoc;
 	float frame = 0;
-#endif
 };

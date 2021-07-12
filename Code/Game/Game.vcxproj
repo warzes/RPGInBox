@@ -223,6 +223,7 @@
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="View.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
@@ -252,6 +253,7 @@
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="View.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

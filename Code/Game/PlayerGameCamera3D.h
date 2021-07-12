@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+class World;
+class Map;
+
 class PlayerGameCamera3D final
 {
 public:
@@ -22,7 +25,7 @@ public:
 	PlayerGameCamera3D() noexcept;
 
 	void Setup(const float fovY, const Vector3& position, const float currentRotateY = 0.0f) noexcept;
-	void Update() noexcept;
+	void Update(World& world) noexcept;
 
 	Vector3 GetCameraPosition() const noexcept
 	{
@@ -37,7 +40,6 @@ public:
 	inline void ExtractFrustum() noexcept { m_frustum.Extract(); }
 
 	int ControlsKeys[LAST_CONTROL];
-
 
 #if !TURN_STEP
 	Vector3 MoveSpeed = { 1.0f, 1.0f, 1.0f };
@@ -91,15 +93,9 @@ private:
 		return m_continuedWalk && !m_isMoving && !m_isTurning ? IsKeyDown(key) : IsKeyReleased(key);
 	}
 
-	bool isBlocked(Vector3 newPosition) noexcept
-	{
-		//if (_map.IsWall((int)newPosition.x, (int)newPosition.z))
-		//	return true;
-		//else
-			return false;
-	}
+	bool isBlocked(const Vector3& newPosition, const Map& map) noexcept;
 
-	void move(moveDir dir) noexcept
+	void move(moveDir dir, const Map& map) noexcept
 	{
 		Vector3 forward = Vector3Subtract(m_viewCamera.target, m_viewCamera.position);
 		forward = Vector3Normalize(forward);
@@ -118,7 +114,7 @@ private:
 			m_direction = { round(forward.z), 0.0f, round(-forward.x) };
 
 		const Vector3 targetPos = Vector3Add(m_cameraPosition, m_direction);
-		if (!isBlocked(targetPos) && dir != moveDir::No)
+		if (!isBlocked(targetPos, map) && dir != moveDir::No)
 		{			
 			m_isMoving = true;
 			m_moveDir = dir;
@@ -144,7 +140,7 @@ private:
 	}
 
 
-	bool m_continuedWalk = false;
+	bool m_continuedWalk = true;
 	float m_walkSpeed = 6.0f;
 	float m_stepSize = 1.0f;
 
