@@ -26,15 +26,18 @@ void PlayerGameCamera3D::Setup(const float fovY, Vector3&& position, float curre
 #if TURN_STEP
 	m_targetPosition = m_cameraPosition;
 #endif
+#if !TURN_STEP
 	m_windowFocused = IsWindowFocused();
 	if (HideCursor && m_windowFocused && (UseMouseX || UseMouseY))
 		DisableCursor();
+#endif
 
 	m_previousMousePosition = GetMousePosition();
 }
 //-----------------------------------------------------------------------------
 void PlayerGameCamera3D::Update() noexcept
 {
+#if !TURN_STEP
 	if (HideCursor && IsWindowFocused() != m_windowFocused && (UseMouseX || UseMouseY))
 	{
 		m_windowFocused = IsWindowFocused();
@@ -48,23 +51,18 @@ void PlayerGameCamera3D::Update() noexcept
 			EnableCursor();
 		}
 	}
+#endif
 
 #if TURN_STEP
-	if (!m_isTurning) // во время вращения камеры нельзя двигаться
+	if (!m_isTurning) 
 	{
-		if (!m_isMoving)
+		if (!m_isMoving) // во время вращения камеры нельзя двигаться, поэтому условие вложенное
 		{
-			Vector3 forward = Vector3Subtract(m_viewCamera.target, m_viewCamera.position);
-			printf("CP = %f\n", forward.z);
-			forward.y = 0;
-			forward = Vector3Normalize(forward);
-			const Vector3 right{ forward.z * -1.0f, 0, forward.x };
+			if (keyDown(ControlsKeys[MOVE_FRONT])) move(moveDir::Forward);
+			if (keyDown(ControlsKeys[MOVE_BACK])) move(moveDir::Back);
 
-			if (keyDown(ControlsKeys[MOVE_FRONT])) move(forward, moveDir::Forward);
-			if (keyDown(ControlsKeys[MOVE_BACK])) move(forward, moveDir::Back);
-
-			if (keyDown(ControlsKeys[MOVE_UP])) move(right, moveDir::Left);
-			if (keyDown(ControlsKeys[MOVE_DOWN])) move(right, moveDir::Right);
+			if (keyDown(ControlsKeys[MOVE_UP])) move(moveDir::Left);
+			if (keyDown(ControlsKeys[MOVE_DOWN])) move(moveDir::Right);
 		}
 
 		if (keyDown(ControlsKeys[MOVE_LEFT])) turn(rotateDirY::Left);

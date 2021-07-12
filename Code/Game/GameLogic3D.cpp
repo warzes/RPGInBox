@@ -25,8 +25,6 @@ GameLogic3D::~GameLogic3D()
 //-----------------------------------------------------------------------------
 bool GameLogic3D::Init() noexcept
 {
-	//m_data.Init();
-
 	img = GenImageChecked(256, 256, 32, 32, DARKGRAY, WHITE);
 	tx = LoadTextureFromImage(img);
 	UnloadImage(img);
@@ -122,7 +120,7 @@ void GameLogic3D::Frame() noexcept
 		m_camera.ExtractFrustum();
 
 		// grid of cube trees on a plane to make a "world"
-		//DrawPlane(Vector3{ 0, 0, 0 }, Vector2{ 50, 50 }, PURPLE); // simple world plane
+		DrawPlane(Vector3{ 0, 0, 0 }, Vector2{ 50, 50 }, PURPLE); // simple world plane
 		const float spacing = 4;
 		const int count = 5;
 		for (float x = -count * spacing; x <= count * spacing; x += spacing)
@@ -141,7 +139,7 @@ void GameLogic3D::Frame() noexcept
 			}
 		}
 
-		DrawGrid(20, spacing);         // Draw a grid
+		DrawGrid(20, 1);         // Draw a grid
 
 		EndMode3D();
 	}

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class PlayerGameCamera3D final
 {
@@ -95,20 +95,30 @@ private:
 			return false;
 	}
 
-	void move(Vector3 direction, moveDir dir) noexcept
+	void move(moveDir dir) noexcept
 	{
-		if (dir == moveDir::Right) direction.x = -direction.x;
-		if (dir == moveDir::Back) direction.z = -direction.z;
+		Vector3 forward = Vector3Subtract(m_viewCamera.target, m_viewCamera.position);
+		forward = Vector3Normalize(forward);
+		// это подсказки
+		//const Vector3 back{ -forward.x, 0, -forward.z };
+		//const Vector3 left{ -forward.z, 0, forward.x };
+		//const Vector3 right{ forward.z, 0,-forward.x };
 
-		m_direction = direction;
-		const Vector3 targetPos = Vector3Add(m_cameraPosition, direction);
+		if (dir == moveDir::Forward)
+			m_direction = { round(forward.x), 0.0f, round(forward.z) };
+		else if (dir == moveDir::Back)
+			m_direction = { round(-forward.x), 0.0f, round(-forward.z) };
+		else if (dir == moveDir::Left)
+			m_direction = { round(-forward.z), 0.0f, round(forward.x) };
+		else if (dir == moveDir::Right)
+			m_direction = { round(forward.z), 0.0f, round(-forward.x) };
+
+		const Vector3 targetPos = Vector3Add(m_cameraPosition, m_direction);
 		if (!isBlocked(targetPos) && dir != moveDir::No)
 		{			
 			m_isMoving = true;
 			m_moveDir = dir;
-			m_targetPosition.x = round(targetPos.x);
-			m_targetPosition.y = round(targetPos.y);
-			m_targetPosition.z = round(targetPos.z);
+			m_targetPosition = targetPos;
 		}
 	}
 
@@ -131,7 +141,7 @@ private:
 
 
 	bool m_continuedWalk = false;
-	float m_walkSpeed = 3.0f;
+	float m_walkSpeed = 7.0f;
 	float m_stepSize = 1.0f;
 
 	bool m_isMoving = false;

@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{BE1A7480-6CA1-46C3-9370-BC49A46C80ED}"
 	ProjectSection(SolutionItems) = preProject
 		docRaylib.md = docRaylib.md
+		otherIdea.md = otherIdea.md
 		ref.md = ref.md
 		TASKList.md = TASKList.md
 		todo.md = todo.md
