@@ -1,5 +1,7 @@
-﻿Commits on Jul 8, 2021
-Added a note
+﻿Commits on Jul 12, 2021
+
+* Use 60 FPS for textures_image_loading example (#1867)
+
 
 
 

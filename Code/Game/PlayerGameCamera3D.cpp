@@ -7,32 +7,21 @@ PlayerGameCamera3D::PlayerGameCamera3D() noexcept
 {
 }
 //-----------------------------------------------------------------------------
-void PlayerGameCamera3D::Setup(const float fovY, Vector3&& position, float currentRotateY) noexcept
+void PlayerGameCamera3D::Setup(const float fovY, const Vector3& position, const float currentRotateY) noexcept
 {
-	m_currentRotateY = currentRotateY;
-	m_cameraPosition = std::move(position);
-
-	m_viewCamera.position = m_cameraPosition;
-	m_viewCamera.position.y += m_playerEyesPosition;
-	Vector3 target = Vector3Transform(Vector3{ 0, 0, 1 }, MatrixRotateY(m_currentRotateY * DEG2RAD));
-	m_viewCamera.target.x = m_viewCamera.position.x + target.x;
-	m_viewCamera.target.y = m_viewCamera.position.y + target.y;
-	m_viewCamera.target.z = m_viewCamera.position.z + target.z;
+	SetCameraPosition(position, currentRotateY);
 
 	m_viewCamera.up = { 0.0f, 1.0f, 0.0f };
 	m_viewCamera.fovy = fovY;
 	m_viewCamera.projection = CAMERA_PERSPECTIVE;
 
-#if TURN_STEP
-	m_targetPosition = m_cameraPosition;
-#endif
 #if !TURN_STEP
 	m_windowFocused = IsWindowFocused();
 	if (HideCursor && m_windowFocused && (UseMouseX || UseMouseY))
 		DisableCursor();
-#endif
 
 	m_previousMousePosition = GetMousePosition();
+#endif
 }
 //-----------------------------------------------------------------------------
 void PlayerGameCamera3D::Update() noexcept
@@ -58,15 +47,15 @@ void PlayerGameCamera3D::Update() noexcept
 	{
 		if (!m_isMoving) // во время вращения камеры нельзя двигаться, поэтому условие вложенное
 		{
-			if (keyDown(ControlsKeys[MOVE_FRONT])) move(moveDir::Forward);
-			if (keyDown(ControlsKeys[MOVE_BACK])) move(moveDir::Back);
+			if (keyDown(ControlsKeys[MOVE_FRONT]) || keyDown(ControlsKeys[TURN_UP])) move(moveDir::Forward);
+			if (keyDown(ControlsKeys[MOVE_BACK]) || keyDown(ControlsKeys[TURN_DOWN])) move(moveDir::Back);
 
 			if (keyDown(ControlsKeys[MOVE_UP])) move(moveDir::Left);
 			if (keyDown(ControlsKeys[MOVE_DOWN])) move(moveDir::Right);
 		}
 
-		if (keyDown(ControlsKeys[MOVE_LEFT])) turn(rotateDirY::Left);
-		if (keyDown(ControlsKeys[MOVE_RIGHT])) turn(rotateDirY::Right);
+		if (keyDown(ControlsKeys[MOVE_LEFT]) || keyDown(ControlsKeys[TURN_LEFT])) turn(rotateDirY::Left);
+		if (keyDown(ControlsKeys[MOVE_RIGHT]) || keyDown(ControlsKeys[TURN_RIGHT])) turn(rotateDirY::Right);
 	}
 	if (m_isMoving)
 	{
@@ -94,15 +83,7 @@ void PlayerGameCamera3D::Update() noexcept
 			m_isMoving = false;
 			m_cameraPosition.z = m_targetPosition.z;
 		}
-
-		//m_cameraPosition.x = m_targetPosition.x;
-		//m_cameraPosition.z = m_targetPosition.z;
-		
-				
-		//printf("TP = %f %f\n", m_direction.x, m_direction.z);
 		printf("CP = %f %f\n", m_cameraPosition.x, m_cameraPosition.z);
-		m_viewCamera.position = m_cameraPosition;
-		m_viewCamera.position.y = m_playerEyesPosition;
 	}
 	if (m_isTurning)
 	{
@@ -118,11 +99,7 @@ void PlayerGameCamera3D::Update() noexcept
 			m_currentRotateY = m_endRotateY;
 		}
 	}
-
-	const Vector3 target = Vector3Transform({ 0.0f, 0.0f, 1.0f }, MatrixRotateY(m_currentRotateY*DEG2RAD));
-	m_viewCamera.target.x = m_viewCamera.position.x + target.x;
-	m_viewCamera.target.y = m_viewCamera.position.y + target.y;
-	m_viewCamera.target.z = m_viewCamera.position.z + target.z;
+	SetCameraPosition(m_cameraPosition, m_currentRotateY);
 	
 #else
 	// Keys input detection
@@ -196,14 +173,19 @@ void PlayerGameCamera3D::Update() noexcept
 #endif
 }
 //-----------------------------------------------------------------------------
-void PlayerGameCamera3D::SetCameraPosition(const Vector3&& pos) noexcept
+void PlayerGameCamera3D::SetCameraPosition(const Vector3& pos, float currentRotateY) noexcept
 {
-	m_cameraPosition = std::move(pos);
-	const Vector3 forward = Vector3Subtract(m_viewCamera.target, m_viewCamera.position);
+	m_currentRotateY = currentRotateY;
+	m_cameraPosition = pos;
 	m_viewCamera.position = m_cameraPosition;
-	m_viewCamera.target = Vector3Add(m_cameraPosition, forward);
+	m_viewCamera.position.y += m_playerEyesPosition;
+	const Vector3 target = Vector3Transform({ 0.0f, 0.0f, 1.0f }, MatrixRotateY(m_currentRotateY * DEG2RAD));
+	m_viewCamera.target.x = m_viewCamera.position.x + target.x;
+	m_viewCamera.target.y = m_viewCamera.position.y + target.y;
+	m_viewCamera.target.z = m_viewCamera.position.z + target.z;
 }
 //-----------------------------------------------------------------------------
+#if !TURN_STEP
 float PlayerGameCamera3D::getSpeedForAxis(CameraControls axis, float speed) noexcept
 {
 	if (!UseKeyboard)
@@ -220,4 +202,5 @@ float PlayerGameCamera3D::getSpeedForAxis(CameraControls axis, float speed) noex
 
 	return 0.0f;
 }
+#endif
 //-----------------------------------------------------------------------------

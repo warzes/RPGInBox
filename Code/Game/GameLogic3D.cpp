@@ -32,8 +32,10 @@ bool GameLogic3D::Init() noexcept
 	SetTextureWrap(tx, TEXTURE_WRAP_CLAMP);
 
 	m_camera.Setup(45.0f, Vector3{ 0.0f, 0.0f, 0.0f });
+#if !TURN_STEP
 	m_camera.MoveSpeed.z = 10;
 	m_camera.MoveSpeed.x = 5;
+#endif
 
 #if SKY_ENABLE
 	// texture and shade a models
