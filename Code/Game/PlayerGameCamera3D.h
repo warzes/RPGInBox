@@ -104,14 +104,10 @@ private:
 		//const Vector3 left{ -forward.z, 0, forward.x };
 		//const Vector3 right{ forward.z, 0,-forward.x };
 
-		if (dir == moveDir::Forward)
-			m_direction = { round(forward.x), 0.0f, round(forward.z) };
-		else if (dir == moveDir::Back)
-			m_direction = { round(-forward.x), 0.0f, round(-forward.z) };
-		else if (dir == moveDir::Left)
-			m_direction = { round(-forward.z), 0.0f, round(forward.x) };
-		else if (dir == moveDir::Right)
-			m_direction = { round(forward.z), 0.0f, round(-forward.x) };
+		if (dir == moveDir::Forward) m_direction = { round(forward.x), 0.0f, round(forward.z) };
+		else if (dir == moveDir::Back) m_direction = { round(-forward.x), 0.0f, round(-forward.z) };
+		else if (dir == moveDir::Left) m_direction = { round(-forward.z), 0.0f, round(forward.x) };
+		else if (dir == moveDir::Right) m_direction = { round(forward.z), 0.0f, round(-forward.x) };
 
 		const Vector3 targetPos = Vector3Add(m_cameraPosition, m_direction);
 		if (!isBlocked(targetPos, map) && dir != moveDir::No)

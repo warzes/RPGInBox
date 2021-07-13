@@ -1,7 +1,6 @@
 #pragma once
 
 #include "PlayerGameCamera3D.h"
-#include "GameData.h"
 #include "World.h"
 
 class GameLogic3D final : NonCopyable, NonMovable
@@ -24,7 +23,6 @@ private:
 	Engine& m_engine;
 	bool m_isEnd = true;
 
-	GameData m_data;
 	PlayerGameCamera3D m_camera;
 	World m_world;
 

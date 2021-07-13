@@ -6,101 +6,7 @@
     <ClCompile Include="PlayerGameCamera3D.cpp">
       <Filter>World</Filter>
     </ClCompile>
-    <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GameLogic3D.cpp" />
-    <ClCompile Include="Skills.cpp">
-      <Filter>old\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="Unit.cpp">
-      <Filter>old\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerUnit.cpp">
-      <Filter>old\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyUnit.cpp">
-      <Filter>old\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="Action.cpp">
-      <Filter>old\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="Directions.cpp">
-      <Filter>old\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="Actor.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Compass.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="View.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Door.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Inventory.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Creature.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Container.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="Dungeon.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="DevSandboxView.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="GameDefaultView.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="GameInventoryView.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="GamePausedView.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelUpPrompt.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuView.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="MessagePrompt.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="NewGamePrompt.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="QuitGamePrompt.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="QuitPrompt.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="StringPrompt.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
-    <ClCompile Include="BoolPrompt.cpp">
-      <Filter>_roguelkie</Filter>
-    </ClCompile>
     <ClCompile Include="World.cpp">
       <Filter>World</Filter>
     </ClCompile>
@@ -116,74 +22,7 @@
     <ClInclude Include="PlayerGameCamera3D.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="GameData.h" />
     <ClInclude Include="GameLogic3D.h" />
-    <ClInclude Include="Stats.h">
-      <Filter>old\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Skills.h">
-      <Filter>old\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Unit.h">
-      <Filter>old\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerUnit.h">
-      <Filter>old\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyUnit.h">
-      <Filter>old\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Action.h">
-      <Filter>old\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Directions.h">
-      <Filter>old\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Handle.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Actor.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Compass.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="View.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Door.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Creature.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Container.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Prompt.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
-    <ClInclude Include="Dungeon.h">
-      <Filter>_roguelkie</Filter>
-    </ClInclude>
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="World.h">
       <Filter>World</Filter>
@@ -207,15 +46,6 @@
     </Filter>
     <Filter Include="GameUI">
       <UniqueIdentifier>{a4b02d7c-2c40-4d64-a968-715e25f19c07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_roguelkie">
-      <UniqueIdentifier>{b13bbfe9-3185-4640-8a55-90c37d6f51cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="old">
-      <UniqueIdentifier>{bfa11f30-e63e-4874-8e79-17fd6283a7ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="old\Data">
-      <UniqueIdentifier>{4533ff39-c7a9-4d92-9d90-88020ef5ef3a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
