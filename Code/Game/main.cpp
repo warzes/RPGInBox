@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "GameLogic3D.h"
+#include "Game.h"
 
 #include <Engine/DebugNew.h>
 #if SE_COMPILER_MSVC
@@ -27,7 +27,7 @@ void GameMain() noexcept
 	Engine engine;
 	if (engine.Init(engineConfig))
 	{
-		GameLogic3D game(engine);
+		Game game(engine);
 		if (game.Init())
 		{
 			while (!engine.IsEnd() && !game.IsEnd())
@@ -44,12 +44,7 @@ void GameMain() noexcept
 //-----------------------------------------------------------------------------
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[])
 {
-	
-#if !ASCII_DEFINE
 	GameMain();
-#else
-	GameMainRoguelike();
-#endif
 	return 0;
 }
 //-----------------------------------------------------------------------------

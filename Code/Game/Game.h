@@ -1,13 +1,14 @@
 #pragma once
 
+#include "ResourceManager.h"
 #include "PlayerGameCamera3D.h"
 #include "World.h"
 
-class GameLogic3D final : NonCopyable, NonMovable
+class Game final : NonCopyable, NonMovable
 {
 public:
-	GameLogic3D(Engine& engine) noexcept;
-	~GameLogic3D();
+	Game(Engine& engine) noexcept;
+	~Game();
 
 	bool Init() noexcept;
 
@@ -23,8 +24,17 @@ private:
 	Engine& m_engine;
 	bool m_isEnd = true;
 
+	ResourceManager m_resourceMgr;
 	PlayerGameCamera3D m_camera;
 	World m_world;
+
+	Model model;
+	Texture2D textureModel;
+
+	Model model2;
+	Texture2D textureModel2;
+
+	//Texture2D texGlass;
 
 #if OLD_SCHOOL_RENDER
 	RenderTexture2D target = {};

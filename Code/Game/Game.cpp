@@ -1,12 +1,12 @@
-#include "stdafx.h"
-#include "GameLogic3D.h"
+﻿#include "stdafx.h"
+#include "Game.h"
 //-----------------------------------------------------------------------------
-GameLogic3D::GameLogic3D(Engine& engine) noexcept
+Game::Game(Engine& engine) noexcept
 	: m_engine(engine)
 {
 }
 //-----------------------------------------------------------------------------
-GameLogic3D::~GameLogic3D()
+Game::~Game()
 {
 	Texture cubeTx;
 	Model cube;
@@ -21,11 +21,16 @@ GameLogic3D::~GameLogic3D()
 #if OLD_SCHOOL_RENDER
 	UnloadRenderTexture(target);
 #endif
+	UnloadTexture(textureModel);     // Unload texture
+	UnloadModel(model);         // Unload model
 	UnloadTexture(tx);
 }
 //-----------------------------------------------------------------------------
-bool GameLogic3D::Init() noexcept
+bool Game::Init() noexcept
 {
+	if (!m_resourceMgr.Init())
+		return false;
+
 	m_camera.Setup(45.0f, Vector3{ 0.0f, 0.0f, 0.0f });
 #if !TURN_STEP
 	m_camera.MoveSpeed.z = 10;
@@ -99,11 +104,22 @@ bool GameLogic3D::Init() noexcept
 	destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
 #endif
 
+
+	model = LoadModel("../data/temp/model/tile/floor01.obj"); // Load model
+	textureModel = LoadTexture("../data/temp/model/tile/tileset.png"); // Load model texture
+	model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = textureModel; // Set map diffuse texture
+	//BoundingBox bounds = GetMeshBoundingBox(model.meshes[0]);
+	model2 = LoadModel("../data/temp/model/tempmap.obj"); // Load model
+	textureModel2 = LoadTexture("../data/temp/model/temptile.png"); // Load model texture
+	model2.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = textureModel2; // Set map diffuse texture
+
+	//texGlass = LoadTexture("../data/temp/textures/map/outdoor/plains-ground.png"); // Load model texture
+
 	m_isEnd = false;
 	return true;
 }
 //-----------------------------------------------------------------------------
-void GameLogic3D::Update(float deltaTime) noexcept
+void Game::Update(float deltaTime) noexcept
 {
 	frame += 0.04 * deltaTime;
 	SetShaderValue(shaderS, frameLoc, &frame, SHADER_UNIFORM_FLOAT);
@@ -111,7 +127,7 @@ void GameLogic3D::Update(float deltaTime) noexcept
 	m_camera.Update(m_world);
 }
 //-----------------------------------------------------------------------------
-void GameLogic3D::Frame() noexcept
+void Game::Frame() noexcept
 {
 	// Set render target
 #if OLD_SCHOOL_RENDER
@@ -122,34 +138,92 @@ void GameLogic3D::Frame() noexcept
 	ClearBackground({ 0, 60, 80, 0 });
 #endif
 	{
+		не нужно перебирать всю карту, у меня есть направление камеры, вот начиная от игрока и в глубь идти (можно даже прерывать если точно за текущим тайлом не будет видно остальных - типа стены в данже)
+			перебор всего оставить для свободной камеры
+
+
+
+
 		// World map
 		{
 			BeginMode3D(m_camera.GetCamera());
+
+			//DrawModel(model, Vector3{ (float)0, 0.0f, (float)0 }, 0.5f, WHITE); // это проверка размера меша
+
 			m_camera.ExtractFrustum();
-			for (int x = 0; x < MapSize; x++)
-			{
-				for (int y = 0; y < MapSize; y++)
-				{
-					if (m_world.openworld.tiles[x][y].isTree)
-					{
-						const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
-						const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
-						if (m_camera.GetFrustum().AABBoxIn(min, max))
-						{
-							DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
-							DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
-						}
-					}
-				}
-			}
+
+			//DrawModel(model2, Vector3{ (float)0, 0.0f, (float)0 }, 1.0f, WHITE);
+
+
+
+
+
+			// почему в разных циклах? чтобы не ломать батчинг, так как рейлиб не сортирует свою геометрию (кстати, меши не батчатся)
+			
+			//// floor - grass
+			//for (int x = 0; x < MapSize; x++)
+			//{
+			//	for (int y = 0; y < MapSize; y++)
+			//	{
+			//		const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
+			//		const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
+
+			//		if (m_world.openworld.tiles[x][y].type == TileType::Grass && m_camera.GetFrustum().AABBoxIn(min, max))
+			//		{
+			//			DrawCubeTexture(m_resourceMgr.textureGrass, Vector3{ (float)x, -0.5f, (float)y }, 1, 1, 1, WHITE);
+			//			//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
+			//		}
+			//	}
+			//}
+
+			//// floor - road
+			//for (int x = 0; x < MapSize; x++)
+			//{
+			//	for (int y = 0; y < MapSize; y++)
+			//	{
+			//		const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
+			//		const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
+
+			//		if (m_world.openworld.tiles[x][y].type == TileType::Road && m_camera.GetFrustum().AABBoxIn(min, max))
+			//		{
+			//			DrawCubeTexture(m_resourceMgr.textureRoad, Vector3{ (float)x, -0.5f, (float)y }, 1, 1, 1, WHITE);
+			//			//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
+			//		}
+			//	}
+			//}
+
+			//// tree
+			//for (int x = 0; x < MapSize; x++)
+			//{
+			//	for (int y = 0; y < MapSize; y++)
+			//	{
+			//		const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
+			//		const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
+
+			//		if (m_world.openworld.tiles[x][y].decor == TileDecorType::Tree)
+			//		{
+			//			if (m_camera.GetFrustum().AABBoxIn(min, max))
+			//			{
+			//				DrawCubeTexture(m_resourceMgr.textureTree, Vector3{ (float)x, 0.5f, (float)y }, 1, 1, 1, WHITE);
+			//				//DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
+			//				//DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
+			//			}
+			//		}
+			//	}
+			//}
 
 			EndMode3D();
 		}
 
 		// Grid
-		{
-			int slices = 20;
+		/*{
+			int slices = 30;
 			float spacing = 1.0f;
+
+			Point2 currentPosGrid = { 0, 0 };
+#if TURN_STEP
+			currentPosGrid = m_world.playerParty.GetPosition();
+#endif
 
 			BeginMode3D(m_camera.GetCamera());
 
@@ -163,21 +237,36 @@ void GameLogic3D::Frame() noexcept
 				rlColor3f(0.75f, 0.75f, 0.75f);
 				rlColor3f(0.75f, 0.75f, 0.75f);
 
-				rlVertex3f((float)i * spacing - 0.5f, 0.0f, (float)-slices * spacing - 0.5f);
-				rlVertex3f((float)i * spacing - 0.5f, 0.0f, (float)slices * spacing - 0.5f);
+				rlVertex3f(
+					(float)currentPosGrid.x+i * spacing - 0.5f, 
+					0.0f, 
+					(float)currentPosGrid.y + -slices * spacing - 0.5f);
+				rlVertex3f(
+					(float)currentPosGrid.x + i * spacing - 0.5f, 
+					0.0f, 
+					(float)currentPosGrid.y + slices * spacing - 0.5f);
 
-				rlVertex3f((float)-slices * spacing - 0.5f, 0.0f, (float)i * spacing - 0.5f);
-				rlVertex3f((float)slices * spacing - 0.5f, 0.0f, (float)i * spacing - 0.5f);
+				rlVertex3f(
+					(float)currentPosGrid.x + -slices * spacing - 0.5f, 
+					0.0f, 
+					(float)currentPosGrid.y + i * spacing - 0.5f);
+				rlVertex3f(
+					(float)currentPosGrid.x + slices * spacing - 0.5f, 
+					0.0f, 
+					(float)currentPosGrid.y + i * spacing - 0.5f);
 			}
 			rlEnd();
 			EndMode3D();
-		}
+		}*/
 
 		// Sky
 		{
 			BeginMode3D(m_camera.GetCamera());
 			DrawModel(mountain, m_camera.GetCameraPosition(), 1, WHITE);
 			DrawModel(sky, m_camera.GetCameraPosition(), 1, WHITE);
+			BeginBlendMode(BLEND_ALPHA);
+			DrawModel(model2, Vector3{ (float)0, 0.0f, (float)0 }, 1.0f, WHITE);
+			EndBlendMode();
 			EndMode3D();
 		}
 	}

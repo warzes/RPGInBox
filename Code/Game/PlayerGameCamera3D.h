@@ -34,10 +34,10 @@ public:
 
 	void SetCameraPosition(const Vector3& pos, float currentRotateY = 0.0f) noexcept;
 
-	inline const Camera& GetCamera() const noexcept { return m_viewCamera; }
-	inline const Frustum& GetFrustum() const noexcept { return m_frustum; }
+	const Camera& GetCamera() const noexcept { return m_viewCamera; }
+	const Frustum& GetFrustum() const noexcept { return m_frustum; }
 
-	inline void ExtractFrustum() noexcept { m_frustum.Extract(); }
+	void ExtractFrustum() noexcept { m_frustum.Extract(); }
 
 	int ControlsKeys[LAST_CONTROL];
 
@@ -95,28 +95,7 @@ private:
 
 	bool isBlocked(const Vector3& newPosition, const Map& map) noexcept;
 
-	void move(moveDir dir, const Map& map) noexcept
-	{
-		Vector3 forward = Vector3Subtract(m_viewCamera.target, m_viewCamera.position);
-		forward = Vector3Normalize(forward);
-		// это подсказки
-		//const Vector3 back{ -forward.x, 0, -forward.z };
-		//const Vector3 left{ -forward.z, 0, forward.x };
-		//const Vector3 right{ forward.z, 0,-forward.x };
-
-		if (dir == moveDir::Forward) m_direction = { round(forward.x), 0.0f, round(forward.z) };
-		else if (dir == moveDir::Back) m_direction = { round(-forward.x), 0.0f, round(-forward.z) };
-		else if (dir == moveDir::Left) m_direction = { round(-forward.z), 0.0f, round(forward.x) };
-		else if (dir == moveDir::Right) m_direction = { round(forward.z), 0.0f, round(-forward.x) };
-
-		const Vector3 targetPos = Vector3Add(m_cameraPosition, m_direction);
-		if (!isBlocked(targetPos, map) && dir != moveDir::No)
-		{			
-			m_isMoving = true;
-			m_moveDir = dir;
-			m_targetPosition = targetPos;
-		}
-	}
+	void move(moveDir dir, const Map& map) noexcept;
 
 	void turn(const rotateDirY dir) noexcept
 	{

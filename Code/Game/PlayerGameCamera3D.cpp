@@ -3,6 +3,14 @@
 #include "World.h"
 #include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------
+//constexpr Vector2 DirectionLookup[4] =
+//{
+//	{ 0.0f, 1.0f },  // forward
+//	{ -1.0f, 0.0f }, // right
+//	{ 0.0f, -1.0f }, // backward
+//	{ 1.0f, 0.0f },  // left
+//};
+//-----------------------------------------------------------------------------
 PlayerGameCamera3D::PlayerGameCamera3D() noexcept
 	: ControlsKeys{ 'W', 'S', 'D', 'A', 'E', 'Q', KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_LEFT_SHIFT }
 {
@@ -137,10 +145,10 @@ void PlayerGameCamera3D::Update(World& world) noexcept
 	else if (UseMouseX && m_windowFocused)
 		m_angle.x += (mousePositionDelta.x / -MouseSensitivity);
 
-	//if (tiltRotation)
-	//	m_angle.y += tiltRotation * DEG2RAD;
-	//else if (UseMouseY && m_windowFocused)
-	//	m_angle.y += (mousePositionDelta.y / -MouseSensitivity);
+	if (tiltRotation)
+		m_angle.y += tiltRotation * DEG2RAD;
+	else if (UseMouseY && m_windowFocused)
+		m_angle.y += (mousePositionDelta.y / -MouseSensitivity);
 
 	// Angle clamp
 	if (m_angle.y < MinimumViewY * DEG2RAD)
@@ -172,13 +180,49 @@ void PlayerGameCamera3D::SetCameraPosition(const Vector3& pos, float currentRota
 	m_viewCamera.target.z = m_viewCamera.position.z + target.z;
 }
 //-----------------------------------------------------------------------------
+#if TURN_STEP
 bool PlayerGameCamera3D::isBlocked(const Vector3& newPosition, const Map& map) noexcept
 {
-	if (map.tiles[(size_t)newPosition.x][(size_t)newPosition.z].isTree == true)
+	if ( map.tiles[(size_t)newPosition.x][(size_t)newPosition.z].IsBlocked() )
 		return true;
 
 	return false;
 }
+#endif
+//-----------------------------------------------------------------------------
+#if TURN_STEP
+void PlayerGameCamera3D::move(moveDir dir, const Map& map) noexcept
+{
+	// TODO: не работает - вращение всеже может быть меньше нуля или равно 360
+	//int index = m_currentRotateY / 90.0f;
+	//if (index < 0 || index > 3) return;
+	//const auto &direction = DirectionLookup[index];
+	//if (dir == moveDir::Forward) m_direction = { direction.x, 0.0f, direction.y };
+	//else if (dir == moveDir::Back) m_direction = { -direction.x, 0.0f, -direction.y };
+	//else if (dir == moveDir::Left) m_direction = { -direction.y, 0.0f, direction.x };
+	//else if (dir == moveDir::Right) m_direction = { direction.y, 0.0f, -direction.x };
+
+	Vector3 forward = Vector3Subtract(m_viewCamera.target, m_viewCamera.position);
+	forward = Vector3Normalize(forward);
+	// это подсказки, не код
+	// back { -forward.x, 0,-forward.z };
+	// left { -forward.z, 0, forward.x };
+	// right{  forward.z, 0,-forward.x };
+
+	if (dir == moveDir::Forward)    m_direction = { round(forward.x),  0.0f, round(forward.z)  };
+	else if (dir == moveDir::Back)  m_direction = { round(-forward.x), 0.0f, round(-forward.z) };
+	else if (dir == moveDir::Left)  m_direction = { round(-forward.z), 0.0f, round(forward.x)  };
+	else if (dir == moveDir::Right) m_direction = { round(forward.z),  0.0f, round(-forward.x) };
+
+	const Vector3 targetPos = Vector3Add(m_cameraPosition, m_direction);
+	if (!isBlocked(targetPos, map) && dir != moveDir::No)
+	{
+		m_isMoving = true;
+		m_moveDir = dir;
+		m_targetPosition = targetPos;
+	}
+}
+#endif
 //-----------------------------------------------------------------------------
 #if !TURN_STEP
 float PlayerGameCamera3D::getSpeedForAxis(CameraControls axis, float speed) noexcept
