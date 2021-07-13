@@ -4,7 +4,7 @@
 
 struct WindowConfig final
 {
-	int width = 1024;
+	int width = 1280;
 	int height = 768;
 	bool fullscreen = false;
 	bool resizable = true;
@@ -27,8 +27,8 @@ public:
 	bool Init(const EngineConfig& config) noexcept;
 
 	void Update() noexcept;
-	void BeginFrame(Color&& color) noexcept;
-	void EndFrame() noexcept;
+	//void BeginFrame(Color&& color) noexcept;
+	//void EndFrame() noexcept;
 
 	bool IsEnd() const noexcept;
 

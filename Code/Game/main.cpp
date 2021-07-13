@@ -56,9 +56,9 @@ void GameMain() noexcept
 			{
 				engine.Update();
 				game.Update(engine.GetDeltaTime());
-				engine.BeginFrame({ 0, 60, 80, 0 });
+				//engine.BeginFrame({ 0, 60, 80, 0 });
 				game.Frame();
-				engine.EndFrame();
+				//engine.EndFrame();
 			}
 		}		
 	}

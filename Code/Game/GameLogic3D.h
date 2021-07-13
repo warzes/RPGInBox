@@ -28,6 +28,13 @@ private:
 	PlayerGameCamera3D m_camera;
 	World m_world;
 
+#if OLD_SCHOOL_RENDER
+	RenderTexture2D target = {};
+	Rectangle sourceRec = {};
+	Rectangle destRec = {};
+	Vector2 origin = { 0.0f, 0.0f };
+#endif
+
 	Image img;
 	Texture tx;
 	Texture cubeTx;

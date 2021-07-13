@@ -18,6 +18,9 @@ GameLogic3D::~GameLogic3D()
 	Shader shaderM;
 	int frameLoc;
 	float frame = 0;
+#if OLD_SCHOOL_RENDER
+	UnloadRenderTexture(target);
+#endif
 	UnloadTexture(tx);
 }
 //-----------------------------------------------------------------------------
@@ -38,7 +41,11 @@ bool GameLogic3D::Init() noexcept
 	img = GenImageChecked(256, 256, 32, 32, DARKGRAY, WHITE);
 	tx = LoadTextureFromImage(img);
 	UnloadImage(img);
+#if OLD_SCHOOL_RENDER
+	SetTextureFilter(tx, TEXTURE_FILTER_POINT);
+#else
 	SetTextureFilter(tx, TEXTURE_FILTER_ANISOTROPIC_16X);
+#endif
 	SetTextureWrap(tx, TEXTURE_WRAP_CLAMP);
 
 	cubeTx = LoadTexture("../resources/test.png");
@@ -51,7 +58,11 @@ bool GameLogic3D::Init() noexcept
 
 	sky = LoadModel("../resources/sky.glb");
 	skyTx = LoadTexture("../resources/cloud.png");
+#if OLD_SCHOOL_RENDER
+	SetTextureFilter(skyTx, TEXTURE_FILTER_POINT);
+#else
 	SetTextureFilter(skyTx, FILTER_BILINEAR);
+#endif	
 	sky.materials[0].maps[MAP_DIFFUSE].texture = skyTx;
 
 	// sky shader (animated)
@@ -71,6 +82,23 @@ bool GameLogic3D::Init() noexcept
 	// frame counter
 	frameLoc = GetShaderLocation(shaderS, "frame");
 
+
+#if OLD_SCHOOL_RENDER
+	const int screenWidth = GetScreenWidth();
+	const int screenHeight = GetScreenHeight();
+
+	const int virtualScreenWidth = 160;
+	const int virtualScreenHeight = 120;
+
+	const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
+
+	target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight); // This is where we'll draw all our objects.
+
+	 // The target's height is flipped (in the source Rectangle), due to OpenGL reasons
+	sourceRec = { 0.0f, 0.0f, (float)target.texture.width, -(float)target.texture.height };
+	destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
+#endif
+
 	m_isEnd = false;
 	return true;
 }
@@ -85,64 +113,82 @@ void GameLogic3D::Update(float deltaTime) noexcept
 //-----------------------------------------------------------------------------
 void GameLogic3D::Frame() noexcept
 {
-	// World map
+	// Set render target
+#if OLD_SCHOOL_RENDER
+	BeginTextureMode(target);
+	ClearBackground({ 0, 60, 80, 0 });
+#else
+	BeginDrawing();
+	ClearBackground({ 0, 60, 80, 0 });
+#endif
 	{
-		BeginMode3D(m_camera.GetCamera());
-		m_camera.ExtractFrustum();
-		for (int x = 0; x < MapSize; x++)
+		// World map
 		{
-			for (int y = 0; y < MapSize; y++)
+			BeginMode3D(m_camera.GetCamera());
+			m_camera.ExtractFrustum();
+			for (int x = 0; x < MapSize; x++)
 			{
-				if (m_world.openworld.tiles[x][y].isTree)
+				for (int y = 0; y < MapSize; y++)
 				{
-					const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
-					const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
-					if (m_camera.GetFrustum().AABBoxIn(min, max))
+					if (m_world.openworld.tiles[x][y].isTree)
 					{
-						DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
-						DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
+						const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
+						const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
+						if (m_camera.GetFrustum().AABBoxIn(min, max))
+						{
+							DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
+							DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
+						}
 					}
-				}				
+				}
 			}
+
+			EndMode3D();
 		}
 
-		EndMode3D();
-	}
-
-	// Grid
-	{
-		int slices = 20;
-		float spacing = 1.0f;
-
-		BeginMode3D(m_camera.GetCamera());
-
-		rlCheckRenderBatchLimit((slices + 2) * 4);
-
-		rlBegin(RL_LINES);
-		for (int i = -slices; i <= slices; i++)
+		// Grid
 		{
+			int slices = 20;
+			float spacing = 1.0f;
+
+			BeginMode3D(m_camera.GetCamera());
+
+			rlCheckRenderBatchLimit((slices + 2) * 4);
+
+			rlBegin(RL_LINES);
+			for (int i = -slices; i <= slices; i++)
+			{
 				rlColor3f(0.75f, 0.75f, 0.75f);
 				rlColor3f(0.75f, 0.75f, 0.75f);
 				rlColor3f(0.75f, 0.75f, 0.75f);
 				rlColor3f(0.75f, 0.75f, 0.75f);
 
-			rlVertex3f((float)i * spacing - 0.5f, 0.0f, (float)-slices * spacing - 0.5f);
-			rlVertex3f((float)i * spacing - 0.5f, 0.0f, (float)slices * spacing - 0.5f);
+				rlVertex3f((float)i * spacing - 0.5f, 0.0f, (float)-slices * spacing - 0.5f);
+				rlVertex3f((float)i * spacing - 0.5f, 0.0f, (float)slices * spacing - 0.5f);
 
-			rlVertex3f((float)-slices * spacing - 0.5f, 0.0f, (float)i * spacing - 0.5f);
-			rlVertex3f((float)slices * spacing - 0.5f, 0.0f, (float)i * spacing - 0.5f);
+				rlVertex3f((float)-slices * spacing - 0.5f, 0.0f, (float)i * spacing - 0.5f);
+				rlVertex3f((float)slices * spacing - 0.5f, 0.0f, (float)i * spacing - 0.5f);
+			}
+			rlEnd();
+			EndMode3D();
 		}
-		rlEnd();
-		EndMode3D();
+
+		// Sky
+		{
+			BeginMode3D(m_camera.GetCamera());
+			DrawModel(mountain, m_camera.GetCameraPosition(), 1, WHITE);
+			DrawModel(sky, m_camera.GetCameraPosition(), 1, WHITE);
+			EndMode3D();
+		}
 	}
 
-	// Sky
-	{
-		BeginMode3D(m_camera.GetCamera());
-		DrawModel(mountain, m_camera.GetCameraPosition(), 1, WHITE);
-		DrawModel(sky, m_camera.GetCameraPosition(), 1, WHITE);
-		EndMode3D();
-	}
+	// end render target
+#if OLD_SCHOOL_RENDER
+	EndTextureMode();
+	BeginDrawing();
+	ClearBackground({ 0, 60, 80, 0 });
+	DrawTexturePro(target.texture, sourceRec, destRec, origin, 0.0f, WHITE);
+#endif
 
 	// Text
 	{
@@ -151,68 +197,7 @@ void GameLogic3D::Frame() noexcept
 		DrawText(text.c_str(), 10, 30, 20, WHITE);
 	}
 
-
-
-
-
-
-
-	//{
-	//	BeginMode3D(m_camera.GetCamera());
-	//	m_camera.ExtractFrustum();
-
-	//	for (int i = -64; i < 64; i = i + 2)
-	//	{
-	//		{
-	//			Vector3 min = { i - 0.5f, 0, -0.5f };
-	//			Vector3 max = { i + 0.5f, 1, 0.5f };
-	//			if (m_camera.GetFrustum().AABBoxIn(min, max))
-	//			{
-	//				DrawModel(cube, Vector3{ (float)i, .4, 0 }, 1, WHITE);
-	//			}
-	//		}
-	//		{
-	//			Vector3 min = { -0.5f,0,i - 0.5f };
-	//			Vector3 max = { 0.5f,1,i + 0.5f };
-	//			if (m_camera.GetFrustum().AABBoxIn(min, max))
-	//			{
-	//				DrawModel(cube, Vector3{ 0, .4, (float)i }, 1, WHITE);
-	//			}
-	//		}
-	//	}
-
-	//	DrawModel(mountain, m_camera.GetCameraPosition(), 1, WHITE);
-	//	DrawModel(sky, m_camera.GetCameraPosition(), 1, WHITE);
-
-	//	EndMode3D();	
-	//}
-	//{
-	//	BeginMode3D(m_camera.GetCamera());
-	//	m_camera.ExtractFrustum();
-
-	//	// grid of cube trees on a plane to make a "world"
-	//	DrawPlane(Vector3{ 0, 0, 0 }, Vector2{ 50, 50 }, PURPLE); // simple world plane
-	//	const float spacing = 4;
-	//	const int count = 5;
-	//	for (float x = -count * spacing; x <= count * spacing; x += spacing)
-	//	{
-	//		for (float z = -count * spacing; z <= count * spacing; z += spacing)
-	//		{
-	//			Vector3 pos = { x, 0.5f, z };
-
-	//			Vector3 min = { x - 0.5f,0,z - 0.5f };
-	//			Vector3 max = { x + 0.5f,1,z + 0.5f };
-	//			if (m_camera.GetFrustum().AABBoxIn(min, max))
-	//			{
-	//				DrawCubeTexture(tx, Vector3{ x, 1.5f, z }, 1, 1, 1, GREEN);
-	//				DrawCubeTexture(tx, Vector3{ x, 0.5f, z }, 0.25f, 1, 0.25f, BROWN);
-	//			}
-	//		}
-	//	}
-
-	//	DrawGrid(20, 1);         // Draw a grid
-
-	//	EndMode3D();
-	//}
+	DrawFPS(0, 0);
+	EndDrawing();
 }
 //-----------------------------------------------------------------------------

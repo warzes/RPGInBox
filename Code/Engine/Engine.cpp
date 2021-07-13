@@ -39,17 +39,17 @@ void Engine::Update() noexcept
 
 }
 //-----------------------------------------------------------------------------
-void Engine::BeginFrame(Color&& color) noexcept
-{
-	BeginDrawing();
-	ClearBackground(std::move(color));
-}
-//-----------------------------------------------------------------------------
-void Engine::EndFrame() noexcept
-{
-	DrawFPS(0, 0);
-	EndDrawing();
-}
+//void Engine::BeginFrame(Color&& color) noexcept
+//{
+//	BeginDrawing();
+//	ClearBackground(std::move(color));
+//}
+////-----------------------------------------------------------------------------
+//void Engine::EndFrame() noexcept
+//{
+//	DrawFPS(0, 0);
+//	EndDrawing();
+//}
 //-----------------------------------------------------------------------------
 bool Engine::IsEnd() const noexcept
 {
