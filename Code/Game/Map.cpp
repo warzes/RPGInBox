@@ -13,7 +13,7 @@ void Map::InitTest() noexcept
 			if (t < 2)
 				tiles[x][y].decor = TileDecorType::Tree;
 
-			t = rand() % 100;
+			t = rand() % 40;
 			if (t < 2)
 				tiles[x][y].decor = TileDecorType::Town;
 

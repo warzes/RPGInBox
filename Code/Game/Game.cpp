@@ -92,8 +92,8 @@ bool Game::Init() noexcept
 	const int screenWidth = GetScreenWidth();
 	const int screenHeight = GetScreenHeight();
 
-	const int virtualScreenWidth = 160;
-	const int virtualScreenHeight = 120;
+	const int virtualScreenWidth = 320;
+	const int virtualScreenHeight = 240;
 
 	const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
 
@@ -112,6 +112,10 @@ bool Game::Init() noexcept
 	model2 = LoadModel("../data/temp/model/tempmap.obj"); // Load model
 	textureModel2 = LoadTexture("../data/temp/model/temptile.png"); // Load model texture
 	model2.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = textureModel2; // Set map diffuse texture
+
+	model3 = LoadModel("../data/temp/model/tree.obj"); // Load model
+	model3.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = textureModel2; // Set map diffuse texture
+
 
 	//texGlass = LoadTexture("../data/temp/textures/map/outdoor/plains-ground.png"); // Load model texture
 
@@ -138,79 +142,91 @@ void Game::Frame() noexcept
 	ClearBackground({ 0, 60, 80, 0 });
 #endif
 	{
-		не нужно перебирать всю карту, у меня есть направление камеры, вот начиная от игрока и в глубь идти (можно даже прерывать если точно за текущим тайлом не будет видно остальных - типа стены в данже)
-			перебор всего оставить для свободной камеры
-
-
-
+		//не нужно перебирать всю карту, у меня есть направление камеры, вот начиная от игрока и в глубь идти (можно даже прерывать если точно за текущим тайлом не будет видно остальных - типа стены в данже)
+		//	перебор всего оставить для свободной камеры
 
 		// World map
 		{
 			BeginMode3D(m_camera.GetCamera());
-
 			//DrawModel(model, Vector3{ (float)0, 0.0f, (float)0 }, 0.5f, WHITE); // это проверка размера меша
-
 			m_camera.ExtractFrustum();
-
 			//DrawModel(model2, Vector3{ (float)0, 0.0f, (float)0 }, 1.0f, WHITE);
-
-
-
-
-
+	
 			// почему в разных циклах? чтобы не ломать батчинг, так как рейлиб не сортирует свою геометрию (кстати, меши не батчатся)
 			
-			//// floor - grass
-			//for (int x = 0; x < MapSize; x++)
-			//{
-			//	for (int y = 0; y < MapSize; y++)
-			//	{
-			//		const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
-			//		const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
+			// floor - grass
+			for (int x = 0; x < MapSize; x++)
+			{
+				for (int y = 0; y < MapSize; y++)
+				{
+					const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
+					const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
 
-			//		if (m_world.openworld.tiles[x][y].type == TileType::Grass && m_camera.GetFrustum().AABBoxIn(min, max))
-			//		{
-			//			DrawCubeTexture(m_resourceMgr.textureGrass, Vector3{ (float)x, -0.5f, (float)y }, 1, 1, 1, WHITE);
-			//			//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
-			//		}
-			//	}
-			//}
+					if (m_world.openworld.tiles[x][y].type == TileType::Grass /* && m_camera.GetFrustum().AABBoxIn(min, max)*/)
+					{
+						DrawCubeTexture(m_resourceMgr.textureGrass, Vector3{ (float)x, -0.5f, (float)y }, 1, 1, 1, WHITE);
+						//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
+					}
+				}
+			}
 
-			//// floor - road
-			//for (int x = 0; x < MapSize; x++)
-			//{
-			//	for (int y = 0; y < MapSize; y++)
-			//	{
-			//		const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
-			//		const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
+			// floor - road
+			for (int x = 0; x < MapSize; x++)
+			{
+				for (int y = 0; y < MapSize; y++)
+				{
+					const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
+					const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
 
-			//		if (m_world.openworld.tiles[x][y].type == TileType::Road && m_camera.GetFrustum().AABBoxIn(min, max))
-			//		{
-			//			DrawCubeTexture(m_resourceMgr.textureRoad, Vector3{ (float)x, -0.5f, (float)y }, 1, 1, 1, WHITE);
-			//			//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
-			//		}
-			//	}
-			//}
+					if (m_world.openworld.tiles[x][y].type == TileType::Road && m_camera.GetFrustum().AABBoxIn(min, max))
+					{
+						DrawCubeTexture(m_resourceMgr.textureRoad, Vector3{ (float)x, -0.5f, (float)y }, 1, 1, 1, WHITE);
+						//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
+					}
+				}
+			}
 
-			//// tree
-			//for (int x = 0; x < MapSize; x++)
-			//{
-			//	for (int y = 0; y < MapSize; y++)
-			//	{
-			//		const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
-			//		const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
+			// tree
+			for (int x = 0; x < MapSize; x++)
+			{
+				for (int y = 0; y < MapSize; y++)
+				{
+					const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
+					const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
 
-			//		if (m_world.openworld.tiles[x][y].decor == TileDecorType::Tree)
-			//		{
-			//			if (m_camera.GetFrustum().AABBoxIn(min, max))
-			//			{
-			//				DrawCubeTexture(m_resourceMgr.textureTree, Vector3{ (float)x, 0.5f, (float)y }, 1, 1, 1, WHITE);
-			//				//DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
-			//				//DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
-			//			}
-			//		}
-			//	}
-			//}
+					if (m_world.openworld.tiles[x][y].decor == TileDecorType::Tree)
+					{
+						if (m_camera.GetFrustum().AABBoxIn(min, max))
+						{
+							DrawBillboard(m_camera.GetCamera(), m_resourceMgr.textureTree, Vector3{ (float)x, 1.0f, (float)y }, 2.0f, WHITE);
+							//DrawCubeTexture(m_resourceMgr.textureTree, Vector3{ (float)x, 0.5f, (float)y }, 1, 1, 1, WHITE);
+							//DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
+							//DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
+						}
+					}
+				}
+			}
+
+			// town
+			for (int x = 0; x < MapSize; x++)
+			{
+				for (int y = 0; y < MapSize; y++)
+				{
+					const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
+					const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
+
+					if (m_world.openworld.tiles[x][y].decor == TileDecorType::Town)
+					{
+						if (m_camera.GetFrustum().AABBoxIn(min, max))
+						{
+							DrawBillboard(m_camera.GetCamera(), m_resourceMgr.textureTown, Vector3{ (float)x, 1.0f, (float)y }, 2.0f, WHITE);
+							//DrawCubeTexture(m_resourceMgr.textureTree, Vector3{ (float)x, 0.5f, (float)y }, 1, 1, 1, WHITE);
+							//DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
+							//DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
+						}
+					}
+				}
+			}
 
 			EndMode3D();
 		}
@@ -259,14 +275,18 @@ void Game::Frame() noexcept
 			EndMode3D();
 		}*/
 
+		//// Model map
+		//{
+		//	BeginMode3D(m_camera.GetCamera());
+		//	DrawModel(model2, Vector3{ (float)0, 0.0f, (float)0 }, 1.0f, WHITE);
+		//	EndMode3D();
+		//}
+
 		// Sky
 		{
 			BeginMode3D(m_camera.GetCamera());
 			DrawModel(mountain, m_camera.GetCameraPosition(), 1, WHITE);
 			DrawModel(sky, m_camera.GetCameraPosition(), 1, WHITE);
-			BeginBlendMode(BLEND_ALPHA);
-			DrawModel(model2, Vector3{ (float)0, 0.0f, (float)0 }, 1.0f, WHITE);
-			EndBlendMode();
 			EndMode3D();
 		}
 	}

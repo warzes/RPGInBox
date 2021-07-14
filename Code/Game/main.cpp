@@ -22,6 +22,8 @@
 void GameMain() noexcept
 {
 	EngineConfig engineConfig;
+	engineConfig.window.width = 1900;
+	engineConfig.window.height = 1060;
 	engineConfig.window.vsync = true;
 
 	Engine engine;

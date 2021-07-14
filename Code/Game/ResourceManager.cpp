@@ -11,11 +11,11 @@ ResourceManager::~ResourceManager()
 //-----------------------------------------------------------------------------
 bool ResourceManager::Init()
 {
-	textureGrass = LoadTexture("../data/temp/textures/map/outdoor/plains-ground.png");
+	textureGrass = LoadTexture("../data/temp/textures/map/outdoor/plains-ground2.png");
 	textureRoad = LoadTexture("../data/temp/textures/map/outdoor/road.png");
 	
-	textureTree = LoadTexture("../data/temp/textures/map/outdoor/plains-tree.png");
-	textureTown = LoadTexture("../data/temp/textures/map/outdoor/town.png");
+	textureTree = LoadTexture("../data/temp/textures/map/outdoor/plains-tree2.png");
+	textureTown = LoadTexture("../data/temp/textures/map/outdoor/plains-tree3.png");
 	return true;
 }
 //-----------------------------------------------------------------------------

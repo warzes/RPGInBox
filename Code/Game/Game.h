@@ -32,6 +32,7 @@ private:
 	Texture2D textureModel;
 
 	Model model2;
+	Model model3;
 	Texture2D textureModel2;
 
 	//Texture2D texGlass;
