@@ -2758,7 +2758,7 @@ static void rlLoadShaderDefault(void)
         "void main()                        \n"
         "{                                  \n"
         "    vec4 texelColor = texture(texture0, fragTexCoord);   \n"
-        "    if (texelColor.a <.5) discard;                       \n"
+        "    if (texelColor.a < 0.02) discard; // My fix          \n"
         "    finalColor = texelColor*colDiffuse*fragColor;        \n"
         "}                                  \n";
 #endif
