@@ -9,10 +9,6 @@
 #		pragma comment(lib, "winmm.lib")
 #	endif
 #endif // SE_COMPILER_MSVC
-
-unrimp
-https://github.com/dimi309/small3d
-
 //https://github.com/andrewgasson/roguelike-7drl-2021
 //http://rlgclub.ru/wiki/Давайте_сделаем_рогалик_-_Ричард_Д._Кларк
 //https://bfnightly.bracketproductions.com/rustbook/chapter_2.html
@@ -25,8 +21,8 @@ https://github.com/dimi309/small3d
 void GameMain() noexcept
 {
 	EngineConfig engineConfig;
-	engineConfig.window.width = 1900;
-	engineConfig.window.height = 1060;
+	engineConfig.window.width = 1024;
+	engineConfig.window.height = 768;
 	engineConfig.window.vsync = true;
 
 	Engine engine;

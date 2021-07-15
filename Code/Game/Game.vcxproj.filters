@@ -19,6 +19,12 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Data</Filter>
     </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>RPG</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerParty.cpp">
+      <Filter>RPG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -38,6 +44,12 @@
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>RPG</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerParty.h">
+      <Filter>RPG</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
