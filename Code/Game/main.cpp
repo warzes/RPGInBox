@@ -10,6 +10,9 @@
 #	endif
 #endif // SE_COMPILER_MSVC
 
+unrimp
+https://github.com/dimi309/small3d
+
 //https://github.com/andrewgasson/roguelike-7drl-2021
 //http://rlgclub.ru/wiki/Давайте_сделаем_рогалик_-_Ричард_Д._Кларк
 //https://bfnightly.bracketproductions.com/rustbook/chapter_2.html
