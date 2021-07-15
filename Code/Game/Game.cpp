@@ -1,5 +1,7 @@
 ﻿#include "stdafx.h"
 #include "Game.h"
+#include <Engine/DebugNew.h>
+TODO("game state");
 //-----------------------------------------------------------------------------
 Game::Game(Engine& engine) noexcept
 	: m_engine(engine)
