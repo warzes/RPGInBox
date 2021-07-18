@@ -1,5 +1,8 @@
 #pragma once
 
+class IGameCamera;
+class ResourceManager;
+
 constexpr size_t MapSize = 50;
 
 enum class TileType
@@ -29,7 +32,12 @@ public:
 class Map final : NonCopyable, NonMovable
 {
 public:
-	void InitTest() noexcept;
+	bool InitTest() noexcept;
+
+	void Draw(ResourceManager& resources, IGameCamera* camera) noexcept;
 
 	Tile tiles[MapSize][MapSize];
+
+private:
+
 };

@@ -17,7 +17,7 @@ void FreeCamera::Setup(const float fovY, const Vector3& position, const float cu
 	m_previousMousePosition = GetMousePosition();
 }
 //-----------------------------------------------------------------------------
-void FreeCamera::Update(World& world) noexcept
+void FreeCamera::Update(const World& world) noexcept
 {
 	if (HideCursor && IsWindowFocused() != m_windowFocused && (UseMouseX || UseMouseY))
 	{

@@ -7,9 +7,10 @@ class Map;
 class PlayerTurnCamera final : public IGameCamera
 {
 public:
-
 	void Setup(const float fovY, const Vector3& position, const float currentRotateY = 0.0f) noexcept;
-	void Update(World& world) noexcept final;
+	void Update(const World& world) noexcept final;
+
+	bool IsProcessMoving() const noexcept { return m_isMoving; }
 
 private:
 	enum class rotateDirY

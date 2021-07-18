@@ -6,7 +6,7 @@ class FreeCamera final : public IGameCamera
 {
 public:
 	void Setup(const float fovY, const Vector3& position, const float currentRotateY = 0.0f) noexcept;
-	void Update(World& world) noexcept final;
+	void Update(const World& world) noexcept final;
 
 	Vector3 MoveSpeed = { 1.0f, 1.0f, 1.0f };
 	Vector2 TurnSpeed = { 90.0f, 90.0f };

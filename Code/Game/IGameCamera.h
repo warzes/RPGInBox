@@ -23,7 +23,7 @@ public:
 	IGameCamera() : ControlsKeys{ 'W', 'S', 'D', 'A', 'E', 'Q', KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_LEFT_SHIFT }	{}
 	virtual ~IGameCamera() = default;
 
-	virtual void Update(World& world) noexcept = 0;
+	virtual void Update(const World& world) noexcept = 0;
 
 	void SetCameraPosition(const Vector3& pos, float currentRotateY = 0.0f) noexcept
 	{

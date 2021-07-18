@@ -20,7 +20,7 @@ void PlayerTurnCamera::Setup(const float fovY, const Vector3& position, const fl
 	m_viewCamera.projection = CAMERA_PERSPECTIVE;
 }
 //-----------------------------------------------------------------------------
-void PlayerTurnCamera::Update(World& world) noexcept
+void PlayerTurnCamera::Update(const World& world) noexcept
 {
 	if (!m_isTurning)
 	{
@@ -49,8 +49,6 @@ void PlayerTurnCamera::Update(World& world) noexcept
 			m_isMoving = false;
 			m_cameraPosition.x = m_targetPosition.x;
 			m_cameraPosition.z = m_targetPosition.z;
-
-			world.Move({ (int)m_cameraPosition.x, (int)m_cameraPosition.z });
 		}
 		printf("CP = %f %f\n", m_cameraPosition.x, m_cameraPosition.z);
 	}

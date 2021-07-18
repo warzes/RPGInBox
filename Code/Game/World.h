@@ -12,7 +12,7 @@ public:
 	bool Init();
 
 	void Update(float deltaTime) noexcept;
-	void Draw(IGameCamera* camera) noexcept;
+	void Draw(ResourceManager& resources, IGameCamera* camera) noexcept;
 
 	void Move(const Point2& pos) noexcept;
 
