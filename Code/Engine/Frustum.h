@@ -3,6 +3,7 @@
 class Frustum final
 {
 public:
+	constexpr static size_t MaxFrustumPlanes = 6;
 	enum class FrustumPlanes
 	{
 		Back   = 0,
@@ -10,8 +11,7 @@ public:
 		Bottom = 2,
 		Top    = 3,
 		Right  = 4,
-		Left   = 5, 
-		Max    = 6
+		Left   = 5
 	};
 
 	Frustum() noexcept;
@@ -24,5 +24,5 @@ public:
 	bool SphereIn(const Vector3& position, float radius) const noexcept;
 	bool AABBoxIn(const Vector3& min, const Vector3& max) const noexcept;
 
-	Vector4 Planes[static_cast<size_t>(FrustumPlanes::Max)];
+	Vector4 Planes[MaxFrustumPlanes];
 };

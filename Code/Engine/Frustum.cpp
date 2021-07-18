@@ -2,7 +2,7 @@
 #include "Frustum.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-inline void NormalizePlane(Vector4& plane)
+inline void normalizePlane(Vector4& plane)
 {
 	const float magnitude = sqrtf(plane.x * plane.x + plane.y * plane.y + plane.z * plane.z);
 	plane.x /= magnitude;
@@ -47,22 +47,22 @@ void Frustum::Extract() noexcept
 	planes.m15 = modelview.m12 * projection.m3 + modelview.m13 * projection.m7 + modelview.m14 * projection.m11 + modelview.m15 * projection.m15;
 
 	Planes[static_cast<size_t>(FrustumPlanes::Right)] = { planes.m3 - planes.m0, planes.m7 - planes.m4, planes.m11 - planes.m8, planes.m15 - planes.m12 };
-	NormalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Right)]);
+	normalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Right)]);
 
 	Planes[static_cast<size_t>(FrustumPlanes::Left)] = { planes.m3 + planes.m0, planes.m7 + planes.m4, planes.m11 + planes.m8, planes.m15 + planes.m12 };
-	NormalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Left)]);
+	normalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Left)]);
 
 	Planes[static_cast<size_t>(FrustumPlanes::Top)] = { planes.m3 - planes.m1, planes.m7 - planes.m5, planes.m11 - planes.m9, planes.m15 - planes.m13 };
-	NormalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Top)]);
+	normalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Top)]);
 
 	Planes[static_cast<size_t>(FrustumPlanes::Bottom)] = { planes.m3 + planes.m1, planes.m7 + planes.m5, planes.m11 + planes.m9, planes.m15 + planes.m13 };
-	NormalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Bottom)]);
+	normalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Bottom)]);
 
 	Planes[static_cast<size_t>(FrustumPlanes::Back)] = { planes.m3 - planes.m2, planes.m7 - planes.m6, planes.m11 - planes.m10, planes.m15 - planes.m14 };
-	NormalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Back)]);
+	normalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Back)]);
 
 	Planes[static_cast<size_t>(FrustumPlanes::Front)] = { planes.m3 + planes.m2, planes.m7 + planes.m6, planes.m11 + planes.m10, planes.m15 + planes.m14 };
-	NormalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Front)]);
+	normalizePlane(Planes[static_cast<size_t>(FrustumPlanes::Front)]);
 }
 //-----------------------------------------------------------------------------
 float DistanceToPlane(const Vector4& plane, const Vector3& position) noexcept
@@ -77,7 +77,7 @@ float DistanceToPlane(const Vector4& plane, float x, float y, float z) noexcept
 //-----------------------------------------------------------------------------
 bool Frustum::PointIn(const Vector3& position) const noexcept
 {
-	for (size_t i = 0; i < static_cast<size_t>(FrustumPlanes::Max); i++)
+	for (size_t i = 0; i < MaxFrustumPlanes; i++)
 	{
 		if (DistanceToPlane(Planes[i], position) <= 0) // point is behind plane
 			return false;
@@ -88,7 +88,7 @@ bool Frustum::PointIn(const Vector3& position) const noexcept
 //-----------------------------------------------------------------------------
 bool Frustum::PointIn(float x, float y, float z) const noexcept
 {
-	for (size_t i = 0; i < static_cast<size_t>(FrustumPlanes::Max); i++)
+	for (size_t i = 0; i < MaxFrustumPlanes; i++)
 	{
 		if (DistanceToPlane(Planes[i], x, y, z) <= 0) // point is behind plane
 			return false;
@@ -99,7 +99,7 @@ bool Frustum::PointIn(float x, float y, float z) const noexcept
 //-----------------------------------------------------------------------------
 bool Frustum::SphereIn(const Vector3& position, float radius) const noexcept
 {
-	for (size_t i = 0; i < static_cast<size_t>(FrustumPlanes::Max); i++)
+	for (size_t i = 0; i < MaxFrustumPlanes; i++)
 	{
 		if (DistanceToPlane(Planes[i], position) < -radius) // center is behind plane by more than the radius
 			return false;
@@ -136,7 +136,7 @@ bool Frustum::AABBoxIn(const Vector3& min, const Vector3& max) const noexcept
 		return true;
 
 	// check to see if all points are outside of any one plane, if so the entire box is outside
-	for (size_t i = 0; i < static_cast<size_t>(FrustumPlanes::Max); i++)
+	for (size_t i = 0; i < MaxFrustumPlanes; i++)
 	{
 		bool oneInside = false;
 

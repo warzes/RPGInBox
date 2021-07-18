@@ -23,12 +23,6 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="GladImpl.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="GLFWImpl.c" />
     <ClCompile Include="raylib\core.c" />
     <ClCompile Include="raylib\models.c" />
@@ -38,10 +32,6 @@
     <ClCompile Include="raylib\text.c" />
     <ClCompile Include="raylib\textures.c" />
     <ClCompile Include="raylib\utils.c" />
-    <ClCompile Include="terminal.cpp" />
-    <ClCompile Include="terminaldraw.cpp" />
-    <ClCompile Include="terminalgui.cpp" />
-    <ClCompile Include="terminalwrite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="raylib\camera.h" />
@@ -53,10 +43,6 @@
     <ClInclude Include="raylib\rayutils.h" />
     <ClInclude Include="raylib\rlgl.h" />
     <ClInclude Include="raylib\utils.h" />
-    <ClInclude Include="terminal.h" />
-    <ClInclude Include="terminaldraw.h" />
-    <ClInclude Include="terminalgui.h" />
-    <ClInclude Include="terminalwrite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

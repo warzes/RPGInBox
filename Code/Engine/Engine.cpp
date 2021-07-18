@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Engine.h"
-#include "FPCamera.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 Engine::Engine() noexcept

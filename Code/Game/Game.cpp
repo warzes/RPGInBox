@@ -10,16 +10,14 @@ Game::Game(Engine& engine) noexcept
 //-----------------------------------------------------------------------------
 Game::~Game()
 {
-	Texture cubeTx;
-	Model cube;
-	Model mountain;
-	Texture mountTx;
-	Model sky;
-	Texture skyTx;
-	Shader shaderS;
-	Shader shaderM;
-	int frameLoc;
-	float frame = 0;
+	UnloadTexture(cubeTx);
+	UnloadModel(cube);
+	UnloadModel(mountain);
+	UnloadTexture(mountTx);
+	UnloadModel(sky);
+	UnloadTexture(skyTx);
+	UnloadShader(shaderS);
+	UnloadShader(shaderM);
 #if OLD_SCHOOL_RENDER
 	UnloadRenderTexture(target);
 #endif
@@ -127,7 +125,7 @@ bool Game::Init() noexcept
 //-----------------------------------------------------------------------------
 void Game::Update(float deltaTime) noexcept
 {
-	frame += 0.04 * deltaTime;
+	frame += 0.04f * deltaTime;
 	SetShaderValue(shaderS, frameLoc, &frame, SHADER_UNIFORM_FLOAT);
 
 	m_camera.Update(m_world);
