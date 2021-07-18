@@ -34,6 +34,9 @@
     <ClCompile Include="GameEnvironment.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="Sky.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -72,6 +75,9 @@
     <ClInclude Include="GameEnvironment.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="Sky.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -88,6 +94,9 @@
     </Filter>
     <Filter Include="World\Camera">
       <UniqueIdentifier>{6da80a9b-706f-4be5-9164-8ee15167750a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{5788410c-e8d0-4de0-9d5a-64d2af155c69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

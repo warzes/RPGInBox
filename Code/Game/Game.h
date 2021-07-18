@@ -27,38 +27,30 @@ private:
 
 	ResourceManager m_resourceMgr;
 	FreeCamera m_camera;
-	IGameCamera *m_currentCamera = nullptr;
 	PlayerTurnCamera m_cameraTurn;
+	IGameCamera *m_currentCamera = nullptr;
 	World m_world;
 
 	bool m_turnCamera = true;
 
-	Model model;
-	Texture2D textureModel;
-
-	Model model2;
-	Model model3;
-	Texture2D textureModel2;
-
-	//Texture2D texGlass;
-
-#if OLD_SCHOOL_RENDER
-	RenderTexture2D target = {};
-	Rectangle sourceRec = {};
-	Rectangle destRec = {};
-	Vector2 origin = { 0.0f, 0.0f };
-#endif
-
-	Image img;
-	Texture tx;
-	Texture cubeTx;
-	Model cube;
-	Model mountain;
-	Texture mountTx;
-	Model sky;
-	Texture skyTx;
-	Shader shaderS;
-	Shader shaderM;
-	int frameLoc;
-	float frame = 0;
+//	Model model;
+//	Texture2D textureModel;
+//
+//	Model model2;
+//	Model model3;
+//	Texture2D textureModel2;
+//
+//	//Texture2D texGlass;
+//
+//#if OLD_SCHOOL_RENDER
+//	RenderTexture2D target = {};
+//	Rectangle sourceRec = {};
+//	Rectangle destRec = {};
+//	Vector2 origin = { 0.0f, 0.0f };
+//#endif
+//
+//	Image img;
+//	Texture tx;
+//	Texture cubeTx;
+//	Model cube;
 };
