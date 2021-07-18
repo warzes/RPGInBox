@@ -1,6 +1,6 @@
 ﻿Текущий внесенный коммит рейлиба
-	Commits on Jul 12, 2021
-	* Use 60 FPS for textures_image_loading example (#1867)
+	Commits on Jul 18, 2021
+		Raspberry RPI/DRM keyboard fix 
 
 
 Мои изменения:

@@ -962,8 +962,9 @@ void DrawMeshInstanced(Mesh mesh, Material material, Matrix *transforms, int ins
     // NOTE: At this point the modelview matrix just contains the view matrix (camera)
     // That's because BeginMode3D() sets it and there is no model-drawing function
     // that modifies it, all use rlPushMatrix() and rlPopMatrix()
+    Matrix matModel = MatrixIdentity();
     Matrix matView = rlGetMatrixModelview();
-    Matrix matModelView = matView;
+    Matrix matModelView = MatrixIdentity();
     Matrix matProjection = rlGetMatrixProjection();
 
     // Upload view and projection matrices (if locations available)
@@ -1007,11 +1008,13 @@ void DrawMeshInstanced(Mesh mesh, Material material, Matrix *transforms, int ins
         // Model transformation matrix is send to shader uniform location: SHADER_LOC_MATRIX_MODEL
         if (material.shader.locs[SHADER_LOC_MATRIX_MODEL] != -1) rlSetUniformMatrix(material.shader.locs[SHADER_LOC_MATRIX_MODEL], transforms[0]);
 
-        // Accumulate several transformations:
-        //    matView: rlgl internal modelview matrix (actually, just view matrix)
+        // Accumulate several model transformations:
+        //    transforms[0]: model transformation provided (includes DrawModel() params combined with model.transform)
         //    rlGetMatrixTransform(): rlgl internal transform matrix due to push/pop matrix stack
-        //    transform: function parameter transformation
-        matModelView = MatrixMultiply(transforms[0], MatrixMultiply(rlGetMatrixTransform(), matView));
+        matModel = MatrixMultiply(transforms[0], rlGetMatrixTransform());
+
+        // Get model-view matrix
+        matModelView = MatrixMultiply(matModel, matView);
     }
 
     // Upload model normal matrix (if locations available)
@@ -1102,17 +1105,17 @@ void DrawMeshInstanced(Mesh mesh, Material material, Matrix *transforms, int ins
     for (int eye = 0; eye < eyesCount; eye++)
     {
         // Calculate model-view-projection matrix (MVP)
-        Matrix matMVP = MatrixIdentity();
-        if (eyesCount == 1) matMVP = MatrixMultiply(matModelView, matProjection);
+        Matrix matModelViewProjection = MatrixIdentity();
+        if (eyesCount == 1) matModelViewProjection = MatrixMultiply(matModelView, matProjection);
         else
         {
             // Setup current eye viewport (half screen width)
-            rlViewport(eye*rlGetFramebufferWidth()/2, 0, rlGetFramebufferWidth()/2, rlGetFramebufferHeight());
-            matMVP = MatrixMultiply(MatrixMultiply(matModelView, rlGetMatrixViewOffsetStereo(eye)), rlGetMatrixProjectionStereo(eye));
+            rlViewport(eye * rlGetFramebufferWidth() / 2, 0, rlGetFramebufferWidth() / 2, rlGetFramebufferHeight());
+            matModelViewProjection = MatrixMultiply(MatrixMultiply(matModelView, rlGetMatrixViewOffsetStereo(eye)), rlGetMatrixProjectionStereo(eye));
         }
 
         // Send combined model-view-projection matrix to shader
-        rlSetUniformMatrix(material.shader.locs[SHADER_LOC_MATRIX_MVP], matMVP);
+        rlSetUniformMatrix(material.shader.locs[SHADER_LOC_MATRIX_MVP], matModelViewProjection);
 
         if (instancing) // Draw mesh instanced
         {
@@ -2522,23 +2525,30 @@ BoundingBox GetMeshBoundingBox(Mesh mesh)
 // Implementation base don: https://answers.unity.com/questions/7789/calculating-tangents-vector4.html
 void GenMeshTangents(Mesh *mesh)
 {
-    if (mesh->tangents == NULL) mesh->tangents = (float *)RL_MALLOC(mesh->vertexCount*4*sizeof(float));
-    else TRACELOG(LOG_WARNING, "MESH: Tangents data already available, re-writting");
+    if (mesh->tangents == NULL)
+    {
+        mesh->tangents = (float*)RL_MALLOC(mesh->vertexCount * 4 * sizeof(float));
+    }
+    else
+    {
+        RL_FREE(mesh->tangents);
+        mesh->tangents = (float*)RL_MALLOC(mesh->vertexCount * 4 * sizeof(float));
+    }
 
-    Vector3 *tan1 = (Vector3 *)RL_MALLOC(mesh->vertexCount*sizeof(Vector3));
-    Vector3 *tan2 = (Vector3 *)RL_MALLOC(mesh->vertexCount*sizeof(Vector3));
+    Vector3* tan1 = (Vector3*)RL_MALLOC(mesh->vertexCount * sizeof(Vector3));
+    Vector3* tan2 = (Vector3*)RL_MALLOC(mesh->vertexCount * sizeof(Vector3));
 
     for (int i = 0; i < mesh->vertexCount; i += 3)
     {
         // Get triangle vertices
-        Vector3 v1 = { mesh->vertices[(i + 0)*3 + 0], mesh->vertices[(i + 0)*3 + 1], mesh->vertices[(i + 0)*3 + 2] };
-        Vector3 v2 = { mesh->vertices[(i + 1)*3 + 0], mesh->vertices[(i + 1)*3 + 1], mesh->vertices[(i + 1)*3 + 2] };
-        Vector3 v3 = { mesh->vertices[(i + 2)*3 + 0], mesh->vertices[(i + 2)*3 + 1], mesh->vertices[(i + 2)*3 + 2] };
+        Vector3 v1 = { mesh->vertices[(i + 0) * 3 + 0], mesh->vertices[(i + 0) * 3 + 1], mesh->vertices[(i + 0) * 3 + 2] };
+        Vector3 v2 = { mesh->vertices[(i + 1) * 3 + 0], mesh->vertices[(i + 1) * 3 + 1], mesh->vertices[(i + 1) * 3 + 2] };
+        Vector3 v3 = { mesh->vertices[(i + 2) * 3 + 0], mesh->vertices[(i + 2) * 3 + 1], mesh->vertices[(i + 2) * 3 + 2] };
 
         // Get triangle texcoords
-        Vector2 uv1 = { mesh->texcoords[(i + 0)*2 + 0], mesh->texcoords[(i + 0)*2 + 1] };
-        Vector2 uv2 = { mesh->texcoords[(i + 1)*2 + 0], mesh->texcoords[(i + 1)*2 + 1] };
-        Vector2 uv3 = { mesh->texcoords[(i + 2)*2 + 0], mesh->texcoords[(i + 2)*2 + 1] };
+        Vector2 uv1 = { mesh->texcoords[(i + 0) * 2 + 0], mesh->texcoords[(i + 0) * 2 + 1] };
+        Vector2 uv2 = { mesh->texcoords[(i + 1) * 2 + 0], mesh->texcoords[(i + 1) * 2 + 1] };
+        Vector2 uv3 = { mesh->texcoords[(i + 2) * 2 + 0], mesh->texcoords[(i + 2) * 2 + 1] };
 
         float x1 = v2.x - v1.x;
         float y1 = v2.y - v1.y;
@@ -2552,11 +2562,11 @@ void GenMeshTangents(Mesh *mesh)
         float s2 = uv3.x - uv1.x;
         float t2 = uv3.y - uv1.y;
 
-        float div = s1*t2 - s2*t1;
-        float r = (div == 0.0f)? 0.0f : 1.0f/div;
+        float div = s1 * t2 - s2 * t1;
+        float r = (div == 0.0f) ? 0.0f : 1.0f / div;
 
-        Vector3 sdir = { (t2*x1 - t1*x2)*r, (t2*y1 - t1*y2)*r, (t2*z1 - t1*z2)*r };
-        Vector3 tdir = { (s1*x2 - s2*x1)*r, (s1*y2 - s2*y1)*r, (s1*z2 - s2*z1)*r };
+        Vector3 sdir = { (t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r };
+        Vector3 tdir = { (s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r };
 
         tan1[i + 0] = sdir;
         tan1[i + 1] = sdir;
@@ -2570,31 +2580,49 @@ void GenMeshTangents(Mesh *mesh)
     // Compute tangents considering normals
     for (int i = 0; i < mesh->vertexCount; ++i)
     {
-        Vector3 normal = { mesh->normals[i*3 + 0], mesh->normals[i*3 + 1], mesh->normals[i*3 + 2] };
+        Vector3 normal = { mesh->normals[i * 3 + 0], mesh->normals[i * 3 + 1], mesh->normals[i * 3 + 2] };
         Vector3 tangent = tan1[i];
 
         // TODO: Review, not sure if tangent computation is right, just used reference proposed maths...
-    #if defined(COMPUTE_TANGENTS_METHOD_01)
+#if defined(COMPUTE_TANGENTS_METHOD_01)
         Vector3 tmp = Vector3Subtract(tangent, Vector3Scale(normal, Vector3DotProduct(normal, tangent)));
         tmp = Vector3Normalize(tmp);
-        mesh->tangents[i*4 + 0] = tmp.x;
-        mesh->tangents[i*4 + 1] = tmp.y;
-        mesh->tangents[i*4 + 2] = tmp.z;
-        mesh->tangents[i*4 + 3] = 1.0f;
-    #else
+        mesh->tangents[i * 4 + 0] = tmp.x;
+        mesh->tangents[i * 4 + 1] = tmp.y;
+        mesh->tangents[i * 4 + 2] = tmp.z;
+        mesh->tangents[i * 4 + 3] = 1.0f;
+#else
         Vector3OrthoNormalize(&normal, &tangent);
-        mesh->tangents[i*4 + 0] = tangent.x;
-        mesh->tangents[i*4 + 1] = tangent.y;
-        mesh->tangents[i*4 + 2] = tangent.z;
-        mesh->tangents[i*4 + 3] = (Vector3DotProduct(Vector3CrossProduct(normal, tangent), tan2[i]) < 0.0f)? -1.0f : 1.0f;
-    #endif
+        mesh->tangents[i * 4 + 0] = tangent.x;
+        mesh->tangents[i * 4 + 1] = tangent.y;
+        mesh->tangents[i * 4 + 2] = tangent.z;
+        mesh->tangents[i * 4 + 3] = (Vector3DotProduct(Vector3CrossProduct(normal, tangent), tan2[i]) < 0.0f) ? -1.0f : 1.0f;
+#endif
     }
 
     RL_FREE(tan1);
     RL_FREE(tan2);
 
-    // Load a new tangent attributes buffer
-    mesh->vboId[SHADER_LOC_VERTEX_TANGENT] = rlLoadVertexBuffer(mesh->tangents, mesh->vertexCount*4*sizeof(float), false);
+
+    if (mesh->vboId != NULL)
+    {
+
+        if (mesh->vboId[SHADER_LOC_VERTEX_TANGENT] != 0)
+        {
+            // Upate existing vertex buffer
+            rlUpdateVertexBuffer(mesh->vboId[SHADER_LOC_VERTEX_TANGENT], mesh->tangents, mesh->vertexCount * 4 * sizeof(float), 0);
+        }
+        else
+        {
+            // Load a new tangent attributes buffer
+            mesh->vboId[SHADER_LOC_VERTEX_TANGENT] = rlLoadVertexBuffer(mesh->tangents, mesh->vertexCount * 4 * sizeof(float), false);
+        }
+
+        rlEnableVertexArray(mesh->vaoId);
+        rlSetVertexAttribute(4, 4, RL_FLOAT, 0, 0, 0);
+        rlEnableVertexAttribute(4);
+        rlDisableVertexArray();
+    }
 
     TRACELOG(LOG_INFO, "MESH: Tangents data computed for provided mesh");
 }
