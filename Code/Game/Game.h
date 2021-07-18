@@ -1,7 +1,8 @@
 #pragma once
 
 #include "ResourceManager.h"
-#include "PlayerGameCamera3D.h"
+#include "FreeCamera.h"
+#include "PlayerTurnCamera.h"
 #include "World.h"
 
 class Game final : NonCopyable, NonMovable
@@ -25,8 +26,12 @@ private:
 	bool m_isEnd = true;
 
 	ResourceManager m_resourceMgr;
-	PlayerGameCamera3D m_camera;
+	FreeCamera m_camera;
+	IGameCamera *m_currentCamera = nullptr;
+	PlayerTurnCamera m_cameraTurn;
 	World m_world;
+
+	bool m_turnCamera = true;
 
 	Model model;
 	Texture2D textureModel;

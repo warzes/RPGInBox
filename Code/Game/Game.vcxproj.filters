@@ -3,14 +3,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="PlayerGameCamera3D.cpp">
+    <ClCompile Include="FreeCamera.cpp">
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="World.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
@@ -25,18 +22,24 @@
     <ClCompile Include="PlayerParty.cpp">
       <Filter>RPG</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>RPG</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyParty.cpp">
+      <Filter>RPG</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTurnCamera.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="PlayerGameCamera3D.h">
+    <ClInclude Include="FreeCamera.h">
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="World.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
@@ -50,6 +53,18 @@
     </ClInclude>
     <ClInclude Include="PlayerParty.h">
       <Filter>RPG</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>RPG</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyParty.h">
+      <Filter>RPG</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTurnCamera.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameCamera.h">
+      <Filter>World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

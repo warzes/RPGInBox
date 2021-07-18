@@ -20,6 +20,7 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 #include <chrono>
 #include <string>
 #include <functional>
+#include <vector>
 
 SE_PRAGMA_WARNING_POP
 

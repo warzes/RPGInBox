@@ -183,12 +183,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyParty.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerGameCamera3D.cpp" />
+    <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="PlayerParty.cpp" />
+    <ClCompile Include="PlayerTurnCamera.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -200,11 +202,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigDefine.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyParty.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerGameCamera3D.h" />
+    <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="PlayerParty.h" />
+    <ClInclude Include="PlayerTurnCamera.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="stdafx.h" />

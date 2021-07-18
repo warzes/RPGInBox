@@ -31,17 +31,20 @@ bool Game::Init() noexcept
 	if (!m_resourceMgr.Init())
 		return false;
 
+	m_cameraTurn.Setup(45.0f, Vector3{ 0.0f, 0.0f, 0.0f });
 	m_camera.Setup(45.0f, Vector3{ 0.0f, 0.0f, 0.0f });
-#if !TURN_STEP
 	m_camera.MoveSpeed.z = 10;
 	m_camera.MoveSpeed.x = 5;
-#endif
+
+	if (m_turnCamera) m_currentCamera = &m_cameraTurn;
+	else m_currentCamera = &m_camera;
+
 	if (!m_world.Init())
 		return false;
 
 	auto playerPos = m_world.playerParty.GetPosition();
 
-	m_camera.SetCameraPosition({ (float)playerPos.x, 0.0f, (float)playerPos.y }, 0.0f);
+	m_cameraTurn.SetCameraPosition({ (float)playerPos.x, 0.0f, (float)playerPos.y }, 0.0f);
 
 	img = GenImageChecked(256, 256, 32, 32, DARKGRAY, WHITE);
 	tx = LoadTextureFromImage(img);
@@ -54,7 +57,7 @@ bool Game::Init() noexcept
 	SetTextureWrap(tx, TEXTURE_WRAP_CLAMP);
 
 	cubeTx = LoadTexture("../resources/test.png");
-	cube = LoadModelFromMesh(GenMeshCube(.6, .6, .6));
+	cube = LoadModelFromMesh(GenMeshCube(.6f, .6f, .6f));
 	cube.materials[0].maps[MAP_DIFFUSE].texture = cubeTx;
 
 	mountain = LoadModel("../resources/mountain.glb");
@@ -87,7 +90,6 @@ bool Game::Init() noexcept
 	// frame counter
 	frameLoc = GetShaderLocation(shaderS, "frame");
 
-
 #if OLD_SCHOOL_RENDER
 	const int screenWidth = GetScreenWidth();
 	const int screenHeight = GetScreenHeight();
@@ -104,7 +106,6 @@ bool Game::Init() noexcept
 	destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
 #endif
 
-
 	model = LoadModel("../data/temp/model/tile/floor01.obj"); // Load model
 	textureModel = LoadTexture("../data/temp/model/tile/tileset.png"); // Load model texture
 	model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = textureModel; // Set map diffuse texture
@@ -115,7 +116,6 @@ bool Game::Init() noexcept
 
 	model3 = LoadModel("../data/temp/model/tree.obj"); // Load model
 	model3.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = textureModel2; // Set map diffuse texture
-
 
 	//texGlass = LoadTexture("../data/temp/textures/map/outdoor/plains-ground.png"); // Load model texture
 
@@ -128,7 +128,7 @@ void Game::Update(float deltaTime) noexcept
 	frame += 0.04f * deltaTime;
 	SetShaderValue(shaderS, frameLoc, &frame, SHADER_UNIFORM_FLOAT);
 
-	m_camera.Update(m_world);
+	m_currentCamera->Update(m_world);
 }
 //-----------------------------------------------------------------------------
 void Game::Frame() noexcept
@@ -147,9 +147,11 @@ void Game::Frame() noexcept
 
 		// World map
 		{
-			BeginMode3D(m_camera.GetCamera());
+			BeginMode3D(m_currentCamera->GetCamera());
+			m_currentCamera->ExtractFrustum();
+			
 			//DrawModel(model, Vector3{ (float)0, 0.0f, (float)0 }, 0.5f, WHITE); // это проверка размера меша
-			m_camera.ExtractFrustum();
+			
 			//DrawModel(model2, Vector3{ (float)0, 0.0f, (float)0 }, 1.0f, WHITE);
 	
 			// почему в разных циклах? чтобы не ломать батчинг, так как рейлиб не сортирует свою геометрию (кстати, меши не батчатся)
@@ -178,7 +180,7 @@ void Game::Frame() noexcept
 					const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
 					const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
 
-					if (m_world.openworld.tiles[x][y].type == TileType::Road && m_camera.GetFrustum().AABBoxIn(min, max))
+					if (m_world.openworld.tiles[x][y].type == TileType::Road && m_currentCamera->GetFrustum().AABBoxIn(min, max))
 					{
 						DrawCubeTexture(m_resourceMgr.textureRoad, Vector3{ (float)x, -0.5f, (float)y }, 1, 1, 1, WHITE);
 						//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
@@ -196,9 +198,9 @@ void Game::Frame() noexcept
 
 					if (m_world.openworld.tiles[x][y].decor == TileDecorType::Tree)
 					{
-						if (m_camera.GetFrustum().AABBoxIn(min, max))
+						if (m_currentCamera->GetFrustum().AABBoxIn(min, max))
 						{
-							DrawBillboard(m_camera.GetCamera(), m_resourceMgr.textureTree, Vector3{ (float)x, 1.0f, (float)y }, 2.0f, WHITE);
+							DrawBillboard(m_currentCamera->GetCamera(), m_resourceMgr.textureTree, Vector3{ (float)x, 1.0f, (float)y }, 2.0f, WHITE);
 							//DrawCubeTexture(m_resourceMgr.textureTree, Vector3{ (float)x, 0.5f, (float)y }, 1, 1, 1, WHITE);
 							//DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
 							//DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
@@ -217,9 +219,9 @@ void Game::Frame() noexcept
 
 					if (m_world.openworld.tiles[x][y].decor == TileDecorType::Town)
 					{
-						if (m_camera.GetFrustum().AABBoxIn(min, max))
+						if (m_currentCamera->GetFrustum().AABBoxIn(min, max))
 						{
-							DrawBillboard(m_camera.GetCamera(), m_resourceMgr.textureTown, Vector3{ (float)x, 1.0f, (float)y }, 2.0f, WHITE);
+							DrawBillboard(m_currentCamera->GetCamera(), m_resourceMgr.textureTown, Vector3{ (float)x, 1.0f, (float)y }, 2.0f, WHITE);
 							//DrawCubeTexture(m_resourceMgr.textureTree, Vector3{ (float)x, 0.5f, (float)y }, 1, 1, 1, WHITE);
 							//DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
 							//DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
@@ -284,9 +286,9 @@ void Game::Frame() noexcept
 
 		// Sky
 		{
-			BeginMode3D(m_camera.GetCamera());
-			DrawModel(mountain, m_camera.GetCameraPosition(), 1, WHITE);
-			DrawModel(sky, m_camera.GetCameraPosition(), 1, WHITE);
+			BeginMode3D(m_currentCamera->GetCamera());
+			DrawModel(mountain, m_currentCamera->GetCameraPosition(), 1, WHITE);
+			DrawModel(sky, m_currentCamera->GetCameraPosition(), 1, WHITE);
 			EndMode3D();
 		}
 	}

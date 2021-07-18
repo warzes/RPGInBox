@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Player.h"
+#include "PlayerParty.h"
 #include "Map.h"
 
 class World final : NonCopyable, NonMovable
@@ -9,9 +9,9 @@ public:
 	~World();
 	bool Init();
 
-	void Move(const Vector3& pos) noexcept;
+	void Move(const Point2& pos) noexcept;
 
-	Party playerParty;
+	PlayerParty playerParty;
 	Map openworld;
 private:		
 };

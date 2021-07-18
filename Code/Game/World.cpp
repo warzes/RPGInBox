@@ -13,7 +13,7 @@ bool World::Init()
 	return true;
 }
 //-----------------------------------------------------------------------------
-void World::Move(const Vector3& pos) noexcept
+void World::Move(const Point2& pos) noexcept
 {
 	if (playerParty.Move(pos))
 	{
