@@ -24,9 +24,10 @@ class Tile final : NonCopyable, NonMovable
 public:
 	bool IsBlocked() const { return decor != TileDecorType::None; }
 
+	void Draw(ResourceManager& resources, IGameCamera* camera, const Vector2& pos);
+
 	TileType type = TileType::Grass;
 	TileDecorType decor = TileDecorType::None;
-
 };
 
 class Map final : NonCopyable, NonMovable

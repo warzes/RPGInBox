@@ -10,14 +10,9 @@ Game::Game(Engine& engine) noexcept
 //-----------------------------------------------------------------------------
 Game::~Game()
 {
-//	UnloadTexture(cubeTx);
-//	UnloadModel(cube);
-//#if OLD_SCHOOL_RENDER
-//	UnloadRenderTexture(target);
-//#endif
-//	UnloadTexture(textureModel);     // Unload texture
-//	UnloadModel(model);         // Unload model
-//	UnloadTexture(tx);
+#if OLD_SCHOOL_RENDER
+	UnloadRenderTexture(target);
+#endif
 }
 //-----------------------------------------------------------------------------
 bool Game::Init() noexcept
@@ -39,49 +34,21 @@ bool Game::Init() noexcept
 
 	m_cameraTurn.SetCameraPosition({ (float)playerPos.x, 0.0f, (float)playerPos.y }, 0.0f);
 
-//	img = GenImageChecked(256, 256, 32, 32, DARKGRAY, WHITE);
-//	tx = LoadTextureFromImage(img);
-//	UnloadImage(img);
-//#if OLD_SCHOOL_RENDER
-//	SetTextureFilter(tx, TEXTURE_FILTER_POINT);
-//#else
-//	SetTextureFilter(tx, TEXTURE_FILTER_ANISOTROPIC_16X);
-//#endif
-//	SetTextureWrap(tx, TEXTURE_WRAP_CLAMP);
-//
-//	cubeTx = LoadTexture("../resources/test.png");
-//	cube = LoadModelFromMesh(GenMeshCube(.6f, .6f, .6f));
-//	cube.materials[0].maps[MAP_DIFFUSE].texture = cubeTx;
-//
+#if OLD_SCHOOL_RENDER
+	const int screenWidth = GetScreenWidth();
+	const int screenHeight = GetScreenHeight();
 
-//#if OLD_SCHOOL_RENDER
-//	const int screenWidth = GetScreenWidth();
-//	const int screenHeight = GetScreenHeight();
-//
-//	const int virtualScreenWidth = 320;
-//	const int virtualScreenHeight = 240;
-//
-//	const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
-//
-//	target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight); // This is where we'll draw all our objects.
-//
-//	 // The target's height is flipped (in the source Rectangle), due to OpenGL reasons
-//	sourceRec = { 0.0f, 0.0f, (float)target.texture.width, -(float)target.texture.height };
-//	destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
-//#endif
-//
-//	model = LoadModel("../data/temp/model/tile/floor01.obj"); // Load model
-//	textureModel = LoadTexture("../data/temp/model/tile/tileset.png"); // Load model texture
-//	model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = textureModel; // Set map diffuse texture
-//	//BoundingBox bounds = GetMeshBoundingBox(model.meshes[0]);
-//	model2 = LoadModel("../data/temp/model/tempmap.obj"); // Load model
-//	textureModel2 = LoadTexture("../data/temp/model/temptile.png"); // Load model texture
-//	model2.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = textureModel2; // Set map diffuse texture
-//
-//	model3 = LoadModel("../data/temp/model/tree.obj"); // Load model
-//	model3.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = textureModel2; // Set map diffuse texture
-//
-//	//texGlass = LoadTexture("../data/temp/textures/map/outdoor/plains-ground.png"); // Load model texture
+	const int virtualScreenWidth = 320;
+	const int virtualScreenHeight = 240;
+
+	const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
+
+	target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight); // This is where we'll draw all our objects.
+
+	 // The target's height is flipped (in the source Rectangle), due to OpenGL reasons
+	sourceRec = { 0.0f, 0.0f, (float)target.texture.width, -(float)target.texture.height };
+	destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
+#endif
 
 	m_isEnd = false;
 	return true;

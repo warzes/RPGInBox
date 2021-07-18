@@ -4,6 +4,38 @@
 #include "ResourceManager.h"
 #include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------
+void Tile::Draw(ResourceManager& resources, IGameCamera* camera, const Vector2& pos)
+{
+	// Floor render	
+	if (type == TileType::Grass )
+	{
+		DrawCubeTexture(resources.textureGrass, {pos.x, -0.5f, pos.y}, 1, 1, 1, WHITE);
+		//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
+	}
+	else if (type == TileType::Road)
+	{
+		DrawCubeTexture(resources.textureRoad, { pos.x, -0.5f, pos.y }, 1, 1, 1, WHITE);
+		//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
+	}
+
+	// object render
+
+	if (decor == TileDecorType::Tree)
+	{
+		DrawBillboard(camera->GetCamera(), resources.textureTree, { pos.x, 1.0f, pos.y }, 2.0f, WHITE);
+		//DrawCubeTexture(m_resourceMgr.textureTree, Vector3{ (float)x, 0.5f, (float)y }, 1, 1, 1, WHITE);
+		//DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
+		//DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
+	}
+	else if (decor == TileDecorType::Town)
+	{
+		DrawBillboard(camera->GetCamera(), resources.textureTown, { pos.x, 1.0f, pos.y }, 2.0f, WHITE);
+			//DrawCubeTexture(m_resourceMgr.textureTree, Vector3{ (float)x, 0.5f, (float)y }, 1, 1, 1, WHITE);
+			//DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
+			//DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
+	}
+}
+//-----------------------------------------------------------------------------
 bool Map::InitTest() noexcept
 {
 	for (int x = 0; x < MapSize; x++)
@@ -34,79 +66,20 @@ void Map::Draw(ResourceManager& resources, IGameCamera* camera) noexcept
 	camera->ExtractFrustum();
 
 	//не нужно перебирать всю карту, у меня есть направление камеры, вот начиная от игрока и в глубь идти (можно даже прерывать если точно за текущим тайлом не будет видно остальных - типа стены в данже)
-//	перебор всего оставить для свободной камеры
+	//	перебор всего оставить для свободной камеры
 
-	// floor - grass
-	for (int x = 0; x < MapSize; x++)
+	for (unsigned x = 0; x < MapSize; x++)
 	{
-		for (int y = 0; y < MapSize; y++)
+		for (unsigned y = 0; y < MapSize; y++)
 		{
-			const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
-			const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
+			const Vector3 min = { (float)x - 0.5f, 0.0f, (float)y - 0.5f };
+			const Vector3 max = { (float)x + 0.5f, 2.0f, (float)y + 0.5f };
 
-			if (tiles[x][y].type == TileType::Grass /* && m_camera.GetFrustum().AABBoxIn(min, max)*/)
+			if (camera->GetFrustum().AABBoxIn(min, max))
 			{
-				DrawCubeTexture(resources.textureGrass, Vector3{ (float)x, -0.5f, (float)y }, 1, 1, 1, WHITE);
-				//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
+				tiles[x][y].Draw(resources, camera, { (float)x, (float)y });
 			}
-		}
-	}
 
-	// floor - road
-	for (int x = 0; x < MapSize; x++)
-	{
-		for (int y = 0; y < MapSize; y++)
-		{
-			const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
-			const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
-
-			if (tiles[x][y].type == TileType::Road && camera->GetFrustum().AABBoxIn(min, max))
-			{
-				DrawCubeTexture(resources.textureRoad, Vector3{ (float)x, -0.5f, (float)y }, 1, 1, 1, WHITE);
-				//DrawModel(model, Vector3{ (float)x, 0.0f, (float)y }, 0.5f, WHITE);
-			}
-		}
-	}
-
-	// tree
-	for (int x = 0; x < MapSize; x++)
-	{
-		for (int y = 0; y < MapSize; y++)
-		{
-			const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
-			const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
-
-			if (tiles[x][y].decor == TileDecorType::Tree)
-			{
-				if (camera->GetFrustum().AABBoxIn(min, max))
-				{
-					DrawBillboard(camera->GetCamera(), resources.textureTree, Vector3{ (float)x, 1.0f, (float)y }, 2.0f, WHITE);
-					//DrawCubeTexture(m_resourceMgr.textureTree, Vector3{ (float)x, 0.5f, (float)y }, 1, 1, 1, WHITE);
-					//DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
-					//DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
-				}
-			}
-		}
-	}
-
-	// town
-	for (int x = 0; x < MapSize; x++)
-	{
-		for (int y = 0; y < MapSize; y++)
-		{
-			const Vector3 min = { x - 0.5f, 0.0f, y - 0.5f };
-			const Vector3 max = { x + 0.5f, 1.0f, y + 0.5f };
-
-			if (tiles[x][y].decor == TileDecorType::Town)
-			{
-				if (camera->GetFrustum().AABBoxIn(min, max))
-				{
-					DrawBillboard(camera->GetCamera(), resources.textureTown, Vector3{ (float)x, 1.0f, (float)y }, 2.0f, WHITE);
-					//DrawCubeTexture(m_resourceMgr.textureTree, Vector3{ (float)x, 0.5f, (float)y }, 1, 1, 1, WHITE);
-					//DrawCubeTexture(tx, Vector3{ (float)x, 1.5f, (float)y }, 1, 1, 1, GREEN);
-					//DrawCubeTexture(tx, Vector3{ (float)x, 0.5f, (float)y }, 0.25f, 1, 0.25f, BROWN);
-				}
-			}
 		}
 	}
 
