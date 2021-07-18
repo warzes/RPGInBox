@@ -182,6 +182,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BattleEngine.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyParty.cpp" />
@@ -203,6 +204,7 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BattleEngine.h" />
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyParty.h" />

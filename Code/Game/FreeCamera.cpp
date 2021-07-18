@@ -60,7 +60,6 @@ void FreeCamera::Update(const World& world) noexcept
 	// Mouse movement detection
 	Vector2 mousePositionDelta = { 0.0f, 0.0f };
 	Vector2 mousePosition = GetMousePosition();
-	float mouseWheelMove = GetMouseWheelMove();
 
 	mousePositionDelta.x = mousePosition.x - m_previousMousePosition.x;
 	mousePositionDelta.y = mousePosition.y - m_previousMousePosition.y;

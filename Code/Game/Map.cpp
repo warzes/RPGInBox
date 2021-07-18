@@ -79,7 +79,6 @@ void Map::Draw(ResourceManager& resources, IGameCamera* camera) noexcept
 			{
 				tiles[x][y].Draw(resources, camera, { (float)x, (float)y });
 			}
-
 		}
 	}
 

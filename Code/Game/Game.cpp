@@ -20,8 +20,8 @@ bool Game::Init() noexcept
 	if (!m_resourceMgr.Init())
 		return false;
 
-	m_cameraTurn.Setup(45.0f, Vector3{ 0.0f, 0.0f, 0.0f });
-	m_camera.Setup(45.0f, Vector3{ 0.0f, 0.0f, 0.0f });
+	m_cameraTurn.Setup(45.0f, { 0.0f, 0.0f, 0.0f });
+	m_camera.Setup(45.0f, { 0.0f, 0.0f, 0.0f });
 	m_camera.MoveSpeed.z = 10;
 	m_camera.MoveSpeed.x = 5;
 	if (m_turnCamera) m_currentCamera = &m_cameraTurn;
@@ -57,12 +57,15 @@ bool Game::Init() noexcept
 void Game::Update(float deltaTime) noexcept
 {
 	m_world.Update(deltaTime);
-	// TODO: возможно логику камеру также перенести в ворд?
-	m_currentCamera->Update(m_world);
-	if (!m_cameraTurn.IsProcessMoving())
+	// TODO: возможно логику камеру также перенести в m_world?
+	if (m_world.environment.GetStatus() == GameStatus::Exploring)
 	{
-		auto const& camPos = m_currentCamera->GetCameraPosition();
-		m_world.Move({ (int)camPos.x, (int)camPos.z });
+		m_currentCamera->Update(m_world);
+		if (!m_cameraTurn.IsProcessMoving())
+		{
+			auto const& camPos = m_currentCamera->GetCameraPosition();
+			m_world.Move({ (int)camPos.x, (int)camPos.z });
+		}
 	}
 }
 //-----------------------------------------------------------------------------

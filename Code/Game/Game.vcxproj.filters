@@ -37,6 +37,9 @@
     <ClCompile Include="Sky.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="BattleEngine.cpp">
+      <Filter>Battle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -77,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="Sky.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleEngine.h">
+      <Filter>Battle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,10 +4,12 @@
 #include "Map.h"
 #include "GameEnvironment.h"
 #include "Sky.h"
+#include "BattleEngine.h"
 
 class World final : NonCopyable, NonMovable
 {
 public:
+	World();
 	~World();
 	bool Init();
 
@@ -20,5 +22,9 @@ public:
 	Map openworld;
 	GameEnvironment environment;
 private:
+	EnemyParty getTestEnemy();
 	Sky m_sky;
+	BattleEngine m_battleEngine;
+
+	bool m_battle = false;
 };
