@@ -21,6 +21,10 @@ bool Engine::Init(const EngineConfig& config) noexcept
 	_CrtSetDbgFlag(flag); // Set flag to the new value
 #endif
 
+#if !SE_DEBUG
+	srand(time(0));
+#endif
+
 	if (!log.open(config.LogName))
 		return false;
 

@@ -2,6 +2,7 @@
 
 #include "PlayerParty.h"
 #include "Map.h"
+#include "GameEnvironment.h"
 
 class World final : NonCopyable, NonMovable
 {
@@ -13,5 +14,6 @@ public:
 
 	PlayerParty playerParty;
 	Map openworld;
+	GameEnvironment environment;
 private:		
 };

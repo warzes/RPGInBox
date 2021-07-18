@@ -186,6 +186,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyParty.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameEnvironment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyParty.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameEnvironment.h" />
     <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="FreeCamera.h" />
