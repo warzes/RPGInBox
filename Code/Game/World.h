@@ -9,9 +9,9 @@
 class World final : NonCopyable, NonMovable
 {
 public:
-	World();
+	World(ResourceManager& resources);
 	~World();
-	bool Init(ResourceManager& resources);
+	bool Init();
 
 	void Update(float deltaTime) noexcept;
 	void Draw(IGameCamera* camera) noexcept;
@@ -23,8 +23,12 @@ public:
 	GameEnvironment environment;
 private:
 	EnemyParty getTestEnemy();
+
+	ResourceManager& m_resources;
+
 	Sky m_sky;
 	BattleEngine m_battleEngine;
+
 
 	bool m_battle = false;
 };

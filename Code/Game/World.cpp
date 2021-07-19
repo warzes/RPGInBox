@@ -1,22 +1,22 @@
 ﻿#include "stdafx.h"
 #include "World.h"
-World::World()
+World::World(ResourceManager& resources)
 	: m_battleEngine(playerParty)
+	, m_resources(resources)
 {
 }
 //-----------------------------------------------------------------------------
 World::~World()
 {
-
 }
 //-----------------------------------------------------------------------------
-bool World::Init(ResourceManager& resources)
+bool World::Init()
 {
 	if (!m_sky.Init())
 		return false;
 
 	playerParty.SetPosition({ 0,0 });
-	if (!openworld.InitTest(resources))
+	if (!openworld.InitTest(m_resources))
 		return false;
 
 	return true;
@@ -35,7 +35,7 @@ void World::Update(float deltaTime) noexcept
 		if (!m_battle) // битва начинается
 		{
 			m_battle = true;
-			m_battleEngine.StartBattle(getTestEnemy());
+			m_battleEngine.StartBattle(m_resources, getTestEnemy());
 		}
 		else
 		{

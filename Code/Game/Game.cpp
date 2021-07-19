@@ -4,6 +4,7 @@
 //-----------------------------------------------------------------------------
 Game::Game(Engine& engine) noexcept
 	: m_engine(engine)
+	, m_world(m_resourceMgr)
 {
 }
 //-----------------------------------------------------------------------------
@@ -23,7 +24,7 @@ bool Game::Init() noexcept
 	if (m_turnCamera) m_currentCamera = &m_cameraTurn;
 	else m_currentCamera = &m_camera;
 
-	if (!m_world.Init(m_resourceMgr))
+	if (!m_world.Init())
 		return false;
 
 	auto playerPos = m_world.playerParty.GetPosition();

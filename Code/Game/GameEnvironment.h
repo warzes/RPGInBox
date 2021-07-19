@@ -21,7 +21,7 @@ private:
 	void setBattle(const World& world);
 	unsigned m_dangerLevel = 0;
 
-	GameStatus m_status = GameStatus::Exploring;
+	GameStatus m_status = GameStatus::Battle;
 
 
 	// TODO: game time
