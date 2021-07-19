@@ -20,7 +20,7 @@ private:
 	struct member
 	{
 		enum class type_{player, enemy} type;
-		unsigned number = 0;
+		unsigned number;
 	} membersInitiative;
 
 	unsigned m_numberMembers = 0;
