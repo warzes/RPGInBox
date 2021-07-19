@@ -16,10 +16,7 @@ public:
 	void Update(float deltaTime) noexcept;
 	void Frame() noexcept;
 
-	bool IsEnd() const noexcept
-	{
-		return m_isEnd;
-	}
+	bool IsEnd() const noexcept { return m_isEnd; }
 
 private:
 	Engine& m_engine;
@@ -33,10 +30,10 @@ private:
 
 	bool m_turnCamera = true;
 
-#if OLD_SCHOOL_RENDER
-	RenderTexture2D target = {};
-	Rectangle sourceRec = {};
-	Rectangle destRec = {};
-	Vector2 origin = { 0.0f, 0.0f };
+#if MAIN_FRAME_TO_RENDER_TEXTURE
+	RenderTexture2D m_target = {};
+	Rectangle m_sourceRec = {};
+	Rectangle m_destRec = {};
+	Vector2 m_origin = { 0.0f, 0.0f };
 #endif
 };

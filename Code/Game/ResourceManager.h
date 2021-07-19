@@ -5,11 +5,8 @@ class ResourceManager final : NonCopyable, NonMovable
 public:
 	~ResourceManager();
 
-	bool Init();
+	std::shared_ptr<Texture2D> GetTexture(const std::string& name);
 
-	Texture2D textureGrass;
-	Texture2D textureRoad;
-
-	Texture2D textureTree;
-	Texture2D textureTown;
+private:
+	std::unordered_map<std::string, std::shared_ptr<Texture2D>> m_textures;
 };

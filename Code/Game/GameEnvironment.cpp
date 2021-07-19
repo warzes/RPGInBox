@@ -6,7 +6,7 @@ void GameEnvironment::NextStep(const World& world)
 {
 	m_dangerLevel += 1;// *world.dangerLevelMod;
 	
-	unsigned pr = rand() % 100;
+	auto pr = rand() % 100;
 	if (pr < m_dangerLevel)
 		setBattle(world); // начинается бой
 }

@@ -1,21 +1,24 @@
 #include "stdafx.h"
 #include "ResourceManager.h"
+#include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
 {
-	UnloadTexture(textureGrass);
-	UnloadTexture(textureRoad);
-	UnloadTexture(textureTree);
-	UnloadTexture(textureTown);
+	for (auto it = m_textures.begin(); it != m_textures.end(); ++it)
+		UnloadTexture(*it->second);
 }
 //-----------------------------------------------------------------------------
-bool ResourceManager::Init()
+std::shared_ptr<Texture2D> ResourceManager::GetTexture(const std::string& name)
 {
-	textureGrass = LoadTexture("../data/temp/textures/map/outdoor/plains-ground2.png");
-	textureRoad = LoadTexture("../data/temp/textures/map/outdoor/road.png");
-	
-	textureTree = LoadTexture("../data/temp/textures/map/outdoor/plains-tree2.png");
-	textureTown = LoadTexture("../data/temp/textures/map/outdoor/plains-tree3.png");
-	return true;
+	if (name == "") return nullptr;
+
+	auto it = m_textures.find(name);
+	if (it == m_textures.end())
+	{
+		Texture2D tex = LoadTexture(name.c_str());
+		SetTextureFilter(tex, TEXTURE_FILTER_POINT);
+		m_textures[name] = std::make_shared<Texture2D>(std::move(tex));
+	}
+	return m_textures[name];
 }
 //-----------------------------------------------------------------------------

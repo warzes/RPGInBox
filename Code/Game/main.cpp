@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
-
 #include <Engine/DebugNew.h>
+//-----------------------------------------------------------------------------
 #if SE_COMPILER_MSVC
 #	pragma comment(lib, "3rdparty.lib")
 #	pragma comment(lib, "Engine.lib")
@@ -12,7 +12,6 @@
 //https://github.com/andrewgasson/roguelike-7drl-2021
 //http://rlgclub.ru/wiki/Давайте_сделаем_рогалик_-_Ричард_Д._Кларк
 //https://bfnightly.bracketproductions.com/rustbook/chapter_2.html
-//
 //https://www.grey-elf.com
 //https://www.dragonsfoot.org/fe/
 //https://www.youtube.com/channel/UCkN2bSUkP_rSW7ksrJXsWMQ/videos
@@ -23,7 +22,7 @@ void GameMain() noexcept
 	EngineConfig engineConfig;
 	engineConfig.window.width = 1024;
 	engineConfig.window.height = 768;
-	engineConfig.window.vsync = true;
+	engineConfig.window.vsync = true;	
 
 	Engine engine;
 	if (engine.Init(engineConfig))

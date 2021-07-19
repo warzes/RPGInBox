@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Sky.h"
 #include <Engine/DebugNew.h>
-
 //-----------------------------------------------------------------------------
 Sky::~Sky()
 {
@@ -13,7 +12,7 @@ Sky::~Sky()
 	UnloadTexture(m_skyTex);
 }
 //-----------------------------------------------------------------------------
-bool Sky::Init()
+bool Sky::Init() noexcept
 {
 	m_mountain = LoadModel("../resources/mountain.glb");
 	m_mountTex = LoadTexture("../resources/mountain.png");
@@ -24,7 +23,7 @@ bool Sky::Init()
 #if OLD_SCHOOL_RENDER
 	SetTextureFilter(m_skyTex, TEXTURE_FILTER_POINT);
 #else
-	SetTextureFilter(m_skyTex, FILTER_BILINEAR);
+	SetTextureFilter(m_skyTex, TEXTURE_FILTER_BILINEAR);
 #endif	
 	m_sky.materials[0].maps[MAP_DIFFUSE].texture = m_skyTex;
 
@@ -48,17 +47,17 @@ bool Sky::Init()
 	return true;
 }
 //-----------------------------------------------------------------------------
-void Sky::Update(float deltaTime)
+void Sky::Update(float deltaTime) noexcept
 {
-	m_frame += 0.04f * deltaTime;
+	m_frame += m_speedAnimationSky * deltaTime;
 	SetShaderValue(m_shaderS, m_frameLoc, &m_frame, SHADER_UNIFORM_FLOAT);
 }
 //-----------------------------------------------------------------------------
-void Sky::Draw(IGameCamera* camera)
+void Sky::Draw(IGameCamera* camera) noexcept
 {
 	BeginMode3D(camera->GetCamera());
-	DrawModel(m_mountain, camera->GetCameraPosition(), 1, WHITE);
-	DrawModel(m_sky, camera->GetCameraPosition(), 1, WHITE);
+	DrawModel(m_mountain, camera->GetCameraPosition(), 1.0f, WHITE);
+	DrawModel(m_sky, camera->GetCameraPosition(), 1.0f, WHITE);
 	EndMode3D();
 }
 //-----------------------------------------------------------------------------

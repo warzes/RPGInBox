@@ -10,13 +10,13 @@ World::~World()
 
 }
 //-----------------------------------------------------------------------------
-bool World::Init()
+bool World::Init(ResourceManager& resources)
 {
 	if (!m_sky.Init())
 		return false;
 
 	playerParty.SetPosition({ 0,0 });
-	if (!openworld.InitTest())
+	if (!openworld.InitTest(resources))
 		return false;
 
 	return true;
@@ -44,9 +44,9 @@ void World::Update(float deltaTime) noexcept
 	}		
 }
 //-----------------------------------------------------------------------------
-void World::Draw(ResourceManager& resources, IGameCamera* camera) noexcept
+void World::Draw(IGameCamera* camera) noexcept
 {
-	openworld.Draw(resources, camera);
+	openworld.Draw(camera);
 	m_sky.Draw(camera);
 
 	if (environment.GetStatus() == GameStatus::Exploring)

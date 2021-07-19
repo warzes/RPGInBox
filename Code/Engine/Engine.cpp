@@ -39,7 +39,6 @@ bool Engine::Init(const EngineConfig& config) noexcept
 //-----------------------------------------------------------------------------
 void Engine::Update() noexcept
 {
-
 }
 //-----------------------------------------------------------------------------
 //void Engine::BeginFrame(Color&& color) noexcept

@@ -7,10 +7,10 @@ class Sky final : NonCopyable, NonMovable
 public:
 	~Sky();
 
-	bool Init();
+	bool Init() noexcept;
 
-	void Update(float deltaTime);
-	void Draw(IGameCamera *camera);
+	void Update(float deltaTime) noexcept;
+	void Draw(IGameCamera *camera) noexcept;
 
 private:
 	Model m_mountain;
@@ -21,4 +21,5 @@ private:
 	Shader m_shaderM;
 	int m_frameLoc = 0;
 	float m_frame = 0.0f;
+	const float m_speedAnimationSky = 0.04f;
 };

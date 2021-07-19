@@ -35,8 +35,5 @@
     <Filter Include="Core">
       <UniqueIdentifier>{9add766f-18ae-41ba-9dfc-34838f0fca14}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{dabdb48b-f2be-4c12-b632-dc9bf92fd3f2}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

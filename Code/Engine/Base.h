@@ -66,14 +66,18 @@
 
 #define SE_PLATFORM_DESKTOP 0
 #define SE_PLATFORM_WEB 0
+#define SE_PLATFORM_MOBILE 0
 #if SE_PLATFORM_WINDOWS || SE_PLATFORM_LINUX
-#undef SE_PLATFORM_DESKTOP
-#define SE_PLATFORM_DESKTOP 1
+#	undef SE_PLATFORM_DESKTOP
+#	define SE_PLATFORM_DESKTOP 1
 #endif
-
 #if SE_PLATFORM_EMSCRIPTEN
-#undef SE_PLATFORM_WEB
-#define SE_PLATFORM_WEB 1
+#	undef SE_PLATFORM_WEB
+#	define SE_PLATFORM_WEB 1
+#endif
+#if SE_PLATFORM_ANDROID
+#	undef SE_PLATFORM_MOBILE
+#	define SE_PLATFORM_MOBILE 1
 #endif
 
 //=============================================================================

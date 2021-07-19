@@ -16,7 +16,9 @@ private:
 	Log() = default;
 	bool open(const char* fileName) noexcept;
 
+#if SE_PLATFORM_DESKTOP
 	std::fstream m_stream;
+#endif
 };
 
 //=============================================================================
@@ -49,12 +51,3 @@ private:
 	std::chrono::high_resolution_clock m_clock;
 	std::chrono::time_point<std::chrono::high_resolution_clock> m_startTime;
 };
-
-//=============================================================================
-// StringConversion
-//=============================================================================
-// convert a string to a wstring
-//std::wstring stringToWString(std::string s);
-//
-//// convert a wstring to a string
-//std::string wStringToString(std::wstring s);

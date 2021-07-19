@@ -3,3 +3,9 @@
 
 по клону Hero's Hour
  для сетевой онлайн игры глянуть - https://www.youtube.com/watch?v=uJ2ggQfMJq8
+
+war of dead
+	- шутер по мотивам
+
+Sun Haven
+	- редактор персонажей

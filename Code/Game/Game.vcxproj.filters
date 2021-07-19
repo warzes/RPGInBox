@@ -40,6 +40,9 @@
     <ClCompile Include="BattleEngine.cpp">
       <Filter>Battle</Filter>
     </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -83,6 +86,9 @@
     </ClInclude>
     <ClInclude Include="BattleEngine.h">
       <Filter>Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Game.h"
 #include <Engine/DebugNew.h>
-TODO("game state");
 //-----------------------------------------------------------------------------
 Game::Game(Engine& engine) noexcept
 	: m_engine(engine)
@@ -10,16 +9,13 @@ Game::Game(Engine& engine) noexcept
 //-----------------------------------------------------------------------------
 Game::~Game()
 {
-#if OLD_SCHOOL_RENDER
-	UnloadRenderTexture(target);
+#if MAIN_FRAME_TO_RENDER_TEXTURE
+	UnloadRenderTexture(m_target);
 #endif
 }
 //-----------------------------------------------------------------------------
 bool Game::Init() noexcept
 {
-	if (!m_resourceMgr.Init())
-		return false;
-
 	m_cameraTurn.Setup(45.0f, { 0.0f, 0.0f, 0.0f });
 	m_camera.Setup(45.0f, { 0.0f, 0.0f, 0.0f });
 	m_camera.MoveSpeed.z = 10;
@@ -27,27 +23,30 @@ bool Game::Init() noexcept
 	if (m_turnCamera) m_currentCamera = &m_cameraTurn;
 	else m_currentCamera = &m_camera;
 
-	if (!m_world.Init())
+	if (!m_world.Init(m_resourceMgr))
 		return false;
 
 	auto playerPos = m_world.playerParty.GetPosition();
-
 	m_cameraTurn.SetCameraPosition({ (float)playerPos.x, 0.0f, (float)playerPos.y }, 0.0f);
 
-#if OLD_SCHOOL_RENDER
+#if MAIN_FRAME_TO_RENDER_TEXTURE
 	const int screenWidth = GetScreenWidth();
 	const int screenHeight = GetScreenHeight();
 
+#if OLD_SCHOOL_RENDER
 	const int virtualScreenWidth = 320;
 	const int virtualScreenHeight = 240;
+#else
+	const int virtualScreenWidth = screenWidth;
+	const int virtualScreenHeight = screenHeight;
+#endif
 
 	const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
 
-	target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight); // This is where we'll draw all our objects.
-
+	m_target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight);
 	 // The target's height is flipped (in the source Rectangle), due to OpenGL reasons
-	sourceRec = { 0.0f, 0.0f, (float)target.texture.width, -(float)target.texture.height };
-	destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
+	m_sourceRec = { 0.0f, 0.0f, (float)m_target.texture.width, -(float)m_target.texture.height };
+	m_destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
 #endif
 
 	m_isEnd = false;
@@ -72,15 +71,15 @@ void Game::Update(float deltaTime) noexcept
 void Game::Frame() noexcept
 {
 	// Set render target
-#if OLD_SCHOOL_RENDER
-	BeginTextureMode(target);
+#if MAIN_FRAME_TO_RENDER_TEXTURE
+	BeginTextureMode(m_target);
 	ClearBackground({ 0, 60, 80, 0 });
 #else
 	BeginDrawing();
 	ClearBackground({ 0, 60, 80, 0 });
 #endif
 
-	m_world.Draw(m_resourceMgr, m_currentCamera);
+	m_world.Draw(m_currentCamera);
 	// Grid
 	/*{
 		int slices = 30;
@@ -126,11 +125,11 @@ void Game::Frame() noexcept
 	}*/
 
 	// end render target
-#if OLD_SCHOOL_RENDER
+#if MAIN_FRAME_TO_RENDER_TEXTURE
 	EndTextureMode();
 	BeginDrawing();
 	ClearBackground({ 0, 60, 80, 0 });
-	DrawTexturePro(target.texture, sourceRec, destRec, origin, 0.0f, WHITE);
+	DrawTexturePro(m_target.texture, m_sourceRec, m_destRec, m_origin, 0.0f, WHITE);
 #endif
 	DrawFPS(0, 0);
 	EndDrawing();

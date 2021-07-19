@@ -29,9 +29,10 @@ void Log::Print(const char* text) noexcept
 
 	puts(text);
 
+#if SE_PLATFORM_DESKTOP
 	m_stream << text << std::endl;
 	m_stream.flush();
-
+#endif
 }
 //-----------------------------------------------------------------------------
 void Log::Error(const char* text) noexcept
@@ -54,36 +55,19 @@ void Log::Error(const char* text) noexcept
 	SetConsoleTextAttribute(win32_console_handle, /*FOREGROUND_RED*/0x0004 | /*FOREGROUND_GREEN*/0x0002 | /*FOREGROUND_BLUE*/0x0001);
 #endif
 
+#if SE_PLATFORM_DESKTOP
 	m_stream << formatText << std::endl;
 	m_stream.flush();
+#endif
 }
 //-----------------------------------------------------------------------------
 bool Log::open(const char* fileName) noexcept
 {
-#if SE_PLATFORM_WINDOWS
+#if SE_PLATFORM_DESKTOP
 	m_stream.open(fileName, std::ios::out);
 	if (m_stream.fail())
 		return false;
 #endif
 	return true;
 }
-
-//=============================================================================
-// StringConversion
-//=============================================================================
-
-//-----------------------------------------------------------------------------
-// convert a string to a wstring
-//std::wstring stringToWString(std::string s)
-//{
-//	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> coverter;
-//	return coverter.from_bytes(s);
-//}
-////-----------------------------------------------------------------------------
-//// convert a wstring to a string
-//std::string wStringToString(std::wstring s)
-//{
-//	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> coverter;
-//	return coverter.to_bytes(s);
-//}
 //-----------------------------------------------------------------------------
