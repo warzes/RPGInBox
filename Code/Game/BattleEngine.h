@@ -19,7 +19,14 @@ private:
 	void currentRound();
 	bool playerAction();
 	bool enemyAction();
-	void selectCell();
+	void nextMember();
+	void selectPlayerCommand();
+	void selectAttackTargetEnemy();
+	//void selectCell();
+
+	bool isPlayer() const noexcept { return (m_currentMember < m_members.size()) && (m_members[m_currentMember].type == member::type_::player); }
+	bool isEnemy() const noexcept  { return (m_currentMember < m_members.size()) && (m_members[m_currentMember].type == member::type_::enemy); }
+
 	PlayerParty& m_player;
 	EnemyParty m_enemy;
 
@@ -32,12 +39,16 @@ private:
 	std::vector<member> m_members;
 
 	size_t m_currentMember = 0;
+	int m_currentPlayerCommand = -1;
 
 
 	std::shared_ptr<Texture2D> m_patchTexture = nullptr;
 	NPatchInfo m_ninePatchInfo = { { 0.0f, 0.0f, 64.0f, 64.0f }, 6, 6, 6, 6, NPATCH_NINE_PATCH };
-
 	std::shared_ptr<Texture2D> m_textureUI_character = nullptr;
 	NPatchInfo m_ninePatchInfo_character = { { 0.0f, 0.0f, 64.0f, 64.0f }, 6, 6, 6, 6, NPATCH_NINE_PATCH };
+
+	std::shared_ptr<Texture2D> m_texChar1 = nullptr;
+	std::shared_ptr<Texture2D> m_texChar2 = nullptr;
+	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
 
 };
