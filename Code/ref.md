@@ -11,3 +11,6 @@ https://hytale.com/news/2021/7/summer-2021-development-update
 лайт физика
 https://github.com/RandyGaul/qu3e
 https://github.com/JuliMuehl/tinyboxes
+
+
+карты из игр - https://www.vgmaps.com/

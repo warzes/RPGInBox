@@ -9,3 +9,5 @@ war of dead
 
 Sun Haven
 	- редактор персонажей
+
+Shadow Tower Abyss и Shadow Tower  (FROM SOFTWARE) - разрабы soul  игр
