@@ -34,6 +34,9 @@ private:
 
 
 	std::shared_ptr<Texture2D> m_patchTexture = nullptr;
-	Rectangle m_dest = { 20.0f, 20.0f, 0.0f, 0.0f };
 	NPatchInfo m_ninePatchInfo = { { 0.0f, 0.0f, 64.0f, 64.0f }, 6, 6, 6, 6, NPATCH_NINE_PATCH };
+
+	std::shared_ptr<Texture2D> m_textureUI_character = nullptr;
+	NPatchInfo m_ninePatchInfo_character = { { 0.0f, 0.0f, 64.0f, 64.0f }, 6, 6, 6, 6, NPATCH_NINE_PATCH };
+
 };
