@@ -21,6 +21,8 @@ bool Game::Init() noexcept
 	m_camera.Setup(45.0f, { 0.0f, 0.0f, 0.0f });
 	m_camera.MoveSpeed.z = 10;
 	m_camera.MoveSpeed.x = 5;
+	if (m_turnCamera) m_camera.HideCursor = false;
+
 	if (m_turnCamera) m_currentCamera = &m_cameraTurn;
 	else m_currentCamera = &m_camera;
 

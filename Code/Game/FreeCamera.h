@@ -18,7 +18,7 @@ public:
 
 	bool UseMouseX = true;
 	bool UseMouseY = true;
-	bool HideCursor = true;
+	bool HideCursor = false;
 	bool UseKeyboard = true;
 
 private:

@@ -19,6 +19,7 @@ private:
 	void currentRound();
 	bool playerAction();
 	bool enemyAction();
+	void selectCell();
 	PlayerParty& m_player;
 	EnemyParty m_enemy;
 
