@@ -10,16 +10,57 @@ class BattleEngine final : NonCopyable, NonMovable
 public:
 	BattleEngine(PlayerParty& player) noexcept : m_player(player) {}
 
-	void StartBattle(ResourceManager& resources, const EnemyParty& enemy);
-	void StopBattle();
-	void Draw();
-	void Update(float deltaTime);
+	void StartBattle(ResourceManager& resources, const EnemyParty& enemy) noexcept;
+	void Update(float deltaTime) noexcept;
+
+
+
+
+
+	void StopBattle() noexcept;
+	void Draw() noexcept;
+	
 private:
-	void nextRound();
-	void currentRound();
-	bool playerAction();
-	bool enemyAction();
-	void nextMember();
+	void setInitiative() noexcept;
+	void currentRound() noexcept;
+	bool playerAction() noexcept;
+	bool enemyAction() noexcept;
+	void selectMember() noexcept;
+	void newRound() noexcept;
+
+	enum class battleState 
+	{
+		BeginRound,
+
+		Round,
+
+			PlayerSelectCommand,
+			PlayerAttackCommand,
+
+			// enemy
+
+		EndRound
+	} m_state;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
 	void selectPlayerCommand();
 	void selectAttackTargetEnemy();
 	//void selectCell();

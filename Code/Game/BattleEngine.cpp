@@ -2,25 +2,17 @@
 #include "BattleEngine.h"
 #include "ResourceManager.h"
 #include <Engine/DebugNew.h>
-
-#error здесь
-- разбить draw на подфункции... А возможно выделить отдельный класс BattleDrawUI
-- прописать цикл выбора действия и по нему отрефакторить код
-
-
-
-
 /*
 - ход игрока, он выбирает любого своего перса которым не ходил, и совершает ход,
 - затем один из монстров ходит,
 - затем игрок снова выбирает любого своего перса которым не ходил, и совершает ход
 походившие участники рисуются черно-белыми
-
-
 ....
 Может стоит автоматически выбирать следующего не ходившего, но давать возможность игроку переключить выбор? 
 */
+
 //-----------------------------------------------------------------------------
+// позиции клеток
 constexpr Rectangle battleCell[] =
 {
 	{ 262.0f,  44.0f, 160.0f, 160.0f }, // 1x1
@@ -40,6 +32,7 @@ constexpr Rectangle battleCell[] =
 	{ 602.0f, 564.0f, 160.0f, 160.0f }, // 3x4
 };
 //-----------------------------------------------------------------------------
+// позиции команд игрока
 constexpr Rectangle playerCommandRect[] =
 {
 	{ 810.0f, 415.0f, 120.0f, 40.0f },
@@ -49,18 +42,38 @@ constexpr Rectangle playerCommandRect[] =
 //-----------------------------------------------------------------------------
 constexpr unsigned ColumnWidthBattleCells = Countof(battleCell) / 2 / 2; // ширина ряда = кол-во ячеек / две стороны поля / два ряда
 //-----------------------------------------------------------------------------
-void BattleEngine::StartBattle(ResourceManager& resources, const EnemyParty& enemy)
+void BattleEngine::StartBattle(ResourceManager& resources, const EnemyParty& enemy) noexcept
 {
 	m_enemy = enemy;
+
 	m_patchTexture = resources.GetTexture("../data/ui/battleui_background.png");
 	m_textureUI_character = resources.GetTexture("../data/ui/battleui_member.png");
-
 	m_texChar1 = resources.GetTexture("../data/temp/textures/character/mon-goblin.png");
 	m_texChar2 = resources.GetTexture("../data/temp/textures/character/mon-rogue3.png");
 	m_battleBackGround = resources.GetTexture("../data/temp/textures/character/plains-ground.png");
 
- 	//пока без инициативы, по такому принципу - сначала действуют все персонажи игрока с первого по последний, потом действуют все враги
-	//а возможно такую механику и оставить надолго
+	setInitiative(); // настройка инициативы
+
+	newRound();
+}
+//-----------------------------------------------------------------------------
+void BattleEngine::Update(float deltaTime) noexcept
+{
+	if (m_state == battleState::BeginRound) // новый раунд
+	{
+		m_state = battleState::Round;
+	}
+
+	if (m_state == battleState::Round) // обработка текущего раунда	
+		currentRound();
+
+	// TODO: ивент завершения боя по состоянию участников боя
+}
+//-----------------------------------------------------------------------------
+void BattleEngine::setInitiative() noexcept
+{
+	//пока без инициативы, по такому принципу - сначала действуют все персонажи игрока с первого по последний, потом действуют все враги
+//а возможно такую механику и оставить надолго
 	for (size_t i = 0; i < MaxNumCharacterInPlayerParty; i++)
 	{
 		member m;
@@ -75,118 +88,20 @@ void BattleEngine::StartBattle(ResourceManager& resources, const EnemyParty& ene
 		m.number = i;
 		m_members.push_back(m);
 	}
-
-	nextRound();
 }
 //-----------------------------------------------------------------------------
-void BattleEngine::StopBattle()
-{
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::Draw()
-{
-	// draw background
-	Rectangle dest = { 20.0f, 20.0f, 0.0f, 0.0f };
-	dest.width = (float)GetScreenWidth() - dest.x * 2.0f;
-	dest.height = (float)GetScreenHeight() - dest.y * 2.0f;
-	DrawTextureNPatch(*m_patchTexture, m_ninePatchInfo, dest, { 0.0f, 0.0f }, 0.0f, {255, 255, 255, 180});
-
-	// draw battle cell
-	DrawTextureTiled(*m_battleBackGround, {0,0,64,64}, { battleCell[0].x, battleCell[0].y,500,680 }, { 0,0 }, 0.0, 1.0, WHITE);
-		
-	// draw line
-	DrawRectangle(battleCell[0].x, 383, 500, 3, WHITE);
-
-
-
-	// draw player select marker
-	if (isPlayer())
-	{
-		DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[m_currentMember + 6], { 0.0f, 0.0f }, 0.0f, { 0, 228, 48, 140 });
-
-		if (m_currentPlayerCommand == 0 && m_currentMember >=0 && m_currentMember < 3) // игрок выбрал действие атака
-		{
-			// 6,7,8 - первый ряд игрока, можетбить по первому ряду противника 3, 4, 5 (почему по всем трем? потому что в реальном бою они не стоят в таких вот ровненьких рядах, поэтому можно бить в любого ближника - участники маневрируют)
-
-			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[3], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[4], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[5], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-		}
-	}
-
-	for (int i = 0; i < Countof(battleCell); i++)
-	{
-		//DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[i], { 0.0f, 0.0f }, 0.0f, WHITE);
-					
-		if (i < 6)
-			DrawTexture(*m_texChar1, battleCell[i].x, battleCell[i].y, WHITE);
-		else
-			DrawTexture(*m_texChar2, battleCell[i].x, battleCell[i].y, WHITE);
-	}
-
-	// draw info
-
-	// draw info window
-	{
-		// draw background
-		DrawRectangle(765, 45, 230, 335, { 0, 0, 0, 180 });
-		DrawText("INFO WINDOW", 770, 50, 30, WHITE);
-	}
-
-	// draw command window	
-
-	{
-		// draw background
-		DrawRectangle(765, 390, 230, 335, { 0, 0, 0, 180 });
-
-		if (isPlayer())
-		{			
-			// draw command
-			for (int i = 0; i < Countof(playerCommandRect); i++)
-				DrawRectangleLinesEx(playerCommandRect[i], 1.0f, WHITE);
-
-			DrawText("Attack", 820, 420, 30, WHITE);
-			DrawText("Skill", 820, 460, 30, WHITE);
-			DrawText("Magic", 820, 500, 30, WHITE);
-			// draw marker
-			if (m_currentPlayerCommand >= 0)
-				DrawText(">>>", 770, 420 + m_currentPlayerCommand*40, 30, GREEN);
-		}		
-	}
-
-
-	DrawText("Enemy", 140, 100, 40, RED);
-	DrawText("Enemy", 140, 270, 40, RED);
-
-	DrawText("Player", 130, 450, 40, GREEN);
-	DrawText("Player", 130, 620, 40, GREEN);
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::Update(float deltaTime)
-{
-	// обработка текущего раунда
-	currentRound();
-	// TODO: ивент завершения боя по состоянию участников боя
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::nextRound()
-{
-	m_currentMember = 0;
-	m_currentPlayerCommand = -1;
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::currentRound()
+void BattleEngine::currentRound() noexcept
 {
 	bool memberEnd = false;
 	if (isPlayer()) memberEnd = playerAction();
 	else if (isEnemy()) memberEnd = enemyAction();
 
 	if (memberEnd) // текущий участник подействовал, переключаемся на следующего
-		nextMember();
+		selectMember();
 }
 //-----------------------------------------------------------------------------
 bool BattleEngine::playerAction()
-{	
+{
 	selectPlayerCommand(); // выбор команды
 	if (m_currentPlayerCommand >= 0)
 		selectAttackTargetEnemy();
@@ -202,13 +117,144 @@ bool BattleEngine::enemyAction()
 	return false;
 }
 //-----------------------------------------------------------------------------
-void BattleEngine::nextMember()
+void BattleEngine::selectMember() noexcept
 {
 	m_currentMember++;
-	// все участники участвовали
+	// все участники совершили действие
 	if (m_currentMember >= m_members.size())
-		nextRound();
+		newRound();
 }
+//-----------------------------------------------------------------------------
+void BattleEngine::newRound() noexcept
+{
+	m_state = battleState::BeginRound;
+	m_currentMember = 0;
+	m_currentPlayerCommand = -1;
+}
+//-----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------------
+void BattleEngine::StopBattle()
+{
+}
+//-----------------------------------------------------------------------------
+void BattleEngine::Draw()
+{
+	// draw background
+	Rectangle dest = { 20.0f, 20.0f, 0.0f, 0.0f };
+	dest.width = (float)GetScreenWidth() - dest.x * 2.0f;
+	dest.height = (float)GetScreenHeight() - dest.y * 2.0f;
+	DrawTextureNPatch(*m_patchTexture, m_ninePatchInfo, dest, { 0.0f, 0.0f }, 0.0f, {255, 255, 255, 180});
+
+	// draw battle floor
+	DrawTextureTiled(*m_battleBackGround, {0,0,64,64}, { battleCell[0].x, battleCell[0].y,500,680 }, { 0,0 }, 0.0, 1.0, WHITE);
+		
+	// draw line
+	DrawRectangle(battleCell[0].x, 383, 500, 3, WHITE);
+
+
+	//// draw player select marker
+	//if (isPlayer())
+	//{
+	//	DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[m_currentMember + 6], { 0.0f, 0.0f }, 0.0f, { 0, 228, 48, 140 });
+
+	//	if (m_currentPlayerCommand == 0 && m_currentMember >=0 && m_currentMember < 3) // игрок выбрал действие атака
+	//	{
+	//		// 6,7,8 - первый ряд игрока, можетбить по первому ряду противника 3, 4, 5 (почему по всем трем? потому что в реальном бою они не стоят в таких вот ровненьких рядах, поэтому можно бить в любого ближника - участники маневрируют)
+
+	//		DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[3], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+	//		DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[4], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+	//		DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[5], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+	//	}
+	//}
+
+	//for (int i = 0; i < Countof(battleCell); i++)
+	//{
+	//	//DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[i], { 0.0f, 0.0f }, 0.0f, WHITE);
+	//				
+	//	if (i < 6)
+	//		DrawTexture(*m_texChar1, battleCell[i].x, battleCell[i].y, WHITE);
+	//	else
+	//		DrawTexture(*m_texChar2, battleCell[i].x, battleCell[i].y, WHITE);
+	//}
+
+	//// draw info
+
+	//// draw info window
+	//{
+	//	// draw background
+	//	DrawRectangle(765, 45, 230, 335, { 0, 0, 0, 180 });
+	//	DrawText("INFO WINDOW", 770, 50, 30, WHITE);
+	//}
+
+	//// draw command window	
+
+	//{
+	//	// draw background
+	//	DrawRectangle(765, 390, 230, 335, { 0, 0, 0, 180 });
+
+	//	if (isPlayer())
+	//	{			
+	//		// draw command
+	//		for (int i = 0; i < Countof(playerCommandRect); i++)
+	//			DrawRectangleLinesEx(playerCommandRect[i], 1.0f, WHITE);
+
+	//		DrawText("Attack", 820, 420, 30, WHITE);
+	//		DrawText("Skill", 820, 460, 30, WHITE);
+	//		DrawText("Magic", 820, 500, 30, WHITE);
+	//		// draw marker
+	//		if (m_currentPlayerCommand >= 0)
+	//			DrawText(">>>", 770, 420 + m_currentPlayerCommand*40, 30, GREEN);
+	//	}		
+	//}
+
+
+	//DrawText("Enemy", 140, 100, 40, RED);
+	//DrawText("Enemy", 140, 270, 40, RED);
+
+	//DrawText("Player", 130, 450, 40, GREEN);
+	//DrawText("Player", 130, 620, 40, GREEN);
+}
+
+
+
+
 //-----------------------------------------------------------------------------
 void BattleEngine::selectPlayerCommand()
 {
