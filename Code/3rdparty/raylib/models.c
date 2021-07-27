@@ -2523,12 +2523,9 @@ BoundingBox GetMeshBoundingBox(Mesh mesh)
 // Compute mesh tangents
 // NOTE: To calculate mesh tangents and binormals we need mesh vertex positions and texture coordinates
 // Implementation base don: https://answers.unity.com/questions/7789/calculating-tangents-vector4.html
-void GenMeshTangents(Mesh *mesh)
+void GenMeshTangents(Mesh* mesh)
 {
-    if (mesh->tangents == NULL)
-    {
-        mesh->tangents = (float*)RL_MALLOC(mesh->vertexCount * 4 * sizeof(float));
-    }
+    if (mesh->tangents == NULL) mesh->tangents = (float*)RL_MALLOC(mesh->vertexCount * 4 * sizeof(float));
     else
     {
         RL_FREE(mesh->tangents);
@@ -2578,7 +2575,7 @@ void GenMeshTangents(Mesh *mesh)
     }
 
     // Compute tangents considering normals
-    for (int i = 0; i < mesh->vertexCount; ++i)
+    for (int i = 0; i < mesh->vertexCount; i++)
     {
         Vector3 normal = { mesh->normals[i * 3 + 0], mesh->normals[i * 3 + 1], mesh->normals[i * 3 + 2] };
         Vector3 tangent = tan1[i];
@@ -2603,10 +2600,8 @@ void GenMeshTangents(Mesh *mesh)
     RL_FREE(tan1);
     RL_FREE(tan2);
 
-
     if (mesh->vboId != NULL)
     {
-
         if (mesh->vboId[SHADER_LOC_VERTEX_TANGENT] != 0)
         {
             // Upate existing vertex buffer
@@ -2624,7 +2619,7 @@ void GenMeshTangents(Mesh *mesh)
         rlDisableVertexArray();
     }
 
-    TRACELOG(LOG_INFO, "MESH: Tangents data computed for provided mesh");
+    TRACELOG(LOG_INFO, "MESH: Tangents data computed and uploaded for provided mesh");
 }
 
 // Compute mesh binormals (aka bitangent)

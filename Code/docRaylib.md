@@ -1,6 +1,6 @@
 ﻿Текущий внесенный коммит рейлиба
-	Commits on Jul 18, 2021
-		Raspberry RPI/DRM keyboard fix 
+	Commits on Jul 27, 2021
+		Remove unused UWP defines
 
 
 Мои изменения:
