@@ -3,9 +3,9 @@ EbonySpire
 https://github.com/mode777/DungeonCrawler - освещение
 https://www.youtube.com/channel/UCNz9gHQeGOC26GVwPQzr9EQ/videos - возможная стилизация
 
-
-
-
+https://www.dungeonmastersvault.com/
+https://github.com/Sheep-y/trpg-dnd-4e-db
+https://github.com/Azgaar/Armoria
 
 https://github.com/Rabios/awesome-raylib
 

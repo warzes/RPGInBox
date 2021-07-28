@@ -4,4 +4,5 @@ class Enemy
 {
 public:
 	char name[MaxGameNameTextSize];
+
 };

@@ -36,7 +36,6 @@ public:
 		int magicDefense = 0;
 	} statistics;
 
-
 	// Resistances
 	struct
 	{

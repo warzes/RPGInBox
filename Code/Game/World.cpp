@@ -82,22 +82,40 @@ EnemyParty World::getTestEnemy()
 	{
 		Enemy enemy;
 		enemys.enemys.emplace_back(enemy);
+		enemys.positionCharactersInParty.push_back({ 0, 0 });
 	}
 
 	{
 		Enemy enemy;
 		enemys.enemys.emplace_back(enemy);
+		enemys.positionCharactersInParty.push_back({ 1, 0 });
 	}
 
 	{
 		Enemy enemy;
 		enemys.enemys.emplace_back(enemy);
+		enemys.positionCharactersInParty.push_back({ 2, 0 });
 	}
 
 	{
 		Enemy enemy;
 		enemys.enemys.emplace_back(enemy);
+		enemys.positionCharactersInParty.push_back({ 0, 1 });
 	}
+
+	{
+		Enemy enemy;
+		enemys.enemys.emplace_back(enemy);
+		enemys.positionCharactersInParty.push_back({ 1, 1 });
+	}
+
+	{
+		Enemy enemy;
+		enemys.enemys.emplace_back(enemy);
+		enemys.positionCharactersInParty.push_back({ 2, 1 });
+	}
+
+
 
 	return enemys;
 }

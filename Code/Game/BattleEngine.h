@@ -24,8 +24,8 @@ private:
 	bool playerAction() noexcept;
 	bool enemyAction() noexcept;
 	void selectMember() noexcept;
-
 	void endRound() noexcept;
+	void selectPlayerCommand() noexcept;
 
 	PlayerParty& m_playerParty;
 	EnemyParty m_enemyParty;
@@ -45,16 +45,23 @@ private:
 	} m_state = roundState::BeginRound;
 
 	unsigned m_numRound = 0;
+
+	int m_selectPlayerCommand = -1;
+
+	enum class playerCommandState
+	{
+		Select
+	} m_playerCommandState = playerCommandState::Select;
 	
 	
 
-	void selectPlayerCommand();
+	
 	void selectAttackTargetEnemy();
 	//void selectCell();
 
 
 
-	int m_currentPlayerCommand = -1;
+
 
 
 	std::shared_ptr<Texture2D> m_patchTexture = nullptr;

@@ -5,12 +5,15 @@
 class PlayerParty final : NonCopyable, NonMovable
 {
 public:
+	PlayerParty();
+
 	Point2 GetPosition() const noexcept { return m_position; }
 	void SetPosition(const Point2& pos) noexcept { m_position = m_oldPosition = pos; }
 
 	bool Move(const Point2& pos) noexcept;
 
 	Character characters[MaxNumCharacterInPlayerParty];
+	Point2 positionCharactersInParty[MaxNumCharacterInPlayerParty];
 
 	// statistics
 	unsigned level = 1;
