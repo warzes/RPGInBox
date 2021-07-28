@@ -1,4 +1,11 @@
-﻿отсюда шейдер освещения https://github.com/mode777/DungeonCrawler
+﻿Project Dagger - https://www.youtube.com/watch?v=zTe3uUfx7rI
+EbonySpire
+https://github.com/mode777/DungeonCrawler - освещение
+https://www.youtube.com/channel/UCNz9gHQeGOC26GVwPQzr9EQ/videos - возможная стилизация
+
+
+
+
 
 https://github.com/Rabios/awesome-raylib
 
