@@ -31,10 +31,13 @@
 *			переходим на следующего участника, если они закончились, переходим в EndRound
 *	EndRound
 *		переход в BeginRound
-* =============================================================================
-* 3 Draw
-* =============================================================================
 * 
+* =============================================================================
+* 3 Действие игрока
+* =============================================================================
+* также разбито на состояния m_playerCommandState
+* =============================================================================
+* X Draw
 * =============================================================================
 * TODO
 * =============================================================================
@@ -118,14 +121,14 @@ void BattleEngine::Draw() noexcept
 	{
 		DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[m_currentMember + 6], { 0.0f, 0.0f }, 0.0f, { 0, 228, 48, 140 });
 
-		//if (m_currentPlayerCommand == 0 && m_currentMember >=0 && m_currentMember < 3) // игрок выбрал действие атака
-		//{
-		//	// 6,7,8 - первый ряд игрока, можетбить по первому ряду противника 3, 4, 5 (почему по всем трем? потому что в реальном бою они не стоят в таких вот ровненьких рядах, поэтому можно бить в любого ближника - участники маневрируют)
+		if (m_selectOneEnemyTagetInMelee && m_currentMember >=0 && m_currentMember < 3) // игрок выбрал действие атака
+		{
+			// 6,7,8 - первый ряд игрока, можетбить по первому ряду противника 3, 4, 5 (почему по всем трем? потому что в реальном бою они не стоят в таких вот ровненьких рядах, поэтому можно бить в любого ближника - участники маневрируют)
 
-		//	DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[3], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-		//	DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[4], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-		//	DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[5], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-		//}
+			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[3], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[4], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[5], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+		}
 	}
 
 	// отрисовка портретов участников боя
@@ -216,17 +219,10 @@ void BattleEngine::currentRound() noexcept
 bool BattleEngine::playerAction() noexcept
 {
 	// ожидаем выбор команды от игрока
-	if (m_playerCommandState == playerCommandState::Select)
+	if (m_playerCommandState == playerCommandState::SelectCommand)
 	{
 		selectPlayerCommand(); // выбор команды
 	}
-
-
-	//
-	//if (m_currentPlayerCommand >= 0)
-	//	selectAttackTargetEnemy();
-
-	////selectCell(); // обработка выбора мышью
 
 	return false;
 }
@@ -239,7 +235,9 @@ bool BattleEngine::enemyAction() noexcept
 void BattleEngine::selectMember() noexcept
 {
 	m_selectPlayerCommand = -1;
-	m_playerCommandState = playerCommandState::Select;
+	m_playerCommandState = playerCommandState::SelectCommand;
+	m_selectOneEnemyTagetInMelee = false;
+	m_selectOneEnemyTagetInRange = false;
 	m_currentMember++;
 	// TODO: проверить статус что может ходить
 	if (m_currentMember >= m_members.size())
@@ -268,10 +266,15 @@ void BattleEngine::selectPlayerCommand() noexcept
 		if (select < Countof(playerCommandRect))
 		{
 			m_selectPlayerCommand = select;
+			m_selectOneEnemyTagetInMelee = false;
+			m_selectOneEnemyTagetInRange = false;
+			if (m_selectPlayerCommand == 0)
+				m_selectOneEnemyTagetInMelee = true;
 		}
 	}
 	else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
 	{
+		m_selectOneEnemyTagetInMelee = false;
 		m_selectPlayerCommand = -1; // отмена выбранной команды по правой кнопке мыши
 	}
 }

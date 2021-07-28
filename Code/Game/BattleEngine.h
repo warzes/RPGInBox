@@ -46,14 +46,16 @@ private:
 
 	unsigned m_numRound = 0;
 
-	int m_selectPlayerCommand = -1;
-
 	enum class playerCommandState
 	{
-		Select
-	} m_playerCommandState = playerCommandState::Select;
+		SelectCommand,          // ожидание выбора команд из главного меню
+		// TODO: подменю
+
+	} m_playerCommandState = playerCommandState::SelectCommand;
 	
-	
+	int m_selectPlayerCommand = -1;
+	bool m_selectOneEnemyTagetInMelee = false;// выбор одной вражеской цели в ближнем бою
+	bool m_selectOneEnemyTagetInRange = false;// выбор одной вражеской цели в любой клетке (дальний бой)
 
 	
 	void selectAttackTargetEnemy();
