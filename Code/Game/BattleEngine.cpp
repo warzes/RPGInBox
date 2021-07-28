@@ -100,7 +100,7 @@ void BattleEngine::currentRound() noexcept
 		selectMember();
 }
 //-----------------------------------------------------------------------------
-bool BattleEngine::playerAction()
+bool BattleEngine::playerAction() noexcept
 {
 	selectPlayerCommand(); // выбор команды
 	if (m_currentPlayerCommand >= 0)
@@ -111,7 +111,7 @@ bool BattleEngine::playerAction()
 	return false;
 }
 //-----------------------------------------------------------------------------
-bool BattleEngine::enemyAction()
+bool BattleEngine::enemyAction() noexcept
 {
 	m_currentPlayerCommand = -1;
 	return false;
@@ -170,11 +170,11 @@ void BattleEngine::newRound() noexcept
 
 
 //-----------------------------------------------------------------------------
-void BattleEngine::StopBattle()
+void BattleEngine::StopBattle() noexcept
 {
 }
 //-----------------------------------------------------------------------------
-void BattleEngine::Draw()
+void BattleEngine::Draw() noexcept
 {
 	// draw background
 	Rectangle dest = { 20.0f, 20.0f, 0.0f, 0.0f };

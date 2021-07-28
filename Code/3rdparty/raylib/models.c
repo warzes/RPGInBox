@@ -1119,12 +1119,12 @@ void DrawMeshInstanced(Mesh mesh, Material material, Matrix *transforms, int ins
 
         if (instancing) // Draw mesh instanced
         {
-            if (mesh.indices != NULL) rlDrawVertexArrayElementsInstanced(0, mesh.triangleCount*3, 0, instances);
+            if (mesh.indices != NULL) rlDrawVertexArrayElementsInstanced(0, mesh.triangleCount * 3, mesh.indices, instances);
             else rlDrawVertexArrayInstanced(0, mesh.vertexCount, instances);
         }
         else    // Draw mesh
         {
-            if (mesh.indices != NULL) rlDrawVertexArrayElements(0, mesh.triangleCount*3, 0);
+            if (mesh.indices != NULL) rlDrawVertexArrayElements(0, mesh.triangleCount * 3, mesh.indices);
             else rlDrawVertexArray(0, mesh.vertexCount);
         }
     }

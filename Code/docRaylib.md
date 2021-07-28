@@ -1,6 +1,6 @@
 ﻿Текущий внесенный коммит рейлиба
-	Commits on Jul 27, 2021
-		Remove unused UWP defines
+	Commits on Jul 28, 2021
+		Don't normalize zero length vectors. 
 
 
 Мои изменения:
