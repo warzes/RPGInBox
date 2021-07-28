@@ -3,14 +3,38 @@
 #include "ResourceManager.h"
 #include <Engine/DebugNew.h>
 /*
-- ход игрока, он выбирает любого своего перса которым не ходил, и совершает ход,
-- затем один из монстров ходит,
-- затем игрок снова выбирает любого своего перса которым не ходил, и совершает ход
-походившие участники рисуются черно-белыми
-....
-Может стоит автоматически выбирать следующего не ходившего, но давать возможность игроку переключить выбор? 
+* =============================================================================
+* 1 Подготовка к бою 
+* =============================================================================
+* Когда возникает событие боя, вызывается функция StartBattle(), она:
+*	получает список группы врагов от World (так как списки монстров зависят от окружения)
+*		список группы игрока константен и устанавливается при старте игры (нет смысла его передавать)
+*	получает список всех нужных текстур (текстуры кешируются, поэтому можно не заботиться об этом)
+*		текстуры интерфейса
+*		текстуры портретов игрока
+*		текстуры портретов монстров
+*	Настройка инициативы
+*		На данный момент так - сначала ходят персонажи игрока, потом монстры
+*		для списка используется внутренняя структура member - конечно можно было сделать через полиморфизм, и возможно в будущем так и будет, но и использование внешнего списка members тоже вполне работает
+* 
+* =============================================================================
+* 2 Update
+* =============================================================================
+* текущее состояние боя определяется по roundState m_state
+*	BeginRound
+*		установка текущего участника на самого первого по списку участников
+*		переход в следующий статус раунда Round
+*	Round
+*		смотрим на m_currentMember
+*			если игрок, ожидаем действие игрока
+*			если монстр, ожидаем действие монстра
+*			переходим на следующего участника, если они закончились, переходим в EndRound
+* 
+* =============================================================================
+* TODO
+* =============================================================================
+* есть переменная m_numRound - кол-во прошедших раундов. показывать на экране или еще где
 */
-
 //-----------------------------------------------------------------------------
 // позиции клеток
 constexpr Rectangle battleCell[] =
@@ -42,136 +66,30 @@ constexpr Rectangle playerCommandRect[] =
 //-----------------------------------------------------------------------------
 constexpr unsigned ColumnWidthBattleCells = Countof(battleCell) / 2 / 2; // ширина ряда = кол-во ячеек / две стороны поля / два ряда
 //-----------------------------------------------------------------------------
-void BattleEngine::StartBattle(ResourceManager& resources, const EnemyParty& enemy) noexcept
+void BattleEngine::StartBattle(ResourceManager& resources, const EnemyParty& enemys) noexcept
 {
-	m_enemy = enemy;
-
+	// сброс и установка переменных
+	m_state = roundState::BeginRound;
+	m_numRound = 0;
+	m_enemyParty = enemys;
+	// установка текстур
 	m_patchTexture = resources.GetTexture("../data/ui/battleui_background.png");
 	m_textureUI_character = resources.GetTexture("../data/ui/battleui_member.png");
+	m_battleBackGround = resources.GetTexture("../data/temp/textures/character/plains-ground.png");
 	m_texChar1 = resources.GetTexture("../data/temp/textures/character/mon-goblin.png");
 	m_texChar2 = resources.GetTexture("../data/temp/textures/character/mon-rogue3.png");
-	m_battleBackGround = resources.GetTexture("../data/temp/textures/character/plains-ground.png");
-
-	setInitiative(); // настройка инициативы
-
-	newRound();
+	// настройка инициативы
+	setInitiative();
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::Update(float deltaTime) noexcept
 {
-	if (m_state == battleState::BeginRound) // новый раунд
-	{
-		m_state = battleState::Round;
-	}
-
-	if (m_state == battleState::Round) // обработка текущего раунда	
-		currentRound();
-
-	// TODO: ивент завершения боя по состоянию участников боя
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::setInitiative() noexcept
-{
-	//пока без инициативы, по такому принципу - сначала действуют все персонажи игрока с первого по последний, потом действуют все враги
-//а возможно такую механику и оставить надолго
-	for (size_t i = 0; i < MaxNumCharacterInPlayerParty; i++)
-	{
-		member m;
-		m.type = member::type_::player;
-		m.number = i;
-		m_members.push_back(m);
-	}
-	for (size_t i = 0; i < m_enemy.enemys.size(); i++)
-	{
-		member m;
-		m.type = member::type_::enemy;
-		m.number = i;
-		m_members.push_back(m);
-	}
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::currentRound() noexcept
-{
-	bool memberEnd = false;
-	if (isPlayer()) memberEnd = playerAction();
-	else if (isEnemy()) memberEnd = enemyAction();
-
-	if (memberEnd) // текущий участник подействовал, переключаемся на следующего
-		selectMember();
-}
-//-----------------------------------------------------------------------------
-bool BattleEngine::playerAction() noexcept
-{
-	selectPlayerCommand(); // выбор команды
-	if (m_currentPlayerCommand >= 0)
-		selectAttackTargetEnemy();
-
-	//selectCell(); // обработка выбора мышью
-
-	return false;
-}
-//-----------------------------------------------------------------------------
-bool BattleEngine::enemyAction() noexcept
-{
-	m_currentPlayerCommand = -1;
-	return false;
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::selectMember() noexcept
-{
-	m_currentMember++;
-	// все участники совершили действие
-	if (m_currentMember >= m_members.size())
+	if (m_state == roundState::BeginRound)    // новый раунд
 		newRound();
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::newRound() noexcept
-{
-	m_state = battleState::BeginRound;
-	m_currentMember = 0;
-	m_currentPlayerCommand = -1;
-}
-//-----------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//-----------------------------------------------------------------------------
-void BattleEngine::StopBattle() noexcept
-{
+	else if (m_state == roundState::Round)    // обработка текущего раунда	
+		currentRound();
+	else if (m_state == roundState::EndRound) // обработка конца раунда	
+		endRound();
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::Draw() noexcept
@@ -180,11 +98,11 @@ void BattleEngine::Draw() noexcept
 	Rectangle dest = { 20.0f, 20.0f, 0.0f, 0.0f };
 	dest.width = (float)GetScreenWidth() - dest.x * 2.0f;
 	dest.height = (float)GetScreenHeight() - dest.y * 2.0f;
-	DrawTextureNPatch(*m_patchTexture, m_ninePatchInfo, dest, { 0.0f, 0.0f }, 0.0f, {255, 255, 255, 180});
+	DrawTextureNPatch(*m_patchTexture, m_ninePatchInfo, dest, { 0.0f, 0.0f }, 0.0f, { 255, 255, 255, 180 });
 
 	// draw battle floor
-	DrawTextureTiled(*m_battleBackGround, {0,0,64,64}, { battleCell[0].x, battleCell[0].y,500,680 }, { 0,0 }, 0.0, 1.0, WHITE);
-		
+	DrawTextureTiled(*m_battleBackGround, { 0,0,64,64 }, { battleCell[0].x, battleCell[0].y,500,680 }, { 0,0 }, 0.0, 1.0, WHITE);
+
 	// draw line
 	DrawRectangle(battleCell[0].x, 383, 500, 3, WHITE);
 
@@ -251,7 +169,64 @@ void BattleEngine::Draw() noexcept
 	//DrawText("Player", 130, 450, 40, GREEN);
 	//DrawText("Player", 130, 620, 40, GREEN);
 }
+//-----------------------------------------------------------------------------
+void BattleEngine::setInitiative() noexcept
+{
+	m_members.clear(); // сброс старого списка инициативы
+	for (unsigned i = 0; i < MaxNumCharacterInPlayerParty; i++)
+		m_members.push_back({ member::type_::player, i});
+	for (unsigned i = 0; i < m_enemyParty.enemys.size(); i++)
+		m_members.push_back({ member::type_::enemy, i});
+}
+//-----------------------------------------------------------------------------
+void BattleEngine::newRound() noexcept
+{
+	m_currentMember = 0;
+	m_numRound++;
+	m_state = roundState::Round;
+	// TODO: возможно показывать окно начала раунда
+}
+//-----------------------------------------------------------------------------
+void BattleEngine::currentRound() noexcept
+{
+	bool memberEnd = false;
+	if (isPlayer())     memberEnd = playerAction();
+	else if (isEnemy()) memberEnd = enemyAction();
 
+	if (memberEnd) // текущий участник подействовал, переключаемся на следующего
+		selectMember();
+}
+//-----------------------------------------------------------------------------
+bool BattleEngine::playerAction() noexcept
+{
+	//selectPlayerCommand(); // выбор команды
+	//if (m_currentPlayerCommand >= 0)
+	//	selectAttackTargetEnemy();
+
+	////selectCell(); // обработка выбора мышью
+
+	return false;
+}
+//-----------------------------------------------------------------------------
+bool BattleEngine::enemyAction() noexcept
+{
+	return true;// враги пока пропускают ход
+}
+//-----------------------------------------------------------------------------
+void BattleEngine::selectMember() noexcept
+{
+	m_currentMember++;
+	// TODO: проверить статус что может ходить
+	if (m_currentMember >= m_members.size())
+		m_state = roundState::EndRound;
+}
+//-----------------------------------------------------------------------------
+void BattleEngine::endRound() noexcept
+{
+	// TODO: пока ничего
+	m_state = roundState::BeginRound;
+}
+//-----------------------------------------------------------------------------
 
 
 

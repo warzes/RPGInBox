@@ -1,8 +1,8 @@
 ﻿#include "stdafx.h"
 #include "World.h"
 World::World(ResourceManager& resources)
-	: m_battleEngine(playerParty)
-	, m_resources(resources)
+	: m_resources(resources)
+	, m_battleEngine(playerParty)
 {
 }
 //-----------------------------------------------------------------------------
@@ -26,7 +26,6 @@ void World::Update(float deltaTime) noexcept
 {
 	if (environment.GetStatus() == GameStatus::Exploring)
 	{
-		if (m_battle) m_battleEngine.StopBattle();
 		m_battle = false;
 		m_sky.Update(deltaTime); // небо  не анимируется в бою (типа замедление времени)
 	}

@@ -8,56 +8,43 @@ class ResourceManager;
 class BattleEngine final : NonCopyable, NonMovable
 {
 public:
-	BattleEngine(PlayerParty& player) noexcept : m_player(player) {}
+	BattleEngine(PlayerParty& player) noexcept : m_playerParty(player) {}
 
 	void StartBattle(ResourceManager& resources, const EnemyParty& enemy) noexcept;
+
 	void Update(float deltaTime) noexcept;
-
-
-
-
-
-	void StopBattle() noexcept;
 	void Draw() noexcept;
-	
+
 private:
 	void setInitiative() noexcept;
+	void newRound() noexcept;
 	void currentRound() noexcept;
+	bool isPlayer() const noexcept { return (m_members[m_currentMember].type == member::type_::player); }
+	bool isEnemy() const noexcept  { return (m_members[m_currentMember].type == member::type_::enemy); }
 	bool playerAction() noexcept;
 	bool enemyAction() noexcept;
 	void selectMember() noexcept;
-	void newRound() noexcept;
 
-	enum class battleState 
+	void endRound() noexcept;
+
+	PlayerParty& m_playerParty;
+	EnemyParty m_enemyParty;
+	struct member
+	{
+		enum class type_ { player, enemy } type;
+		unsigned number;
+	};
+	std::vector<member> m_members; // участники боя расставленные по инициативе
+	unsigned m_currentMember = 0; // текущий персонаж
+
+	enum class roundState
 	{
 		BeginRound,
-
 		Round,
-
-			PlayerSelectCommand,
-			PlayerAttackCommand,
-
-			// enemy
-
 		EndRound
-	} m_state;
+	} m_state = roundState::BeginRound;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	unsigned m_numRound = 0;
 	
 	
 
@@ -65,21 +52,8 @@ private:
 	void selectAttackTargetEnemy();
 	//void selectCell();
 
-	bool isPlayer() const noexcept { return (m_currentMember < m_members.size()) && (m_members[m_currentMember].type == member::type_::player); }
-	bool isEnemy() const noexcept  { return (m_currentMember < m_members.size()) && (m_members[m_currentMember].type == member::type_::enemy); }
 
-	PlayerParty& m_player;
-	EnemyParty m_enemy;
 
-	struct member
-	{
-		enum class type_{player, enemy} type;
-		unsigned number;
-	};
-
-	std::vector<member> m_members;
-
-	size_t m_currentMember = 0;
 	int m_currentPlayerCommand = -1;
 
 
@@ -91,5 +65,4 @@ private:
 	std::shared_ptr<Texture2D> m_texChar1 = nullptr;
 	std::shared_ptr<Texture2D> m_texChar2 = nullptr;
 	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
-
 };
