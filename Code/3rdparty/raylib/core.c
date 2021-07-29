@@ -403,6 +403,7 @@ static int32_t AndroidInputCallback(struct android_app *app, AInputEvent *event)
 #endif
 
 #if defined(PLATFORM_WEB)
+static EM_BOOL EmscriptenMouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData);
 static EM_BOOL EmscriptenTouchCallback(int eventType, const EmscriptenTouchEvent *touchEvent, void *userData);
 static EM_BOOL EmscriptenGamepadCallback(int eventType, const EmscriptenGamepadEvent *gamepadEvent, void *userData);
 static EM_BOOL EmscriptenResizeCallback(int eventType, const EmscriptenUiEvent *e, void *userData);
@@ -565,6 +566,9 @@ void InitWindow(int width, int height, const char *title)
     // Support keyboard events
     //emscripten_set_keypress_callback("#canvas", NULL, 1, EmscriptenKeyboardCallback);
     //emscripten_set_keydown_callback("#canvas", NULL, 1, EmscriptenKeyboardCallback);
+
+    // Support mouse events
+    emscripten_set_click_callback("#canvas", NULL, 1, EmscriptenMouseCallback);
 
     // Support touch events
     emscripten_set_touchstart_callback("#canvas", NULL, 1, EmscriptenTouchCallback);
@@ -4481,6 +4485,12 @@ static int32_t AndroidInputCallback(struct android_app *app, AInputEvent *event)
 #endif
 
 #if defined(PLATFORM_WEB)
+// Register mouse input events
+static EM_BOOL EmscriptenMouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
+{
+    // This is only for registering mouse click events with emscripten and doesn't need to do anything
+    return 0;
+}
 // Register touch input events
 static EM_BOOL EmscriptenTouchCallback(int eventType, const EmscriptenTouchEvent *touchEvent, void *userData)
 {
