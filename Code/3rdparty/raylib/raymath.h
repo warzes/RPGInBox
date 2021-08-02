@@ -380,14 +380,14 @@ inline Vector3 Vector3Normalize(Vector3 v)
 {
     Vector3 result = v;
 
-    float length, ilength;
-    length = Vector3Length(v);
+    float length, inverseLength;
+    length = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
     if (length == 0.0f) length = 1.0f;
-    ilength = 1.0f/length;
+    inverseLength = 1.0f / length;
 
-    result.x *= ilength;
-    result.y *= ilength;
-    result.z *= ilength;
+    result.x *= inverseLength;
+    result.y *= inverseLength;
+    result.z *= inverseLength;
 
     return result;
 }
@@ -1321,8 +1321,9 @@ inline Matrix QuaternionToMatrix(Quaternion q)
 inline Quaternion QuaternionFromAxisAngle(Vector3 axis, float angle)
 {
     Quaternion result = { 0.0f, 0.0f, 0.0f, 1.0f };
+    float axisLength = sqrtf(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
 
-    if (Vector3Length(axis) != 0.0f)
+    if (axisLength != 0.0f)
     {
         angle *= 0.5f;
 

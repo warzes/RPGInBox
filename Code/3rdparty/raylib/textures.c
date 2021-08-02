@@ -363,7 +363,7 @@ Image LoadImageFromTexture(Texture2D texture)
 
     if (texture.format < PIXELFORMAT_COMPRESSED_DXT1_RGB)
     {
-        image.data = rlReadTexturePixels(texture);
+        image.data = rlReadTexturePixels(texture.id, texture.width, texture.height, texture.format);
 
         if (image.data != NULL)
         {
@@ -2257,7 +2257,7 @@ void ImageDrawPixel(Image *dst, int x, int y, Color color)
             unsigned char r = (unsigned char)(round(coln.x*31.0f));
             unsigned char g = (unsigned char)(round(coln.y*31.0f));
             unsigned char b = (unsigned char)(round(coln.z*31.0f));
-            unsigned char a = (coln.w > ((float)PIXELFORMAT_UNCOMPRESSED_R5G5B5A1_ALPHA_THRESHOLD/255.0f))? 1 : 0;;
+            unsigned char a = (coln.w > ((float)PIXELFORMAT_UNCOMPRESSED_R5G5B5A1_ALPHA_THRESHOLD/255.0f))? 1 : 0;
 
             ((unsigned short *)dst->data)[y*dst->width + x] = (unsigned short)r << 11 | (unsigned short)g << 6 | (unsigned short)b << 1 | (unsigned short)a;
 
@@ -2839,11 +2839,11 @@ void UpdateTextureRec(Texture2D texture, Rectangle rec, const void *pixels)
 // Texture configuration functions
 //------------------------------------------------------------------------------------
 // Generate GPU mipmaps for a texture
-void GenTextureMipmaps(Texture2D *texture)
+void GenTextureMipmaps(Texture2D* texture)
 {
     // NOTE: NPOT textures support check inside function
     // On WebGL (OpenGL ES 2.0) NPOT textures support is limited
-    rlGenerateMipmaps(texture);
+    rlGenTextureMipmaps(texture->id, texture->width, texture->height, texture->format, &texture->mipmaps);
 }
 
 // Set texture scaling filter mode
@@ -3719,7 +3719,7 @@ void SetPixelColor(void *dstPtr, Color color, int format)
             unsigned char r = (unsigned char)(round(coln.x*31.0f));
             unsigned char g = (unsigned char)(round(coln.y*31.0f));
             unsigned char b = (unsigned char)(round(coln.z*31.0f));
-            unsigned char a = (coln.w > ((float)PIXELFORMAT_UNCOMPRESSED_R5G5B5A1_ALPHA_THRESHOLD/255.0f))? 1 : 0;;
+            unsigned char a = (coln.w > ((float)PIXELFORMAT_UNCOMPRESSED_R5G5B5A1_ALPHA_THRESHOLD/255.0f))? 1 : 0;
 
             ((unsigned short *)dstPtr)[0] = (unsigned short)r << 11 | (unsigned short)g << 6 | (unsigned short)b << 1 | (unsigned short)a;
 
