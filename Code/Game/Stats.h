@@ -6,6 +6,8 @@ public:
 	Stats() = default;
 	Stats(int num) { Set(num); }
 
+	Stats& operator=(int num) { Set(num); return *this; }
+
 	void Set(int num)
 	{
 		current = max = num;
@@ -21,7 +23,9 @@ public:
 		current = max;
 	}
 
-	Stats& operator=(int num) { Set(num); return *this; }
+	std::string GetFullText() { return (std::to_string(current) + "/" + std::to_string(max)); }
+
+
 
 	int current = 0;
 	int max = 0;

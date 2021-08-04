@@ -1,25 +1,27 @@
 #pragma once
 
+enum class PlayerCommandState
+{
+	SelectCommand,          // ожидание выбора команд из главного меню
+	SelectMeleeAttackTarget	// выбор цели для ближней атаки
+	// TODO: подменю
+
+};
+
 class BattlePlayerAction
 {
 public:
 	void Reset() noexcept;
 	bool PlayerAction() noexcept;
-	void Draw() noexcept;
 	void DrawCommandList() noexcept;
+
+	PlayerCommandState GetState() const noexcept { return m_playerCommandState;  }
 
 private:
 	void selectPlayerCommand() noexcept;
-	void selectAttackTargetEnemy() noexcept;
+	void selectMeleeAttackTarget() noexcept;
 
-	enum class playerCommandState
-	{
-		SelectCommand,          // ожидание выбора команд из главного меню
-		// TODO: подменю
-
-	} m_playerCommandState = playerCommandState::SelectCommand;
+	PlayerCommandState m_playerCommandState = PlayerCommandState::SelectCommand;
 
 	int m_selectPlayerCommand = -1;
-	bool m_selectOneEnemyTagetInMelee = false;// выбор одной вражеской цели в ближнем бою
-	bool m_selectOneEnemyTagetInRange = false;// выбор одной вражеской цели в любой клетке (дальний бой)
 };

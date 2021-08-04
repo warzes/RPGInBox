@@ -91,16 +91,20 @@ void BattleEngine::Draw() noexcept
 	// draw player select marker
 	if (isPlayer())
 	{
-		DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[m_currentMember + 6], { 0.0f, 0.0f }, 0.0f, { 0, 228, 48, 140 });
+		const Point2& pos = m_playerParty.positionCharactersInParty[m_members[m_currentMember].number];
+		const unsigned index = (pos.y) * ColumnWidthBattleCells + pos.x;
+		DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[index + 6], { 0.0f, 0.0f }, 0.0f, { 0, 228, 48, 140 });
 
-		//if (m_selectOneEnemyTagetInMelee && m_currentMember >=0 && m_currentMember < 3) // игрок выбрал действие атака
-		//{
-		//	// 6,7,8 - первый ряд игрока, можетбить по первому ряду противника 3, 4, 5 (почему по всем трем? потому что в реальном бою они не стоят в таких вот ровненьких рядах, поэтому можно бить в любого ближника - участники маневрируют)
+		if (m_playerCommand.GetState() == PlayerCommandState::SelectMeleeAttackTarget && 
+			m_members[m_currentMember].number >=0 && 
+			m_members[m_currentMember].number < 3) // игрок выбрал действие атака и только персонажами первого ряда
+		{
+			// 6,7,8 - первый ряд игрока, можетбить по первому ряду противника 3, 4, 5 (почему по всем трем? потому что в реальном бою они не стоят в таких вот ровненьких рядах, поэтому можно бить в любого ближника - участники маневрируют)
 
-		//	DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[3], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-		//	DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[4], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-		//	DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[5], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-		//}
+			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[3], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[4], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[5], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+		}
 	}
 
 	// отрисовка портретов участников боя
@@ -110,6 +114,8 @@ void BattleEngine::Draw() noexcept
 		const Point2 &pos = m_playerParty.positionCharactersInParty[i];
 		const unsigned index = (pos.y + 2)* ColumnWidthBattleCells + pos.x;
 		DrawTexture(*m_texChar2, battleCell[index].x, battleCell[index].y, WHITE);
+		
+		DrawText(m_playerParty.characters[i].statistics.hp.GetFullText().c_str(), battleCell[index].x+25, battleCell[index].y, 30, BLACK);
 	}
 	for (unsigned i = 0; i < m_enemyParty.enemys.size(); i++)
 	{
@@ -117,6 +123,7 @@ void BattleEngine::Draw() noexcept
 		const Point2& pos = m_enemyParty.positionCharactersInParty[i];
 		const unsigned index = (pos.y) * ColumnWidthBattleCells + pos.x;
 		DrawTexture(*m_texChar1, battleCell[index].x, battleCell[index].y, WHITE);
+		DrawText(m_enemyParty.enemys[i].statistics.hp.GetFullText().c_str(), battleCell[index].x + 25, battleCell[index].y, 30, BLACK);
 	}
 
 	// отрисовка боковых панелей

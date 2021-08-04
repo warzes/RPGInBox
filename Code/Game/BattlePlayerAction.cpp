@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "BattlePlayerAction.h"
 #include "BattleCore.h"
 #include <Engine/DebugNew.h>
@@ -6,25 +6,22 @@
 void BattlePlayerAction::Reset() noexcept
 {
 	m_selectPlayerCommand = -1;
-	m_playerCommandState = playerCommandState::SelectCommand;
-	m_selectOneEnemyTagetInMelee = false;
-	m_selectOneEnemyTagetInRange = false;
+	m_playerCommandState = PlayerCommandState::SelectCommand;
 }
 //-----------------------------------------------------------------------------
 bool BattlePlayerAction::PlayerAction() noexcept
 {
-	// ожидаем выбор команды от игрока
-	if (m_playerCommandState == playerCommandState::SelectCommand)
+	// РѕР¶РёРґР°РµРј РІС‹Р±РѕСЂ РєРѕРјР°РЅРґС‹ РѕС‚ РёРіСЂРѕРєР°
+	if (m_playerCommandState == PlayerCommandState::SelectCommand)
 	{
-		selectPlayerCommand(); // выбор команды
+		selectPlayerCommand(); // РІС‹Р±РѕСЂ РєРѕРјР°РЅРґС‹
 	}
-	//... тут
+	else if (m_playerCommandState == PlayerCommandState::SelectMeleeAttackTarget)
+	{
+		selectMeleeAttackTarget(); // РІС‹Р±РѕСЂ С†РµР»Рё Р±Р»РёР¶РЅРµР№ Р°С‚Р°РєРё
+	}
 
 	return false;
-}
-//-----------------------------------------------------------------------------
-void BattlePlayerAction::Draw() noexcept
-{
 }
 //-----------------------------------------------------------------------------
 void BattlePlayerAction::DrawCommandList() noexcept
@@ -57,20 +54,17 @@ void BattlePlayerAction::selectPlayerCommand() noexcept
 		if (select < Countof(playerCommandRect))
 		{
 			m_selectPlayerCommand = select;
-			m_selectOneEnemyTagetInMelee = false;
-			m_selectOneEnemyTagetInRange = false;
 			if (m_selectPlayerCommand == 0)
-				m_selectOneEnemyTagetInMelee = true;
+				m_playerCommandState = PlayerCommandState::SelectMeleeAttackTarget;
 		}
 	}
 	else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
 	{
-		m_selectOneEnemyTagetInMelee = false;
-		m_selectPlayerCommand = -1; // отмена выбранной команды по правой кнопке мыши
+		m_selectPlayerCommand = -1; // РѕС‚РјРµРЅР° РІС‹Р±СЂР°РЅРЅРѕР№ РєРѕРјР°РЅРґС‹ РїРѕ РїСЂР°РІРѕР№ РєРЅРѕРїРєРµ РјС‹С€Рё
 	}
 }
 //-----------------------------------------------------------------------------
-void BattlePlayerAction::selectAttackTargetEnemy() noexcept
+void BattlePlayerAction::selectMeleeAttackTarget() noexcept
 {
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 	{
@@ -85,13 +79,13 @@ void BattlePlayerAction::selectAttackTargetEnemy() noexcept
 		}
 		if (cell < Countof(battleCell))
 		{
-			//if (m_currentMember >= 0 && m_currentMember < 3 && cell >= 3 && cell < 6)
-			//{
-			//	const unsigned x = cell % ColumnWidthBattleCells;
-			//	const unsigned y = cell / ColumnWidthBattleCells;
+			if (cell >= 3 && cell < 6)
+			{
+				const unsigned x = cell % ColumnWidthBattleCells;
+				const unsigned y = cell / ColumnWidthBattleCells;
 
-			//	printf("%d - %d:%d\n", cell, x + 1, y + 1);
-			//}
+				printf("%d - %d:%d\n", cell, x + 1, y + 1);
+			}
 		}
 	}
 }
