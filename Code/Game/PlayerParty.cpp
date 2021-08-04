@@ -8,6 +8,9 @@ PlayerParty::PlayerParty()
 	positionCharactersInParty[1] = { 1, 0 };
 	positionCharactersInParty[2] = { 2, 0 };
 	positionCharactersInParty[3] = { 1, 1 };
+
+	for (int i = 0; i < MaxNumCharacterInPlayerParty; i++)
+		characters[i].statistics.hp = 100;
 }
 //-----------------------------------------------------------------------------
 bool PlayerParty::Move(const Point2& pos) noexcept

@@ -2,6 +2,7 @@
 
 #include "EnemyParty.h"
 #include "PlayerParty.h"
+#include "BattlePlayerAction.h"
 
 class ResourceManager;
 
@@ -19,52 +20,11 @@ private:
 	void setInitiative() noexcept;
 	void newRound() noexcept;
 	void currentRound() noexcept;
+	void endRound() noexcept;
 	bool isPlayer() const noexcept { return (m_members[m_currentMember].type == member::type_::player); }
 	bool isEnemy() const noexcept  { return (m_members[m_currentMember].type == member::type_::enemy); }
-	bool playerAction() noexcept;
+	void selectNextMember() noexcept;
 	bool enemyAction() noexcept;
-	void selectMember() noexcept;
-	void endRound() noexcept;
-	void selectPlayerCommand() noexcept;
-
-	PlayerParty& m_playerParty;
-	EnemyParty m_enemyParty;
-	struct member
-	{
-		enum class type_ { player, enemy } type;
-		unsigned number;
-	};
-	std::vector<member> m_members; // участники боя расставленные по инициативе
-	unsigned m_currentMember = 0; // текущий персонаж
-
-	enum class roundState
-	{
-		BeginRound,
-		Round,
-		EndRound
-	} m_state = roundState::BeginRound;
-
-	unsigned m_numRound = 0;
-
-	enum class playerCommandState
-	{
-		SelectCommand,          // ожидание выбора команд из главного меню
-		// TODO: подменю
-
-	} m_playerCommandState = playerCommandState::SelectCommand;
-	
-	int m_selectPlayerCommand = -1;
-	bool m_selectOneEnemyTagetInMelee = false;// выбор одной вражеской цели в ближнем бою
-	bool m_selectOneEnemyTagetInRange = false;// выбор одной вражеской цели в любой клетке (дальний бой)
-
-	
-	void selectAttackTargetEnemy();
-	//void selectCell();
-
-
-
-
-
 
 	std::shared_ptr<Texture2D> m_patchTexture = nullptr;
 	NPatchInfo m_ninePatchInfo = { { 0.0f, 0.0f, 64.0f, 64.0f }, 6, 6, 6, 6, NPATCH_NINE_PATCH };
@@ -74,4 +34,26 @@ private:
 	std::shared_ptr<Texture2D> m_texChar1 = nullptr;
 	std::shared_ptr<Texture2D> m_texChar2 = nullptr;
 	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
+
+	PlayerParty& m_playerParty;
+	EnemyParty m_enemyParty;
+
+	enum class roundState
+	{
+		BeginRound,
+		Round,
+		EndRound,
+		EndBattle
+	} m_state = roundState::BeginRound;
+	unsigned m_numRound = 0;
+
+	struct member
+	{
+		enum class type_ { player, enemy } type;
+		unsigned number;
+	};
+	std::vector<member> m_members; // участники боя расставленные по инициативе
+	unsigned m_currentMember = 0; // текущий персонаж
+
+	BattlePlayerAction m_playerCommand;
 };

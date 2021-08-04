@@ -20,6 +20,7 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 #include <fstream>
 #include <chrono>
 #include <string>
+#include <algorithm>
 #include <functional>
 #include <vector>
 #include <map>

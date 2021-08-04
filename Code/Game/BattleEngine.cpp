@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "BattleEngine.h"
 #include "ResourceManager.h"
+#include "BattleCore.h"
 #include <Engine/DebugNew.h>
 /*
 * =============================================================================
@@ -44,36 +45,7 @@
 * есть переменная m_numRound - кол-во прошедших раундов. показывать на экране или еще где
 */
 //-----------------------------------------------------------------------------
-// позиции клеток
-constexpr Rectangle battleCell[] =
-{
-	{ 262.0f,  44.0f, 160.0f, 160.0f }, // 1x1
-	{ 432.0f,  44.0f, 160.0f, 160.0f }, // 2x1
-	{ 602.0f,  44.0f, 160.0f, 160.0f }, // 3x1
 
-	{ 262.0f, 214.0f, 160.0f, 160.0f }, // 1x2
-	{ 432.0f, 214.0f, 160.0f, 160.0f }, // 2x2
-	{ 602.0f, 214.0f, 160.0f, 160.0f }, // 3x2
-
-	{ 262.0f, 394.0f, 160.0f, 160.0f }, // 1x3
-	{ 432.0f, 394.0f, 160.0f, 160.0f }, // 2x3
-	{ 602.0f, 394.0f, 160.0f, 160.0f }, // 3x3
-
-	{ 262.0f, 564.0f, 160.0f, 160.0f }, // 1x4
-	{ 432.0f, 564.0f, 160.0f, 160.0f }, // 2x4
-	{ 602.0f, 564.0f, 160.0f, 160.0f }, // 3x4
-};
-//-----------------------------------------------------------------------------
-// позиции команд игрока
-constexpr Rectangle playerCommandRect[] =
-{
-	{ 810.0f, 415.0f, 140.0f, 40.0f },
-	{ 810.0f, 455.0f, 140.0f, 40.0f },
-	{ 810.0f, 495.0f, 140.0f, 40.0f },
-	{ 810.0f, 535.0f, 140.0f, 40.0f },
-};
-//-----------------------------------------------------------------------------
-constexpr unsigned ColumnWidthBattleCells = Countof(battleCell) / 2 / 2; // ширина ряда = кол-во ячеек / две стороны поля / два ряда
 //-----------------------------------------------------------------------------
 void BattleEngine::StartBattle(ResourceManager& resources, const EnemyParty& enemys) noexcept
 {
@@ -121,14 +93,14 @@ void BattleEngine::Draw() noexcept
 	{
 		DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[m_currentMember + 6], { 0.0f, 0.0f }, 0.0f, { 0, 228, 48, 140 });
 
-		if (m_selectOneEnemyTagetInMelee && m_currentMember >=0 && m_currentMember < 3) // игрок выбрал действие атака
-		{
-			// 6,7,8 - первый ряд игрока, можетбить по первому ряду противника 3, 4, 5 (почему по всем трем? потому что в реальном бою они не стоят в таких вот ровненьких рядах, поэтому можно бить в любого ближника - участники маневрируют)
+		//if (m_selectOneEnemyTagetInMelee && m_currentMember >=0 && m_currentMember < 3) // игрок выбрал действие атака
+		//{
+		//	// 6,7,8 - первый ряд игрока, можетбить по первому ряду противника 3, 4, 5 (почему по всем трем? потому что в реальном бою они не стоят в таких вот ровненьких рядах, поэтому можно бить в любого ближника - участники маневрируют)
 
-			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[3], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[4], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-			DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[5], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
-		}
+		//	DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[3], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+		//	DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[4], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+		//	DrawTextureNPatch(*m_textureUI_character, m_ninePatchInfo_character, battleCell[5], { 0.0f, 0.0f }, 0.0f, { 230, 41, 55, 140 });
+		//}
 	}
 
 	// отрисовка портретов участников боя
@@ -175,16 +147,7 @@ void BattleEngine::Draw() noexcept
 
 		if (isPlayer())
 		{
-			for (int i = 0; i < Countof(playerCommandRect); i++)
-				DrawRectangleLinesEx(playerCommandRect[i], 1.0f, WHITE);
-
-			if (m_selectPlayerCommand >= 0)
-				DrawText(">>>            <<<", 770, 420 + m_selectPlayerCommand * 40, 30, GREEN);
-
-			DrawText("Attack", 820, 420, 30, WHITE);
-			DrawText("Skill", 820, 460, 30, WHITE);
-			DrawText("Magic", 820, 500, 30, WHITE);
-			DrawText("Defence", 820, 540, 30, WHITE);
+			m_playerCommand.DrawCommandList();
 		}		
 	}
 }
@@ -200,6 +163,7 @@ void BattleEngine::setInitiative() noexcept
 //-----------------------------------------------------------------------------
 void BattleEngine::newRound() noexcept
 {
+	m_playerCommand.Reset();
 	m_currentMember = 0;
 	m_numRound++;
 	m_state = roundState::Round;
@@ -209,39 +173,11 @@ void BattleEngine::newRound() noexcept
 void BattleEngine::currentRound() noexcept
 {
 	bool memberEnd = false;
-	if (isPlayer())     memberEnd = playerAction();
+	if (isPlayer())     memberEnd = m_playerCommand.PlayerAction();
 	else if (isEnemy()) memberEnd = enemyAction();
 
 	if (memberEnd) // текущий участник подействовал, переключаемся на следующего
-		selectMember();
-}
-//-----------------------------------------------------------------------------
-bool BattleEngine::playerAction() noexcept
-{
-	// ожидаем выбор команды от игрока
-	if (m_playerCommandState == playerCommandState::SelectCommand)
-	{
-		selectPlayerCommand(); // выбор команды
-	}
-
-	return false;
-}
-//-----------------------------------------------------------------------------
-bool BattleEngine::enemyAction() noexcept
-{
-	return true;// враги пока пропускают ход
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::selectMember() noexcept
-{
-	m_selectPlayerCommand = -1;
-	m_playerCommandState = playerCommandState::SelectCommand;
-	m_selectOneEnemyTagetInMelee = false;
-	m_selectOneEnemyTagetInRange = false;
-	m_currentMember++;
-	// TODO: проверить статус что может ходить
-	if (m_currentMember >= m_members.size())
-		m_state = roundState::EndRound;
+		selectNextMember();
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::endRound() noexcept
@@ -250,60 +186,22 @@ void BattleEngine::endRound() noexcept
 	m_state = roundState::BeginRound;
 }
 //-----------------------------------------------------------------------------
-void BattleEngine::selectPlayerCommand() noexcept
+bool BattleEngine::enemyAction() noexcept
 {
-	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-	{
-		const auto mousePos = GetMousePosition();
-		int select = 0;
-		for (; select < Countof(playerCommandRect); select++)
-		{
-			const auto& rect = playerCommandRect[select];
-			if (mousePos.x > rect.x && mousePos.x < rect.x + rect.width &&
-				mousePos.y > rect.y && mousePos.y < rect.y + rect.height)
-				break;
-		}
-		if (select < Countof(playerCommandRect))
-		{
-			m_selectPlayerCommand = select;
-			m_selectOneEnemyTagetInMelee = false;
-			m_selectOneEnemyTagetInRange = false;
-			if (m_selectPlayerCommand == 0)
-				m_selectOneEnemyTagetInMelee = true;
-		}
-	}
-	else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-	{
-		m_selectOneEnemyTagetInMelee = false;
-		m_selectPlayerCommand = -1; // отмена выбранной команды по правой кнопке мыши
-	}
+	return true;// враги пока пропускают ход
 }
 //-----------------------------------------------------------------------------
-void BattleEngine::selectAttackTargetEnemy()
+void BattleEngine::selectNextMember() noexcept
 {
-	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+	m_currentMember++;
+	if (m_currentMember >= m_members.size())
 	{
-		const auto mousePos = GetMousePosition();
-		int cell = 0;
-		for (; cell < Countof(battleCell); cell++)
-		{
-			const auto& rect = battleCell[cell];
-			if (mousePos.x > rect.x && mousePos.x < rect.x + rect.width &&
-				mousePos.y > rect.y && mousePos.y < rect.y + rect.height)
-				break;
-		}
-		if (cell < Countof(battleCell))
-		{
-			if (m_currentMember >= 0 && m_currentMember < 3 && cell >= 3 && cell < 6)
-			{
-				const unsigned x = cell % ColumnWidthBattleCells;
-				const unsigned y = cell / ColumnWidthBattleCells;
-
-				printf("%d - %d:%d\n", cell, x + 1, y + 1);
-			}			
-		}
-	}
+		m_state = roundState::EndRound;
+		m_currentMember = 0;
+	}		
 }
+//-----------------------------------------------------------------------------
+
 //-----------------------------------------------------------------------------
 //void BattleEngine::selectCell()
 //{

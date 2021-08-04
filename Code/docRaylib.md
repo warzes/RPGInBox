@@ -1,6 +1,6 @@
 ﻿Текущий внесенный коммит рейлиба
-	Commits on Jul 28, 2021
-		Don't normalize zero length vectors. 
+	Commits on Aug 1, 2021
+		 Improve rlgl description 
 
 
 Мои изменения:

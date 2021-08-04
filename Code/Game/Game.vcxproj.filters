@@ -43,6 +43,9 @@
     <ClCompile Include="Tile.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="BattlePlayerAction.cpp">
+      <Filter>Battle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -89,6 +92,15 @@
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Stats.h">
+      <Filter>RPG</Filter>
+    </ClInclude>
+    <ClInclude Include="BattlePlayerAction.h">
+      <Filter>Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleCore.h">
+      <Filter>Battle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

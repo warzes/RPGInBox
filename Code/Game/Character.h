@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Stats.h"
+
 enum class CharacterClass
 {
 	Warrior,
@@ -27,8 +29,8 @@ public:
 	// Statistics
 	struct
 	{
-		int hp = 0;
-		int mp = 0;
+		Stats hp = 0;
+		Stats mp = 0;
 		int meleeAttack = 0;
 		int shootAttack = 0;
 		int magicAttack = 0;
