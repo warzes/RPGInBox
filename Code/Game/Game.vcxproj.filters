@@ -46,6 +46,9 @@
     <ClCompile Include="BattlePlayerAction.cpp">
       <Filter>Battle</Filter>
     </ClCompile>
+    <ClCompile Include="BattleCell.cpp">
+      <Filter>Battle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -100,6 +103,9 @@
       <Filter>Battle</Filter>
     </ClInclude>
     <ClInclude Include="BattleCore.h">
+      <Filter>Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleCell.h">
       <Filter>Battle</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 ﻿Текущий внесенный коммит рейлиба
-	Commits on Aug 1, 2021
-		 Improve rlgl description 
+	
+	Commits on Aug 8, 2021
+		REVIEWED: Avoid conflict with bool 
 
 
 Мои изменения:

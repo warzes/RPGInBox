@@ -1315,6 +1315,7 @@ Mesh GenMeshCube(float width, float height, float length);                      
 Mesh GenMeshSphere(float radius, int rings, int slices);                              // Generate sphere mesh (standard sphere)
 Mesh GenMeshHemiSphere(float radius, int rings, int slices);                          // Generate half-sphere mesh (no bottom cap)
 Mesh GenMeshCylinder(float radius, float height, int slices);                         // Generate cylinder mesh
+Mesh GenMeshCone(float radius, float height, int slices);                             // Generate cone/pyramid mesh
 Mesh GenMeshTorus(float radius, float size, int radSeg, int sides);                   // Generate torus mesh
 Mesh GenMeshKnot(float radius, float size, int radSeg, int sides);                    // Generate trefoil knot mesh
 Mesh GenMeshHeightmap(Image heightmap, Vector3 size);                                 // Generate heightmap mesh from image data

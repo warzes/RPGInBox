@@ -163,9 +163,9 @@ void BattleEngine::setInitiative() noexcept
 {
 	m_members.clear(); // сброс старого списка инициативы
 	for (unsigned i = 0; i < MaxNumCharacterInPlayerParty; i++)
-		m_members.push_back({ member::type_::player, i});
+		m_members.push_back({ BattleMember::type::player, i});
 	for (unsigned i = 0; i < m_enemyParty.enemys.size(); i++)
-		m_members.push_back({ member::type_::enemy, i});
+		m_members.push_back({ BattleMember::type::enemy, i});
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::newRound() noexcept

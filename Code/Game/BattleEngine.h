@@ -3,6 +3,7 @@
 #include "EnemyParty.h"
 #include "PlayerParty.h"
 #include "BattlePlayerAction.h"
+#include "BattleCore.h"
 
 class ResourceManager;
 
@@ -21,8 +22,8 @@ private:
 	void newRound() noexcept;
 	void currentRound() noexcept;
 	void endRound() noexcept;
-	bool isPlayer() const noexcept { return (m_members[m_currentMember].type == member::type_::player); }
-	bool isEnemy() const noexcept  { return (m_members[m_currentMember].type == member::type_::enemy); }
+	bool isPlayer() const noexcept { return (m_members[m_currentMember].type == BattleMember::type::player); }
+	bool isEnemy() const noexcept  { return (m_members[m_currentMember].type == BattleMember::type::enemy); }
 	void selectNextMember() noexcept;
 	bool enemyAction() noexcept;
 
@@ -47,12 +48,8 @@ private:
 	} m_state = roundState::BeginRound;
 	unsigned m_numRound = 0;
 
-	struct member
-	{
-		enum class type_ { player, enemy } type;
-		unsigned number;
-	};
-	std::vector<member> m_members; // участники боя расставленные по инициативе
+	
+	std::vector<BattleMember> m_members; // участники боя расставленные по инициативе
 	unsigned m_currentMember = 0; // текущий персонаж
 
 	BattlePlayerAction m_playerCommand;

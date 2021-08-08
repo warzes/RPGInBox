@@ -1,5 +1,11 @@
 #pragma once
 
+struct BattleMember
+{
+	enum class type { player, enemy } type;
+	unsigned number;
+};
+
 // позиции клеток
 constexpr Rectangle battleCell[] =
 {

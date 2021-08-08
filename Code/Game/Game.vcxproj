@@ -183,6 +183,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BattleEngine.cpp" />
+    <ClCompile Include="BattleCell.cpp" />
     <ClCompile Include="BattlePlayerAction.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -208,6 +209,7 @@
   <ItemGroup>
     <ClInclude Include="BattleCore.h" />
     <ClInclude Include="BattleEngine.h" />
+    <ClInclude Include="BattleCell.h" />
     <ClInclude Include="BattlePlayerAction.h" />
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="Enemy.h" />
