@@ -5,6 +5,8 @@
 #include "PlayerTurnCamera.h"
 #include "World.h"
 
+class Foo;
+
 class Game final : NonCopyable, NonMovable
 {
 public:

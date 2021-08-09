@@ -54,6 +54,30 @@
     <ClCompile Include="OldGame.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="GameScenes.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroScene.cpp">
+      <Filter>Game\GameModule</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuScene.cpp">
+      <Filter>Game\GameModule</Filter>
+    </ClCompile>
+    <ClCompile Include="NewGameScene.cpp">
+      <Filter>Game\GameModule</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadScene.cpp">
+      <Filter>Game\GameModule</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingScene.cpp">
+      <Filter>Game\GameModule</Filter>
+    </ClCompile>
+    <ClCompile Include="Overworld.cpp">
+      <Filter>Game\GameModule\Playfield</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Game\GameModule\Playfield</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -123,6 +147,33 @@
     <ClInclude Include="GameFrame.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="GameScenes.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameModule.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroScene.h">
+      <Filter>Game\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuScene.h">
+      <Filter>Game\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="NewGameScene.h">
+      <Filter>Game\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadScene.h">
+      <Filter>Game\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingScene.h">
+      <Filter>Game\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="Overworld.h">
+      <Filter>Game\GameModule\Playfield</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Game\GameModule\Playfield</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -145,6 +196,12 @@
     </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{4383e622-04a8-4b64-8cb8-d242fec74914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameModule">
+      <UniqueIdentifier>{bd2eb464-1305-46ac-8fdd-22156792f911}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameModule\Playfield">
+      <UniqueIdentifier>{1fb5a8a4-92e1-4185-b9b7-4b3bfbba72b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

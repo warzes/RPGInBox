@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Game.h"
+#include "GameScenes.h"
 #include <Engine/DebugNew.h>
 #include "GameFrame.h"
 //-----------------------------------------------------------------------------
@@ -33,12 +34,17 @@ bool Game::Init() noexcept
 
 	m_gameFrame = new Game::GameFrame();
 
+	//GameScenes::SwitchScene(SceneId_Intro);
+	GameScenes::SwitchScene(SceneId_MainMenu);
+	GameScenes::PerformSceneChange();
+
 	m_isEnd = false;
 	return true;
 }
 //-----------------------------------------------------------------------------
 void Game::Update(float deltaTime) noexcept
 {
+	GameScenes::Update(deltaTime);
 	m_world->Update(deltaTime);
 	// TODO: возможно логику камеру также перенести в m_world?
 	if (m_world->environment.GetStatus() == GameStatus::Exploring)
@@ -56,6 +62,7 @@ void Game::Frame() noexcept
 {
 	m_gameFrame->BeginFrame();
 	{
+		GameScenes::Draw(m_currentCamera);
 		m_world->Draw(m_currentCamera);
 	}	
 	m_gameFrame->EndFrame();
