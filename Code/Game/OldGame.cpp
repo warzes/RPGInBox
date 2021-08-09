@@ -1,21 +1,21 @@
-#include "stdafx.h"
-#include "Game.h"
+ï»¿#include "stdafx.h"
+#include "OldGame.h"
 #include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------
-Game::Game(Engine& engine) noexcept
+OldGame::OldGame(Engine& engine) noexcept
 	: m_engine(engine)
 	, m_world(m_resourceMgr)
 {
 }
 //-----------------------------------------------------------------------------
-Game::~Game()
+OldGame::~OldGame()
 {
 #if MAIN_FRAME_TO_RENDER_TEXTURE
 	UnloadRenderTexture(m_target);
 #endif
 }
 //-----------------------------------------------------------------------------
-bool Game::Init() noexcept
+bool OldGame::Init() noexcept
 {
 	m_cameraTurn.Setup(45.0f, { 0.0f, 0.0f, 0.0f });
 	m_camera.Setup(45.0f, { 0.0f, 0.0f, 0.0f });
@@ -47,7 +47,7 @@ bool Game::Init() noexcept
 	const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
 
 	m_target = LoadRenderTexture(virtualScreenWidth, virtualScreenHeight);
-	// The target's height is flipped (in the source Rectangle), due to OpenGL reasons
+	 // The target's height is flipped (in the source Rectangle), due to OpenGL reasons
 	m_sourceRec = { 0.0f, 0.0f, (float)m_target.texture.width, -(float)m_target.texture.height };
 	m_destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
 #endif
@@ -56,10 +56,10 @@ bool Game::Init() noexcept
 	return true;
 }
 //-----------------------------------------------------------------------------
-void Game::Update(float deltaTime) noexcept
+void OldGame::Update(float deltaTime) noexcept
 {
 	m_world.Update(deltaTime);
-	// TODO: âîçìîæíî ëîãèêó êàìåðó òàêæå ïåðåíåñòè â m_world?
+	// TODO: Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð»Ð¾Ð³Ð¸ÐºÑƒ ÐºÐ°Ð¼ÐµÑ€Ñƒ Ñ‚Ð°ÐºÐ¶Ðµ Ð¿ÐµÑ€ÐµÐ½ÐµÑÑ‚Ð¸ Ð² m_world?
 	if (m_world.environment.GetStatus() == GameStatus::Exploring)
 	{
 		m_currentCamera->Update(m_world);
@@ -71,7 +71,7 @@ void Game::Update(float deltaTime) noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void Game::Frame() noexcept
+void OldGame::Frame() noexcept
 {
 	// Set render target
 #if MAIN_FRAME_TO_RENDER_TEXTURE
@@ -83,7 +83,50 @@ void Game::Frame() noexcept
 #endif
 
 	m_world.Draw(m_currentCamera);
+	// Grid
+	/*{
+		int slices = 30;
+		float spacing = 1.0f;
 	
+		Point2 currentPosGrid = { 0, 0 };
+#if TURN_STEP
+		currentPosGrid = m_world.playerParty.GetPosition();
+#endif
+	
+		BeginMode3D(m_camera.GetCamera());
+	
+		rlCheckRenderBatchLimit((slices + 2) * 4);
+	
+		rlBegin(RL_LINES);
+		for (int i = -slices; i <= slices; i++)
+		{
+			rlColor3f(0.75f, 0.75f, 0.75f);
+			rlColor3f(0.75f, 0.75f, 0.75f);
+			rlColor3f(0.75f, 0.75f, 0.75f);
+			rlColor3f(0.75f, 0.75f, 0.75f);
+	
+			rlVertex3f(
+				(float)currentPosGrid.x+i * spacing - 0.5f, 
+				0.0f, 
+				(float)currentPosGrid.y + -slices * spacing - 0.5f);
+			rlVertex3f(
+				(float)currentPosGrid.x + i * spacing - 0.5f, 
+				0.0f, 
+				(float)currentPosGrid.y + slices * spacing - 0.5f);
+	
+			rlVertex3f(
+				(float)currentPosGrid.x + -slices * spacing - 0.5f, 
+				0.0f, 
+				(float)currentPosGrid.y + i * spacing - 0.5f);
+			rlVertex3f(
+				(float)currentPosGrid.x + slices * spacing - 0.5f, 
+				0.0f, 
+				(float)currentPosGrid.y + i * spacing - 0.5f);
+		}
+		rlEnd();
+		EndMode3D();
+	}*/
+
 	// end render target
 #if MAIN_FRAME_TO_RENDER_TEXTURE
 	EndTextureMode();

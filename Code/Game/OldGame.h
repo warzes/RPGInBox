@@ -5,11 +5,11 @@
 #include "PlayerTurnCamera.h"
 #include "World.h"
 
-class Game final : NonCopyable, NonMovable
+class OldGame final : NonCopyable, NonMovable
 {
 public:
-	Game(Engine& engine) noexcept;
-	~Game();
+	OldGame(Engine& engine) noexcept;
+	~OldGame();
 
 	bool Init() noexcept;
 
@@ -25,7 +25,7 @@ private:
 	ResourceManager m_resourceMgr;
 	FreeCamera m_camera;
 	PlayerTurnCamera m_cameraTurn;
-	IGameCamera* m_currentCamera = nullptr;
+	IGameCamera *m_currentCamera = nullptr;
 	World m_world;
 
 	bool m_turnCamera = true;

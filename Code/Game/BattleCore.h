@@ -26,7 +26,7 @@ constexpr Rectangle battleCell[] =
 	{ 602.0f, 564.0f, 160.0f, 160.0f }, // 3x4
 };
 //-----------------------------------------------------------------------------
-constexpr unsigned ColumnWidthBattleCells = Countof(battleCell) / 2 / 2; // ширина ряда = кол-во ячеек / две стороны поля / два ряда
+constexpr unsigned ColumnWidthBattleCells = (unsigned)Countof(battleCell) / 2u / 2u; // ширина ряда = кол-во ячеек / две стороны поля / два ряда
 
 // позиции команд игрока
 constexpr Rectangle playerCommandRect[] =

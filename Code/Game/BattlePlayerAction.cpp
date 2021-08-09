@@ -26,7 +26,7 @@ bool BattlePlayerAction::PlayerAction() noexcept
 //-----------------------------------------------------------------------------
 void BattlePlayerAction::DrawCommandList() noexcept
 {
-	for (int i = 0; i < Countof(playerCommandRect); i++)
+	for (size_t i = 0; i < Countof(playerCommandRect); i++)
 		DrawRectangleLinesEx(playerCommandRect[i], 1.0f, WHITE);
 
 	if (m_selectPlayerCommand >= 0)
@@ -43,7 +43,7 @@ void BattlePlayerAction::selectPlayerCommand() noexcept
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 	{
 		const auto mousePos = GetMousePosition();
-		int select = 0;
+		size_t select = 0;
 		for (; select < Countof(playerCommandRect); select++)
 		{
 			const auto& rect = playerCommandRect[select];

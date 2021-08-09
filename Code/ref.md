@@ -1,4 +1,13 @@
-﻿Project Dagger - https://www.youtube.com/watch?v=zTe3uUfx7rI
+﻿https://github.com/andrewgasson/roguelike-7drl-2021
+http://rlgclub.ru/wiki/Давайте_сделаем_рогалик_-_Ричард_Д._Кларк
+https://bfnightly.bracketproductions.com/rustbook/chapter_2.html
+https://www.grey-elf.com
+https://www.dragonsfoot.org/fe/
+https://www.youtube.com/channel/UCkN2bSUkP_rSW7ksrJXsWMQ/videos
+https://www.basicfantasy.org/downloads.html
+
+
+Project Dagger - https://www.youtube.com/watch?v=zTe3uUfx7rI
 EbonySpire
 https://github.com/mode777/DungeonCrawler - освещение
 https://www.youtube.com/channel/UCNz9gHQeGOC26GVwPQzr9EQ/videos - возможная стилизация

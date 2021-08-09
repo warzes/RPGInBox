@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "OldGame.h"
 #include "Game.h"
 #include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------
@@ -9,15 +10,6 @@
 #		pragma comment(lib, "winmm.lib")
 #	endif
 #endif // SE_COMPILER_MSVC
-//https://github.com/andrewgasson/roguelike-7drl-2021
-//http://rlgclub.ru/wiki/Давайте_сделаем_рогалик_-_Ричард_Д._Кларк
-//https://bfnightly.bracketproductions.com/rustbook/chapter_2.html
-//https://www.grey-elf.com
-//https://www.dragonsfoot.org/fe/
-//https://www.youtube.com/channel/UCkN2bSUkP_rSW7ksrJXsWMQ/videos
-//https://www.basicfantasy.org/downloads.html
-
-RingsOfPower-World
 //-----------------------------------------------------------------------------
 void GameMain() noexcept
 {
@@ -29,6 +21,7 @@ void GameMain() noexcept
 	Engine engine;
 	if (engine.Init(engineConfig))
 	{
+		//OldGame game(engine);
 		Game game(engine);
 		if (game.Init())
 		{
