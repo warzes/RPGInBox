@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Engine.h"
 #include "DebugNew.h"
+//-----------------------------------------------------------------------------
 extern "C"
 {
 	// NVIDIA: Force usage of NVidia GPU in case there is an integrated graphics unit as well, if we don't do this we risk getting the integrated graphics unit and hence a horrible performance
@@ -12,10 +13,6 @@ extern "C"
 	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 }
 //-----------------------------------------------------------------------------
-Engine::Engine() noexcept
-{
-}
-//-----------------------------------------------------------------------------
 Engine::~Engine()
 {
 	CloseWindowRaylib();
@@ -24,17 +21,6 @@ Engine::~Engine()
 //-----------------------------------------------------------------------------
 bool Engine::Init(const EngineConfig& config) noexcept
 {
-#if SE_DEBUG
-	int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG); // Get current flag
-	flag |= _CRTDBG_LEAK_CHECK_DF;   // Turn on leak-checking bit
-	flag |= _CRTDBG_CHECK_ALWAYS_DF; // Turn on CrtCheckMemory
-	_CrtSetDbgFlag(flag); // Set flag to the new value
-#endif
-
-#if !SE_DEBUG
-	srand(time(0));
-#endif
-
 	if (!log.open(config.LogName))
 		return false;
 

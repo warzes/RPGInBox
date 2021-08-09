@@ -30,10 +30,6 @@ private:
 
 	bool m_turnCamera = true;
 
-#if MAIN_FRAME_TO_RENDER_TEXTURE
-	RenderTexture2D m_target = {};
-	Rectangle m_sourceRec = {};
-	Rectangle m_destRec = {};
-	Vector2 m_origin = { 0.0f, 0.0f };
-#endif
+	class GameFrame;
+	GameFrame*m_gameFrame = nullptr;
 };

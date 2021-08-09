@@ -21,7 +21,6 @@ struct EngineConfig final
 class Engine final : NonCopyable, NonMovable
 {
 public:
-	Engine() noexcept;
 	~Engine();
 
 	bool Init(const EngineConfig& config) noexcept;

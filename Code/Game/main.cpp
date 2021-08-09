@@ -29,17 +29,22 @@ void GameMain() noexcept
 			{
 				engine.Update();
 				game.Update(engine.GetDeltaTime());
-				//engine.BeginFrame({ 0, 60, 80, 0 });
 				game.Frame();
-				//engine.EndFrame();
 			}
-		}		
+		}
 	}
 }
 //-----------------------------------------------------------------------------
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[])
 {
+#if SE_DEBUG
+	int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG); // Get current flag
+	flag |= _CRTDBG_LEAK_CHECK_DF;   // Turn on leak-checking bit
+	flag |= _CRTDBG_CHECK_ALWAYS_DF; // Turn on CrtCheckMemory
+	_CrtSetDbgFlag(flag); // Set flag to the new value
+#endif
 	GameMain();
+	_CrtDumpMemoryLeaks();
 	return 0;
 }
 //-----------------------------------------------------------------------------
