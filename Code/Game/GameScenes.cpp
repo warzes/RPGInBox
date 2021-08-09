@@ -114,8 +114,8 @@ void pushLevel() noexcept
 			pos = playfield->GetCurrentPos();
 
 			stack[stackLength].Level = curLevelId;
-			stack[stackLength].Col = pos.X;
-			stack[stackLength].Row = pos.Y;
+			stack[stackLength].Col = pos.x;
+			stack[stackLength].Row = pos.y;
 			stack[stackLength].InRoom = inRoom;
 			stackLength++;
 		}

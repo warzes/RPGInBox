@@ -34,8 +34,7 @@ bool Game::Init() noexcept
 
 	m_gameFrame = new Game::GameFrame();
 
-	//GameScenes::SwitchScene(SceneId_Intro);
-	GameScenes::SwitchScene(SceneId_MainMenu);
+	GameScenes::SwitchScene(SceneId_Intro);
 	GameScenes::PerformSceneChange();
 
 	m_isEnd = false;

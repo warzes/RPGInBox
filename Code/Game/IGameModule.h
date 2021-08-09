@@ -5,6 +5,8 @@ class IGameCamera;
 class IPlayfield
 {
 public:
+    virtual ~IPlayfield() = default;
+
     virtual Point2 GetCurrentPos() = 0;
     virtual int GetInRoom() = 0;
 
