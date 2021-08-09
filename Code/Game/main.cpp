@@ -33,7 +33,7 @@ void GameMain() noexcept
 			Game game(engine);
 			if (game.Init())
 			{
-				while (!engine.IsEnd() && !game.IsEnd())
+				while (!engine.IsEnd()  && !game.IsEnd())
 				{
 					engine.Update();
 					game.Update(engine.GetDeltaTime());

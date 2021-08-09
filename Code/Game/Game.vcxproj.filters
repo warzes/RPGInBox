@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="OldGame.cpp" />
     <ClCompile Include="World.cpp">
       <Filter>World</Filter>
     </ClCompile>
@@ -49,12 +48,15 @@
     <ClCompile Include="BattleCell.cpp">
       <Filter>Battle</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="OldGame.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="OldGame.h" />
-    <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="World.h">
       <Filter>World</Filter>
     </ClInclude>
@@ -109,7 +111,18 @@
     <ClInclude Include="BattleCell.h">
       <Filter>Battle</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="ConfigDefine.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="OldGame.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFrame.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -129,6 +142,9 @@
     </Filter>
     <Filter Include="Graphics">
       <UniqueIdentifier>{5788410c-e8d0-4de0-9d5a-64d2af155c69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{4383e622-04a8-4b64-8cb8-d242fec74914}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

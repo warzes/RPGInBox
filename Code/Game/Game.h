@@ -20,16 +20,18 @@ public:
 
 private:
 	Engine& m_engine;
-	bool m_isEnd = true;
+
+	class GameFrame;
+	GameFrame* m_gameFrame = nullptr;
 
 	ResourceManager m_resourceMgr;
+	World *m_world = nullptr;
+
+	// camera
 	FreeCamera m_camera;
 	PlayerTurnCamera m_cameraTurn;
 	IGameCamera* m_currentCamera = nullptr;
-	World m_world;
-
 	bool m_turnCamera = true;
 
-	class GameFrame;
-	GameFrame*m_gameFrame = nullptr;
+	bool m_isEnd = true;
 };

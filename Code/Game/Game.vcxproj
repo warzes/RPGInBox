@@ -216,6 +216,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyParty.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameFrame.h" />
     <ClInclude Include="OldGame.h" />
     <ClInclude Include="GameEnvironment.h" />
     <ClInclude Include="IGameCamera.h" />
