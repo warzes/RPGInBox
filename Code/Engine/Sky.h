@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IGameCamera.h"
-
 class Sky final : NonCopyable, NonMovable
 {
 public:
@@ -10,7 +8,7 @@ public:
 	bool Init() noexcept;
 
 	void Update(float deltaTime) noexcept;
-	void Draw(IGameCamera *camera) noexcept;
+	void Draw(const Camera3D& refCamera, const Vector3& cameraPos) noexcept;
 
 private:
 	Model m_mountain;

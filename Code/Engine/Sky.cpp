@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Sky.h"
-#include <Engine/DebugNew.h>
+#include "DebugNew.h"
 //-----------------------------------------------------------------------------
 Sky::~Sky()
 {
@@ -53,11 +53,11 @@ void Sky::Update(float deltaTime) noexcept
 	SetShaderValue(m_shaderS, m_frameLoc, &m_frame, SHADER_UNIFORM_FLOAT);
 }
 //-----------------------------------------------------------------------------
-void Sky::Draw(IGameCamera* camera) noexcept
+void Sky::Draw(const Camera3D& refCamera, const Vector3& cameraPos) noexcept
 {
-	BeginMode3D(camera->GetCamera());
-	DrawModel(m_mountain, camera->GetCameraPosition(), 1.0f, WHITE);
-	DrawModel(m_sky, camera->GetCameraPosition(), 1.0f, WHITE);
+	BeginMode3D(refCamera);
+	DrawModel(m_mountain, cameraPos, 1.0f, WHITE);
+	DrawModel(m_sky, cameraPos, 1.0f, WHITE);
 	EndMode3D();
 }
 //-----------------------------------------------------------------------------

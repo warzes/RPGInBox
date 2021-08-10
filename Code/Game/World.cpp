@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
 #include "World.h"
+#include "IGameCamera.h"
 World::World(ResourceManager& resources)
 	: m_resources(resources)
 	, m_battleEngine(playerParty)
@@ -47,7 +48,7 @@ void World::Draw(IGameCamera* camera) noexcept
 {
 	// TODO: для эффективности можно сделать так - сейчас я рендерю в текстуру и стираю ее, но когда открываются окна, не надо стирать текстуру и рендерить ее - а сразу же ее использовать
 	openworld.Draw(camera);
-	m_sky.Draw(camera);
+	m_sky.Draw(camera->GetCamera(), camera->GetCameraPosition());
 
 	if (environment.GetStatus() == GameStatus::Exploring)
 	{

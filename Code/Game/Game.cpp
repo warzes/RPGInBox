@@ -12,7 +12,6 @@ Game::Game(Engine& engine) noexcept
 //-----------------------------------------------------------------------------
 Game::~Game()
 {
-	delete m_gameFrame;
 	delete m_world;
 }
 //-----------------------------------------------------------------------------
@@ -32,7 +31,7 @@ bool Game::Init() noexcept
 	auto playerPos = m_world->playerParty.GetPosition();
 	m_cameraTurn.SetCameraPosition({ (float)playerPos.x, 0.0f, (float)playerPos.y }, 0.0f);
 
-	m_gameFrame = new Game::GameFrame();
+	m_gameFrame .reset(new GameFrame());
 
 	GameScenes::SwitchScene(SceneId_Intro);
 	GameScenes::PerformSceneChange();

@@ -3,7 +3,6 @@
 #include "PlayerParty.h"
 #include "Map.h"
 #include "GameEnvironment.h"
-#include "Sky.h"
 #include "BattleEngine.h"
 
 class World final : NonCopyable, NonMovable

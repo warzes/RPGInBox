@@ -1,6 +1,5 @@
 ﻿#include "stdafx.h"
 #include "BattleEngine.h"
-#include "ResourceManager.h"
 #include "BattleCore.h"
 #include <Engine/DebugNew.h>
 /*

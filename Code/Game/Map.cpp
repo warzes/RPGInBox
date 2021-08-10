@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Map.h"
 #include "IGameCamera.h"
-#include "ResourceManager.h"
 #include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------
 bool Map::InitTest(ResourceManager& resources) noexcept

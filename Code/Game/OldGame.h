@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ResourceManager.h"
 #include "FreeCamera.h"
 #include "PlayerTurnCamera.h"
 #include "World.h"

@@ -203,9 +203,7 @@
     <ClCompile Include="Overworld.cpp" />
     <ClCompile Include="PlayerParty.cpp" />
     <ClCompile Include="PlayerTurnCamera.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="SaveLoadScene.cpp" />
-    <ClCompile Include="Sky.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -240,10 +238,8 @@
     <ClInclude Include="Overworld.h" />
     <ClInclude Include="PlayerParty.h" />
     <ClInclude Include="PlayerTurnCamera.h" />
-    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="SaveLoadScene.h" />
-    <ClInclude Include="Sky.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tile.h" />

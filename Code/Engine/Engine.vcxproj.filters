@@ -10,6 +10,8 @@
     <ClCompile Include="EngineMath.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Sky.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -27,6 +29,8 @@
     <ClInclude Include="EngineMath.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Sky.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">

@@ -31,5 +31,7 @@ SE_PRAGMA_WARNING_POP
 #include <Engine/Engine.h>
 #include <Engine/EngineMath.h>
 #include <Engine/Frustum.h>
+#include <Engine/ResourceManager.h>
+#include <Engine/Sky.h>
 
 #include "ConfigDefine.h"

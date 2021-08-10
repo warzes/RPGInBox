@@ -1,6 +1,6 @@
 #pragma once
 
-class Game::GameFrame final
+class GameFrame final
 {
 public:
 	GameFrame()

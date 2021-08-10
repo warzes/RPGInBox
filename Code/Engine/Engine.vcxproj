@@ -183,6 +183,8 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EngineMath.h" />
     <ClInclude Include="Frustum.h" />
+    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Sky.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +192,8 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EngineMath.cpp" />
     <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Sky.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

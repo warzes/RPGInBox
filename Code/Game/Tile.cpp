@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Tile.h"
 #include "IGameCamera.h"
-#include "ResourceManager.h"
 #include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------
 const std::map<TileType, std::string> textureFloorName =

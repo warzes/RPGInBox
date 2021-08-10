@@ -1,11 +1,10 @@
 #pragma once
 
-#include "ResourceManager.h"
 #include "FreeCamera.h"
 #include "PlayerTurnCamera.h"
 #include "World.h"
 
-class Foo;
+class GameFrame;
 
 class Game final : NonCopyable, NonMovable
 {
@@ -22,9 +21,8 @@ public:
 
 private:
 	Engine& m_engine;
-
-	class GameFrame;
-	GameFrame* m_gameFrame = nullptr;
+		
+	std::unique_ptr<GameFrame> m_gameFrame = nullptr;
 
 	ResourceManager m_resourceMgr;
 	World *m_world = nullptr;

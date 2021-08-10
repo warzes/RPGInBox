@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ResourceManager.h"
-#include <Engine/DebugNew.h>
+#include "DebugNew.h"
 //-----------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
 {
