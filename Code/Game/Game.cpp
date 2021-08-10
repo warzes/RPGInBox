@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "GameScenes.h"
+#include "Global.h"
+#include "Player.h"
+#include "Sound.h"
 #include <Engine/DebugNew.h>
 #include "GameFrame.h"
 //-----------------------------------------------------------------------------
@@ -32,6 +35,12 @@ bool Game::Init() noexcept
 	m_cameraTurn.SetCameraPosition({ (float)playerPos.x, 0.0f, (float)playerPos.y }, 0.0f);
 
 	m_gameFrame .reset(new GameFrame());
+
+	if (!SoundManager::Init())
+		return false;
+
+	Global::Init();
+	Player::Init();
 
 	GameScenes::SwitchScene(SceneId_Intro);
 	GameScenes::PerformSceneChange();

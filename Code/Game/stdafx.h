@@ -16,6 +16,7 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 #include <raylib/rlgl.h>
 #include <raylib/raymath.h>
 
+#include <cassert>
 #include <cstdint>
 #include <fstream>
 #include <chrono>
