@@ -4,6 +4,7 @@
 #include "IntroScene.h"
 #include "TitleScene.h"
 #include "NewGameScene.h"
+#include "SaveLoadScene.h"
 #include <Engine/DebugNew.h>
 
 enum SceneAction
@@ -51,7 +52,7 @@ SceneMaker sceneMakers[] =
 	IntroScene::Make,
 	TitleScene::Make,
 	NewGameScene::Make,
-	//SaveLoadScene::MakeLoad,
+	SaveLoadScene::MakeLoad,
 	//EndingScene::Make,
 };
 //-----------------------------------------------------------------------------

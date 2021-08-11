@@ -56,6 +56,7 @@ public:
 	IPlayfield* AsPlayfield() noexcept final;
 
 	static void DrawClass(int classId, float x, float y) noexcept;
+	static void DrawOrb(int index, bool lit, float x, float y) noexcept;
 
 	static void PlayError() noexcept;
 	static void PlayCursor() noexcept;

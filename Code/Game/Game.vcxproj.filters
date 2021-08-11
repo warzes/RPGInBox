@@ -84,6 +84,15 @@
     <ClCompile Include="NewGameScene.cpp">
       <Filter>NewGame\GameModule</Filter>
     </ClCompile>
+    <ClCompile Include="SaveLoadScene.cpp">
+      <Filter>NewGame\GameModule</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveFolder.cpp">
+      <Filter>NewGame</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadMenu.cpp">
+      <Filter>NewGame\GameModule</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -193,6 +202,18 @@
       <Filter>NewGame\GameModule</Filter>
     </ClInclude>
     <ClInclude Include="NewGameScene.h">
+      <Filter>NewGame\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadScene.h">
+      <Filter>NewGame\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveFolder.h">
+      <Filter>NewGame</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadMenu.h">
+      <Filter>NewGame\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="Overworld.h">
       <Filter>NewGame\GameModule</Filter>
     </ClInclude>
   </ItemGroup>

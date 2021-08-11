@@ -67,6 +67,18 @@ void GameMenu::DrawClass(int classId, float x, float y) noexcept
 	DrawTexturePro(*instance->m_playerBmp, { 0, sy, 48, 72 }, { x, y, 48, 72 }, { 0.0f, 0.0f }, 0.0f, WHITE);
 }
 
+void GameMenu::DrawOrb(int index, bool lit, float x, float y) noexcept
+{
+	float sx = 0;
+
+	if (!lit)
+		sx = 5 * 16;
+	else
+		sx = 16 + index * 16;
+
+	DrawTexturePro(*instance->m_menuBmp, { sx, 0, 16, 16 }, { x, y, 16, 16 }, { 0.0f, 0.0f }, 0.0f, WHITE);
+}
+
 void GameMenu::PlayError() noexcept
 {
 	SoundManager::PlayEffect(SEffect_Error);

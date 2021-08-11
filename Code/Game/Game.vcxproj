@@ -206,6 +206,9 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerParty.cpp" />
     <ClCompile Include="PlayerTurnCamera.cpp" />
+    <ClCompile Include="SaveFolder.cpp" />
+    <ClCompile Include="SaveLoadMenu.cpp" />
+    <ClCompile Include="SaveLoadScene.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -244,11 +247,15 @@
     <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="FreeCamera.h" />
+    <ClInclude Include="Overworld.h" />
     <ClInclude Include="OWTile.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerParty.h" />
     <ClInclude Include="PlayerTurnCamera.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="SaveFolder.h" />
+    <ClInclude Include="SaveLoadMenu.h" />
+    <ClInclude Include="SaveLoadScene.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="stdafx.h" />
