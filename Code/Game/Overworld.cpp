@@ -2,22 +2,38 @@
 #include "Overworld.h"
 #include "Sound.h"
 #include "GameScenes.h"
+#include "Player.h"
+#include "MapSprite.h"
+#include "VehicleSprites.h"
+#include "OWTile.h"
+#include <Engine/DebugNew.h>
 
 Overworld* Overworld::instance;
 
+IMapSprite* vehicleSprite;
+MapSprite* playerSprite;
+CanoeSprite* canoeSprite;
+ShipSprite* shipSprite;
+AirshipSprite* airshipSprite;
+
+const int IsmusCol = 102;
+const int IsmusRow = 164;
+const int BridgeCol = 152;
+const int BridgeRow = 152;
+
 Overworld::Overworld() noexcept
-	: tiles(nullptr),
-	offsetX(0),
-	offsetY(0),
-	uncompStartRow(0),
-	topRow(0),
-	leftCol(0),
-	playerImage(nullptr),
-	movingDir(Dir_None),
-	curUpdate(&Overworld::UpdateFootIdle),
-	shopPending(false),
-	shopId(0),
-	poisonMove(false)
+	: tiles(nullptr)
+	, offsetX(0)
+	, offsetY(0)
+	, uncompStartRow(0)
+	, topRow(0)
+	, leftCol(0)
+	, playerImage(nullptr)
+	, movingDir(Dir_None)
+	, curUpdate(&Overworld::UpdateFootIdle)
+	, shopPending(false)
+	, shopId(0)
+	, poisonMove(false)
 {
 	instance = this;
 }
@@ -25,7 +41,17 @@ Overworld::Overworld() noexcept
 Overworld::~Overworld()
 {
 	instance = nullptr;
-	// TODO:
+	delete playerSprite;
+	playerSprite = nullptr;
+
+	delete canoeSprite;
+	canoeSprite = nullptr;
+
+	delete shipSprite;
+	shipSprite = nullptr;
+
+	delete airshipSprite;
+	airshipSprite = nullptr;
 }
 
 IPlayfield* Overworld::AsPlayfield() noexcept
@@ -63,7 +89,57 @@ void Overworld::HandleOpeningEnded() noexcept
 
 void Overworld::Init(int startCol, int startRow) noexcept
 {
-	// TODO:
+	if (!LoadResource("owMap.tab", &compressedRows))
+		return;
+
+	tiles = ResourceManager::GetGlobalTexture("images/owTiles.png");
+	playerImage = ResourceManager::GetGlobalTexture("images/mapPlayer.png");
+
+	if (!LoadList("owTileAttr.dat", tileAttr, TileTypes))
+		return;
+
+	if (!LoadList("tileBackdrops.dat", tileBackdrops, TileTypes))
+		return;
+
+	if (!LoadList("enterTeleports.dat", enterTeleports, EnterTeleports))
+		return;
+
+	LoadMap(startCol, startRow);
+
+	playerSprite = new MapSprite(playerImage);
+	playerSprite->SetX(startCol * TileWidth);
+	playerSprite->SetY(startRow * TileHeight);
+	playerSprite->SetFrames(0 * 16);
+	playerSprite->SetDirection(Dir_Down);
+
+	canoeSprite = new CanoeSprite(playerImage);
+
+	shipSprite = new ShipSprite(playerImage);
+
+	airshipSprite = new AirshipSprite(playerImage);
+
+	uint8_t ref = GetTileRef(startCol, startRow);
+	uint16_t attrs = tileAttr[ref];
+
+	if (OWTile::CanCanoe(attrs))
+	{
+		Player::SetActiveVehicle(Vehicle_Canoe);
+
+		canoeSprite->SetDirection(Dir_Right);
+		canoeSprite->SetX(playerSprite->GetX());
+		canoeSprite->SetY(playerSprite->GetY());
+		vehicleSprite = canoeSprite;
+
+		curUpdate = &Overworld::UpdateCanoeIdle;
+	}
+	else
+	{
+		vehicleSprite = playerSprite;
+	}
+
+	SoundManager::PlayTrack(Sound_Field);
+
+	GameScenes::BeginFade(15, [] {});
 }
 
 void Overworld::Update() noexcept

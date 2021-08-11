@@ -196,6 +196,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Magic.cpp" />
+    <ClCompile Include="MapSprite.cpp" />
     <ClCompile Include="NewGameScene.cpp" />
     <ClCompile Include="ObjEvents.cpp" />
     <ClCompile Include="OldGame.cpp" />
@@ -211,6 +212,7 @@
     <ClCompile Include="SaveLoadMenu.cpp" />
     <ClCompile Include="SaveLoadScene.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -219,6 +221,7 @@
     </ClCompile>
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="VehicleSprites.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +244,7 @@
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="LTile.h" />
     <ClInclude Include="Magic.h" />
+    <ClInclude Include="MapSprite.h" />
     <ClInclude Include="NewGameScene.h" />
     <ClInclude Include="ObjEvents.h" />
     <ClInclude Include="OldGame.h" />
@@ -258,10 +262,12 @@
     <ClInclude Include="SaveLoadMenu.h" />
     <ClInclude Include="SaveLoadScene.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="VehicleSprites.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

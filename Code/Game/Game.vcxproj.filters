@@ -96,6 +96,15 @@
     <ClCompile Include="Overworld.cpp">
       <Filter>NewGame\GameModule</Filter>
     </ClCompile>
+    <ClCompile Include="MapSprite.cpp">
+      <Filter>NewGame\temp</Filter>
+    </ClCompile>
+    <ClCompile Include="VehicleSprites.cpp">
+      <Filter>NewGame\temp</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>NewGame\temp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -219,6 +228,15 @@
     <ClInclude Include="Overworld.h">
       <Filter>NewGame\GameModule</Filter>
     </ClInclude>
+    <ClInclude Include="MapSprite.h">
+      <Filter>NewGame\temp</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleSprites.h">
+      <Filter>NewGame\temp</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>NewGame\temp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -250,6 +268,9 @@
     </Filter>
     <Filter Include="NewGame\GameModule\Playfield">
       <UniqueIdentifier>{1fb5a8a4-92e1-4185-b9b7-4b3bfbba72b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NewGame\temp">
+      <UniqueIdentifier>{ff8bb9e9-b3bd-48e8-be74-49578bbddb42}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
