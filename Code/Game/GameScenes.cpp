@@ -5,6 +5,7 @@
 #include "TitleScene.h"
 #include "NewGameScene.h"
 #include "SaveLoadScene.h"
+#include "Overworld.h"
 #include <Engine/DebugNew.h>
 
 enum SceneAction
@@ -45,6 +46,9 @@ bool inShop = false;
 IGameModule* curScene = nullptr;
 IGameModule* curOverlay = nullptr;
 
+bool fade = false;
+int fadeTimer = 0;
+int fadeFrames = 0;
 GameScenes::FuncNextScene funcNextScene = nullptr;
 
 SceneMaker sceneMakers[] =
@@ -79,6 +83,22 @@ static void SwitchScene()
 	stackLength = 0;
 }
 //-----------------------------------------------------------------------------
+static void SwitchToField()
+{
+	delete curOverlay;
+	curOverlay = nullptr;
+
+	delete curScene;
+	curScene = nullptr;
+
+	Overworld* field = new Overworld();
+	field->Init(pendingScene.Col, pendingScene.Row);
+
+	curScene = field;
+	curLevelId = -1;
+	stackLength = 0;
+}
+//-----------------------------------------------------------------------------
 void GameScenes::SwitchScene(SceneId id)
 {
 	pendingScene.Action = Scene_SwitchScene;
@@ -94,6 +114,12 @@ void GameScenes::SwitchToField(int startCol, int startRow)
 //-----------------------------------------------------------------------------
 void GameScenes::PerformSceneChange()
 {
+	if (pendingScene.Action != Scene_None)
+	{
+		// scene changes override fades
+		fade = false;
+	}
+
 	switch (pendingScene.Action)
 	{
 	case Scene_SwitchScene:
@@ -101,25 +127,35 @@ void GameScenes::PerformSceneChange()
 		break;
 
 	case Scene_SwitchToField:
-	//   ::SwitchToField();
+	   ::SwitchToField();
 	    break;
 
-	//case Scene_PushLevel:
+	case Scene_PushLevel:
 	//    ::PushLevel();
-	//    break;
+		;
+	    break;
 
-	//case Scene_PopLevel:
+	case Scene_PopLevel:
 	//    ::PopLevel();
-	//    break;
+		;
+	    break;
 
-	//case Scene_PopAllLevels:
+	case Scene_PopAllLevels:
 	//    ::PopAllLevels();
-	//    break;
+		;
+	    break;
 	}
 
 	pendingScene.Action = Scene_None;
 }
-
+//-----------------------------------------------------------------------------
+void GameScenes::BeginFade(int frames, FuncNextScene p)
+{
+	fade = true;
+	fadeTimer = 0;
+	fadeFrames = frames;
+	funcNextScene = p;
+}
 //-----------------------------------------------------------------------------
 void GameScenes::HideMenu()
 {

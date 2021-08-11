@@ -93,6 +93,9 @@
     <ClCompile Include="SaveLoadMenu.cpp">
       <Filter>NewGame\GameModule</Filter>
     </ClCompile>
+    <ClCompile Include="Overworld.cpp">
+      <Filter>NewGame\GameModule</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

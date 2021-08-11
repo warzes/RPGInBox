@@ -117,7 +117,7 @@ int Global::GetPrice(int itemId)
 
 uint32_t Global::GetTime()
 {
-	uint32_t procMillis = GetTime() * 1000;
+	uint32_t procMillis = ::GetTime() * 1000;
 	uint32_t timeMillis = timeBaseMillis + (procMillis - runStartMillis);
 
 	return timeMillis;

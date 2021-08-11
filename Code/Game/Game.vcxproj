@@ -203,6 +203,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
+    <ClCompile Include="Overworld.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerParty.cpp" />
     <ClCompile Include="PlayerTurnCamera.cpp" />

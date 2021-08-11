@@ -20,6 +20,8 @@ public:
 	static void SwitchToField(int startCol, int startRow);
 	static void PerformSceneChange();
 
+	static void BeginFade(int frames, FuncNextScene p);
+
 	static void HideMenu();
 
 	static void Update();
