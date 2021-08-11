@@ -81,6 +81,9 @@
     <ClCompile Include="GameMenu.cpp">
       <Filter>NewGame\GameModule</Filter>
     </ClCompile>
+    <ClCompile Include="NewGameScene.cpp">
+      <Filter>NewGame\GameModule</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -187,6 +190,9 @@
       <Filter>NewGame\GameModule</Filter>
     </ClInclude>
     <ClInclude Include="GameMenu.h">
+      <Filter>NewGame\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="NewGameScene.h">
       <Filter>NewGame\GameModule</Filter>
     </ClInclude>
   </ItemGroup>

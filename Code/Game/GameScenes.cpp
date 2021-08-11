@@ -3,6 +3,7 @@
 #include "IGameModule.h"
 #include "IntroScene.h"
 #include "TitleScene.h"
+#include "NewGameScene.h"
 #include <Engine/DebugNew.h>
 
 enum SceneAction
@@ -49,7 +50,7 @@ SceneMaker sceneMakers[] =
 {
 	IntroScene::Make,
 	TitleScene::Make,
-	//NewGameScene::Make,
+	NewGameScene::Make,
 	//SaveLoadScene::MakeLoad,
 	//EndingScene::Make,
 };
@@ -83,6 +84,13 @@ void GameScenes::SwitchScene(SceneId id)
 	pendingScene.Level = id;
 }
 //-----------------------------------------------------------------------------
+void GameScenes::SwitchToField(int startCol, int startRow)
+{
+	pendingScene.Action = Scene_SwitchToField;
+	pendingScene.Col = startCol;
+	pendingScene.Row = startRow;
+}
+//-----------------------------------------------------------------------------
 void GameScenes::PerformSceneChange()
 {
 	switch (pendingScene.Action)
@@ -91,9 +99,9 @@ void GameScenes::PerformSceneChange()
 		::SwitchScene();
 		break;
 
-	//case Scene_SwitchToField:
-	//    ::SwitchToField();
-	//    break;
+	case Scene_SwitchToField:
+	//   ::SwitchToField();
+	    break;
 
 	//case Scene_PushLevel:
 	//    ::PushLevel();
@@ -109,6 +117,21 @@ void GameScenes::PerformSceneChange()
 	}
 
 	pendingScene.Action = Scene_None;
+}
+
+//-----------------------------------------------------------------------------
+void GameScenes::HideMenu()
+{
+	delete curOverlay;
+	curOverlay = nullptr;
+
+	if (curScene != nullptr)
+	{
+		IPlayfield* playfield = curScene->AsPlayfield();
+
+		if (playfield != nullptr && inShop)
+			playfield->HandleShopClosed();
+	}
 }
 //-----------------------------------------------------------------------------
 void GameScenes::Update()

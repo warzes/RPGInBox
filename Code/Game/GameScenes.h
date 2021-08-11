@@ -17,8 +17,10 @@ public:
 	typedef std::function<void()> FuncNextScene;
 
 	static void SwitchScene(SceneId id);
-
+	static void SwitchToField(int startCol, int startRow);
 	static void PerformSceneChange();
+
+	static void HideMenu();
 
 	static void Update();
 	static void Draw();

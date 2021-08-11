@@ -196,6 +196,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Magic.cpp" />
+    <ClCompile Include="NewGameScene.cpp" />
     <ClCompile Include="ObjEvents.cpp" />
     <ClCompile Include="OldGame.cpp" />
     <ClCompile Include="GameEnvironment.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="LTile.h" />
     <ClInclude Include="Magic.h" />
+    <ClInclude Include="NewGameScene.h" />
     <ClInclude Include="ObjEvents.h" />
     <ClInclude Include="OldGame.h" />
     <ClInclude Include="GameEnvironment.h" />
