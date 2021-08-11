@@ -5,14 +5,15 @@
 class IntroScene final : public IGameModule
 {
 public:
-	IntroScene() = default;
+    IntroScene() = default;
 
-	void Init() noexcept;
+    void Init() noexcept;
 
-	void Update(float deltaTime) noexcept final;
-	void Draw(IGameCamera* camera) noexcept final;
+    void Update() noexcept final;
+    void Draw() noexcept final;
 
-	IPlayfield* AsPlayfield() noexcept final;
+    IPlayfield* AsPlayfield() noexcept final;
 
-	static IGameModule* Make() noexcept;
+    static IGameModule* Make() noexcept;
+
 };

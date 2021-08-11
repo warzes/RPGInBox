@@ -45,32 +45,17 @@
     <ClCompile Include="Game.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="GameScenes.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="IntroScene.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuScene.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="NewGameScene.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveLoadScene.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="EndingScene.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="Overworld.cpp">
-      <Filter>NewGame\GameModule\Playfield</Filter>
-    </ClCompile>
-    <ClCompile Include="Level.cpp">
-      <Filter>NewGame\GameModule\Playfield</Filter>
-    </ClCompile>
     <ClCompile Include="OldGame.cpp">
       <Filter>_OLD\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScenes.cpp">
+      <Filter>NewGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>NewGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>NewGame</Filter>
     </ClCompile>
     <ClCompile Include="Global.cpp">
       <Filter>NewGame</Filter>
@@ -81,10 +66,13 @@
     <ClCompile Include="Magic.cpp">
       <Filter>NewGame</Filter>
     </ClCompile>
+    <ClCompile Include="Dialog.cpp">
+      <Filter>NewGame</Filter>
+    </ClCompile>
     <ClCompile Include="ObjEvents.cpp">
       <Filter>NewGame</Filter>
     </ClCompile>
-    <ClCompile Include="GlobalMenu.cpp">
+    <ClCompile Include="IntroScene.cpp">
       <Filter>NewGame\GameModule</Filter>
     </ClCompile>
   </ItemGroup>
@@ -144,70 +132,49 @@
     <ClInclude Include="GameFrame.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="GameScenes.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="IGameModule.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="IntroScene.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenuScene.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="NewGameScene.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="SaveLoadScene.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="EndingScene.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="Overworld.h">
-      <Filter>NewGame\GameModule\Playfield</Filter>
-    </ClInclude>
-    <ClInclude Include="Level.h">
-      <Filter>NewGame\GameModule\Playfield</Filter>
-    </ClInclude>
     <ClInclude Include="OldGame.h">
       <Filter>_OLD\Game</Filter>
     </ClInclude>
     <ClInclude Include="ConfigDefine.h">
       <Filter>_OLD\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Global.h">
+    <ClInclude Include="GameScenes.h">
       <Filter>NewGame</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Ids.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="LTile.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="OWTile.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Magic.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjEvents.h">
+    <ClInclude Include="IGameModule.h">
       <Filter>NewGame</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>NewGame</Filter>
     </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>NewGame</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalMenu.h">
+    <ClInclude Include="Global.h">
+      <Filter>NewGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ids.h">
+      <Filter>NewGame</Filter>
+    </ClInclude>
+    <ClInclude Include="OWTile.h">
+      <Filter>NewGame</Filter>
+    </ClInclude>
+    <ClInclude Include="LTile.h">
+      <Filter>NewGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>NewGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Magic.h">
+      <Filter>NewGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog.h">
+      <Filter>NewGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjEvents.h">
+      <Filter>NewGame</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroScene.h">
       <Filter>NewGame\GameModule</Filter>
     </ClInclude>
   </ItemGroup>

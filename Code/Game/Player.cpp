@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Player.h"
-#include <Engine/DebugNew.h>
 
 namespace Player
 {
@@ -38,19 +37,19 @@ namespace Player
 
 	const uint16_t ClassEquipBit[] =
 	{
-		0x800,
-		0x400,
-		0x200,
-		0x100,
-		0x080,
-		0x040,
+	0x800,
+	0x400,
+	0x200,
+	0x100,
+	0x080,
+	0x040,
 
-		0x020,
-		0x010,
-		0x008,
-		0x004,
-		0x002,
-		0x001
+	0x020,
+	0x010,
+	0x008,
+	0x004,
+	0x002,
+	0x001
 	};
 
 
@@ -90,7 +89,6 @@ namespace Player
 	{
 		FILE* file = nullptr;
 		errno_t err = 0;
-
 
 		err = fopen_s(&file, "magicPerms.dat", "rb");
 		if (err != 0)
@@ -286,6 +284,8 @@ namespace Player
 		InitParty(playerInfos);
 		memset(Items, 0, sizeof Items);
 		ClearGameFlags();
+
+		Global::SetTime(0);
 	}
 
 	void LoadFile(FILE* file)
@@ -313,6 +313,8 @@ namespace Player
 
 		fread(Items, sizeof Items, 1, file);
 		fread(gameFlags, sizeof gameFlags, 1, file);
+
+		Global::SetTime(time);
 	}
 
 	void SaveFile(FILE* file)
@@ -324,7 +326,7 @@ namespace Player
 			fwrite(Party[i].name, CharDataSize, 1, file);
 		}
 
-		uint32_t time = 0; // TODO:
+		uint32_t time = Global::GetTime();
 
 		fwrite(&time, sizeof time, 1, file);
 		fwrite(&gil, sizeof gil, 1, file);

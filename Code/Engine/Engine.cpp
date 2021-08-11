@@ -15,6 +15,7 @@ extern "C"
 //-----------------------------------------------------------------------------
 Engine::~Engine()
 {
+	CloseAudioDevice();
 	CloseWindowRaylib();
 	log.Print("Engine end.");
 }
@@ -27,8 +28,20 @@ bool Engine::Init(const EngineConfig& config) noexcept
 	log.Print("Engine Init...");
 
 	InitWindow(config.window.width, config.window.height, "Game");
+	if (!IsWindowReady())
+	{
+		log.Error("InitWindow failed!");
+		return false;
+	}
 	if (config.window.vsync)
 		SetTargetFPS(60);
+
+	InitAudioDevice();
+	if (!IsAudioDeviceReady())
+	{
+		log.Error("Audio device failed!");
+		return false;
+	}		
 
 	return true;
 }

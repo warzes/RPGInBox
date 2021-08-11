@@ -2,7 +2,6 @@
 
 #include "FreeCamera.h"
 #include "PlayerTurnCamera.h"
-#include "World.h"
 
 class GameFrame;
 
@@ -25,7 +24,6 @@ private:
 	std::unique_ptr<GameFrame> m_gameFrame = nullptr;
 
 	ResourceManager m_resourceMgr;
-	World *m_world = nullptr;
 
 	// camera
 	FreeCamera m_camera;

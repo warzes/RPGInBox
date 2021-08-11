@@ -1,6 +1,5 @@
 #pragma once
 
-
 enum
 {
 	Obj_Garland = 0x02,    // first Garland

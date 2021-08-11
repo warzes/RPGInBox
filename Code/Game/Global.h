@@ -64,10 +64,8 @@ enum Status
 	Status_AllLiving = 0xfe,
 	Status_All = 0xff,
 
-	Status_NoInput = Status_Death | Status_Stone | Status_Paralysis |
-	Status_Sleep | Status_Confusion,
-	Status_AllStopped = Status_Death | Status_Stone | Status_Paralysis |
-	Status_Sleep,
+	Status_NoInput = Status_Death | Status_Stone | Status_Paralysis | Status_Sleep | Status_Confusion,
+	Status_AllStopped = Status_Death | Status_Stone | Status_Paralysis | Status_Sleep,
 };
 
 
@@ -195,6 +193,13 @@ const int NoArmor = 0xff;
 const int NoMagic = 0;
 const int NoItem = 0;
 
+const int ConfirmKey = KEY_Z;
+const int CancelKey = KEY_X;
+const int MenuKey = KEY_C;
+
+const int StdViewWidth = 256;
+const int StdViewHeight = 240;
+
 int GetNextRandom(int range);
 Direction GetOppositeDir(Direction direction);
 
@@ -203,7 +208,6 @@ class ResourceLoader
 public:
 	virtual bool Load(FILE* file, size_t fileSize) = 0;
 };
-
 
 template <typename T, int Length>
 class Table : public ResourceLoader
@@ -285,9 +289,9 @@ public:
 	static int GetBattleFormation(int domain);
 	static int GetPrice(int itemId);
 
-	//static uint32_t GetTime();
-	//static void SetTime(uint32_t timeMillis);
+	static uint32_t GetTime();
+	static void SetTime(uint32_t timeMillis);
 	static void GetHoursMinutes(uint32_t millis, uint32_t& hours, uint32_t& minutes);
 
-	Color GetSystemColor(int colorIndex);
+	static Color GetSystemColor(int colorIndex);
 };

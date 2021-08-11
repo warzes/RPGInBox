@@ -4,24 +4,22 @@ class IGameCamera;
 
 enum SceneId
 {
-    SceneId_Intro,
-    SceneId_MainMenu,
-    SceneId_NewGame,
-    SceneId_LoadGame,
-    SceneId_Ending,
+	SceneId_Intro,
+	SceneId_StartGameMenu,
+	SceneId_NewGame,
+	SceneId_LoadGame,
+	SceneId_Ending,
 };
 
 class GameScenes
 {
 public:
-    typedef std::function<void()> FadeEndProc;
+	typedef std::function<void()> FuncNextScene;
 
-	static void SwitchScene(SceneId id) noexcept;
-	static void PerformSceneChange() noexcept;
+	static void SwitchScene(SceneId id);
 
-    static void EndFade() noexcept;
-    static bool AtFadeEnd() noexcept;
+	static void PerformSceneChange();
 
-    static void Update(float deltaTime) noexcept;
-    static void Draw(IGameCamera* camera) noexcept;
+	static void Update();
+	static void Draw();
 };

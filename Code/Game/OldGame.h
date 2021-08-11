@@ -4,6 +4,8 @@
 #include "PlayerTurnCamera.h"
 #include "World.h"
 
+class GameFrame;
+
 class OldGame final : NonCopyable, NonMovable
 {
 public:
@@ -19,20 +21,17 @@ public:
 
 private:
 	Engine& m_engine;
-	bool m_isEnd = true;
+
+	std::unique_ptr<GameFrame> m_gameFrame = nullptr;
 
 	ResourceManager m_resourceMgr;
+	World* m_world = nullptr;
+
+	// camera
 	FreeCamera m_camera;
 	PlayerTurnCamera m_cameraTurn;
-	IGameCamera *m_currentCamera = nullptr;
-	World m_world;
-
+	IGameCamera* m_currentCamera = nullptr;
 	bool m_turnCamera = true;
 
-#if MAIN_FRAME_TO_RENDER_TEXTURE
-	RenderTexture2D m_target = {};
-	Rectangle m_sourceRec = {};
-	Rectangle m_destRec = {};
-	Vector2 m_origin = { 0.0f, 0.0f };
-#endif
+	bool m_isEnd = true;
 };

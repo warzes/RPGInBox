@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Global.h"
-#include <Engine/DebugNew.h>
 
 static uint32_t timeBaseMillis;
 static uint32_t runStartMillis;
@@ -78,6 +77,7 @@ uint8_t Global::formationWeights[FormationWeights];
 uint16_t Global::prices[Prices];
 static ColorInt24   nesColors[64];
 
+
 bool Global::Init()
 {
 	if (!LoadList("domains.dat", domains, Domains))
@@ -113,6 +113,20 @@ int Global::GetBattleFormation(int domain)
 int Global::GetPrice(int itemId)
 {
 	return prices[itemId];
+}
+
+uint32_t Global::GetTime()
+{
+	uint32_t procMillis = GetTime() * 1000;
+	uint32_t timeMillis = timeBaseMillis + (procMillis - runStartMillis);
+
+	return timeMillis;
+}
+
+void Global::SetTime(uint32_t timeMillis)
+{
+	timeBaseMillis = timeMillis;
+	runStartMillis = GetTime() * 1000;
 }
 
 void Global::GetHoursMinutes(uint32_t millis, uint32_t& hours, uint32_t& minutes)

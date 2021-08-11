@@ -20,8 +20,10 @@ class IGameModule
 public:
 	virtual ~IGameModule() = default;
 
-	virtual void Update(float deltaTime) = 0;
-	virtual void Draw(IGameCamera* camera) = 0;
+	virtual void Update() = 0;
+	virtual void Draw() = 0;
 
     virtual IPlayfield* AsPlayfield() = 0;
+
+    // TODO:  static IGameModule* Make()
 };
