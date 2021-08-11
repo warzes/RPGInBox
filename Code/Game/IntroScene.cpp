@@ -3,18 +3,13 @@
 #include "GameScenes.h"
 #include <Engine/DebugNew.h>
 
-void IntroScene::Init() noexcept
-{
-	//GameScenes::SwitchScene(SceneId_StartGameMenu);
-}
-
 void IntroScene::Update() noexcept
 {
+	GameScenes::SwitchScene(SceneId_Title);
 }
 
 void IntroScene::Draw() noexcept
 {
-	DrawText("HELL", 5, 5, 20, WHITE);
 }
 
 IPlayfield* IntroScene::AsPlayfield() noexcept
@@ -25,6 +20,5 @@ IPlayfield* IntroScene::AsPlayfield() noexcept
 IGameModule* IntroScene::Make() noexcept
 {
 	IntroScene* mod = new IntroScene();
-	mod->Init();
 	return mod;
 }

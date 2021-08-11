@@ -75,6 +75,12 @@
     <ClCompile Include="IntroScene.cpp">
       <Filter>NewGame\GameModule</Filter>
     </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>NewGame\GameModule</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMenu.cpp">
+      <Filter>NewGame\GameModule</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -175,6 +181,12 @@
       <Filter>NewGame</Filter>
     </ClInclude>
     <ClInclude Include="IntroScene.h">
+      <Filter>NewGame\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>NewGame\GameModule</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMenu.h">
       <Filter>NewGame\GameModule</Filter>
     </ClInclude>
   </ItemGroup>

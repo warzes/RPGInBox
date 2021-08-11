@@ -7,8 +7,6 @@ class IntroScene final : public IGameModule
 public:
     IntroScene() = default;
 
-    void Init() noexcept;
-
     void Update() noexcept final;
     void Draw() noexcept final;
 

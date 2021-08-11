@@ -190,6 +190,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyParty.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="GameScenes.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -212,6 +213,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +227,7 @@
     <ClInclude Include="EnemyParty.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameFrame.h" />
+    <ClInclude Include="GameMenu.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Ids.h" />
     <ClInclude Include="IGameModule.h" />
@@ -248,6 +251,7 @@
     <ClInclude Include="Stats.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

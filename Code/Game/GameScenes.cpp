@@ -2,6 +2,7 @@
 #include "GameScenes.h"
 #include "IGameModule.h"
 #include "IntroScene.h"
+#include "TitleScene.h"
 #include <Engine/DebugNew.h>
 
 enum SceneAction
@@ -47,7 +48,7 @@ GameScenes::FuncNextScene funcNextScene = nullptr;
 SceneMaker sceneMakers[] =
 {
 	IntroScene::Make,
-	//TitleScene::Make,
+	TitleScene::Make,
 	//NewGameScene::Make,
 	//SaveLoadScene::MakeLoad,
 	//EndingScene::Make,
@@ -90,21 +91,21 @@ void GameScenes::PerformSceneChange()
 		::SwitchScene();
 		break;
 
-		//case Scene_SwitchToField:
-		//    ::SwitchToField();
-		//    break;
+	//case Scene_SwitchToField:
+	//    ::SwitchToField();
+	//    break;
 
-		//case Scene_PushLevel:
-		//    ::PushLevel();
-		//    break;
+	//case Scene_PushLevel:
+	//    ::PushLevel();
+	//    break;
 
-		//case Scene_PopLevel:
-		//    ::PopLevel();
-		//    break;
+	//case Scene_PopLevel:
+	//    ::PopLevel();
+	//    break;
 
-		//case Scene_PopAllLevels:
-		//    ::PopAllLevels();
-		//    break;
+	//case Scene_PopAllLevels:
+	//    ::PopAllLevels();
+	//    break;
 	}
 
 	pendingScene.Action = Scene_None;

@@ -5,7 +5,7 @@ class IGameCamera;
 enum SceneId
 {
 	SceneId_Intro,
-	SceneId_StartGameMenu,
+	SceneId_Title,
 	SceneId_NewGame,
 	SceneId_LoadGame,
 	SceneId_Ending,
