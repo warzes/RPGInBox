@@ -1,32 +1,41 @@
-#pragma once
+﻿#pragma once
 
-class Stats
+// TODO: временные бонусы и менеджер подсчета времени
+
+constexpr auto MaxNumberState = 999999u;
+
+class Stats final
 {
 public:
-	Stats() = default;
-	Stats(int num) { Set(num); }
+	constexpr Stats() noexcept = default;
+	constexpr explicit Stats(const unsigned num) noexcept { Set(num); }
 
-	Stats& operator=(int num) { Set(num); return *this; }
+	constexpr Stats& operator=(const int num) noexcept { Set(num); return *this; }
 
-	void Set(int num)
+	constexpr Stats& operator+=(const int num) noexcept { Modify(num); return *this; }
+	constexpr Stats& operator-=(const int num) noexcept { Modify(-num); return *this; }
+
+	constexpr void Set(unsigned num) noexcept
 	{
-		current = max = num;
+		m_current = m_max = std::min(num, MaxNumberState);
 	}
 
-	void Bonus(int num)
+	constexpr void Modify(int num) noexcept
 	{
-		current = std::min(current + num, max); // �� ������ max
+		m_current = std::min(m_current + num, m_max); // не больше max
 	}
 
-	void Restore()
+	constexpr void Restore() noexcept
 	{
-		current = max;
+		m_current = m_max;
 	}
 
-	std::string GetFullText() { return (std::to_string(current) + "/" + std::to_string(max)); }
+	constexpr std::string GetFullText() noexcept { return (std::to_string(m_current) + "/" + std::to_string(m_max)); }
 
+	constexpr int GetCurrent() const noexcept { return m_current; }
+	constexpr int GetMax() const noexcept { return m_max; }
 
-
-	int current = 0;
-	int max = 0;
+private:
+	int m_current = 0;
+	int m_max = 0;
 };

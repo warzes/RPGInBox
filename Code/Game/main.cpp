@@ -29,8 +29,8 @@ void GameMain() noexcept
 		Engine engine;
 		if (engine.Init(engineConfig))
 		{
-			OldGame game(engine);
-			//Game game(engine);
+			//OldGame game(engine);
+			Game game(engine);
 			if (game.Init())
 			{
 				while (!engine.IsEnd()  && !game.IsEnd())
