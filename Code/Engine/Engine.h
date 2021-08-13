@@ -25,10 +25,6 @@ public:
 
 	bool Init(const EngineConfig& config) noexcept;
 
-	void Update() noexcept;
-	//void BeginFrame(Color&& color) noexcept;
-	//void EndFrame() noexcept;
-
 	bool IsEnd() const noexcept;
 
 	float GetDeltaTime() const noexcept;

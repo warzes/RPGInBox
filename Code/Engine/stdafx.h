@@ -16,12 +16,7 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 #include <raylib/rlgl.h>
 #include <raylib/raymath.h>
 
-#include <cstdint>
 #include <fstream>
-#include <chrono>
-#include <string>
-#include <functional>
-#include <codecvt>
-#include <locale>
+#include <unordered_map>
 
 SE_PRAGMA_WARNING_POP

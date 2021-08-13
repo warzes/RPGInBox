@@ -20,11 +20,7 @@ bool Sky::Init() noexcept
 
 	m_sky = LoadModel("../resources/sky.glb");
 	m_skyTex = LoadTexture("../resources/cloud.png");
-#if OLD_SCHOOL_RENDER
-	SetTextureFilter(m_skyTex, TEXTURE_FILTER_POINT);
-#else
 	SetTextureFilter(m_skyTex, TEXTURE_FILTER_BILINEAR);
-#endif	
 	m_sky.materials[0].maps[MAP_DIFFUSE].texture = m_skyTex;
 
 	// sky shader (animated)
