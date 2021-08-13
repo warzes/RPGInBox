@@ -8,7 +8,7 @@ class Stats final
 {
 public:
 	constexpr Stats() noexcept = default;
-	constexpr explicit Stats(const unsigned num) noexcept { Set(num); }
+	constexpr Stats(const unsigned num) noexcept { Set(num); }
 
 	constexpr Stats& operator=(const int num) noexcept { Set(num); return *this; }
 
