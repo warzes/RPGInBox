@@ -2,8 +2,6 @@
 
 // TODO: временные бонусы и менеджер подсчета времени
 
-constexpr auto MaxNumberState = 999999u;
-
 class Stats final
 {
 public:
@@ -34,6 +32,7 @@ public:
 
 	constexpr int GetCurrent() const noexcept { return m_current; }
 	constexpr int GetMax() const noexcept { return m_max; }
+	constexpr bool IsZero() const noexcept { return m_current == 0; }
 
 private:
 	int m_current = 0;

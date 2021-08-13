@@ -1,7 +1,8 @@
 #pragma once
 
-constexpr unsigned MaxGameNameTextSize = 30;
-constexpr unsigned MaxNumCharacterInPlayerParty = 4;
+constexpr auto MaxNumberState = 9999u;
+constexpr auto MaxGameNameTextSize = 20u;
+constexpr auto MaxNumCharacterInPlayerParty = 4u;
 
 #define TURN_STEP 1
 

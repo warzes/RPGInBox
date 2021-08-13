@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Character.h"
+#include "Hero.h"
 
 class PlayerParty final : NonCopyable, NonMovable
 {
@@ -12,7 +12,7 @@ public:
 
 	bool Move(const Point2& pos) noexcept;
 
-	Character characters[MaxNumCharacterInPlayerParty];
+	Hero characters[MaxNumCharacterInPlayerParty];
 	Point2 positionCharactersInParty[MaxNumCharacterInPlayerParty];
 
 	// statistics

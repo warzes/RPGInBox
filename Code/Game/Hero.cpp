@@ -1,4 +1,4 @@
 #include "stdafx.h"
-#include "Character.h"
+#include "Hero.h"
 #include <Engine/DebugNew.h>
 //-----------------------------------------------------------------------------

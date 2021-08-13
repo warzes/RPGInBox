@@ -9,16 +9,7 @@
     <ClCompile Include="Map.cpp">
       <Filter>World</Filter>
     </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>RPG</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerParty.cpp">
-      <Filter>RPG</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>RPG</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyParty.cpp">
+    <ClCompile Include="Hero.cpp">
       <Filter>RPG</Filter>
     </ClCompile>
     <ClCompile Include="FreeCamera.cpp">
@@ -48,6 +39,15 @@
     <ClCompile Include="OldGame.cpp">
       <Filter>_OLD\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>RPG\NewFilter1</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyParty.cpp">
+      <Filter>RPG\NewFilter1</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerParty.cpp">
+      <Filter>RPG\NewFilter1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -57,16 +57,7 @@
     <ClInclude Include="Map.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>RPG</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerParty.h">
-      <Filter>RPG</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>RPG</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyParty.h">
+    <ClInclude Include="Hero.h">
       <Filter>RPG</Filter>
     </ClInclude>
     <ClInclude Include="IGameCamera.h">
@@ -111,6 +102,15 @@
     <ClInclude Include="GameFrame.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>RPG\NewFilter1</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyParty.h">
+      <Filter>RPG\NewFilter1</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerParty.h">
+      <Filter>RPG\NewFilter1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="World">
@@ -133,6 +133,9 @@
     </Filter>
     <Filter Include="_OLD\Game">
       <UniqueIdentifier>{44fd27bc-377a-486a-b9cf-86b83cdeaaa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RPG\NewFilter1">
+      <UniqueIdentifier>{38980ccb-6154-4057-afa9-a4584748cd00}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
