@@ -186,33 +186,16 @@
     <ClCompile Include="BattleCell.cpp" />
     <ClCompile Include="BattlePlayerAction.cpp" />
     <ClCompile Include="Character.cpp" />
-    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyParty.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameMenu.cpp" />
-    <ClCompile Include="GameScenes.cpp" />
-    <ClCompile Include="Global.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="IntroScene.cpp" />
-    <ClCompile Include="Magic.cpp" />
-    <ClCompile Include="MapSprite.cpp" />
-    <ClCompile Include="NewGameScene.cpp" />
-    <ClCompile Include="ObjEvents.cpp" />
     <ClCompile Include="OldGame.cpp" />
     <ClCompile Include="GameEnvironment.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
-    <ClCompile Include="Overworld.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerParty.cpp" />
     <ClCompile Include="PlayerTurnCamera.cpp" />
-    <ClCompile Include="SaveFolder.cpp" />
-    <ClCompile Include="SaveLoadMenu.cpp" />
-    <ClCompile Include="SaveLoadScene.cpp" />
-    <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -220,8 +203,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Tile.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
-    <ClCompile Include="VehicleSprites.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -230,44 +211,21 @@
     <ClInclude Include="BattleCell.h" />
     <ClInclude Include="BattlePlayerAction.h" />
     <ClInclude Include="ConfigDefine.h" />
-    <ClInclude Include="Dialog.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyParty.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameFrame.h" />
-    <ClInclude Include="GameMenu.h" />
-    <ClInclude Include="Global.h" />
-    <ClInclude Include="Ids.h" />
-    <ClInclude Include="IGameModule.h" />
-    <ClInclude Include="GameScenes.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="IntroScene.h" />
-    <ClInclude Include="LTile.h" />
-    <ClInclude Include="Magic.h" />
-    <ClInclude Include="MapSprite.h" />
-    <ClInclude Include="NewGameScene.h" />
-    <ClInclude Include="ObjEvents.h" />
     <ClInclude Include="OldGame.h" />
     <ClInclude Include="GameEnvironment.h" />
     <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="FreeCamera.h" />
-    <ClInclude Include="Overworld.h" />
-    <ClInclude Include="OWTile.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerParty.h" />
     <ClInclude Include="PlayerTurnCamera.h" />
     <ClInclude Include="Character.h" />
-    <ClInclude Include="SaveFolder.h" />
-    <ClInclude Include="SaveLoadMenu.h" />
-    <ClInclude Include="SaveLoadScene.h" />
-    <ClInclude Include="Sound.h" />
-    <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tile.h" />
-    <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="VehicleSprites.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -4,37 +4,37 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="World.cpp">
-      <Filter>_OLD\World</Filter>
+      <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
-      <Filter>_OLD\World</Filter>
+      <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="Character.cpp">
-      <Filter>_OLD\RPG</Filter>
+      <Filter>RPG</Filter>
     </ClCompile>
     <ClCompile Include="PlayerParty.cpp">
-      <Filter>_OLD\RPG</Filter>
+      <Filter>RPG</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>_OLD\RPG</Filter>
+      <Filter>RPG</Filter>
     </ClCompile>
     <ClCompile Include="EnemyParty.cpp">
-      <Filter>_OLD\RPG</Filter>
+      <Filter>RPG</Filter>
     </ClCompile>
     <ClCompile Include="FreeCamera.cpp">
-      <Filter>_OLD\World\Camera</Filter>
+      <Filter>World\Camera</Filter>
     </ClCompile>
     <ClCompile Include="PlayerTurnCamera.cpp">
-      <Filter>_OLD\World\Camera</Filter>
+      <Filter>World\Camera</Filter>
     </ClCompile>
     <ClCompile Include="GameEnvironment.cpp">
-      <Filter>_OLD\World</Filter>
+      <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BattleEngine.cpp">
       <Filter>_OLD\Battle</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>_OLD\World</Filter>
+      <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="BattlePlayerAction.cpp">
       <Filter>_OLD\Battle</Filter>
@@ -48,104 +48,47 @@
     <ClCompile Include="OldGame.cpp">
       <Filter>_OLD\Game</Filter>
     </ClCompile>
-    <ClCompile Include="GameScenes.cpp">
-      <Filter>NewGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Sound.cpp">
-      <Filter>NewGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>NewGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Global.cpp">
-      <Filter>NewGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>NewGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Magic.cpp">
-      <Filter>NewGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Dialog.cpp">
-      <Filter>NewGame</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjEvents.cpp">
-      <Filter>NewGame</Filter>
-    </ClCompile>
-    <ClCompile Include="IntroScene.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMenu.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="NewGameScene.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveLoadScene.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveFolder.cpp">
-      <Filter>NewGame</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveLoadMenu.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="Overworld.cpp">
-      <Filter>NewGame\GameModule</Filter>
-    </ClCompile>
-    <ClCompile Include="MapSprite.cpp">
-      <Filter>NewGame\temp</Filter>
-    </ClCompile>
-    <ClCompile Include="VehicleSprites.cpp">
-      <Filter>NewGame\temp</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>NewGame\temp</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="World.h">
-      <Filter>_OLD\World</Filter>
+      <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
-      <Filter>_OLD\World</Filter>
+      <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">
-      <Filter>_OLD\RPG</Filter>
+      <Filter>RPG</Filter>
     </ClInclude>
     <ClInclude Include="PlayerParty.h">
-      <Filter>_OLD\RPG</Filter>
+      <Filter>RPG</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>_OLD\RPG</Filter>
+      <Filter>RPG</Filter>
     </ClInclude>
     <ClInclude Include="EnemyParty.h">
-      <Filter>_OLD\RPG</Filter>
+      <Filter>RPG</Filter>
     </ClInclude>
     <ClInclude Include="IGameCamera.h">
-      <Filter>_OLD\World\Camera</Filter>
+      <Filter>World\Camera</Filter>
     </ClInclude>
     <ClInclude Include="FreeCamera.h">
-      <Filter>_OLD\World\Camera</Filter>
+      <Filter>World\Camera</Filter>
     </ClInclude>
     <ClInclude Include="PlayerTurnCamera.h">
-      <Filter>_OLD\World\Camera</Filter>
+      <Filter>World\Camera</Filter>
     </ClInclude>
     <ClInclude Include="GameEnvironment.h">
-      <Filter>_OLD\World</Filter>
+      <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="BattleEngine.h">
       <Filter>_OLD\Battle</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
-      <Filter>_OLD\World</Filter>
+      <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="Stats.h">
-      <Filter>_OLD\RPG</Filter>
+      <Filter>RPG</Filter>
     </ClInclude>
     <ClInclude Include="BattlePlayerAction.h">
       <Filter>_OLD\Battle</Filter>
@@ -159,86 +102,26 @@
     <ClInclude Include="Game.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="GameFrame.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="OldGame.h">
       <Filter>_OLD\Game</Filter>
     </ClInclude>
     <ClInclude Include="ConfigDefine.h">
       <Filter>_OLD\Game</Filter>
     </ClInclude>
-    <ClInclude Include="GameScenes.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="IGameModule.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Sound.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Global.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Ids.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="OWTile.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="LTile.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Magic.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Dialog.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjEvents.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="IntroScene.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMenu.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="NewGameScene.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="SaveLoadScene.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="SaveFolder.h">
-      <Filter>NewGame</Filter>
-    </ClInclude>
-    <ClInclude Include="SaveLoadMenu.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="Overworld.h">
-      <Filter>NewGame\GameModule</Filter>
-    </ClInclude>
-    <ClInclude Include="MapSprite.h">
-      <Filter>NewGame\temp</Filter>
-    </ClInclude>
-    <ClInclude Include="VehicleSprites.h">
-      <Filter>NewGame\temp</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>NewGame\temp</Filter>
+    <ClInclude Include="GameFrame.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Filter Include="World">
+      <UniqueIdentifier>{225f0dcd-14e4-4dc7-942c-342095031a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RPG">
+      <UniqueIdentifier>{a32976f2-a461-4254-bef2-6a2b00f5f26a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World\Camera">
+      <UniqueIdentifier>{6da80a9b-706f-4be5-9164-8ee15167750a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{4383e622-04a8-4b64-8cb8-d242fec74914}</UniqueIdentifier>
     </Filter>
@@ -250,27 +133,6 @@
     </Filter>
     <Filter Include="_OLD\Game">
       <UniqueIdentifier>{44fd27bc-377a-486a-b9cf-86b83cdeaaa6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_OLD\RPG">
-      <UniqueIdentifier>{a32976f2-a461-4254-bef2-6a2b00f5f26a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_OLD\World">
-      <UniqueIdentifier>{225f0dcd-14e4-4dc7-942c-342095031a1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_OLD\World\Camera">
-      <UniqueIdentifier>{6da80a9b-706f-4be5-9164-8ee15167750a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NewGame">
-      <UniqueIdentifier>{d6e477f7-692c-4c83-877f-b98e798c0713}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NewGame\GameModule">
-      <UniqueIdentifier>{bd2eb464-1305-46ac-8fdd-22156792f911}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NewGame\GameModule\Playfield">
-      <UniqueIdentifier>{1fb5a8a4-92e1-4185-b9b7-4b3bfbba72b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NewGame\temp">
-      <UniqueIdentifier>{ff8bb9e9-b3bd-48e8-be74-49578bbddb42}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
