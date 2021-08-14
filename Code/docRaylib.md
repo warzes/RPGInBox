@@ -1,7 +1,7 @@
 ﻿Текущий внесенный коммит рейлиба
 	
-	Commits on Aug 8, 2021
-		REVIEWED: Avoid conflict with bool 
+	Commits on Aug 13, 2021
+    [Models] Fix for issue #1809 (#1917) 
 
 
 Мои изменения:

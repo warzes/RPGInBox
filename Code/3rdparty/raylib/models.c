@@ -3261,7 +3261,7 @@ static Model LoadOBJ(const char *fileName)
         model.meshMaterial = (int *)RL_CALLOC(model.meshCount, sizeof(int));
 
         // count the faces for each material
-        int *matFaces = RL_CALLOC(meshCount, sizeof(int));
+        int *matFaces = RL_CALLOC(materialCount, sizeof(int));
 
         for (unsigned int mi = 0; mi < meshCount; mi++)
         {
