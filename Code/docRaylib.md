@@ -1,7 +1,8 @@
 ﻿Текущий внесенный коммит рейлиба
 	
-	Commits on Aug 13, 2021
-    [Models] Fix for issue #1809 (#1917) 
+	Commits on Aug 16, 2021
+
+    WARNING: BREAKING: Use frameCount on audio 
 
 
 Мои изменения:

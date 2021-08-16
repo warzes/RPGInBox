@@ -5,7 +5,7 @@
 
 #include <stdarg.h>     // Required for: va_list - Only used by TraceLogCallback
 
-#define RAYLIB_VERSION  "3.8-dev"
+#define RAYLIB_VERSION  "4.0-dev"
 
 //----------------------------------------------------------------------------------
 // Some basic Defines
@@ -318,38 +318,38 @@ typedef struct BoundingBox {
 
 // Wave, audio wave data
 typedef struct Wave {
-    unsigned int sampleCount;   // Total number of samples (considering channels!)
+    unsigned int frameCount;    // Total number of frames (considering channels)
     unsigned int sampleRate;    // Frequency (samples per second)
     unsigned int sampleSize;    // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
-    unsigned int channels;      // Number of channels (1-mono, 2-stereo)
-    void *data;                 // Buffer data pointer
+    unsigned int channels;      // Number of channels (1-mono, 2-stereo, ...)
+    void* data;                 // Buffer data pointer
 } Wave;
 
 typedef struct rAudioBuffer rAudioBuffer;
 
 // AudioStream, custom audio stream
 typedef struct AudioStream {
-    rAudioBuffer *buffer;       // Pointer to internal data used by the audio system
+    rAudioBuffer* buffer;       // Pointer to internal data used by the audio system
 
     unsigned int sampleRate;    // Frequency (samples per second)
     unsigned int sampleSize;    // Bit depth (bits per sample): 8, 16, 32 (24 not supported)
-    unsigned int channels;      // Number of channels (1-mono, 2-stereo)
+    unsigned int channels;      // Number of channels (1-mono, 2-stereo, ...)
 } AudioStream;
 
 // Sound
 typedef struct Sound {
     AudioStream stream;         // Audio stream
-    unsigned int sampleCount;   // Total number of samples
+    unsigned int frameCount;    // Total number of frames (considering channels)
 } Sound;
 
 // Music, audio stream, anything longer than ~10 seconds should be streamed
 typedef struct Music {
     AudioStream stream;         // Audio stream
-    unsigned int sampleCount;   // Total number of samples
+    unsigned int frameCount;    // Total number of frames (considering channels)
     bool looping;               // Music looping enable
 
     int ctxType;                // Type of music context (audio filetype)
-    void *ctxData;              // Audio context data, depends on type
+    void* ctxData;              // Audio context data, depends on type
 } Music;
 
 // VrDeviceInfo, Head-Mounted-Display device parameters
@@ -1402,7 +1402,7 @@ float GetMusicTimePlayed(Music music);                          // Get current m
 // AudioStream management functions
 AudioStream LoadAudioStream(unsigned int sampleRate, unsigned int sampleSize, unsigned int channels); // Load audio stream (to stream raw audio pcm data)
 void UnloadAudioStream(AudioStream stream);                      // Unload audio stream and free memory
-void UpdateAudioStream(AudioStream stream, const void *data, int samplesCount); // Update audio stream buffers with data
+void UpdateAudioStream(AudioStream stream, const void *data, int framesCount); // Update audio stream buffers with data
 bool IsAudioStreamProcessed(AudioStream stream);                // Check if any audio stream buffers requires refill
 void PlayAudioStream(AudioStream stream);                       // Play audio stream
 void PauseAudioStream(AudioStream stream);                      // Pause audio stream
