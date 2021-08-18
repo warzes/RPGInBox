@@ -2813,7 +2813,7 @@ unsigned int rlLoadShaderCode(const char* vsCode, const char* fsCode)
 	{
 		int namelen = -1;
 		int num = -1;
-		char name[256]; // Assume no variable names longer than 256
+		char name[256] = { 0 };     // Assume no variable names longer than 256
 		GLenum type = GL_ZERO;
 
 		// Get the name of the uniforms
@@ -2928,7 +2928,15 @@ unsigned int rlLoadShaderProgram(unsigned int vShaderId, unsigned int fShaderId)
 
 		program = 0;
 	}
-	else TRACELOG(RL_LOG_INFO, "SHADER: [ID %i] Program shader loaded successfully", program);
+	else
+	{
+		// Get the size of compiled shader program (not available on OpenGL ES 2.0)
+		// NOTE: If GL_LINK_STATUS is GL_FALSE, program binary length is zero.
+		//GLint binarySize = 0;
+		//glGetProgramiv(id, GL_PROGRAM_BINARY_LENGTH, &binarySize);
+
+		TRACELOG(RL_LOG_INFO, "SHADER: [ID %i] Program shader loaded successfully", program);
+	}
 #endif
 	return program;
 }
