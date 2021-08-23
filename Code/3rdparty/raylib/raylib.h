@@ -69,11 +69,6 @@
 #define MAGENTA    CLITERAL(Color){ 255, 0, 255, 255 }     // Magenta
 #define RAYWHITE   CLITERAL(Color){ 245, 245, 245, 255 }   // My own White (raylib logo)
 
-// WARNING: Temporal hacks to avoid breaking old codebases using
-// deprecated raylib implementations or definitions
-#define FILTER_BILINEAR         TEXTURE_FILTER_BILINEAR
-#define MAP_DIFFUSE             MATERIAL_MAP_DIFFUSE
-
 //----------------------------------------------------------------------------------
 // Structures Definition
 //----------------------------------------------------------------------------------
@@ -219,7 +214,7 @@ typedef struct Mesh {
     int vertexCount;        // Number of vertices stored in arrays
     int triangleCount;      // Number of triangles stored (indexed or not)
 
-    // Default vertex data
+    // Vertex attributes data
     float *vertices;        // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
     float *texcoords;       // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
     float *texcoords2;      // Vertex second texture coordinates (useful for lightmaps) (shader-location = 5)
@@ -783,10 +778,6 @@ typedef bool (*SaveFileDataCallback)(const char *fileName, void *data, unsigned 
 typedef char *(*LoadFileTextCallback)(const char *fileName);       // FileIO: Load text data
 typedef bool (*SaveFileTextCallback)(const char *fileName, char *text);     // FileIO: Save text data
 
-#if defined(__cplusplus)
-extern "C" {            // Prevents name mangling of functions
-#endif
-
 //------------------------------------------------------------------------------------
 // Global Variables Definition
 //------------------------------------------------------------------------------------
@@ -795,6 +786,9 @@ extern "C" {            // Prevents name mangling of functions
 //------------------------------------------------------------------------------------
 // Window and Graphics Device Functions (Module: core)
 //------------------------------------------------------------------------------------
+#if defined(__cplusplus)
+extern "C" {            // Prevents name mangling of functions
+#endif
 
 // Window-related functions
 void InitWindow(int width, int height, const char *title);  // Initialize window and OpenGL context
