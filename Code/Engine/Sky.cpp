@@ -16,12 +16,12 @@ bool Sky::Init() noexcept
 {
 	m_mountain = LoadModel("../resources/mountain.glb");
 	m_mountTex = LoadTexture("../resources/mountain.png");
-	m_mountain.materials[0].maps[MAP_DIFFUSE].texture = m_mountTex;
+	m_mountain.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = m_mountTex;
 
 	m_sky = LoadModel("../resources/sky.glb");
 	m_skyTex = LoadTexture("../resources/cloud.png");
 	SetTextureFilter(m_skyTex, TEXTURE_FILTER_BILINEAR);
-	m_sky.materials[0].maps[MAP_DIFFUSE].texture = m_skyTex;
+	m_sky.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = m_skyTex;
 
 	// sky shader (animated)
 	m_shaderS = LoadShader("../resources/shader.vs", "../resources/shader.fs");

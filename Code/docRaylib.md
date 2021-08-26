@@ -1,8 +1,9 @@
 ﻿Текущий внесенный коммит рейлиба
 	
-Commits on Aug 20, 2021
+Commits on Aug 26, 2021
+REVIEWED: Examples compilation
 
-    Updated raygui 
+
 
 
 Мои изменения:
