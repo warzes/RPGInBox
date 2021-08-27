@@ -3619,7 +3619,7 @@ Color ColorAlphaBlend(Color dst, Color src, Color tint)
 }
 
 // Get a Color struct from hexadecimal value
-Color GetColor(int hexValue)
+Color GetColor(unsigned hexValue)
 {
     Color color;
 
