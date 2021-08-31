@@ -185,6 +185,9 @@
     <ClCompile Include="BattleEngine.cpp" />
     <ClCompile Include="BattleCell.cpp" />
     <ClCompile Include="BattlePlayerAction.cpp" />
+    <ClCompile Include="GameAdventure.cpp" />
+    <ClCompile Include="GameBattle.cpp" />
+    <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyParty.cpp" />
@@ -214,7 +217,10 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyParty.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameAdventure.h" />
+    <ClInclude Include="GameBattle.h" />
     <ClInclude Include="GameFrame.h" />
+    <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="OldGame.h" />
     <ClInclude Include="GameEnvironment.h" />
     <ClInclude Include="IGameCamera.h" />

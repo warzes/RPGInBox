@@ -6,14 +6,14 @@ class Stats final
 {
 public:
 	constexpr Stats() noexcept = default;
-	constexpr Stats(const unsigned num) noexcept { Set(num); }
+	constexpr Stats(const int num) noexcept { Set(num); }
 
 	constexpr Stats& operator=(const int num) noexcept { Set(num); return *this; }
 
 	constexpr Stats& operator+=(const int num) noexcept { Modify(num); return *this; }
 	constexpr Stats& operator-=(const int num) noexcept { Modify(-num); return *this; }
 
-	constexpr void Set(unsigned num) noexcept
+	constexpr void Set(int num) noexcept
 	{
 		m_current = m_max = std::min(num, MaxNumberState);
 	}

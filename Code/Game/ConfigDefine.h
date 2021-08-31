@@ -1,6 +1,6 @@
 #pragma once
 
-constexpr auto MaxNumberState = 9999u;
+constexpr auto MaxNumberState = 9999;
 constexpr auto MaxGameNameTextSize = 20u;
 constexpr auto MaxNumCharacterInPlayerParty = 4u;
 

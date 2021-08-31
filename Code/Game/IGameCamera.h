@@ -52,7 +52,7 @@ protected:
 	const float m_playerEyesPosition = 0.75f;       // Player eyes position from ground (in meters)
 
 	Vector3 m_cameraPosition = { 0.0f, 0.0f, 0.0f };
-	Camera m_viewCamera = { 0 };
+	Camera m_viewCamera = {};
 	Frustum m_frustum;
 	float m_currentRotateY = 0.0f;
 };

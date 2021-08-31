@@ -4,28 +4,28 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="World.cpp">
-      <Filter>World</Filter>
+      <Filter>_OLD\World</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
-      <Filter>World</Filter>
+      <Filter>_OLD\World</Filter>
     </ClCompile>
     <ClCompile Include="Hero.cpp">
-      <Filter>RPG</Filter>
+      <Filter>_OLD\RPG</Filter>
     </ClCompile>
     <ClCompile Include="FreeCamera.cpp">
-      <Filter>World\Camera</Filter>
+      <Filter>_OLD\World\Camera</Filter>
     </ClCompile>
     <ClCompile Include="PlayerTurnCamera.cpp">
-      <Filter>World\Camera</Filter>
+      <Filter>_OLD\World\Camera</Filter>
     </ClCompile>
     <ClCompile Include="GameEnvironment.cpp">
-      <Filter>World</Filter>
+      <Filter>_OLD\World</Filter>
     </ClCompile>
     <ClCompile Include="BattleEngine.cpp">
       <Filter>_OLD\Battle</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>World</Filter>
+      <Filter>_OLD\World</Filter>
     </ClCompile>
     <ClCompile Include="BattlePlayerAction.cpp">
       <Filter>_OLD\Battle</Filter>
@@ -40,46 +40,55 @@
       <Filter>_OLD\Game</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>RPG\NewFilter1</Filter>
+      <Filter>_OLD\RPG\NewFilter1</Filter>
     </ClCompile>
     <ClCompile Include="EnemyParty.cpp">
-      <Filter>RPG\NewFilter1</Filter>
+      <Filter>_OLD\RPG\NewFilter1</Filter>
     </ClCompile>
     <ClCompile Include="PlayerParty.cpp">
-      <Filter>RPG\NewFilter1</Filter>
+      <Filter>_OLD\RPG\NewFilter1</Filter>
+    </ClCompile>
+    <ClCompile Include="GameAdventure.cpp">
+      <Filter>Adventure</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBattle.cpp">
+      <Filter>Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateManager.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="World.h">
-      <Filter>World</Filter>
+      <Filter>_OLD\World</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
-      <Filter>World</Filter>
+      <Filter>_OLD\World</Filter>
     </ClInclude>
     <ClInclude Include="Hero.h">
-      <Filter>RPG</Filter>
+      <Filter>_OLD\RPG</Filter>
     </ClInclude>
     <ClInclude Include="IGameCamera.h">
-      <Filter>World\Camera</Filter>
+      <Filter>_OLD\World\Camera</Filter>
     </ClInclude>
     <ClInclude Include="FreeCamera.h">
-      <Filter>World\Camera</Filter>
+      <Filter>_OLD\World\Camera</Filter>
     </ClInclude>
     <ClInclude Include="PlayerTurnCamera.h">
-      <Filter>World\Camera</Filter>
+      <Filter>_OLD\World\Camera</Filter>
     </ClInclude>
     <ClInclude Include="GameEnvironment.h">
-      <Filter>World</Filter>
+      <Filter>_OLD\World</Filter>
     </ClInclude>
     <ClInclude Include="BattleEngine.h">
       <Filter>_OLD\Battle</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
-      <Filter>World</Filter>
+      <Filter>_OLD\World</Filter>
     </ClInclude>
     <ClInclude Include="Stats.h">
-      <Filter>RPG</Filter>
+      <Filter>_OLD\RPG</Filter>
     </ClInclude>
     <ClInclude Include="BattlePlayerAction.h">
       <Filter>_OLD\Battle</Filter>
@@ -96,32 +105,32 @@
     <ClInclude Include="OldGame.h">
       <Filter>_OLD\Game</Filter>
     </ClInclude>
-    <ClInclude Include="ConfigDefine.h">
-      <Filter>_OLD\Game</Filter>
-    </ClInclude>
     <ClInclude Include="GameFrame.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>RPG\NewFilter1</Filter>
+      <Filter>_OLD\RPG\NewFilter1</Filter>
     </ClInclude>
     <ClInclude Include="EnemyParty.h">
-      <Filter>RPG\NewFilter1</Filter>
+      <Filter>_OLD\RPG\NewFilter1</Filter>
     </ClInclude>
     <ClInclude Include="PlayerParty.h">
-      <Filter>RPG\NewFilter1</Filter>
+      <Filter>_OLD\RPG\NewFilter1</Filter>
+    </ClInclude>
+    <ClInclude Include="GameAdventure.h">
+      <Filter>Adventure</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigDefine.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBattle.h">
+      <Filter>Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateManager.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="World">
-      <UniqueIdentifier>{225f0dcd-14e4-4dc7-942c-342095031a1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="RPG">
-      <UniqueIdentifier>{a32976f2-a461-4254-bef2-6a2b00f5f26a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="World\Camera">
-      <UniqueIdentifier>{6da80a9b-706f-4be5-9164-8ee15167750a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{4383e622-04a8-4b64-8cb8-d242fec74914}</UniqueIdentifier>
     </Filter>
@@ -134,8 +143,23 @@
     <Filter Include="_OLD\Game">
       <UniqueIdentifier>{44fd27bc-377a-486a-b9cf-86b83cdeaaa6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RPG\NewFilter1">
+    <Filter Include="_OLD\World">
+      <UniqueIdentifier>{225f0dcd-14e4-4dc7-942c-342095031a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_OLD\World\Camera">
+      <UniqueIdentifier>{6da80a9b-706f-4be5-9164-8ee15167750a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_OLD\RPG">
+      <UniqueIdentifier>{a32976f2-a461-4254-bef2-6a2b00f5f26a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_OLD\RPG\NewFilter1">
       <UniqueIdentifier>{38980ccb-6154-4057-afa9-a4584748cd00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Adventure">
+      <UniqueIdentifier>{d3aeb6eb-8d8c-4b12-a2c8-55e585e7b7c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Battle">
+      <UniqueIdentifier>{8f963ac0-1165-4ee2-bac9-6b3af5496e71}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
