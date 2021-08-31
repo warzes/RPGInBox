@@ -1,7 +1,7 @@
 ﻿Текущий внесенный коммит рейлиба
 	
-Commits on Aug 26, 2021
-REVIEWED: Examples compilation
+Commits on Aug 29, 2021
+Minor tweak
 
 
 

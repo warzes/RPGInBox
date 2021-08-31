@@ -942,7 +942,7 @@ bool ExportWaveAsCode(Wave wave, const char* fileName)
 
     // NOTE: Text data buffer size is estimated considering wave data size in bytes
     // and requiring 6 char bytes for every byte: "0x00, "
-    char* txtData = (char*)RL_CALLOC(6 * waveDataSize + 2000, sizeof(char));
+    char* txtData = (char*)RL_CALLOC(waveDataSize * 6 + 2000, sizeof(char));
 
     int bytesCount = 0;
     bytesCount += sprintf(txtData + bytesCount, "\n//////////////////////////////////////////////////////////////////////////////////\n");
@@ -952,7 +952,7 @@ bool ExportWaveAsCode(Wave wave, const char* fileName)
     bytesCount += sprintf(txtData + bytesCount, "// more info and bugs-report:  github.com/raysan5/raylib                        //\n");
     bytesCount += sprintf(txtData + bytesCount, "// feedback and support:       ray[at]raylib.com                                //\n");
     bytesCount += sprintf(txtData + bytesCount, "//                                                                              //\n");
-    bytesCount += sprintf(txtData + bytesCount, "// Copyright (c) 2018 Ramon Santamaria (@raysan5)                               //\n");
+    bytesCount += sprintf(txtData + bytesCount, "// Copyright (c) 2018-2021 Ramon Santamaria (@raysan5)                          //\n");
     bytesCount += sprintf(txtData + bytesCount, "//                                                                              //\n");
     bytesCount += sprintf(txtData + bytesCount, "//////////////////////////////////////////////////////////////////////////////////\n\n");
 
@@ -967,12 +967,13 @@ bool ExportWaveAsCode(Wave wave, const char* fileName)
 
     bytesCount += sprintf(txtData + bytesCount, "// Wave data information\n");
     bytesCount += sprintf(txtData + bytesCount, "#define %s_FRAME_COUNT      %u\n", varFileName, wave.frameCount);
-    bytesCount += sprintf(txtData + bytesCount, "#define %s_SAMPLE_COUNT     %u\n", varFileName, wave.frameCount * wave.channels);
+    bytesCount += sprintf(txtData + bytesCount, "#define %s_FRAME_COUNT      %u\n", varFileName, wave.frameCount);
     bytesCount += sprintf(txtData + bytesCount, "#define %s_SAMPLE_RATE      %u\n", varFileName, wave.sampleRate);
     bytesCount += sprintf(txtData + bytesCount, "#define %s_SAMPLE_SIZE      %u\n", varFileName, wave.sampleSize);
     bytesCount += sprintf(txtData + bytesCount, "#define %s_CHANNELS         %u\n\n", varFileName, wave.channels);
 
     // Write byte data as hexadecimal text
+    // NOTE: Frame data exported is interlaced: Frame01[Sample-Channel01, Sample-Channel02, ...], Frame02[], Frame03[]
     bytesCount += sprintf(txtData + bytesCount, "static unsigned char %s_DATA[%i] = { ", varFileName, waveDataSize);
     for (int i = 0; i < waveDataSize - 1; i++) bytesCount += sprintf(txtData + bytesCount, ((i % TEXT_BYTES_PER_LINE == 0) ? "0x%x,\n" : "0x%x, "), ((unsigned char*)wave.data)[i]);
     bytesCount += sprintf(txtData + bytesCount, "0x%x };\n", ((unsigned char*)wave.data)[waveDataSize - 1]);
