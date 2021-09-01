@@ -191,7 +191,6 @@
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="EngineMath.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="OldGame.cpp" />
@@ -233,6 +232,7 @@
     <ClInclude Include="EngineMath.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="NonCopyable.h" />
     <ClInclude Include="OldGame.h" />
     <ClInclude Include="PlayerParty.h" />
     <ClInclude Include="PlayerTurnCamera.h" />

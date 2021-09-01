@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Engine.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
@@ -6,7 +6,7 @@ extern "C"
 {
 	// NVIDIA: Force usage of NVidia GPU in case there is an integrated graphics unit as well, if we don't do this we risk getting the integrated graphics unit and hence a horrible performance
 	// -> See "Enabling High Performance Graphics Rendering on Optimus Systems" http://developer.download.nvidia.com/devzone/devcenter/gamegraphics/files/OptimusRenderingPolicies.pdf
-	_declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+	_declspec(dllexport) auto NvOptimusEnablement = 0x00000001UL;
 
 	// AMD: Force usage of AMD GPU in case there is an integrated graphics unit as well, if we don't do this we risk getting the integrated graphics unit and hence a horrible performance
 	// -> Named "Dynamic Switchable Graphics", found no official documentation, only https://community.amd.com/message/1307599#comment-1307599 - "Can an OpenGL app default to the discrete GPU on an Enduro system?"
@@ -17,20 +17,20 @@ Engine::~Engine()
 {
 	CloseAudioDevice();
 	CloseWindowRaylib();
-	log.Print("Engine end.");
+	m_log.Print("Engine end.");
 }
 //-----------------------------------------------------------------------------
 bool Engine::Init(const EngineConfig& config) noexcept
 {
-	if (!log.open(config.LogName))
+	if (!m_log.open(config.LogName))
 		return false;
 
-	log.Print("Engine Init...");
+	m_log.Print("Engine Init...");
 
 	InitWindow(config.window.width, config.window.height, "Game");
 	if (!IsWindowReady())
 	{
-		log.Error("InitWindow failed!");
+		m_log.Error("InitWindow failed!");
 		return false;
 	}
 	if (config.window.vsync)
@@ -39,7 +39,7 @@ bool Engine::Init(const EngineConfig& config) noexcept
 	InitAudioDevice();
 	if (!IsAudioDeviceReady())
 	{
-		log.Error("Audio device failed!");
+		m_log.Error("Audio device failed!");
 		return false;
 	}		
 

@@ -29,6 +29,5 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 
 SE_PRAGMA_WARNING_POP
 
-
-// TODO:
 #include "ConfigDefine.h"
+#include "NonCopyable.h"

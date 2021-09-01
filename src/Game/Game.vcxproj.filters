@@ -18,9 +18,6 @@
     <ClCompile Include="Log.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
-    <ClCompile Include="EngineMath.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
     <ClCompile Include="BattleCell.cpp">
       <Filter>Game\_OLD</Filter>
     </ClCompile>
@@ -169,6 +166,9 @@
       <Filter>Game\_OLD</Filter>
     </ClInclude>
     <ClInclude Include="ConfigDefine.h" />
+    <ClInclude Include="NonCopyable.h">
+      <Filter>Engine\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

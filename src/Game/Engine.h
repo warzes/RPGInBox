@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Log.h"
 
@@ -29,5 +29,6 @@ public:
 
 	float GetDeltaTime() const noexcept;
 
-	Log log;
+private:
+	Log m_log;
 };

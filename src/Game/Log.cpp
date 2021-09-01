@@ -1,64 +1,62 @@
 ﻿#include "stdafx.h"
 #include "Log.h"
-
-//=============================================================================
-// LOG
-//=============================================================================
+#include "DebugNew.h"
+//-----------------------------------------------------------------------------
 #if SE_PLATFORM_WINDOWS && SE_DEBUG
 extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA(const char*);
-extern "C" __declspec(dllimport) void* __stdcall GetStdHandle(unsigned long);
-extern "C" __declspec(dllimport) int __stdcall SetConsoleTextAttribute(void*, unsigned short);
 #endif
 #if SE_PLATFORM_WINDOWS
+extern "C" __declspec(dllimport) void* __stdcall GetStdHandle(unsigned long);
+extern "C" __declspec(dllimport) int __stdcall SetConsoleTextAttribute(void*, unsigned short);
 extern "C" __declspec(dllimport) int __stdcall MessageBoxA(void*, const char*, const char*, unsigned int);
-#endif
-
+#	ifndef STD_OUTPUT_HANDLE 
+#		define STD_OUTPUT_HANDLE ((unsigned long)-11)
+#	endif
+#	ifndef FOREGROUND_BLUE 
+#		define FOREGROUND_BLUE 0x0001
+#	endif
+#	ifndef FOREGROUND_GREEN 
+#		define FOREGROUND_GREEN 0x0002
+#	endif
+#	ifndef FOREGROUND_RED 
+#		define FOREGROUND_RED 0x0004
+#	endif
+#endif // SE_PLATFORM_WINDOWS
 //-----------------------------------------------------------------------------
 Log::~Log()
 {
-	m_stream.flush();
-	m_stream.close();
+	if (m_stream.good())
+	{
+		m_stream.flush();
+		m_stream.close();
+	}
 }
 //-----------------------------------------------------------------------------
 void Log::Print(const char* text) noexcept
 {
-#if SE_PLATFORM_WINDOWS && SE_DEBUG
-	OutputDebugStringA(text);
-	OutputDebugStringA("\n");
-#endif
-
+	outputDebugString(text);
 	puts(text);
-
-#if SE_PLATFORM_DESKTOP
-	m_stream << text << std::endl;
-	m_stream.flush();
-#endif
+	printIntFile(text);
 }
 //-----------------------------------------------------------------------------
 void Log::Error(const char* text) noexcept
 {
 	const std::string formatText = "ERROR: " + std::string(text);
-#if SE_PLATFORM_WINDOWS && SE_DEBUG
-	OutputDebugStringA(formatText.c_str());
-	OutputDebugStringA("\n");
-#endif
+	outputDebugString(formatText.c_str());
 #if SE_PLATFORM_WINDOWS
 	MessageBoxA(nullptr, text, "Error", 0x00000000L);
 #endif
 
-#if SE_PLATFORM_WINDOWS && SE_DEBUG
-	static auto win32_console_handle = GetStdHandle(/*STD_OUTPUT_HANDLE*/((unsigned long)-11));
-	SetConsoleTextAttribute(win32_console_handle, /*FOREGROUND_RED*/0x0004);
+#if SE_PLATFORM_WINDOWS
+	static auto win32ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(win32ConsoleHandle, FOREGROUND_RED);
 #endif
 	puts(formatText.c_str());
-#if SE_PLATFORM_WINDOWS && SE_DEBUG
-	SetConsoleTextAttribute(win32_console_handle, /*FOREGROUND_RED*/0x0004 | /*FOREGROUND_GREEN*/0x0002 | /*FOREGROUND_BLUE*/0x0001);
+#if SE_PLATFORM_WINDOWS
+	SetConsoleTextAttribute(win32ConsoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 #endif
 
-#if SE_PLATFORM_DESKTOP
-	m_stream << formatText << std::endl;
-	m_stream.flush();
-#endif
+	printIntFile(formatText.c_str());
 }
 //-----------------------------------------------------------------------------
 bool Log::open(const char* fileName) noexcept
@@ -69,5 +67,24 @@ bool Log::open(const char* fileName) noexcept
 		return false;
 #endif
 	return true;
+}
+//-----------------------------------------------------------------------------
+void Log::outputDebugString(const char* text) noexcept
+{
+#if SE_PLATFORM_WINDOWS && SE_DEBUG
+	OutputDebugStringA(text);
+	OutputDebugStringA("\n");
+#endif
+}
+//-----------------------------------------------------------------------------
+void Log::printIntFile(const char* text) noexcept
+{
+#if SE_PLATFORM_DESKTOP
+	if (m_stream.good())
+	{
+		m_stream << text << std::endl;
+		m_stream.flush();
+	}
+#endif
 }
 //-----------------------------------------------------------------------------

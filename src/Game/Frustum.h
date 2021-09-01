@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 class Frustum final
 {
@@ -24,5 +24,6 @@ public:
 	bool SphereIn(const Vector3& position, float radius) const noexcept;
 	bool AABBoxIn(const Vector3& min, const Vector3& max) const noexcept;
 
-	Vector4 Planes[MaxFrustumPlanes];
+private:
+	Vector4 m_planes[MaxFrustumPlanes];
 };

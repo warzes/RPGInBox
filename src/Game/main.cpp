@@ -2,6 +2,7 @@
 #include "OldGame.h"
 #include "Game.h"
 #include "Engine.h"
+#include "DebugNew.h"
 //-----------------------------------------------------------------------------
 #if SE_COMPILER_MSVC
 #	pragma comment(lib, "3rdparty.lib")
