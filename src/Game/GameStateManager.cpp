@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "GameStateManager.h"
 //-----------------------------------------------------------------------------
 GameStateManager::GameStateManager(ResourceManager& resourceMgr) noexcept
@@ -27,8 +27,13 @@ void GameStateManager::Update(float deltaTime) noexcept
 //-----------------------------------------------------------------------------
 void GameStateManager::Frame() noexcept
 {
-	m_adventureState.Frame(); // сцена приключения рисуется даже в других режимах
+	m_adventureState.Frame(); // СЃС†РµРЅР° РїСЂРёРєР»СЋС‡РµРЅРёСЏ СЂРёСЃСѓРµС‚СЃСЏ РґР°Р¶Рµ РІ РґСЂСѓРіРёС… СЂРµР¶РёРјР°С…
 	if (m_state == GameState::Battle)
 		m_battleState.Frame();
+}
+//-----------------------------------------------------------------------------
+void GameStateManager::SetState(GameState state) noexcept
+{
+	m_state = state;
 }
 //-----------------------------------------------------------------------------

@@ -1,21 +1,25 @@
-#pragma once
+﻿#pragma once
+
+/*
+* Логика, этот класс отвечает за рендер кадра, игра может быть собрана в двух режимах - прямой рендер или с помощью рендера в текстуру
+*/
 
 class GameFrame final
 {
 public:
-	GameFrame()
+	GameFrame() noexcept
 	{
 #if MAIN_FRAME_TO_RENDER_TEXTURE
 		const int screenWidth = GetScreenWidth();
 		const int screenHeight = GetScreenHeight();
 
-#if OLD_SCHOOL_RENDER
+#	if OLD_SCHOOL_RENDER
 		const int virtualScreenWidth = 320;
 		const int virtualScreenHeight = 240;
-#else
+#	else
 		const int virtualScreenWidth = screenWidth;
 		const int virtualScreenHeight = screenHeight;
-#endif
+#	endif // OLD_SCHOOL_RENDER
 
 		const float virtualRatio = (float)screenWidth / (float)virtualScreenWidth;
 
@@ -23,7 +27,7 @@ public:
 		// The target's height is flipped (in the source Rectangle), due to OpenGL reasons
 		m_sourceRec = { 0.0f, 0.0f, (float)m_target.texture.width, -(float)m_target.texture.height };
 		m_destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
-#endif
+#endif // MAIN_FRAME_TO_RENDER_TEXTURE
 	}
 
 	~GameFrame()
@@ -33,7 +37,7 @@ public:
 #endif
 	}
 
-	void BeginFrame()
+	void BeginFrame() noexcept
 	{
 		// Set render target
 #if MAIN_FRAME_TO_RENDER_TEXTURE
@@ -44,7 +48,7 @@ public:
 		ClearBackground({ 0, 60, 80, 0 });
 #endif
 	}
-	void EndFrame()
+	void EndFrame() noexcept
 	{
 		// end render target
 #if MAIN_FRAME_TO_RENDER_TEXTURE

@@ -30,7 +30,7 @@ void GameMain() noexcept
 		if (engine.Init(engineConfig))
 		{
 			//OldGame game(engine);
-			Game game(engine);
+			Game game;
 			if (game.Init())
 			{
 				while (!engine.IsEnd() && !game.IsEnd())
@@ -43,7 +43,7 @@ void GameMain() noexcept
 	}
 
 #if SE_DEBUG && SE_COMPILER_MSVC && SE_PLATFORM_WINDOWS
-	_CrtDumpMemoryLeaks();
+	_CrtDumpMemoryLeaks(); // GLFW каким-то отключает вывод меморилика, поэтому приходится принудительно вызывать
 #endif
 }
 //-----------------------------------------------------------------------------
