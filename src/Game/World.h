@@ -10,7 +10,7 @@ class World final : NonCopyable, NonMovable
 {
 public:
 	World(ResourceManager& resources);
-	~World();
+
 	bool Init();
 
 	void Update(float deltaTime) noexcept;
@@ -22,13 +22,12 @@ public:
 	Map openworld;
 	GameEnvironment environment;
 private:
-	EnemyParty getTestEnemy();
+	EnemyParty getTestEnemy(); // TODO: перенести в Map, так как зависит от карты
 
 	ResourceManager& m_resources;
 
 	Sky m_sky;
 	BattleEngine m_battleEngine;
-
 
 	bool m_battle = false;
 };

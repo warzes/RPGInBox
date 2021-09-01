@@ -1,10 +1,11 @@
-#pragma once
+﻿#pragma once
 
 #include "FreeCamera.h"
 #include "PlayerTurnCamera.h"
-#include "World.h"
 
 class GameStateManager;
+class ResourceManager;
+class World;
 
 class GameAdventure final
 {
@@ -18,12 +19,11 @@ public:
 private:
 	GameStateManager& m_stateManager;
 	ResourceManager& m_resourceMgr;
+	World* m_world = nullptr;
 
 	// camera
-	FreeCamera m_camera;
+	FreeCamera m_freeCamera;
 	PlayerTurnCamera m_cameraTurn;
 	IGameCamera* m_currentCamera = nullptr;
 	bool m_turnCamera = true;
-
-	World* m_world = nullptr;
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 constexpr auto MaxNumberState = 999;
-constexpr auto MaxGameNameTextSize = 20u;
 constexpr auto MaxNumCharacterInPlayerParty = 4u;
 
 #define TURN_STEP 1

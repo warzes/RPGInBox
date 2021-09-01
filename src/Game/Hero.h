@@ -12,51 +12,51 @@ enum class HeroClass
 class Hero final
 {
 public:
-	// base
+	// Base
 	HeroClass characterClass = HeroClass::Warrior;
-	char name[MaxGameNameTextSize];
+	std::string name;
 
 	// Attributes
-	//struct
-	//{
-	//	int strength = 0;
-	//	int toughness = 0;
-	//	int dexterity = 0;
-	//	int knowledge = 0; // TODO: интеллект?
-	//	int willpower = 0;
-	//} attributes;
+	struct
+	{
+		int strength = 0;
+		int toughness = 0;
+		int dexterity = 0;
+		int knowledge = 0; // TODO: интеллект?
+		int willpower = 0;
+	} attributes;
 
 	// Statistics
 	struct
 	{
 		Stats hp;
 		Stats mp;
-		//int meleeAttack = 0;
-		//int shootAttack = 0;
-		//int magicAttack = 0;
-		//int armor = 0;
-		//int magicDefense = 0;
+		int meleeAttack = 0;
+		int shootAttack = 0;
+		int magicAttack = 0;
+		int armor = 0;
+		int magicDefense = 0;
 	} statistics;
 
 	// Resistances
-	/*struct
+	struct
 	{
 		int fire = 0;
 		int cold = 0;
 		int lightning = 0;
 		int acid = 0;
-	} resistances;*/
+	} resistances;
 
 	// Immunities
-	//struct 
-	//{
-	//	bool poison = false;
-	//	bool confusion = false;
-	//	bool paralysis = false;
-	//	bool fear = false;
-	//	bool mesmerize = false;
-	//	bool petrify = false;
-	//} immunities;
+	struct 
+	{
+		bool poison = false;
+		bool confusion = false;
+		bool paralysis = false;
+		bool fear = false;
+		bool mesmerize = false;
+		bool petrify = false;
+	} immunities;
 
 
 	// Condition

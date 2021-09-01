@@ -1,5 +1,6 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "GameAdventure.h"
+#include "World.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 GameAdventure::GameAdventure(GameStateManager& stateManager, ResourceManager& resourceMgr) noexcept
@@ -12,14 +13,14 @@ GameAdventure::GameAdventure(GameStateManager& stateManager, ResourceManager& re
 bool GameAdventure::Init() noexcept
 {
 	m_cameraTurn.Setup(45.0f, { 0.0f, 0.0f, 0.0f });
-	m_camera.Setup(45.0f, { 0.0f, 0.0f, 0.0f });
-	m_camera.MoveSpeed.z = 10;
-	m_camera.MoveSpeed.x = 5;
-	if (m_turnCamera) m_camera.HideCursor = false;
+	m_freeCamera.Setup(45.0f, { 0.0f, 0.0f, 0.0f });
+	m_freeCamera.MoveSpeed.z = 10.0f;
+	m_freeCamera.MoveSpeed.x = 5.0f;
+	if (m_turnCamera) m_freeCamera.HideCursor = false;
 	if (m_turnCamera) m_currentCamera = &m_cameraTurn;
-	else m_currentCamera = &m_camera;
+	else m_currentCamera = &m_freeCamera;
 
-	if (!m_world || !m_world->Init())
+	if (!m_world->Init())
 		return false;
 
 	auto playerPos = m_world->playerParty.GetPosition();
@@ -31,15 +32,11 @@ bool GameAdventure::Init() noexcept
 void GameAdventure::Update(float deltaTime) noexcept
 {
 	m_world->Update(deltaTime);
-	// TODO: �������� ������ ������ ����� ��������� � m_world?
-	if (m_world->environment.GetStatus() == GameStatus::Exploring)
+	m_currentCamera->Update(*m_world); // TODO: избавить камеру от World. Из камеры достается новая позиция камеры, проверяется, можно ли туда идти, и затем устанавливается целью камеры
+	if (!m_cameraTurn.IsProcessMoving())
 	{
-		m_currentCamera->Update(*m_world);
-		if (!m_cameraTurn.IsProcessMoving())
-		{
-			auto const& camPos = m_currentCamera->GetCameraPosition();
-			m_world->Move({ (int)camPos.x, (int)camPos.z });
-		}
+		auto const& camPos = m_currentCamera->GetCameraPosition();
+		m_world->Move({ (int)camPos.x, (int)camPos.z });
 	}
 }
 //-----------------------------------------------------------------------------

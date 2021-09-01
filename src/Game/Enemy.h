@@ -5,7 +5,7 @@
 class Enemy
 {
 public:
-	char name[MaxGameNameTextSize];
+	std::string name;
 
 	// Statistics
 	struct

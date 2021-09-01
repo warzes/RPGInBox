@@ -56,7 +56,6 @@ void FreeCamera::Update(const World& /*world*/) noexcept
 	m_viewCamera.position = m_cameraPosition;
 	m_viewCamera.position.y += m_playerEyesPosition;
 
-
 	// Mouse movement detection
 	Vector2 mousePositionDelta = { 0.0f, 0.0f };
 	Vector2 mousePosition = GetMousePosition();
@@ -100,14 +99,14 @@ float FreeCamera::getSpeedForAxis(CameraControls axis, float speed) noexcept
 {
 	if (!UseKeyboard)
 		return 0;
-	int key = ControlsKeys[axis];
+	int key = m_controlsKeys[axis];
 	if (key == -1) return 0;
 
 	float factor = 1.0f;
-	if (IsKeyDown(ControlsKeys[SPRINT]))
+	if (IsKeyDown(m_controlsKeys[SPRINT]))
 		factor = 2;
 
-	if (IsKeyDown(ControlsKeys[axis]))
+	if (IsKeyDown(m_controlsKeys[axis]))
 		return speed * GetFrameTime() * factor;
 
 	return 0.0f;

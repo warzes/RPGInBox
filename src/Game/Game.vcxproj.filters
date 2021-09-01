@@ -30,31 +30,16 @@
     <ClCompile Include="OldGame.cpp">
       <Filter>Game\_OLD</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyParty.cpp">
       <Filter>Game\_OLD</Filter>
     </ClCompile>
     <ClCompile Include="PlayerParty.cpp">
       <Filter>Game\_OLD</Filter>
     </ClCompile>
-    <ClCompile Include="Hero.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="FreeCamera.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerTurnCamera.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Game\_OLD</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="World.cpp">
       <Filter>Game\_OLD</Filter>
     </ClCompile>
     <ClCompile Include="GameAdventure.cpp">
@@ -71,6 +56,21 @@
     </ClCompile>
     <ClCompile Include="GameEnvironment.cpp">
       <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeCamera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTurnCamera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Game\Adventure\World</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTemplateData.cpp">
+      <Filter>Game\GameData\CoreRPG\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="HeroTemplateData.cpp">
+      <Filter>Game\GameData\CoreRPG\Data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -114,37 +114,16 @@
     <ClInclude Include="OldGame.h">
       <Filter>Game\_OLD</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyParty.h">
       <Filter>Game\_OLD</Filter>
     </ClInclude>
     <ClInclude Include="PlayerParty.h">
       <Filter>Game\_OLD</Filter>
     </ClInclude>
-    <ClInclude Include="Hero.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="Stats.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="FreeCamera.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="IGameCamera.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerTurnCamera.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Game\_OLD</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="World.h">
       <Filter>Game\_OLD</Filter>
     </ClInclude>
     <ClInclude Include="GameAdventure.h">
@@ -168,6 +147,33 @@
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="NonCopyable.h">
       <Filter>Engine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="FreeCamera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTurnCamera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameCamera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Game\Adventure\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Stats.h">
+      <Filter>Game\GameData\CoreRPG</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>Game\GameData\CoreRPG</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\GameData\CoreRPG</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTemplateData.h">
+      <Filter>Game\GameData\CoreRPG\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="HeroTemplateData.h">
+      <Filter>Game\GameData\CoreRPG\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +200,21 @@
     </Filter>
     <Filter Include="Game\Game">
       <UniqueIdentifier>{19e6457f-3a2e-45c1-82b2-bf3072a3d341}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Camera">
+      <UniqueIdentifier>{a0012e67-0be8-40da-9bdf-c87d67f22863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Adventure\World">
+      <UniqueIdentifier>{3fe34853-30de-449c-855d-ce49c7845cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameData">
+      <UniqueIdentifier>{c8640b4b-9a1f-444e-9448-97f269cacae2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameData\CoreRPG">
+      <UniqueIdentifier>{c32e06d6-ac40-454e-9ad2-cd6e8bb28c85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameData\CoreRPG\Data">
+      <UniqueIdentifier>{5a85465a-3f4f-41b8-8bef-d3cec3b00609}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

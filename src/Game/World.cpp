@@ -1,13 +1,12 @@
 ﻿#include "stdafx.h"
 #include "World.h"
 #include "IGameCamera.h"
+#include "EnemyTemplateData.h"
+#include "DebugNew.h"
+//-----------------------------------------------------------------------------
 World::World(ResourceManager& resources)
 	: m_resources(resources)
 	, m_battleEngine(playerParty)
-{
-}
-//-----------------------------------------------------------------------------
-World::~World()
 {
 }
 //-----------------------------------------------------------------------------
@@ -16,7 +15,7 @@ bool World::Init()
 	if (!m_sky.Init())
 		return false;
 
-	playerParty.SetPosition({ 0,0 });
+	playerParty.SetPosition({ 0, 0 });
 	if (!openworld.InitTest(m_resources))
 		return false;
 
@@ -70,7 +69,6 @@ void World::Move(const Point2& pos) noexcept
 {
 	if (playerParty.Move(pos))
 	{
-		printf("step\n");
 		// TODO: move event
 		environment.NextStep(*this);
 	}
@@ -81,47 +79,35 @@ EnemyParty World::getTestEnemy()
 	EnemyParty enemys;
 
 	{
-		Enemy enemy;
-		enemy.statistics.hp = 10;
-		enemys.enemys.emplace_back(enemy);
+		enemys.enemys.emplace_back(EnemyTemplateData::CreateTest());
 		enemys.positionCharactersInParty.push_back({ 0, 0 });
 	}
 
 	{
-		Enemy enemy;
-		enemy.statistics.hp = 10;
-		enemys.enemys.emplace_back(enemy);
+		enemys.enemys.emplace_back(EnemyTemplateData::CreateTest());
 		enemys.positionCharactersInParty.push_back({ 1, 0 });
 	}
 
 	{
-		Enemy enemy;
-		enemy.statistics.hp = 10;
-		enemys.enemys.emplace_back(enemy);
+		enemys.enemys.emplace_back(EnemyTemplateData::CreateTest());
 		enemys.positionCharactersInParty.push_back({ 2, 0 });
 	}
 
 	{
-		Enemy enemy;
-		enemy.statistics.hp = 10;
-		enemys.enemys.emplace_back(enemy);
+		enemys.enemys.emplace_back(EnemyTemplateData::CreateTest());
 		enemys.positionCharactersInParty.push_back({ 0, 1 });
 	}
 
 	{
-		Enemy enemy;
-		enemy.statistics.hp = 10;
-		enemys.enemys.emplace_back(enemy);
+		enemys.enemys.emplace_back(EnemyTemplateData::CreateTest());
 		enemys.positionCharactersInParty.push_back({ 1, 1 });
 	}
 
 	{
-		Enemy enemy;
-		enemy.statistics.hp = 10;
-		enemys.enemys.emplace_back(enemy);
+		enemys.enemys.emplace_back(EnemyTemplateData::CreateTest());
 		enemys.positionCharactersInParty.push_back({ 2, 1 });
 	}
 
 	return enemys;
 }
-//-----------------------------------------------------------------------------Ы
+//-----------------------------------------------------------------------------

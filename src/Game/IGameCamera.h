@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Frustum.h"
 
@@ -22,7 +22,8 @@ public:
 		SPRINT,
 		LAST_CONTROL
 	};
-	IGameCamera() : ControlsKeys{ 'W', 'S', 'D', 'A', 'E', 'Q', KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_LEFT_SHIFT }	{}
+	IGameCamera() : m_controlsKeys{ 'W', 'S', 'D', 'A', 'E', 'Q', KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_LEFT_SHIFT }	{}
+
 	virtual ~IGameCamera() = default;
 
 	virtual void Update(const World& world) noexcept = 0;
@@ -48,10 +49,10 @@ public:
 
 	void ExtractFrustum() noexcept { m_frustum.Extract(); }
 
-	int ControlsKeys[LAST_CONTROL] = { 0 };
-
 protected:
 	const float m_playerEyesPosition = 0.75f;       // Player eyes position from ground (in meters)
+
+	int m_controlsKeys[LAST_CONTROL] = { 0 };
 
 	Vector3 m_cameraPosition = { 0.0f, 0.0f, 0.0f };
 	Camera m_viewCamera = {};

@@ -180,15 +180,14 @@
     <ClCompile Include="BattleCell.cpp" />
     <ClCompile Include="BattleEngine.cpp" />
     <ClCompile Include="BattlePlayerAction.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyParty.cpp" />
+    <ClCompile Include="EnemyTemplateData.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAdventure.cpp" />
     <ClCompile Include="GameBattle.cpp" />
     <ClCompile Include="GameEnvironment.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
-    <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Frustum.cpp" />
@@ -198,6 +197,7 @@
     <ClCompile Include="PlayerTurnCamera.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sky.cpp" />
+    <ClCompile Include="HeroTemplateData.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -217,6 +217,7 @@
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyParty.h" />
+    <ClInclude Include="EnemyTemplateData.h" />
     <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameAdventure.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="GameFrame.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="Hero.h" />
+    <ClInclude Include="HeroTemplateData.h" />
     <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugNew.h" />

@@ -26,15 +26,15 @@ void PlayerTurnCamera::Update(const World& world) noexcept
 	{
 		if (!m_isMoving) // во время вращения камеры нельзя двигаться, поэтому условие вложенное
 		{
-			if (keyDown(ControlsKeys[MOVE_FRONT]) || keyDown(ControlsKeys[TURN_UP])) move(moveDir::Forward, world.openworld);
-			if (keyDown(ControlsKeys[MOVE_BACK]) || keyDown(ControlsKeys[TURN_DOWN])) move(moveDir::Back, world.openworld);
+			if (keyDown(m_controlsKeys[MOVE_FRONT]) || keyDown(m_controlsKeys[TURN_UP])) move(moveDir::Forward, world.openworld);
+			if (keyDown(m_controlsKeys[MOVE_BACK]) || keyDown(m_controlsKeys[TURN_DOWN])) move(moveDir::Back, world.openworld);
 
-			if (keyDown(ControlsKeys[MOVE_UP])) move(moveDir::Left, world.openworld);
-			if (keyDown(ControlsKeys[MOVE_DOWN])) move(moveDir::Right, world.openworld);
+			if (keyDown(m_controlsKeys[MOVE_UP])) move(moveDir::Left, world.openworld);
+			if (keyDown(m_controlsKeys[MOVE_DOWN])) move(moveDir::Right, world.openworld);
 		}
 
-		if (keyDown(ControlsKeys[MOVE_LEFT]) || keyDown(ControlsKeys[TURN_LEFT])) turn(rotateDirY::Left);
-		if (keyDown(ControlsKeys[MOVE_RIGHT]) || keyDown(ControlsKeys[TURN_RIGHT])) turn(rotateDirY::Right);
+		if (keyDown(m_controlsKeys[MOVE_LEFT]) || keyDown(m_controlsKeys[TURN_LEFT])) turn(rotateDirY::Left);
+		if (keyDown(m_controlsKeys[MOVE_RIGHT]) || keyDown(m_controlsKeys[TURN_RIGHT])) turn(rotateDirY::Right);
 	}
 	if (m_isMoving)
 	{
@@ -50,7 +50,7 @@ void PlayerTurnCamera::Update(const World& world) noexcept
 			m_cameraPosition.x = m_targetPosition.x;
 			m_cameraPosition.z = m_targetPosition.z;
 		}
-		printf("CP = %f %f\n", m_cameraPosition.x, m_cameraPosition.z);
+		//printf("CP = %f %f\n", m_cameraPosition.x, m_cameraPosition.z);
 	}
 	if (m_isTurning)
 	{

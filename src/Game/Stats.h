@@ -28,7 +28,7 @@ public:
 		m_current = m_max;
 	}
 
-	constexpr std::string GetFullText() noexcept { return (std::to_string(m_current) + "/" + std::to_string(m_max)); }
+	constexpr std::string GetText() noexcept { return (std::to_string(m_current) + "/" + std::to_string(m_max)); }
 
 	constexpr int GetCurrent() const noexcept { return m_current; }
 	constexpr int GetMax() const noexcept { return m_max; }

@@ -24,7 +24,7 @@ public:
 private:
 	float getSpeedForAxis(CameraControls axis, float speed) noexcept;
 
-	bool m_windowFocused = true;
 	Vector2 m_previousMousePosition = { 0.0f, 0.0f };
-	Vector2 m_angle = { 0.0f, 0.0f };                // Camera angle in plane XZ
+	Vector2 m_angle = { 0.0f, 0.0f }; // Camera angle in plane XZ
+	bool m_windowFocused = true;
 };
