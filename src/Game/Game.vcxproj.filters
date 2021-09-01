@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Sky.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineMath.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleCell.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleEngine.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="BattlePlayerAction.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="OldGame.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyParty.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerParty.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="Hero.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeCamera.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTurnCamera.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+    <ClCompile Include="GameAdventure.cpp">
+      <Filter>Game\Adventure</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBattle.cpp">
+      <Filter>Game\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateManager.cpp">
+      <Filter>Game\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEnvironment.cpp">
+      <Filter>Game\_OLD</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Engine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Sky.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Base.h">
+      <Filter>Engine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugNew.h">
+      <Filter>Engine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineMath.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleCell.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleCore.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleEngine.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="BattlePlayerAction.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="OldGame.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyParty.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerParty.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="Stats.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="FreeCamera.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameCamera.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTurnCamera.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="GameAdventure.h">
+      <Filter>Game\Adventure</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBattle.h">
+      <Filter>Game\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFrame.h">
+      <Filter>Game\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateManager.h">
+      <Filter>Game\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEnvironment.h">
+      <Filter>Game\_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigDefine.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{ffcc11f5-d7b0-418e-8e21-b20065f6cfe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{b903b1c5-8d84-47e3-b210-df120b397669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Base">
+      <UniqueIdentifier>{fd61a4e8-a2af-4aa5-bb37-489b94604bea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Core">
+      <UniqueIdentifier>{02c60f5e-1f80-4955-beaf-7fc43f3c62d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\_OLD">
+      <UniqueIdentifier>{b5ec1bda-790e-486d-8290-e3eb7513c743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Adventure">
+      <UniqueIdentifier>{ea90e9e2-121e-4f58-bf54-77067996d3d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Battle">
+      <UniqueIdentifier>{2f0e2061-49da-4983-b07a-b1ac00c43ece}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Game">
+      <UniqueIdentifier>{19e6457f-3a2e-45c1-82b2-bf3072a3d341}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
