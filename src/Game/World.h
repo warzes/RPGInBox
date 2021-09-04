@@ -2,7 +2,6 @@
 
 #include "PlayerParty.h"
 #include "Map.h"
-#include "GameEnvironment.h"
 #include "BattleEngine.h"
 #include "Sky.h"
 
@@ -20,14 +19,10 @@ public:
 
 	PlayerParty playerParty;
 	Map openworld;
-	GameEnvironment environment;
 private:
 	EnemyParty getTestEnemy(); // TODO: перенести в Map, так как зависит от карты
 
 	ResourceManager& m_resources;
 
 	Sky m_sky;
-	BattleEngine m_battleEngine;
-
-	bool m_battle = false;
 };

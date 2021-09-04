@@ -183,11 +183,11 @@ typedef struct GlyphInfo {
 // Font, font texture and GlyphInfo array data
 typedef struct Font {
     int baseSize;           // Base size (default chars height)
-    int charsCount;         // Number of characters
-    int charsPadding;       // Padding around the chars
-    Texture2D texture;      // Characters texture atlas
-    Rectangle *recs;        // Characters rectangles in texture
-    GlyphInfo* chars;       // Characters glyphs info data
+    int glyphCount;         // Number of glyph characters
+    int glyphPadding;       // Padding around the glyph characters
+    Texture2D texture;      // Texture atlas containing the glyphs
+    Rectangle* recs;        // Rectangles in texture for the glyphs
+    GlyphInfo* glyphs;      // Glyphs info data
 } Font;
 
 // Camera, defines position/orientation in 3d space
@@ -1000,7 +1000,7 @@ Vector2 GetTouchPosition(int index);                    // Get touch position XY
 void SetGesturesEnabled(unsigned int flags);      // Enable a set of gestures using flags
 bool IsGestureDetected(int gesture);              // Check if a gesture have been detected
 int GetGestureDetected(void);                     // Get latest detected gesture
-int GetTouchPointsCount(void);                    // Get touch points count
+int GetTouchPointCount(void);                     // Get touch points count
 float GetGestureHoldDuration(void);               // Get gesture hold time in milliseconds
 Vector2 GetGestureDragVector(void);               // Get gesture drag vector
 float GetGestureDragAngle(void);                  // Get gesture drag angle
@@ -1034,7 +1034,7 @@ void DrawLineV(Vector2 startPos, Vector2 endPos, Color color);                  
 void DrawLineEx(Vector2 startPos, Vector2 endPos, float thick, Color color);                       // Draw a line defining thickness
 void DrawLineBezier(Vector2 startPos, Vector2 endPos, float thick, Color color);                   // Draw a line using cubic-bezier curves in-out
 void DrawLineBezierQuad(Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thick, Color color); //Draw line using quadratic bezier curves with a control point
-void DrawLineStrip(Vector2 *points, int pointsCount, Color color);                                 // Draw lines sequence
+void DrawLineStrip(Vector2 *points, int pointCount, Color color);                                 // Draw lines sequence
 void DrawCircle(int centerX, int centerY, float radius, Color color);                              // Draw a color-filled circle
 void DrawCircleSector(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color);      // Draw a piece of a circle
 void DrawCircleSectorLines(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color); // Draw circle sector outline
@@ -1058,8 +1058,8 @@ void DrawRectangleRounded(Rectangle rec, float roundness, int segments, Color co
 void DrawRectangleRoundedLines(Rectangle rec, float roundness, int segments, float lineThick, Color color); // Draw rectangle with rounded edges outline
 void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color);                                // Draw a color-filled triangle (vertex in counter-clockwise order!)
 void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color);                           // Draw triangle outline (vertex in counter-clockwise order!)
-void DrawTriangleFan(Vector2 *points, int pointsCount, Color color);                               // Draw a triangle fan defined by points (first vertex is the center)
-void DrawTriangleStrip(Vector2 *points, int pointsCount, Color color);                             // Draw a triangle strip defined by points
+void DrawTriangleFan(Vector2 *points, int pointCount, Color color);                               // Draw a triangle fan defined by points (first vertex is the center)
+void DrawTriangleStrip(Vector2 *points, int pointCount, Color color);                             // Draw a triangle strip defined by points
 void DrawPoly(Vector2 center, int sides, float radius, float rotation, Color color);               // Draw a regular polygon (Vector version)
 void DrawPolyLines(Vector2 center, int sides, float radius, float rotation, Color color);          // Draw a polygon outline of n sides
 void DrawPolyLinesEx(Vector2 center, int sides, float radius, float rotation, float lineThick, Color color); // Draw a polygon outline of n sides with extended parameters
@@ -1127,7 +1127,7 @@ void ImageColorContrast(Image *image, float contrast);                          
 void ImageColorBrightness(Image *image, int brightness);                                           // Modify image color: brightness (-255 to 255)
 void ImageColorReplace(Image *image, Color color, Color replace);                                  // Modify image color: replace color
 Color *LoadImageColors(Image image);                                                               // Load color data from image as a Color array (RGBA - 32bit)
-Color *LoadImagePalette(Image image, int maxPaletteSize, int *colorsCount);                        // Load colors palette from image as a Color array (RGBA - 32bit)
+Color *LoadImagePalette(Image image, int maxPaletteSize, int *colorCount);                        // Load colors palette from image as a Color array (RGBA - 32bit)
 void UnloadImageColors(Color *colors);                                                             // Unload color data loaded with LoadImageColors()
 void UnloadImagePalette(Color *colors);                                                            // Unload colors palette loaded with LoadImagePalette()
 Rectangle GetImageAlphaBorder(Image image, float threshold);                                       // Get image alpha border rectangle
@@ -1174,7 +1174,7 @@ void DrawTextureQuad(Texture2D texture, Vector2 tiling, Vector2 offset, Rectangl
 void DrawTextureTiled(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, float scale, Color tint);      // Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.
 void DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint);           // Draw a part of a texture defined by a rectangle with 'pro' parameters
 void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint);   // Draws a texture (or part of it) that stretches or shrinks nicely
-void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2 *points, Vector2 *texcoords, int pointsCount, Color tint);      // Draw a textured polygon
+void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2 *points, Vector2 *texcoords, int pointCount, Color tint);      // Draw a textured polygon
 
 // Color/pixel related functions
 Color Fade(Color color, float alpha);                                 // Get color with alpha applied, alpha goes from 0.0f to 1.0f
@@ -1197,12 +1197,12 @@ int GetPixelDataSize(int width, int height, int format);              // Get pix
 // Font loading/unloading functions
 Font GetFontDefault(void);                                                            // Get the default Font
 Font LoadFont(const char *fileName);                                                  // Load font from file into GPU memory (VRAM)
-Font LoadFontEx(const char *fileName, int fontSize, int *fontChars, int charsCount);  // Load font from file with extended parameters
+Font LoadFontEx(const char *fileName, int fontSize, int *fontChars, int glyphCount);  // Load font from file with extended parameters
 Font LoadFontFromImage(Image image, Color key, int firstChar);                        // Load font from Image (XNA style)
-Font LoadFontFromMemory(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int charsCount); // Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
-GlyphInfo* LoadFontData(const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int charsCount, int type);      // Load font data for further use
-Image GenImageFontAtlas(const GlyphInfo* chars, Rectangle **recs, int charsCount, int fontSize, int padding, int packMethod);     // Generate image font atlas using chars info
-void UnloadFontData(GlyphInfo* chars, int charsCount);                                // Unload font chars info data (RAM)
+Font LoadFontFromMemory(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount); // Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
+GlyphInfo* LoadFontData(const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount, int type);      // Load font data for further use
+Image GenImageFontAtlas(const GlyphInfo* chars, Rectangle **recs, int glyphCount, int fontSize, int padding, int packMethod);     // Generate image font atlas using chars info
+void UnloadFontData(GlyphInfo* chars, int glyphCount);                                // Unload font chars info data (RAM)
 void UnloadFont(Font font);                                                           // Unload Font from GPU memory (VRAM)
 
 // Text drawing functions
@@ -1224,9 +1224,9 @@ Rectangle GetGlyphAtlasRec(Font font, int codepoint);                           
 // Text codepoints management functions (unicode characters)
 int* LoadCodepoints(const char* text, int* count);              // Load all codepoints from a UTF-8 text string, codepoints count returned by parameter
 void UnloadCodepoints(int* codepoints);                         // Unload codepoints data from memory
-int GetCodepointsCount(const char* text);                       // Get total number of codepoints in a UTF-8 encoded string
+int GetCodepointCount(const char* text);                       // Get total number of codepoints in a UTF-8 encoded string
 int GetCodepoint(const char* text, int* bytesProcessed);        // Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
-const char* CodepointToUTF8(int codepoint, int* byteLength);    // Encode one codepoint into UTF-8 byte array (array length returned as parameter)
+const char* CodepointToUTF8(int codepoint, int* byteSize);    // Encode one codepoint into UTF-8 byte array (array length returned as parameter)
 char* TextCodepointsToUTF8(int* codepoints, int length);        // Encode text as codepoints array into UTF-8 text string (WARNING: memory must be freed!)
 
 // Text strings management functions (no UTF-8 strings, only byte chars)
@@ -1256,7 +1256,7 @@ void DrawLine3D(Vector3 startPos, Vector3 endPos, Color color);                 
 void DrawPoint3D(Vector3 position, Color color);                                                   // Draw a point in 3D space, actually a small line
 void DrawCircle3D(Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color); // Draw a circle in 3D world space
 void DrawTriangle3D(Vector3 v1, Vector3 v2, Vector3 v3, Color color);                              // Draw a color-filled triangle (vertex in counter-clockwise order!)
-void DrawTriangleStrip3D(Vector3 *points, int pointsCount, Color color);                           // Draw a triangle strip defined by points
+void DrawTriangleStrip3D(Vector3 *points, int pointCount, Color color);                           // Draw a triangle strip defined by points
 void DrawCube(Vector3 position, float width, float height, float length, Color color);             // Draw cube
 void DrawCubeV(Vector3 position, Vector3 size, Color color);                                       // Draw cube (Vector version)
 void DrawCubeWires(Vector3 position, float width, float height, float length, Color color);        // Draw cube wires
@@ -1324,7 +1324,7 @@ void SetMaterialTexture(Material *material, int mapType, Texture2D texture);    
 void SetModelMeshMaterial(Model *model, int meshId, int materialId);                  // Set material for a mesh
 
 // Model animations loading/unloading functions
-ModelAnimation *LoadModelAnimations(const char *fileName, int *animsCount);           // Load model animations from file
+ModelAnimation *LoadModelAnimations(const char *fileName, int *animCount);           // Load model animations from file
 void UpdateModelAnimation(Model model, ModelAnimation anim, int frame);               // Update model animation pose
 void UnloadModelAnimation(ModelAnimation anim);                                       // Unload animation data
 void UnloadModelAnimations(ModelAnimation* animations, unsigned int count);           // Unload animation array data
@@ -1356,7 +1356,7 @@ Wave LoadWave(const char *fileName);                            // Load wave dat
 Wave LoadWaveFromMemory(const char *fileType, const unsigned char *fileData, int dataSize); // Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
 Sound LoadSound(const char *fileName);                          // Load sound from file
 Sound LoadSoundFromWave(Wave wave);                             // Load sound from wave data
-void UpdateSound(Sound sound, const void *data, int samplesCount);// Update sound buffer with new data
+void UpdateSound(Sound sound, const void *data, int sampleCount);// Update sound buffer with new data
 void UnloadWave(Wave wave);                                     // Unload wave data
 void UnloadSound(Sound sound);                                  // Unload sound
 bool ExportWave(Wave wave, const char *fileName);               // Export wave data to file, returns true on success
@@ -1396,7 +1396,7 @@ float GetMusicTimePlayed(Music music);                          // Get current m
 // AudioStream management functions
 AudioStream LoadAudioStream(unsigned int sampleRate, unsigned int sampleSize, unsigned int channels); // Load audio stream (to stream raw audio pcm data)
 void UnloadAudioStream(AudioStream stream);                      // Unload audio stream and free memory
-void UpdateAudioStream(AudioStream stream, const void *data, int framesCount); // Update audio stream buffers with data
+void UpdateAudioStream(AudioStream stream, const void *data, int frameCount); // Update audio stream buffers with data
 bool IsAudioStreamProcessed(AudioStream stream);                // Check if any audio stream buffers requires refill
 void PlayAudioStream(AudioStream stream);                       // Play audio stream
 void PauseAudioStream(AudioStream stream);                      // Pause audio stream

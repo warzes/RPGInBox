@@ -282,7 +282,7 @@ typedef enum {
 
 // Dynamic vertex buffers (position + texcoords + colors + indices arrays)
 typedef struct rlVertexBuffer {
-	int elementsCount;          // Number of elements in the buffer (QUADS)
+	int elementCount;          // Number of elements in the buffer (QUADS)
 
 	int vCounter;               // Vertex position counter to process (and draw) from full buffer
 	int tcCounter;              // Vertex texcoord counter to process (and draw) from full buffer
@@ -319,12 +319,12 @@ typedef struct rlDrawCall {
 
 // rlRenderBatch type
 typedef struct rlRenderBatch {
-	int buffersCount;           // Number of vertex buffers (multi-buffering support)
+	int bufferCount;            // Number of vertex buffers (multi-buffering support)
 	int currentBuffer;          // Current buffer tracking in case of multi-buffering
 	rlVertexBuffer* vertexBuffer; // Dynamic buffer(s) for vertex data
 
 	rlDrawCall* draws;          // Draw calls array, depends on textureId
-	int drawsCounter;           // Draw calls counter
+	int drawCounter;          // Draw calls counter
 	float currentDepth;         // Current depth value for next draw
 } rlRenderBatch;
 

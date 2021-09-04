@@ -54,9 +54,6 @@
     <ClCompile Include="GameStateManager.cpp">
       <Filter>Game\Game</Filter>
     </ClCompile>
-    <ClCompile Include="GameEnvironment.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
     <ClCompile Include="FreeCamera.cpp">
       <Filter>Game\Camera</Filter>
     </ClCompile>
@@ -141,9 +138,6 @@
     <ClInclude Include="GameStateManager.h">
       <Filter>Game\Game</Filter>
     </ClInclude>
-    <ClInclude Include="GameEnvironment.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="NonCopyable.h">
       <Filter>Engine\Base</Filter>
@@ -215,6 +209,9 @@
     </Filter>
     <Filter Include="Game\GameData\CoreRPG\Data">
       <UniqueIdentifier>{5a85465a-3f4f-41b8-8bef-d3cec3b00609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Battle\BattleLogic">
+      <UniqueIdentifier>{cafa4145-ab29-4091-9bc5-da8030600179}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

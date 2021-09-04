@@ -223,7 +223,7 @@ Image LoadImageRaw(const char *fileName, int width, int height, int format, int 
 Image LoadImageAnim(const char *fileName, int *frames)
 {
     Image image = { 0 };
-    int framesCount = 1;
+    int frameCount = 1;
 
 #if defined(SUPPORT_FILEFORMAT_GIF)
     if (IsFileExtension(fileName, ".gif"))
@@ -235,7 +235,7 @@ Image LoadImageAnim(const char *fileName, int *frames)
         {
             int comp = 0;
             int **delays = NULL;
-            image.data = stbi_load_gif_from_memory(fileData, dataSize, delays, &image.width, &image.height, &framesCount, &comp, 4);
+            image.data = stbi_load_gif_from_memory(fileData, dataSize, delays, &image.width, &image.height, &frameCount, &comp, 4);
 
             image.mipmaps = 1;
             image.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
@@ -251,7 +251,7 @@ Image LoadImageAnim(const char *fileName, int *frames)
 
     // TODO: Support APNG animated images?
 
-    *frames = framesCount;
+    *frames = frameCount;
     return image;
 }
 
@@ -669,28 +669,28 @@ Image GenImagePerlinNoise(int width, int height, int offsetX, int offsetY, float
 // Generate image: cellular algorithm. Bigger tileSize means bigger cells
 Image GenImageCellular(int width, int height, int tileSize)
 {
-    Color *pixels = (Color *)RL_MALLOC(width*height*sizeof(Color));
+    Color* pixels = (Color*)RL_MALLOC(width * height * sizeof(Color));
 
-    int seedsPerRow = width/tileSize;
-    int seedsPerCol = height/tileSize;
-    int seedsCount = seedsPerRow*seedsPerCol;
+    int seedsPerRow = width / tileSize;
+    int seedsPerCol = height / tileSize;
+    int seedCount = seedsPerRow * seedsPerCol;
 
-    Vector2 *seeds = (Vector2 *)RL_MALLOC(seedsCount*sizeof(Vector2));
+    Vector2* seeds = (Vector2*)RL_MALLOC(seedCount * sizeof(Vector2));
 
-    for (int i = 0; i < seedsCount; i++)
+    for (int i = 0; i < seedCount; i++)
     {
-        int y = (i/seedsPerRow)*tileSize + GetRandomValue(0, tileSize - 1);
-        int x = (i%seedsPerRow)*tileSize + GetRandomValue(0, tileSize - 1);
-        seeds[i] = (Vector2){ (float)x, (float)y};
+        int y = (i / seedsPerRow) * tileSize + GetRandomValue(0, tileSize - 1);
+        int x = (i % seedsPerRow) * tileSize + GetRandomValue(0, tileSize - 1);
+        seeds[i] = (Vector2){ (float)x, (float)y };
     }
 
     for (int y = 0; y < height; y++)
     {
-        int tileY = y/tileSize;
+        int tileY = y / tileSize;
 
         for (int x = 0; x < width; x++)
         {
-            int tileX = x/tileSize;
+            int tileX = x / tileSize;
 
             float minDistance = (float)strtod("Inf", NULL);
 
@@ -703,7 +703,7 @@ Image GenImageCellular(int width, int height, int tileSize)
                 {
                     if ((tileY + j < 0) || (tileY + j >= seedsPerCol)) continue;
 
-                    Vector2 neighborSeed = seeds[(tileY + j)*seedsPerRow + tileX + i];
+                    Vector2 neighborSeed = seeds[(tileY + j) * seedsPerRow + tileX + i];
 
                     float dist = (float)hypot(x - (int)neighborSeed.x, y - (int)neighborSeed.y);
                     minDistance = (float)fmin(minDistance, dist);
@@ -711,10 +711,10 @@ Image GenImageCellular(int width, int height, int tileSize)
             }
 
             // I made this up but it seems to give good results at all tile sizes
-            int intensity = (int)(minDistance*256.0f/tileSize);
+            int intensity = (int)(minDistance * 256.0f / tileSize);
             if (intensity > 255) intensity = 255;
 
-            pixels[y*width + x] = (Color){ intensity, intensity, intensity, 255 };
+            pixels[y * width + x] = (Color){ intensity, intensity, intensity, 255 };
         }
     }
 
@@ -1053,9 +1053,9 @@ Image ImageText(const char *text, int fontSize, Color color)
 }
 
 // Create an image from text (custom sprite font)
-Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Color tint)
+Image ImageTextEx(Font font, const char* text, float fontSize, float spacing, Color tint)
 {
-    int length = (int)strlen(text);
+    int size = (int)strlen(text);   // Get size in bytes of text
 
     int textOffsetX = 0;            // Image drawing position X
     int textOffsetY = 0;            // Offset between lines (on line break '\n')
@@ -1066,7 +1066,7 @@ Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Co
     // Create image to store text
     Image imText = GenImageColor((int)imSize.x, (int)imSize.y, BLANK);
 
-    for (int i = 0; i < length; i++)
+    for (int i = 0; i < size; i++)
     {
         // Get next codepoint from byte string and glyph index in font
         int codepointByteCount = 0;
@@ -1081,19 +1081,19 @@ Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Co
         {
             // NOTE: Fixed line spacing of 1.5 line-height
             // TODO: Support custom line spacing defined by user
-            textOffsetY += (font.baseSize + font.baseSize/2);
+            textOffsetY += (font.baseSize + font.baseSize / 2);
             textOffsetX = 0;
         }
         else
         {
             if ((codepoint != ' ') && (codepoint != '\t'))
             {
-                Rectangle rec = { (float)(textOffsetX + font.chars[index].offsetX), (float)(textOffsetY + font.chars[index].offsetY), (float)font.recs[index].width, (float)font.recs[index].height };
-                ImageDraw(&imText, font.chars[index].image, (Rectangle){ 0, 0, (float)font.chars[index].image.width, (float)font.chars[index].image.height }, rec, tint);
+                Rectangle rec = { (float)(textOffsetX + font.glyphs[index].offsetX), (float)(textOffsetY + font.glyphs[index].offsetY), (float)font.recs[index].width, (float)font.recs[index].height };
+                ImageDraw(&imText, font.glyphs[index].image, (Rectangle) { 0, 0, (float)font.glyphs[index].image.width, (float)font.glyphs[index].image.height }, rec, tint);
             }
 
-            if (font.chars[index].advanceX == 0) textOffsetX += (int)(font.recs[index].width + spacing);
-            else textOffsetX += font.chars[index].advanceX + (int)spacing;
+            if (font.glyphs[index].advanceX == 0) textOffsetX += (int)(font.recs[index].width + spacing);
+            else textOffsetX += font.glyphs[index].advanceX + (int)spacing;
         }
 
         i += (codepointByteCount - 1);   // Move text bytes counter to next codepoint
@@ -1102,12 +1102,12 @@ Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Co
     // Scale image depending on text size
     if (fontSize > imSize.y)
     {
-        float scaleFactor = fontSize/imSize.y;
+        float scaleFactor = fontSize / imSize.y;
         TRACELOG(LOG_INFO, "IMAGE: Text scaled by factor: %f", scaleFactor);
 
         // Using nearest-neighbor scaling algorithm for default font
-        if (font.texture.id == GetFontDefault().texture.id) ImageResizeNN(&imText, (int)(imSize.x*scaleFactor), (int)(imSize.y*scaleFactor));
-        else ImageResize(&imText, (int)(imSize.x*scaleFactor), (int)(imSize.y*scaleFactor));
+        if (font.texture.id == GetFontDefault().texture.id) ImageResizeNN(&imText, (int)(imSize.x * scaleFactor), (int)(imSize.y * scaleFactor));
+        else ImageResize(&imText, (int)(imSize.x * scaleFactor), (int)(imSize.y * scaleFactor));
     }
 
     return imText;
@@ -2093,7 +2093,7 @@ Color *LoadImageColors(Image image)
 
 // Load colors palette from image as a Color array (RGBA - 32bit)
 // NOTE: Memory allocated should be freed using UnloadImagePalette()
-Color *LoadImagePalette(Image image, int maxPaletteSize, int *colorsCount)
+Color* LoadImagePalette(Image image, int maxPaletteSize, int* colorCount)
 {
     #define COLOR_EQUAL(col1, col2) ((col1.r == col2.r)&&(col1.g == col2.g)&&(col1.b == col2.b)&&(col1.a == col2.a))
 
@@ -2142,7 +2142,7 @@ Color *LoadImagePalette(Image image, int maxPaletteSize, int *colorsCount)
         UnloadImageColors(pixels);
     }
 
-    *colorsCount = palCount;
+    *colorCount = palCount;
 
     return palette;
 }
@@ -3395,31 +3395,31 @@ void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest,
 // Draw textured polygon, defined by vertex and texturecoordinates
 // NOTE: Polygon center must have straight line path to all points
 // without crossing perimeter, points must be in anticlockwise order
-void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2 *points, Vector2 *texcoords, int pointsCount, Color tint)
+void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2* points, Vector2* texcoords, int pointCount, Color tint)
 {
-    rlCheckRenderBatchLimit((pointsCount - 1)*4);
+    rlCheckRenderBatchLimit((pointCount - 1) * 4);
 
     rlSetTexture(texture.id);
 
     // Texturing is only supported on QUADs
     rlBegin(RL_QUADS);
 
-        rlColor4ub(tint.r, tint.g, tint.b, tint.a);
+    rlColor4ub(tint.r, tint.g, tint.b, tint.a);
 
-        for (int i = 0; i < pointsCount - 1; i++)
-        {
-            rlTexCoord2f(0.5f, 0.5f);
-            rlVertex2f(center.x, center.y);
+    for (int i = 0; i < pointCount - 1; i++)
+    {
+        rlTexCoord2f(0.5f, 0.5f);
+        rlVertex2f(center.x, center.y);
 
-            rlTexCoord2f(texcoords[i].x, texcoords[i].y);
-            rlVertex2f(points[i].x + center.x, points[i].y + center.y);
+        rlTexCoord2f(texcoords[i].x, texcoords[i].y);
+        rlVertex2f(points[i].x + center.x, points[i].y + center.y);
 
-            rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
-            rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
+        rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
+        rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
 
-            rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
-            rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
-        }
+        rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
+        rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
+    }
     rlEnd();
 
     rlSetTexture(0);

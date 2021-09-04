@@ -273,7 +273,7 @@ typedef struct CoreData {
         Matrix screenScale;                 // Matrix to scale screen (framebuffer rendering)
 
         char **dropFilesPath;               // Store dropped files paths as strings
-        int dropFilesCount;                 // Count dropped files strings
+        int dropFileCount;                 // Count dropped files strings
 
     } Window;
 #if defined(PLATFORM_ANDROID)
@@ -292,7 +292,7 @@ typedef struct CoreData {
             char currentKeyState[MAX_KEYBOARD_KEYS];        // Registers current frame key state
             char previousKeyState[MAX_KEYBOARD_KEYS];       // Registers previous frame key state
 
-            int keyPressedQueue[MAX_KEY_PRESSED_QUEUE];     // Input keys queue
+            int keyPressedQueue[MAX_KEY_PRESSED_QUEUE];     // Input characters queue (unicode)
             int keyPressedQueueCount;       // Input keys queue count
 
             int charPressedQueue[MAX_CHAR_PRESSED_QUEUE];   // Input characters queue
@@ -348,14 +348,14 @@ typedef struct CoreData {
 static CoreData CORE = { 0 };               // Global CORE state context
 
 static char **dirFilesPath = NULL;          // Store directory files paths as strings
-static int dirFilesCount = 0;               // Count directory files strings
+static int dirFileCount = 0;                // Count directory files strings
 
 #if defined(SUPPORT_SCREEN_CAPTURE)
 static int screenshotCounter = 0;           // Screenshots counter
 #endif
 
 #if defined(SUPPORT_GIF_RECORDING)
-static int gifFramesCounter = 0;            // GIF frames counter
+static int gifFrameCounter = 0;            // GIF frames counter
 static bool gifRecording = false;           // GIF recording state
 static MsfGifState gifState = { 0 };        // MSGIF context state
 #endif
@@ -1560,10 +1560,10 @@ void EndDrawing(void)
     if (gifRecording)
     {
         #define GIF_RECORD_FRAMERATE    10
-        gifFramesCounter++;
+        gifFrameCounter++;
 
         // NOTE: We record one gif frame every 10 game frames
-        if ((gifFramesCounter%GIF_RECORD_FRAMERATE) == 0)
+        if ((gifFrameCounter %GIF_RECORD_FRAMERATE) == 0)
         {
             // Get image data for the current frame (from backbuffer)
             // NOTE: This process is quite slow... :(
@@ -1573,7 +1573,7 @@ void EndDrawing(void)
             RL_FREE(screenData);    // Free image data
         }
 
-        if (((gifFramesCounter/15)%2) == 1)
+        if (((gifFrameCounter /15)%2) == 1)
         {
             DrawCircle(30, CORE.Window.screen.height - 20, 10, MAROON);
             DrawText("GIF RECORDING", 50, CORE.Window.screen.height - 25, 10, RED);
@@ -2353,18 +2353,18 @@ const char *GetFileName(const char *filePath)
 }
 
 // Get filename string without extension (uses static string)
-const char *GetFileNameWithoutExt(const char *filePath)
+const char* GetFileNameWithoutExt(const char* filePath)
 {
-    #define MAX_FILENAMEWITHOUTEXT_LENGTH   128
+#define MAX_FILENAMEWITHOUTEXT_LENGTH   128
 
     static char fileName[MAX_FILENAMEWITHOUTEXT_LENGTH] = { 0 };
     memset(fileName, 0, MAX_FILENAMEWITHOUTEXT_LENGTH);
 
     if (filePath != NULL) strcpy(fileName, GetFileName(filePath));   // Get filename with extension
 
-    int len = (int)strlen(fileName);
+    int size = (int)strlen(fileName);   // Get size in bytes
 
-    for (int i = 0; (i < len) && (i < MAX_FILENAMEWITHOUTEXT_LENGTH); i++)
+    for (int i = 0; (i < size) && (i < MAX_FILENAMEWITHOUTEXT_LENGTH); i++)
     {
         if (fileName[i] == '.')
         {
@@ -2490,8 +2490,8 @@ char **GetDirectoryFiles(const char *dirPath, int *fileCount)
     }
     else TRACELOG(LOG_WARNING, "FILEIO: Failed to open requested directory");  // Maybe it's a file...
 
-    dirFilesCount = counter;
-    *fileCount = dirFilesCount;
+    dirFileCount = counter;
+    *fileCount = dirFileCount;
 
     return dirFilesPath;
 }
@@ -2499,14 +2499,14 @@ char **GetDirectoryFiles(const char *dirPath, int *fileCount)
 // Clear directory files paths buffers
 void ClearDirectoryFiles(void)
 {
-    if (dirFilesCount > 0)
+    if (dirFileCount > 0)
     {
         for (int i = 0; i < MAX_DIRECTORY_FILES; i++) RL_FREE(dirFilesPath[i]);
 
         RL_FREE(dirFilesPath);
     }
 
-    dirFilesCount = 0;
+    dirFileCount = 0;
 }
 
 // Change working directory, returns true on success
@@ -2522,27 +2522,27 @@ bool ChangeDirectory(const char *dir)
 // Check if a file has been dropped into window
 bool IsFileDropped(void)
 {
-    if (CORE.Window.dropFilesCount > 0) return true;
+    if (CORE.Window.dropFileCount > 0) return true;
     else return false;
 }
 
 // Get dropped files names
 char **GetDroppedFiles(int *count)
 {
-    *count = CORE.Window.dropFilesCount;
+    *count = CORE.Window.dropFileCount;
     return CORE.Window.dropFilesPath;
 }
 
 // Clear dropped files paths buffer
 void ClearDroppedFiles(void)
 {
-    if (CORE.Window.dropFilesCount > 0)
+    if (CORE.Window.dropFileCount > 0)
     {
-        for (int i = 0; i < CORE.Window.dropFilesCount; i++) RL_FREE(CORE.Window.dropFilesPath[i]);
+        for (int i = 0; i < CORE.Window.dropFileCount; i++) RL_FREE(CORE.Window.dropFilesPath[i]);
 
         RL_FREE(CORE.Window.dropFilesPath);
 
-        CORE.Window.dropFilesCount = 0;
+        CORE.Window.dropFileCount = 0;
     }
 }
 
@@ -4104,7 +4104,7 @@ static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
             else
             {
                 gifRecording = true;
-                gifFramesCounter = 0;
+                gifFrameCounter = 0;
 
                 msf_gif_begin(&gifState, CORE.Window.screen.width, CORE.Window.screen.height);
                 screenshotCounter++;
@@ -4251,7 +4251,7 @@ static void WindowDropCallback(GLFWwindow *window, int count, const char **paths
         strcpy(CORE.Window.dropFilesPath[i], paths[i]);
     }
 
-    CORE.Window.dropFilesCount = count;
+    CORE.Window.dropFileCount = count;
 }
 #endif
 
@@ -4311,7 +4311,7 @@ static void AndroidCommandCallback(struct android_app *app, int32_t cmd)
                     /*
                     if (assetsReloadRequired)
                     {
-                        for (int i = 0; i < assetsCount; i++)
+                        for (int i = 0; i < assetCount; i++)
                         {
                             // TODO: Unload old asset if required
 
