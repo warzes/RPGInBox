@@ -79,7 +79,35 @@ struct BattleMap
 		};
 		EntityType type;
 		bool isAction = true; // может действовать
+
+		enum class SelectState
+		{
+			None,
+			Target
+		} selectState = SelectState::None;
 	} cells[BattleMapWidth][BattleMapHeight];
+
+	void ResetSelectState()
+	{
+		for (size_t x = 0; x < BattleMapWidth; x++)
+		{
+			for (size_t y = 0; y < BattleMapHeight; y++)
+			{
+				cells[x][y].selectState = cell::SelectState::None;
+			}
+		}
+	}
+
+	bool IsAction(unsigned x, unsigned y) // может ли этот персонаж действовать?
+	{
+		return cells[x][y].isAction == true && cells[x][y].type != EntityType::Free;
+	}
+
+	bool IsAlive(unsigned x, unsigned y) // персонаж жив?
+	{
+		// TODO: проверка хп
+		return cells[x][y].isAction == true && cells[x][y].type != EntityType::Free;
+	}
 };
 
 /******************************************************************************
@@ -89,8 +117,72 @@ struct PlayerActionMachine
 {
 	void Run(BattleMap* map, unsigned curMemberX, unsigned curMemberY)
 	{
+		if (state == State::selectAction)
+		{
+			printf("выберите действие: 1) ближняя атака; 2) дальняя атака; 3) пропуск хода");
+			int in = 0;
+			std::cin >> in;
+			if (in == 1) // игрок выбрал ближнюю атаку
+			{
+				if (curMemberY == 2) // бить ближней атакой может только ближний ряд игрока
+				{
+					int numSel = 0;
+					if (map->IsAlive(0, 1))
+					{
+						map->cells[0][1].selectState = BattleMap::cell::SelectState::Target;
+						numSel++;
+					}
+					if (map->IsAlive(1, 1))
+					{
+						map->cells[1][1].selectState = BattleMap::cell::SelectState::Target;
+						numSel++;
+					}
+					if (map->IsAlive(2, 1))
+					{
+						map->cells[2][1].selectState = BattleMap::cell::SelectState::Target;
+						numSel++;
+					}
 
+					if (numSel == 0) // а в первом ряду врага никого нет, смотрим второй ряд
+					{
+						if (map->IsAlive(0, 0))
+						{
+							map->cells[0][0].selectState = BattleMap::cell::SelectState::Target;
+							numSel++;
+						}
+						if (map->IsAlive(1, 0))
+						{
+							map->cells[1][0].selectState = BattleMap::cell::SelectState::Target;
+							numSel++;
+						}
+						if (map->IsAlive(2, 0))
+						{
+							map->cells[2][0].selectState = BattleMap::cell::SelectState::Target;
+							numSel++;
+						}
+					}
+
+					if (numSel == 0) // и во втором ряду никого нет
+					{
+					}
+					else
+					{
+						state = State::selectMeleeTarget;
+					}
+				}
+			}
+			else if (in == 2) // игрок выбрал пропуск хода
+			{
+
+			}
+		}
 	}
+
+	enum class State
+	{
+		selectAction,
+		selectMeleeTarget
+	} state = State::selectAction;
 };
 
 /******************************************************************************
@@ -205,7 +297,11 @@ struct BattleManager
 				}
 				else
 				{
-					if (map.cells[x][y].type == EntityType::Enemy)
+					if (map.cells[x][y].selectState == BattleMap::cell::SelectState::Target)
+					{
+						dc = '=';
+					}
+					else if (map.cells[x][y].type == EntityType::Enemy)
 					{
 						dc = map.cells[x][y].enemy->c;
 					}
@@ -241,7 +337,7 @@ int main()
 		battleMgr.Frame();
 		battleMgr.battle.Run();
 		system("PAUSE");
-		break;
+		//break;
 	}
 	return 0;
 }
