@@ -1,5 +1,8 @@
 #pragma once
 
+#include "GameBattleCore.h"
+#include "GameBattleView.h"
+
 class GameStateManager;
 class ResourceManager;
 
@@ -15,4 +18,6 @@ public:
 private:
 	GameStateManager& m_stateManager;
 	ResourceManager& m_resourceMgr;
+
+	GameBattleView m_view;
 };

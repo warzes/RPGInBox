@@ -186,6 +186,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAdventure.cpp" />
     <ClCompile Include="GameBattle.cpp" />
+    <ClCompile Include="GameBattleView.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -221,6 +222,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameAdventure.h" />
     <ClInclude Include="GameBattle.h" />
+    <ClInclude Include="GameBattleCore.h" />
+    <ClInclude Include="GameBattleView.h" />
     <ClInclude Include="GameFrame.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="Hero.h" />

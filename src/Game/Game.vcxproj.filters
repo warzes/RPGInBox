@@ -69,6 +69,9 @@
     <ClCompile Include="HeroTemplateData.cpp">
       <Filter>Game\GameData\CoreRPG\Data</Filter>
     </ClCompile>
+    <ClCompile Include="GameBattleView.cpp">
+      <Filter>Game\Battle\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -169,6 +172,12 @@
     <ClInclude Include="HeroTemplateData.h">
       <Filter>Game\GameData\CoreRPG\Data</Filter>
     </ClInclude>
+    <ClInclude Include="GameBattleCore.h">
+      <Filter>Game\Battle\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBattleView.h">
+      <Filter>Game\Battle\View</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -212,6 +221,12 @@
     </Filter>
     <Filter Include="Game\Battle\BattleLogic">
       <UniqueIdentifier>{cafa4145-ab29-4091-9bc5-da8030600179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Battle\Core">
+      <UniqueIdentifier>{e952a136-0839-4bef-8bf3-fe9bd9d901fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Battle\View">
+      <UniqueIdentifier>{2eacdf8e-f47a-4de6-b7b1-9eeae9807dbc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
