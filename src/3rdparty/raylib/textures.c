@@ -29,17 +29,48 @@
 *
 *   #define SUPPORT_IMAGE_GENERATION
 *       Support procedural image generation functionality (gradient, spot, perlin-noise, cellular)
+*
+*   DEPENDENCIES:
+*       stb_image        - Multiple image formats loading (JPEG, PNG, BMP, TGA, PSD, GIF, PIC)
+*                          NOTE: stb_image has been slightly modified to support Android platform.
+*       stb_image_resize - Multiple image resize algorythms
+*
+*
+*   LICENSE: zlib/libpng
+*
+*   Copyright (c) 2013-2021 Ramon Santamaria (@raysan5)
+*
+*   This software is provided "as-is", without any express or implied warranty. In no event
+*   will the authors be held liable for any damages arising from the use of this software.
+*
+*   Permission is granted to anyone to use this software for any purpose, including commercial
+*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
+*
+*     1. The origin of this software must not be misrepresented; you must not claim that you
+*     wrote the original software. If you use this software in a product, an acknowledgment
+*     in the product documentation would be appreciated but is not required.
+*
+*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
+*     as being the original software.
+*
+*     3. This notice may not be removed or altered from any source distribution.
+*
 **********************************************************************************************/
 
 #include "raylib.h"             // Declares module functions
-#include "config.h"             // Defines module configuration flags
+
+// Check if config flags have been externally provided on compilation line
+#if !defined(EXTERNAL_CONFIG_FLAGS)
+    #include "config.h"         // Defines module configuration flags
+#endif
+
+#include "utils.h"              // Required for: TRACELOG() and fopen() Android mapping
+#include "rlgl.h"               // OpenGL abstraction layer to OpenGL 1.1, 3.3 or ES2
+
 #include <stdlib.h>             // Required for: malloc(), free()
 #include <string.h>             // Required for: strlen() [Used in ImageTextEx()]
 #include <math.h>               // Required for: fabsf()
-#include "utils.h"              // Required for: fopen() Android mapping
-#include "rlgl.h"               // raylib OpenGL abstraction layer to OpenGL 1.1, 3.3 or ES2
-                                // Required for: rlLoadTexture() rlUnloadTexture(),
-                                // rlGenerateMipmaps(), some funcs for DrawTexturePro()
+#include <stdio.h>              // Required for: sprintf() [Used in ExportImageAsCode()]
 
 // Support only desired texture formats on stb_image
 #if !defined(SUPPORT_FILEFORMAT_BMP)
@@ -70,6 +101,10 @@
 // Image fileformats not supported by default
 #define STBI_NO_PIC
 #define STBI_NO_PNM             // Image format .ppm and .pgm
+
+#if defined(__TINYC__)
+    #define STBI_NO_SIMD
+#endif
 
 #if (defined(SUPPORT_FILEFORMAT_BMP) || \
      defined(SUPPORT_FILEFORMAT_PNG) || \
@@ -468,6 +503,63 @@ bool ExportImage(Image image, const char *fileName)
     return success;
 }
 
+// Export image as code file (.h) defining an array of bytes
+bool ExportImageAsCode(Image image, const char *fileName)
+{
+    bool success = false;
+
+#if defined(SUPPORT_IMAGE_EXPORT)
+
+#ifndef TEXT_BYTES_PER_LINE
+    #define TEXT_BYTES_PER_LINE     20
+#endif
+
+    int dataSize = GetPixelDataSize(image.width, image.height, image.format);
+
+    // NOTE: Text data buffer size is estimated considering image data size in bytes
+    // and requiring 6 char bytes for every byte: "0x00, "
+    char *txtData = (char *)RL_CALLOC(dataSize*6 + 2000, sizeof(char));
+
+    int byteCount = 0;
+    byteCount += sprintf(txtData + byteCount, "////////////////////////////////////////////////////////////////////////////////////////\n");
+    byteCount += sprintf(txtData + byteCount, "//                                                                                    //\n");
+    byteCount += sprintf(txtData + byteCount, "// ImageAsCode exporter v1.0 - Image pixel data exported as an array of bytes         //\n");
+    byteCount += sprintf(txtData + byteCount, "//                                                                                    //\n");
+    byteCount += sprintf(txtData + byteCount, "// more info and bugs-report:  github.com/raysan5/raylib                              //\n");
+    byteCount += sprintf(txtData + byteCount, "// feedback and support:       ray[at]raylib.com                                      //\n");
+    byteCount += sprintf(txtData + byteCount, "//                                                                                    //\n");
+    byteCount += sprintf(txtData + byteCount, "// Copyright (c) 2018-2021 Ramon Santamaria (@raysan5)                                //\n");
+    byteCount += sprintf(txtData + byteCount, "//                                                                                    //\n");
+    byteCount += sprintf(txtData + byteCount, "////////////////////////////////////////////////////////////////////////////////////////\n\n");
+
+    // Get file name from path and convert variable name to uppercase
+    char varFileName[256] = { 0 };
+    strcpy(varFileName, GetFileNameWithoutExt(fileName));
+    for (int i = 0; varFileName[i] != '\0'; i++) if ((varFileName[i] >= 'a') && (varFileName[i] <= 'z')) { varFileName[i] = varFileName[i] - 32; }
+
+    // Add image information
+    byteCount += sprintf(txtData + byteCount, "// Image data information\n");
+    byteCount += sprintf(txtData + byteCount, "#define %s_WIDTH    %i\n", varFileName, image.width);
+    byteCount += sprintf(txtData + byteCount, "#define %s_HEIGHT   %i\n", varFileName, image.height);
+    byteCount += sprintf(txtData + byteCount, "#define %s_FORMAT   %i          // raylib internal pixel format\n\n", varFileName, image.format);
+
+    byteCount += sprintf(txtData + byteCount, "static unsigned char %s_DATA[%i] = { ", varFileName, dataSize);
+    for (int i = 0; i < dataSize - 1; i++) byteCount += sprintf(txtData + byteCount, ((i%TEXT_BYTES_PER_LINE == 0)? "0x%x,\n" : "0x%x, "), ((unsigned char *)image.data)[i]);
+    byteCount += sprintf(txtData + byteCount, "0x%x };\n", ((unsigned char *)image.data)[dataSize - 1]);
+
+    // NOTE: Text data size exported is determined by '\0' (NULL) character
+    success = SaveFileText(fileName, txtData);
+
+    RL_FREE(txtData);
+
+#endif      // SUPPORT_IMAGE_EXPORT
+
+    if (success != 0) TRACELOG(LOG_INFO, "FILEIO: [%s] Image exported successfully", fileName);
+    else TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to export image", fileName);
+
+    return success;
+}
+
 //------------------------------------------------------------------------------------
 // Image generation functions
 //------------------------------------------------------------------------------------
@@ -669,28 +761,28 @@ Image GenImagePerlinNoise(int width, int height, int offsetX, int offsetY, float
 // Generate image: cellular algorithm. Bigger tileSize means bigger cells
 Image GenImageCellular(int width, int height, int tileSize)
 {
-    Color* pixels = (Color*)RL_MALLOC(width * height * sizeof(Color));
+    Color *pixels = (Color *)RL_MALLOC(width*height*sizeof(Color));
 
-    int seedsPerRow = width / tileSize;
-    int seedsPerCol = height / tileSize;
-    int seedCount = seedsPerRow * seedsPerCol;
+    int seedsPerRow = width/tileSize;
+    int seedsPerCol = height/tileSize;
+    int seedCount = seedsPerRow*seedsPerCol;
 
-    Vector2* seeds = (Vector2*)RL_MALLOC(seedCount * sizeof(Vector2));
+    Vector2 *seeds = (Vector2 *)RL_MALLOC(seedCount*sizeof(Vector2));
 
     for (int i = 0; i < seedCount; i++)
     {
-        int y = (i / seedsPerRow) * tileSize + GetRandomValue(0, tileSize - 1);
-        int x = (i % seedsPerRow) * tileSize + GetRandomValue(0, tileSize - 1);
-        seeds[i] = (Vector2){ (float)x, (float)y };
+        int y = (i/seedsPerRow)*tileSize + GetRandomValue(0, tileSize - 1);
+        int x = (i%seedsPerRow)*tileSize + GetRandomValue(0, tileSize - 1);
+        seeds[i] = (Vector2){ (float)x, (float)y};
     }
 
     for (int y = 0; y < height; y++)
     {
-        int tileY = y / tileSize;
+        int tileY = y/tileSize;
 
         for (int x = 0; x < width; x++)
         {
-            int tileX = x / tileSize;
+            int tileX = x/tileSize;
 
             float minDistance = (float)strtod("Inf", NULL);
 
@@ -703,7 +795,7 @@ Image GenImageCellular(int width, int height, int tileSize)
                 {
                     if ((tileY + j < 0) || (tileY + j >= seedsPerCol)) continue;
 
-                    Vector2 neighborSeed = seeds[(tileY + j) * seedsPerRow + tileX + i];
+                    Vector2 neighborSeed = seeds[(tileY + j)*seedsPerRow + tileX + i];
 
                     float dist = (float)hypot(x - (int)neighborSeed.x, y - (int)neighborSeed.y);
                     minDistance = (float)fmin(minDistance, dist);
@@ -711,10 +803,10 @@ Image GenImageCellular(int width, int height, int tileSize)
             }
 
             // I made this up but it seems to give good results at all tile sizes
-            int intensity = (int)(minDistance * 256.0f / tileSize);
+            int intensity = (int)(minDistance*256.0f/tileSize);
             if (intensity > 255) intensity = 255;
 
-            pixels[y * width + x] = (Color){ intensity, intensity, intensity, 255 };
+            pixels[y*width + x] = (Color){ intensity, intensity, intensity, 255 };
         }
     }
 
@@ -1053,7 +1145,7 @@ Image ImageText(const char *text, int fontSize, Color color)
 }
 
 // Create an image from text (custom sprite font)
-Image ImageTextEx(Font font, const char* text, float fontSize, float spacing, Color tint)
+Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Color tint)
 {
     int size = (int)strlen(text);   // Get size in bytes of text
 
@@ -1081,7 +1173,7 @@ Image ImageTextEx(Font font, const char* text, float fontSize, float spacing, Co
         {
             // NOTE: Fixed line spacing of 1.5 line-height
             // TODO: Support custom line spacing defined by user
-            textOffsetY += (font.baseSize + font.baseSize / 2);
+            textOffsetY += (font.baseSize + font.baseSize/2);
             textOffsetX = 0;
         }
         else
@@ -1089,7 +1181,7 @@ Image ImageTextEx(Font font, const char* text, float fontSize, float spacing, Co
             if ((codepoint != ' ') && (codepoint != '\t'))
             {
                 Rectangle rec = { (float)(textOffsetX + font.glyphs[index].offsetX), (float)(textOffsetY + font.glyphs[index].offsetY), (float)font.recs[index].width, (float)font.recs[index].height };
-                ImageDraw(&imText, font.glyphs[index].image, (Rectangle) { 0, 0, (float)font.glyphs[index].image.width, (float)font.glyphs[index].image.height }, rec, tint);
+                ImageDraw(&imText, font.glyphs[index].image, (Rectangle){ 0, 0, (float)font.glyphs[index].image.width, (float)font.glyphs[index].image.height }, rec, tint);
             }
 
             if (font.glyphs[index].advanceX == 0) textOffsetX += (int)(font.recs[index].width + spacing);
@@ -1102,12 +1194,12 @@ Image ImageTextEx(Font font, const char* text, float fontSize, float spacing, Co
     // Scale image depending on text size
     if (fontSize > imSize.y)
     {
-        float scaleFactor = fontSize / imSize.y;
+        float scaleFactor = fontSize/imSize.y;
         TRACELOG(LOG_INFO, "IMAGE: Text scaled by factor: %f", scaleFactor);
 
         // Using nearest-neighbor scaling algorithm for default font
-        if (font.texture.id == GetFontDefault().texture.id) ImageResizeNN(&imText, (int)(imSize.x * scaleFactor), (int)(imSize.y * scaleFactor));
-        else ImageResize(&imText, (int)(imSize.x * scaleFactor), (int)(imSize.y * scaleFactor));
+        if (font.texture.id == GetFontDefault().texture.id) ImageResizeNN(&imText, (int)(imSize.x*scaleFactor), (int)(imSize.y*scaleFactor));
+        else ImageResize(&imText, (int)(imSize.x*scaleFactor), (int)(imSize.y*scaleFactor));
     }
 
     return imText;
@@ -2093,7 +2185,7 @@ Color *LoadImageColors(Image image)
 
 // Load colors palette from image as a Color array (RGBA - 32bit)
 // NOTE: Memory allocated should be freed using UnloadImagePalette()
-Color* LoadImagePalette(Image image, int maxPaletteSize, int* colorCount)
+Color *LoadImagePalette(Image image, int maxPaletteSize, int *colorCount)
 {
     #define COLOR_EQUAL(col1, col2) ((col1.r == col2.r)&&(col1.g == col2.g)&&(col1.b == col2.b)&&(col1.a == col2.a))
 
@@ -2329,16 +2421,16 @@ void ImageDrawPixelV(Image *dst, Vector2 position, Color color)
 }
 
 // Draw line within an image
-void ImageDrawLine(Image* dst, int startPosX, int startPosY, int endPosX, int endPosY, Color color)
+void ImageDrawLine(Image *dst, int startPosX, int startPosY, int endPosX, int endPosY, Color color)
 {
-    // Using Bresenham's algorithm as described in 
+    // Using Bresenham's algorithm as described in
     // Drawing Lines with Pixels - Joshua Scott - March 2012
     // https://classic.csunplugged.org/wp-content/uploads/2014/12/Lines.pdf
 
     int changeInX = (endPosX - startPosX);
-    int absChangeInX = (changeInX < 0) ? -changeInX : changeInX;
+    int absChangeInX = (changeInX < 0)? -changeInX : changeInX;
     int changeInY = (endPosY - startPosY);
-    int absChangeInY = (changeInY < 0) ? -changeInY : changeInY;
+    int absChangeInY = (changeInY < 0)? -changeInY : changeInY;
 
     int startU, startV, endU, stepV; // Substitutions, either U = X, V = Y or vice versa. See loop at end of function
     //int endV;     // Not needed but left for better understanding, check code below
@@ -2347,8 +2439,8 @@ void ImageDrawLine(Image* dst, int startPosX, int startPosY, int endPosX, int en
 
     if (reversedXY)
     {
-        A = 2 * absChangeInY;
-        B = A - 2 * absChangeInX;
+        A = 2*absChangeInY;
+        B = A - 2*absChangeInX;
         P = A - absChangeInX;
 
         if (changeInX > 0)
@@ -2370,14 +2462,14 @@ void ImageDrawLine(Image* dst, int startPosX, int startPosY, int endPosX, int en
             changeInY = -changeInY;
         }
 
-        stepV = (changeInY < 0) ? -1 : 1;
+        stepV = (changeInY < 0)? -1 : 1;
 
         ImageDrawPixel(dst, startU, startV, color);     // At this point they are correctly ordered...
     }
     else
     {
-        A = 2 * absChangeInX;
-        B = A - 2 * absChangeInY;
+        A = 2*absChangeInX;
+        B = A - 2*absChangeInY;
         P = A - absChangeInY;
 
         if (changeInY > 0)
@@ -2399,7 +2491,7 @@ void ImageDrawLine(Image* dst, int startPosX, int startPosY, int endPosX, int en
             changeInY = -changeInY;
         }
 
-        stepV = (changeInX < 0) ? -1 : 1;
+        stepV = (changeInX < 0)? -1 : 1;
 
         ImageDrawPixel(dst, startV, startU, color);     // ... but need to be reversed here. Repeated in the main loop below
     }
@@ -2839,7 +2931,7 @@ void UpdateTextureRec(Texture2D texture, Rectangle rec, const void *pixels)
 // Texture configuration functions
 //------------------------------------------------------------------------------------
 // Generate GPU mipmaps for a texture
-void GenTextureMipmaps(Texture2D* texture)
+void GenTextureMipmaps(Texture2D *texture)
 {
     // NOTE: NPOT textures support check inside function
     // On WebGL (OpenGL ES 2.0) NPOT textures support is limited
@@ -3395,31 +3487,31 @@ void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest,
 // Draw textured polygon, defined by vertex and texturecoordinates
 // NOTE: Polygon center must have straight line path to all points
 // without crossing perimeter, points must be in anticlockwise order
-void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2* points, Vector2* texcoords, int pointCount, Color tint)
+void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2 *points, Vector2 *texcoords, int pointCount, Color tint)
 {
-    rlCheckRenderBatchLimit((pointCount - 1) * 4);
+    rlCheckRenderBatchLimit((pointCount - 1)*4);
 
     rlSetTexture(texture.id);
 
     // Texturing is only supported on QUADs
     rlBegin(RL_QUADS);
 
-    rlColor4ub(tint.r, tint.g, tint.b, tint.a);
+        rlColor4ub(tint.r, tint.g, tint.b, tint.a);
 
-    for (int i = 0; i < pointCount - 1; i++)
-    {
-        rlTexCoord2f(0.5f, 0.5f);
-        rlVertex2f(center.x, center.y);
+        for (int i = 0; i < pointCount - 1; i++)
+        {
+            rlTexCoord2f(0.5f, 0.5f);
+            rlVertex2f(center.x, center.y);
 
-        rlTexCoord2f(texcoords[i].x, texcoords[i].y);
-        rlVertex2f(points[i].x + center.x, points[i].y + center.y);
+            rlTexCoord2f(texcoords[i].x, texcoords[i].y);
+            rlVertex2f(points[i].x + center.x, points[i].y + center.y);
 
-        rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
-        rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
+            rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
+            rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
 
-        rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
-        rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
-    }
+            rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
+            rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
+        }
     rlEnd();
 
     rlSetTexture(0);

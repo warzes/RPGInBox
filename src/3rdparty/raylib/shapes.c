@@ -7,11 +7,37 @@
 *   #define SUPPORT_QUADS_DRAW_MODE
 *       Use QUADS instead of TRIANGLES for drawing when possible.
 *       Some lines-based shapes could still use lines
+*
+*   LICENSE: zlib/libpng
+*
+*   Copyright (c) 2013-2021 Ramon Santamaria (@raysan5)
+*
+*   This software is provided "as-is", without any express or implied warranty. In no event
+*   will the authors be held liable for any damages arising from the use of this software.
+*
+*   Permission is granted to anyone to use this software for any purpose, including commercial
+*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
+*
+*     1. The origin of this software must not be misrepresented; you must not claim that you
+*     wrote the original software. If you use this software in a product, an acknowledgment
+*     in the product documentation would be appreciated but is not required.
+*
+*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
+*     as being the original software.
+*
+*     3. This notice may not be removed or altered from any source distribution.
+*
 **********************************************************************************************/
 
 #include "raylib.h"     // Declares module functions
-#include "config.h"         // Defines module configuration flags
-#include "rlgl.h"       // raylib OpenGL abstraction layer to OpenGL 1.1, 2.1, 3.3+ or ES2
+
+// Check if config flags have been externally provided on compilation line
+#if !defined(EXTERNAL_CONFIG_FLAGS)
+    #include "config.h"         // Defines module configuration flags
+#endif
+
+#include "rlgl.h"       // OpenGL abstraction layer to OpenGL 1.1, 2.1, 3.3+ or ES2
+
 #include <math.h>       // Required for: sinf(), asinf(), cosf(), acosf(), sqrtf(), fabsf()
 
 //----------------------------------------------------------------------------------
@@ -164,24 +190,23 @@ void DrawLineBezierQuad(Vector2 startPos, Vector2 endPos, Vector2 controlPos, fl
 }
 
 // Draw lines sequence
-void DrawLineStrip(Vector2* points, int pointCount, Color color)
+void DrawLineStrip(Vector2 *points, int pointCount, Color color)
 {
     if (pointCount >= 2)
     {
         rlCheckRenderBatchLimit(pointCount);
 
         rlBegin(RL_LINES);
-        rlColor4ub(color.r, color.g, color.b, color.a);
+            rlColor4ub(color.r, color.g, color.b, color.a);
 
-        for (int i = 0; i < pointCount - 1; i++)
-        {
-            rlVertex2f(points[i].x, points[i].y);
-            rlVertex2f(points[i + 1].x, points[i + 1].y);
-        }
+            for (int i = 0; i < pointCount - 1; i++)
+            {
+                rlVertex2f(points[i].x, points[i].y);
+                rlVertex2f(points[i + 1].x, points[i + 1].y);
+            }
         rlEnd();
     }
 }
-
 
 // Draw a color-filled circle
 void DrawCircle(int centerX, int centerY, float radius, Color color)
@@ -1293,30 +1318,30 @@ void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color)
 // Draw a triangle fan defined by points
 // NOTE: First vertex provided is the center, shared by all triangles
 // By default, following vertex should be provided in counter-clockwise order
-void DrawTriangleFan(Vector2* points, int pointCount, Color color)
+void DrawTriangleFan(Vector2 *points, int pointCount, Color color)
 {
     if (pointCount >= 3)
     {
-        rlCheckRenderBatchLimit((pointCount - 2) * 4);
+        rlCheckRenderBatchLimit((pointCount - 2)*4);
 
         rlSetTexture(texShapes.id);
         rlBegin(RL_QUADS);
-        rlColor4ub(color.r, color.g, color.b, color.a);
+            rlColor4ub(color.r, color.g, color.b, color.a);
 
-        for (int i = 1; i < pointCount - 1; i++)
-        {
-            rlTexCoord2f(texShapesRec.x / texShapes.width, texShapesRec.y / texShapes.height);
-            rlVertex2f(points[0].x, points[0].y);
+            for (int i = 1; i < pointCount - 1; i++)
+            {
+                rlTexCoord2f(texShapesRec.x/texShapes.width, texShapesRec.y/texShapes.height);
+                rlVertex2f(points[0].x, points[0].y);
 
-            rlTexCoord2f(texShapesRec.x / texShapes.width, (texShapesRec.y + texShapesRec.height) / texShapes.height);
-            rlVertex2f(points[i].x, points[i].y);
+                rlTexCoord2f(texShapesRec.x/texShapes.width, (texShapesRec.y + texShapesRec.height)/texShapes.height);
+                rlVertex2f(points[i].x, points[i].y);
 
-            rlTexCoord2f((texShapesRec.x + texShapesRec.width) / texShapes.width, (texShapesRec.y + texShapesRec.height) / texShapes.height);
-            rlVertex2f(points[i + 1].x, points[i + 1].y);
+                rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, (texShapesRec.y + texShapesRec.height)/texShapes.height);
+                rlVertex2f(points[i + 1].x, points[i + 1].y);
 
-            rlTexCoord2f((texShapesRec.x + texShapesRec.width) / texShapes.width, texShapesRec.y / texShapes.height);
-            rlVertex2f(points[i + 1].x, points[i + 1].y);
-        }
+                rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, texShapesRec.y/texShapes.height);
+                rlVertex2f(points[i + 1].x, points[i + 1].y);
+            }
         rlEnd();
         rlSetTexture(0);
     }
@@ -1324,30 +1349,30 @@ void DrawTriangleFan(Vector2* points, int pointCount, Color color)
 
 // Draw a triangle strip defined by points
 // NOTE: Every new vertex connects with previous two
-void DrawTriangleStrip(Vector2* points, int pointCount, Color color)
+void DrawTriangleStrip(Vector2 *points, int pointCount, Color color)
 {
     if (pointCount >= 3)
     {
-        rlCheckRenderBatchLimit(3 * (pointCount - 2));
+        rlCheckRenderBatchLimit(3*(pointCount - 2));
 
         rlBegin(RL_TRIANGLES);
-        rlColor4ub(color.r, color.g, color.b, color.a);
+            rlColor4ub(color.r, color.g, color.b, color.a);
 
-        for (int i = 2; i < pointCount; i++)
-        {
-            if ((i % 2) == 0)
+            for (int i = 2; i < pointCount; i++)
             {
-                rlVertex2f(points[i].x, points[i].y);
-                rlVertex2f(points[i - 2].x, points[i - 2].y);
-                rlVertex2f(points[i - 1].x, points[i - 1].y);
+                if ((i%2) == 0)
+                {
+                    rlVertex2f(points[i].x, points[i].y);
+                    rlVertex2f(points[i - 2].x, points[i - 2].y);
+                    rlVertex2f(points[i - 1].x, points[i - 1].y);
+                }
+                else
+                {
+                    rlVertex2f(points[i].x, points[i].y);
+                    rlVertex2f(points[i - 1].x, points[i - 1].y);
+                    rlVertex2f(points[i - 2].x, points[i - 2].y);
+                }
             }
-            else
-            {
-                rlVertex2f(points[i].x, points[i].y);
-                rlVertex2f(points[i - 1].x, points[i - 1].y);
-                rlVertex2f(points[i - 2].x, points[i - 2].y);
-            }
-        }
         rlEnd();
     }
 }

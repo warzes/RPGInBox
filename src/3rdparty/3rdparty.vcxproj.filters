@@ -10,9 +10,6 @@
     <ClCompile Include="raylib\raudio.c">
       <Filter>raylib</Filter>
     </ClCompile>
-    <ClCompile Include="raylib\rlgl.c">
-      <Filter>raylib</Filter>
-    </ClCompile>
     <ClCompile Include="raylib\shapes.c">
       <Filter>raylib</Filter>
     </ClCompile>
@@ -44,9 +41,6 @@
       <Filter>raylib</Filter>
     </ClInclude>
     <ClInclude Include="raylib\raymath.h">
-      <Filter>raylib</Filter>
-    </ClInclude>
-    <ClInclude Include="raylib\rayutils.h">
       <Filter>raylib</Filter>
     </ClInclude>
     <ClInclude Include="raylib\rlgl.h">

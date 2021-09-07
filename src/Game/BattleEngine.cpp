@@ -115,7 +115,7 @@ void BattleEngine::Draw() noexcept
 		const unsigned index = (pos.y + 2)* ColumnWidthBattleCells + pos.x;
 		DrawTexture(*m_texChar2, battleCell[index].x, battleCell[index].y, WHITE);
 		
-		DrawText(m_playerParty.characters[i].statistics.hp.GetFullText().c_str(), battleCell[index].x+25, battleCell[index].y, 30, BLACK);
+		//DrawText(m_playerParty.characters[i].statistics.hp.GetFullText().c_str(), battleCell[index].x+25, battleCell[index].y, 30, BLACK);
 	}
 	for (unsigned i = 0; i < m_enemyParty.enemys.size(); i++)
 	{
@@ -123,7 +123,7 @@ void BattleEngine::Draw() noexcept
 		const Point2& pos = m_enemyParty.positionCharactersInParty[i];
 		const unsigned index = (pos.y) * ColumnWidthBattleCells + pos.x;
 		DrawTexture(*m_texChar1, battleCell[index].x, battleCell[index].y, WHITE);
-		DrawText(m_enemyParty.enemys[i].statistics.hp.GetFullText().c_str(), battleCell[index].x + 25, battleCell[index].y, 30, BLACK);
+		//DrawText(m_enemyParty.enemys[i].statistics.hp.GetFullText().c_str(), battleCell[index].x + 25, battleCell[index].y, 30, BLACK);
 	}
 
 	// отрисовка боковых панелей

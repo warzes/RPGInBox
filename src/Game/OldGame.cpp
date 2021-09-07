@@ -40,15 +40,13 @@ void OldGame::Update(float deltaTime) noexcept
 {
 	m_world->Update(deltaTime);
 	// TODO: возможно логику камеру также перенести в m_world?
-	if (m_world->environment.GetStatus() == GameStatus::Exploring)
-	{
-		m_currentCamera->Update(*m_world);
+
+	m_currentCamera->Update(*m_world);
 		if (!m_cameraTurn.IsProcessMoving())
 		{
 			auto const& camPos = m_currentCamera->GetCameraPosition();
 			m_world->Move({ (int)camPos.x, (int)camPos.z });
 		}
-	}
 }
 //-----------------------------------------------------------------------------
 void OldGame::Frame() noexcept

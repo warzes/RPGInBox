@@ -6,7 +6,7 @@ Hero HeroTemplateData::CreateWarrior(const char* name) noexcept
 {
 	Hero hero;
 	hero.name = name;
-	hero.
+	//hero.
 
 
 	return hero;

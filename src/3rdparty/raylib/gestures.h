@@ -47,7 +47,7 @@
 #define GESTURES_H
 
 #ifndef PI
-#define PI 3.14159265358979323846
+    #define PI 3.14159265358979323846
 #endif
 
 //----------------------------------------------------------------------------------
@@ -60,32 +60,32 @@
 // NOTE: Below types are required for GESTURES_STANDALONE usage
 //----------------------------------------------------------------------------------
 #if defined(GESTURES_STANDALONE)
-#ifndef __cplusplus
-    // Boolean type
-typedef enum { false, true } bool;
-#endif
+    #ifndef __cplusplus
+        // Boolean type
+        typedef enum { false, true } bool;
+    #endif
 
-// Vector2 type
-typedef struct Vector2 {
-    float x;
-    float y;
-} Vector2;
+    // Vector2 type
+    typedef struct Vector2 {
+        float x;
+        float y;
+    } Vector2;
 
-// Gestures type
-// NOTE: It could be used as flags to enable only some gestures
-typedef enum {
-    GESTURE_NONE = 0,
-    GESTURE_TAP = 1,
-    GESTURE_DOUBLETAP = 2,
-    GESTURE_HOLD = 4,
-    GESTURE_DRAG = 8,
-    GESTURE_SWIPE_RIGHT = 16,
-    GESTURE_SWIPE_LEFT = 32,
-    GESTURE_SWIPE_UP = 64,
-    GESTURE_SWIPE_DOWN = 128,
-    GESTURE_PINCH_IN = 256,
-    GESTURE_PINCH_OUT = 512
-} Gestures;
+    // Gestures type
+    // NOTE: It could be used as flags to enable only some gestures
+    typedef enum {
+        GESTURE_NONE        = 0,
+        GESTURE_TAP         = 1,
+        GESTURE_DOUBLETAP   = 2,
+        GESTURE_HOLD        = 4,
+        GESTURE_DRAG        = 8,
+        GESTURE_SWIPE_RIGHT = 16,
+        GESTURE_SWIPE_LEFT  = 32,
+        GESTURE_SWIPE_UP    = 64,
+        GESTURE_SWIPE_DOWN  = 128,
+        GESTURE_PINCH_IN    = 256,
+        GESTURE_PINCH_OUT   = 512
+    } Gestures;
 #endif
 
 typedef enum { TOUCH_UP, TOUCH_DOWN, TOUCH_MOVE } TouchAction;
@@ -112,18 +112,18 @@ typedef struct {
 extern "C" {            // Prevents name mangling of functions
 #endif
 
-    void ProcessGestureEvent(GestureEvent event);           // Process gesture event and translate it into gestures
-    void UpdateGestures(void);                              // Update gestures detected (must be called every frame)
+void ProcessGestureEvent(GestureEvent event);           // Process gesture event and translate it into gestures
+void UpdateGestures(void);                              // Update gestures detected (must be called every frame)
 #if defined(GESTURES_STANDALONE)
-    void SetGesturesEnabled(unsigned int flags);            // Enable a set of gestures using flags
-    bool IsGestureDetected(int gesture);                    // Check if a gesture have been detected
-    int GetGestureDetected(void);                           // Get latest detected gesture
-    int GetTouchPointCount(void);                          // Get touch points count
-    float GetGestureHoldDuration(void);                     // Get gesture hold time in milliseconds
-    Vector2 GetGestureDragVector(void);                     // Get gesture drag vector
-    float GetGestureDragAngle(void);                        // Get gesture drag angle
-    Vector2 GetGesturePinchVector(void);                    // Get gesture pinch delta
-    float GetGesturePinchAngle(void);                       // Get gesture pinch angle
+void SetGesturesEnabled(unsigned int flags);            // Enable a set of gestures using flags
+bool IsGestureDetected(int gesture);                    // Check if a gesture have been detected
+int GetGestureDetected(void);                           // Get latest detected gesture
+int GetTouchPointCount(void);                          // Get touch points count
+float GetGestureHoldDuration(void);                     // Get gesture hold time in milliseconds
+Vector2 GetGestureDragVector(void);                     // Get gesture drag vector
+float GetGestureDragAngle(void);                        // Get gesture drag angle
+Vector2 GetGesturePinchVector(void);                    // Get gesture pinch delta
+float GetGesturePinchAngle(void);                       // Get gesture pinch angle
 #endif
 
 #ifdef __cplusplus
@@ -141,28 +141,28 @@ extern "C" {            // Prevents name mangling of functions
 #if defined(GESTURES_IMPLEMENTATION)
 
 #if defined(_WIN32)
-#if defined(__cplusplus)
-extern "C" {        // Prevents name mangling of functions
-#endif
-// Functions required to query time on Windows
-    int __stdcall QueryPerformanceCounter(unsigned long long int* lpPerformanceCount);
-    int __stdcall QueryPerformanceFrequency(unsigned long long int* lpFrequency);
-#if defined(__cplusplus)
-}
-#endif
+    #if defined(__cplusplus)
+    extern "C" {        // Prevents name mangling of functions
+    #endif
+    // Functions required to query time on Windows
+    int __stdcall QueryPerformanceCounter(unsigned long long int *lpPerformanceCount);
+    int __stdcall QueryPerformanceFrequency(unsigned long long int *lpFrequency);
+    #if defined(__cplusplus)
+    }
+    #endif
 #elif defined(__linux__)
-#if _POSIX_C_SOURCE < 199309L
-#undef _POSIX_C_SOURCE
-#define _POSIX_C_SOURCE 199309L // Required for CLOCK_MONOTONIC if compiled with c99 without gnu ext.
-#endif
-#include <sys/time.h>               // Required for: timespec
-#include <time.h>                   // Required for: clock_gettime()
+    #if _POSIX_C_SOURCE < 199309L
+        #undef _POSIX_C_SOURCE
+        #define _POSIX_C_SOURCE 199309L // Required for CLOCK_MONOTONIC if compiled with c99 without gnu ext.
+    #endif
+    #include <sys/time.h>               // Required for: timespec
+    #include <time.h>                   // Required for: clock_gettime()
 
-#include <math.h>                   // Required for: sqrtf(), atan2f()
+    #include <math.h>                   // Required for: sqrtf(), atan2f()
 #endif
 #if defined(__APPLE__)                  // macOS also defines __MACH__
-#include <mach/clock.h>             // Required for: clock_get_time()
-#include <mach/mach.h>              // Required for: mach_timespec_t
+    #include <mach/clock.h>             // Required for: clock_get_time()
+    #include <mach/mach.h>              // Required for: mach_timespec_t
 #endif
 
 //----------------------------------------------------------------------------------
@@ -292,7 +292,7 @@ void ProcessGestureEvent(GestureEvent event)
 
             // NOTE: GESTURES.Drag.intensity dependend on the resolution of the screen
             GESTURES.Drag.distance = Vector2Distance(GESTURES.Touch.downPositionA, GESTURES.Touch.upPosition);
-            GESTURES.Drag.intensity = GESTURES.Drag.distance / (float)((GetCurrentTime() - GESTURES.Swipe.timeDuration));
+            GESTURES.Drag.intensity = GESTURES.Drag.distance/(float)((GetCurrentTime() - GESTURES.Swipe.timeDuration));
 
             GESTURES.Swipe.start = false;
 
@@ -499,7 +499,7 @@ float GetGesturePinchAngle(void)
 // Get angle from two-points vector with X-axis
 static float Vector2Angle(Vector2 v1, Vector2 v2)
 {
-    float angle = atan2f(v2.y - v1.y, v2.x - v1.x) * (180.0f / PI);
+    float angle = atan2f(v2.y - v1.y, v2.x - v1.x)*(180.0f/PI);
 
     if (angle < 0) angle += 360.0f;
 
@@ -514,7 +514,7 @@ static float Vector2Distance(Vector2 v1, Vector2 v2)
     float dx = v2.x - v1.x;
     float dy = v2.y - v1.y;
 
-    result = (float)sqrt(dx * dx + dy * dy);
+    result = (float)sqrt(dx*dx + dy*dy);
 
     return result;
 }
@@ -531,16 +531,16 @@ static double GetCurrentTime(void)
     QueryPerformanceFrequency(&clockFrequency);     // BE CAREFUL: Costly operation!
     QueryPerformanceCounter(&currentTime);
 
-    time = (double)currentTime / clockFrequency * 1000.0f;  // Time in miliseconds
+    time = (double)currentTime/clockFrequency*1000.0f;  // Time in miliseconds
 #endif
 
 #if defined(__linux__)
     // NOTE: Only for Linux-based systems
     struct timespec now;
     clock_gettime(CLOCK_MONOTONIC, &now);
-    unsigned long long int nowTime = (unsigned long long int)now.tv_sec * 1000000000LLU + (unsigned long long int)now.tv_nsec;     // Time in nanoseconds
+    unsigned long long int nowTime = (unsigned long long int)now.tv_sec*1000000000LLU + (unsigned long long int)now.tv_nsec;     // Time in nanoseconds
 
-    time = ((double)nowTime / 1000000.0);     // Time in miliseconds
+    time = ((double)nowTime/1000000.0);     // Time in miliseconds
 #endif
 
 #if defined(__APPLE__)
@@ -554,9 +554,9 @@ static double GetCurrentTime(void)
     // NOTE: OS X does not have clock_gettime(), using clock_get_time()
     clock_get_time(cclock, &now);
     mach_port_deallocate(mach_task_self(), cclock);
-    unsigned long long int nowTime = (unsigned long long int)now.tv_sec * 1000000000LLU + (unsigned long long int)now.tv_nsec;     // Time in nanoseconds
+    unsigned long long int nowTime = (unsigned long long int)now.tv_sec*1000000000LLU + (unsigned long long int)now.tv_nsec;     // Time in nanoseconds
 
-    time = ((double)nowTime / 1000000.0);     // Time in miliseconds
+    time = ((double)nowTime/1000000.0);     // Time in miliseconds
 #endif
 
     return time;

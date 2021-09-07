@@ -1,12 +1,41 @@
+/**********************************************************************************************
+*
+*   raylib configuration flags
+*
+*   This file defines all the configuration flags for the different raylib modules
+*
+*   LICENSE: zlib/libpng
+*
+*   Copyright (c) 2018-2021 Ahmad Fatoum & Ramon Santamaria (@raysan5)
+*
+*   This software is provided "as-is", without any express or implied warranty. In no event
+*   will the authors be held liable for any damages arising from the use of this software.
+*
+*   Permission is granted to anyone to use this software for any purpose, including commercial
+*   applications, and to alter it and redistribute it freely, subject to the following restrictions:
+*
+*     1. The origin of this software must not be misrepresented; you must not claim that you
+*     wrote the original software. If you use this software in a product, an acknowledgment
+*     in the product documentation would be appreciated but is not required.
+*
+*     2. Altered source versions must be plainly marked as such, and must not be misrepresented
+*     as being the original software.
+*
+*     3. This notice may not be removed or altered from any source distribution.
+*
+**********************************************************************************************/
+
 //------------------------------------------------------------------------------------
 // Module: core - Configuration Flags
 //------------------------------------------------------------------------------------
 // Camera module is included (camera.h) and multiple predefined cameras are available: free, 1st/3rd person, orbital
 #define SUPPORT_CAMERA_SYSTEM       1
 // Gestures module is included (gestures.h) to support gestures detection: tap, hold, swipe, drag
-//#define SUPPORT_GESTURES_SYSTEM     1
+#define SUPPORT_GESTURES_SYSTEM     1
 // Mouse gestures are directly mapped like touches and processed by gestures system
-//#define SUPPORT_MOUSE_GESTURES      1
+#define SUPPORT_MOUSE_GESTURES      1
+// Reconfigure standard input to receive key inputs, works with SSH connection.
+#define SUPPORT_SSH_KEYBOARD_RPI    1
 // Draw a mouse pointer on screen
 //#define SUPPORT_MOUSE_CURSOR_POINT   1
 // Setting a higher resolution can improve the accuracy of time-out intervals in wait functions.
@@ -26,6 +55,8 @@
 #define SUPPORT_COMPRESSION_API     1
 // Support saving binary data automatically to a generated storage.data file. This file is managed internally.
 #define SUPPORT_DATA_STORAGE        1
+// Support automatic generated events, loading and recording of those events when required
+//#define SUPPORT_EVENTS_AUTOMATION     1
 // Support custom frame control, only for advance users
 // By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timming + PollInputEvents()
 // Enabling this flag allows manual control of the frame processes, use at your own risk
@@ -67,7 +98,6 @@
 
 #define RL_CULL_DISTANCE_NEAR               0.01      // Default projection matrix near cull distance
 #define RL_CULL_DISTANCE_FAR              1000.0      // Default projection matrix far cull distance
-
 
 // Default shader vertex attribute names to set location points
 // NOTE: When a new shader is loaded, the following locations are tried to be set for convenience
@@ -152,6 +182,7 @@
 #define SUPPORT_FILEFORMAT_MTL      1
 #define SUPPORT_FILEFORMAT_IQM      1
 #define SUPPORT_FILEFORMAT_GLTF     1
+#define SUPPORT_FILEFORMAT_VOX      1
 // Support procedural mesh generation functions, uses external par_shapes.h library
 // NOTE: Some generated meshes DO NOT include generated texture coordinates
 #define SUPPORT_MESH_GENERATION     1
@@ -160,8 +191,6 @@
 //------------------------------------------------------------------------------------
 #define MAX_MATERIAL_MAPS               12      // Maximum number of shader maps supported
 #define MAX_MESH_VERTEX_BUFFERS          7      // Maximum vertex buffers (VBO) per mesh
-
-
 
 //------------------------------------------------------------------------------------
 // Module: audio - Configuration Flags

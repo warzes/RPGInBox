@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include "PlayerParty.h"
 #include "Map.h"
@@ -20,7 +20,7 @@ public:
 	PlayerParty playerParty;
 	Map openworld;
 private:
-	EnemyParty getTestEnemy(); // TODO: перенести в Map, так как зависит от карты
+	EnemyParty getTestEnemy(); // TODO: ГЇГҐГ°ГҐГ­ГҐГ±ГІГЁ Гў Map, ГІГ ГЄ ГЄГ ГЄ Г§Г ГўГЁГ±ГЁГІ Г®ГІ ГЄГ Г°ГІГ»
 
 	ResourceManager& m_resources;
 

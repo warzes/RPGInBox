@@ -12,7 +12,7 @@ SE_PRAGMA_WARNING_DISABLE_MSVC(5045)
 SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 
 #include <raylib/raylib.h>
-#include <raylib/rayutils.h>
+#include <raylib/utils.h>
 #include <raylib/rlgl.h>
 #include <raylib/raymath.h>
 

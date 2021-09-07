@@ -6,7 +6,6 @@
 //-----------------------------------------------------------------------------
 World::World(ResourceManager& resources)
 	: m_resources(resources)
-	, m_battleEngine(playerParty)
 {
 }
 //-----------------------------------------------------------------------------
@@ -45,8 +44,6 @@ void World::Move(const Point2& pos) noexcept
 {
 	if (playerParty.Move(pos))
 	{
-		// TODO: move event
-		environment.NextStep(*this);
 	}
 }
 //-----------------------------------------------------------------------------
