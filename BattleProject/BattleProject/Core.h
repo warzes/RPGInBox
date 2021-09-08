@@ -49,11 +49,6 @@ struct HeroParty
 
 inline void Get2DIndex(unsigned id, unsigned& x, unsigned& y)
 {
-	x = id;
-	y = 0;
-	while (x >= BattleMapWidth)
-	{
-		y++;
-		x = x - BattleMapWidth;
-	}
+	x = id % BattleMapWidth;
+	y = id / BattleMapWidth;
 }
