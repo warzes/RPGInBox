@@ -1,114 +1,6 @@
 ﻿#include <iostream>
-
-/******************************************************************************
-* Глобальные константы
-*/
-constexpr unsigned BattleMapWidth = 3;
-constexpr unsigned BattleMapHeight = 4;
-constexpr unsigned PartySize = 6;
-
-/******************************************************************************
-* Участники боя
-*/
-enum class EntityType
-{
-	Enemy,
-	Player,
-	Free
-};
-
-struct Enemy
-{
-	char c = 'e';
-};
-
-struct EnemyParty
-{
-	Enemy enemys[PartySize];
-};
-
-struct Player
-{
-	char c = 'p';
-};
-
-struct PlayerParty
-{
-	Player player[PartySize];
-};
-
-/******************************************************************************
-* поле битвы - 3x4 ячеек
-*/
-struct BattleMap
-{
-	void Init(PlayerParty& playerParty, EnemyParty& enemyParty)
-	{
-		cells[0][0].enemy = &enemyParty.enemys[0];
-		cells[0][0].type = EntityType::Enemy;
-		cells[1][0].enemy = &enemyParty.enemys[1];
-		cells[1][0].type = EntityType::Enemy;
-		cells[2][0].enemy = &enemyParty.enemys[2];
-		cells[2][0].type = EntityType::Enemy;
-		cells[0][1].enemy = &enemyParty.enemys[3];
-		cells[0][1].type = EntityType::Enemy;
-		cells[1][1].enemy = &enemyParty.enemys[4];
-		cells[1][1].type = EntityType::Enemy;
-		cells[2][1].enemy = &enemyParty.enemys[5];
-		cells[2][1].type = EntityType::Enemy;
-
-		cells[0][2].player = &playerParty.player[0];
-		cells[0][2].type = EntityType::Player;
-		cells[1][2].player = &playerParty.player[1];
-		cells[1][2].type = EntityType::Player;
-		cells[2][2].player = &playerParty.player[2];
-		cells[2][2].type = EntityType::Player;
-		cells[0][3].player = &playerParty.player[3];
-		cells[0][3].type = EntityType::Player;
-		cells[1][3].player = &playerParty.player[4];
-		cells[1][3].type = EntityType::Player;
-		cells[2][3].player = &playerParty.player[5];
-		cells[2][3].type = EntityType::Player;	
-	}
-	struct cell
-	{
-		union
-		{
-			Enemy* enemy;
-			Player* player;
-		};
-		EntityType type;
-		bool isAction = true; // может действовать
-
-		enum class SelectState
-		{
-			None,
-			Target
-		} selectState = SelectState::None;
-	} cells[BattleMapWidth][BattleMapHeight];
-
-	void ResetSelectState()
-	{
-		for (size_t x = 0; x < BattleMapWidth; x++)
-		{
-			for (size_t y = 0; y < BattleMapHeight; y++)
-			{
-				cells[x][y].selectState = cell::SelectState::None;
-			}
-		}
-	}
-
-	bool IsAction(unsigned x, unsigned y) // может ли этот персонаж действовать?
-	{
-		return cells[x][y].isAction == true && cells[x][y].type != EntityType::Free;
-	}
-
-	bool IsAlive(unsigned x, unsigned y) // персонаж жив?
-	{
-		// TODO: проверка хп
-		return cells[x][y].isAction == true && cells[x][y].type != EntityType::Free;
-	}
-};
+#include "Core.h"
+#include "BattleMap.h"
 
 /******************************************************************************
 * обработчик действий игрока
@@ -129,17 +21,17 @@ struct PlayerActionMachine
 					int numSel = 0;
 					if (map->IsAlive(0, 1))
 					{
-						map->cells[0][1].selectState = BattleMap::cell::SelectState::Target;
+						map->cells[0][1].currState = BattleCell::state::Target;
 						numSel++;
 					}
 					if (map->IsAlive(1, 1))
 					{
-						map->cells[1][1].selectState = BattleMap::cell::SelectState::Target;
+						map->cells[1][1].currState = BattleCell::state::Target;
 						numSel++;
 					}
 					if (map->IsAlive(2, 1))
 					{
-						map->cells[2][1].selectState = BattleMap::cell::SelectState::Target;
+						map->cells[2][1].currState = BattleCell::state::Target;
 						numSel++;
 					}
 
@@ -147,17 +39,17 @@ struct PlayerActionMachine
 					{
 						if (map->IsAlive(0, 0))
 						{
-							map->cells[0][0].selectState = BattleMap::cell::SelectState::Target;
+							map->cells[0][0].currState = BattleCell::state::Target;
 							numSel++;
 						}
 						if (map->IsAlive(1, 0))
 						{
-							map->cells[1][0].selectState = BattleMap::cell::SelectState::Target;
+							map->cells[1][0].currState = BattleCell::state::Target;
 							numSel++;
 						}
 						if (map->IsAlive(2, 0))
 						{
-							map->cells[2][0].selectState = BattleMap::cell::SelectState::Target;
+							map->cells[2][0].currState = BattleCell::state::Target;
 							numSel++;
 						}
 					}
@@ -278,47 +170,18 @@ struct BattleManager
 		battle.Start(&map);
 	}
 
+	void Update()
+	{
+		battle.Run();
+	}
+
 	void Frame()
 	{
-		// TODO: в проекте перевернуть массив
-		for (size_t y = 0; y < BattleMapHeight; y++)
-		{
-			printf("\t");
-			for (size_t x = 0; x < BattleMapWidth; x++)
-			{
-				char dc = ' ';
-
-				unsigned curMemberX = 0;
-				unsigned curMemberY = 0;
-				battle.currentMemberInMap(curMemberX, curMemberY);
-				if (curMemberX == x && curMemberY == y)
-				{
-					dc = '*';
-				}
-				else
-				{
-					if (map.cells[x][y].selectState == BattleMap::cell::SelectState::Target)
-					{
-						dc = '=';
-					}
-					else if (map.cells[x][y].type == EntityType::Enemy)
-					{
-						dc = map.cells[x][y].enemy->c;
-					}
-					else if (map.cells[x][y].type == EntityType::Player)
-					{
-						dc = map.cells[x][y].player->c;
-					}
-				}
-				
-				printf("[%c]", dc);
-			}
-			printf("\n");
-		}
+		map.Draw();
 	}
 
 	BattleMap map;
-	PlayerParty playerParty;
+	HeroParty playerParty;
 	EnemyParty enemyPlayer;
 
 	BattleMachine battle;
@@ -332,10 +195,9 @@ int main()
 
 	while (1)
 	{
-		system("CLS");
-
+		system("CLS");		
 		battleMgr.Frame();
-		battleMgr.battle.Run();
+		battleMgr.Update();
 		system("PAUSE");
 		//break;
 	}
