@@ -1,7 +1,7 @@
-#pragma once
+п»ї#pragma once
 
 /******************************************************************************
-* клетка поля битвы - 3x4 ячеек
+* РєР»РµС‚РєР° РїРѕР»СЏ Р±РёС‚РІС‹ - 3x4 СЏС‡РµРµРє
 */
 struct BattleCell
 {
@@ -9,21 +9,21 @@ struct BattleCell
 	{
 		Enemy* enemy;
 		Hero* player;
-	}; // указатель на участника боя
+	}; // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СѓС‡Р°СЃС‚РЅРёРєР° Р±РѕСЏ
 	EntityType type;
 
 	enum class state
 	{
 		None,
-		CurrentAction, // персонаж на этой клетке ожидает действия
-		Target // персонаж этой клетки помечен как цель
+		CurrentAction, // РїРµСЂСЃРѕРЅР°Р¶ РЅР° СЌС‚РѕР№ РєР»РµС‚РєРµ РѕР¶РёРґР°РµС‚ РґРµР№СЃС‚РІРёСЏ
+		Target // РїРµСЂСЃРѕРЅР°Р¶ СЌС‚РѕР№ РєР»РµС‚РєРё РїРѕРјРµС‡РµРЅ РєР°Рє С†РµР»СЊ
 	} currState = state::None;
 
-	bool isAction = true; // может действовать
+	bool isAction = true; // РјРѕР¶РµС‚ РґРµР№СЃС‚РІРѕРІР°С‚СЊ
 
 	void Draw()
 	{
-		if (type == EntityType::Free) // на клетке никого нет
+		if (type == EntityType::Free) // РЅР° РєР»РµС‚РєРµ РЅРёРєРѕРіРѕ РЅРµС‚
 		{
 			printf("[ ]");
 		}
@@ -61,49 +61,40 @@ struct BattleCell
 		return 0;
 	}
 
-	bool IsAction() // может ли этот персонаж действовать?
+	bool IsAction() // РјРѕР¶РµС‚ Р»Рё СЌС‚РѕС‚ РїРµСЂСЃРѕРЅР°Р¶ РґРµР№СЃС‚РІРѕРІР°С‚СЊ?
 	{
 		return isAction == true && !IsFree();
 	}
 
-	bool IsAlive() // персонаж жив?
+	bool IsAlive() // РїРµСЂСЃРѕРЅР°Р¶ Р¶РёРІ?
 	{
 		return GetHP() > 0;
 	}
 };
 
 /******************************************************************************
-* поле битвы - 3x4 ячеек
+* РїРѕР»Рµ Р±РёС‚РІС‹ - 3x4 СЏС‡РµРµРє
 */
 struct BattleMap
 {
 	void Init(HeroParty& playerParty, EnemyParty& enemyParty)
 	{
-		cells[0][0].enemy = &enemyParty.enemies[0];
-		cells[0][0].type = EntityType::Enemy;
-		cells[1][0].enemy = &enemyParty.enemies[1];
-		cells[1][0].type = EntityType::Enemy;
-		cells[2][0].enemy = &enemyParty.enemies[2];
-		cells[2][0].type = EntityType::Enemy;
-		cells[0][1].enemy = &enemyParty.enemies[3];
-		cells[0][1].type = EntityType::Enemy;
-		cells[1][1].enemy = &enemyParty.enemies[4];
-		cells[1][1].type = EntityType::Enemy;
-		cells[2][1].enemy = &enemyParty.enemies[5];
-		cells[2][1].type = EntityType::Enemy;
-
-		cells[0][2].player = &playerParty.heroes[0];
-		cells[0][2].type = EntityType::Player;
-		cells[1][2].player = &playerParty.heroes[1];
-		cells[1][2].type = EntityType::Player;
-		cells[2][2].player = &playerParty.heroes[2];
-		cells[2][2].type = EntityType::Player;
-		cells[0][3].player = &playerParty.heroes[3];
-		cells[0][3].type = EntityType::Player;
-		cells[1][3].player = &playerParty.heroes[4];
-		cells[1][3].type = EntityType::Player;
-		cells[2][3].player = &playerParty.heroes[5];
-		cells[2][3].type = EntityType::Player;
+		// СЂР°СЃС‚Р°РЅРѕРІРєР° РІСЂР°РіРѕРІ
+		for (unsigned i = 0; i < PartySize; i++)
+		{
+			unsigned x, y;
+			Get2DIndex(i, x, y);
+			cells[x][y].enemy = &enemyParty.enemies[i];
+			cells[x][y].type = EntityType::Enemy;
+		}
+		// СЂР°СЃСЃС‚Р°РЅРѕРІРєР° РіРµСЂРѕРµРІ. Р¦РёРєР»С‹ РѕС‚РґРµР»СЊРЅС‹ С‚Р°Рє РєР°Рє РєРѕР»-РІРѕ РІСЂР°РіРѕРІ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµ СЂР°РІРЅРѕ РєРѕР»-РІСѓ РіРµСЂРѕРµРІ
+		for (unsigned i = 0; i < PartySize; i++)
+		{
+			unsigned x, y;
+			Get2DIndex(i + PartySize, x, y);
+			cells[x][y].player = &playerParty.heroes[i];
+			cells[x][y].type = EntityType::Player;
+		}
 	}
 	BattleCell cells[BattleMapWidth][BattleMapHeight];
 
@@ -118,9 +109,20 @@ struct BattleMap
 		}
 	}
 
+	void SetState(unsigned index, BattleCell::state newState)
+	{
+		unsigned x, y;
+		Get2DIndex(index, x, y);
+		SetState(x, y, newState);
+	}
+	void SetState(unsigned x, unsigned y, BattleCell::state newState)
+	{
+		cells[x][y].currState = newState;
+	}
+
 	void Draw()
 	{
-		// TODO: в проекте перевернуть массив
+		// TODO: РІ РїСЂРѕРµРєС‚Рµ РїРµСЂРµРІРµСЂРЅСѓС‚СЊ РјР°СЃСЃРёРІ
 		for (size_t y = 0; y < BattleMapHeight; y++)
 		{
 			printf("\t");
@@ -132,14 +134,40 @@ struct BattleMap
 		}
 	}
 
-	bool IsAction(unsigned x, unsigned y) // может ли этот персонаж действовать?
+	bool IsAction(unsigned x, unsigned y) // РјРѕР¶РµС‚ Р»Рё СЌС‚РѕС‚ РїРµСЂСЃРѕРЅР°Р¶ РґРµР№СЃС‚РІРѕРІР°С‚СЊ?
 	{
 		return cells[x][y].IsAction();
 	}
 
-	bool IsAlive(unsigned x, unsigned y) // персонаж жив?
+	bool IsAlive(unsigned x, unsigned y) // РїРµСЂСЃРѕРЅР°Р¶ Р¶РёРІ?
 	{
-		// TODO: проверка хп
+		// TODO: РїСЂРѕРІРµСЂРєР° С…Рї
 		return cells[x][y].IsAlive();
+	}
+
+	void newRound()
+	{
+		// С‚СѓС‚ РјРѕР¶РЅРѕ РІС‹РєРёРґС‹РІР°С‚СЊ РјРµСЂС‚РІС‹С…, РІРѕР·РІСЂР°С‰Р°С‚СЊ СЃС‚РµР№С‚С‹ Рё С‚.Рґ.
+	}
+
+	bool IsPlayer(unsigned index)
+	{
+		unsigned x, y;
+		Get2DIndex(index, x, y);
+		return IsPlayer(x, y);
+	}
+	bool IsPlayer(unsigned x, unsigned y)
+	{
+		return cells[x][y].type == EntityType::Player && cells[x][y].player != nullptr;
+	}
+	bool IsEnemy(unsigned index)
+	{
+		unsigned x, y;
+		Get2DIndex(index, x, y);
+		return IsEnemy(x, y);
+	}
+	bool IsEnemy(unsigned x, unsigned y)
+	{
+		return cells[x][y].type == EntityType::Enemy && cells[x][y].enemy != nullptr;
 	}
 };

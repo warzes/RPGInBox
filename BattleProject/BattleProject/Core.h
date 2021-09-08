@@ -1,14 +1,14 @@
-#pragma once
+ï»¿#pragma once
 
 /******************************************************************************
-* Ãëîáàëüíûå êîíñòàíòû
+* Ð“Ð»Ð¾Ð±Ð°Ð»ÑŒÐ½Ñ‹Ðµ ÐºÐ¾Ð½ÑÑ‚Ð°Ð½Ñ‚Ñ‹
 */
 constexpr unsigned BattleMapWidth = 3;
 constexpr unsigned BattleMapHeight = 4;
 constexpr unsigned PartySize = 6;
 
 /******************************************************************************
-* Ó÷àñòíèêè áîÿ
+* Ð£Ñ‡Ð°ÑÑ‚Ð½Ð¸ÐºÐ¸ Ð±Ð¾Ñ
 */
 enum class EntityType
 {
@@ -37,7 +37,6 @@ struct Hero
 	}
 };
 
-
 struct EnemyParty
 {
 	Enemy enemies[PartySize];
@@ -47,3 +46,14 @@ struct HeroParty
 {
 	Hero heroes[PartySize];
 };
+
+inline void Get2DIndex(unsigned id, unsigned& x, unsigned& y)
+{
+	x = id;
+	y = 0;
+	while (x >= BattleMapWidth)
+	{
+		y++;
+		x = x - BattleMapWidth;
+	}
+}

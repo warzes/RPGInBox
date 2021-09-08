@@ -146,6 +146,7 @@
     <ClCompile Include="BattleProject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BattleMachine.h" />
     <ClInclude Include="BattleMap.h" />
     <ClInclude Include="Core.h" />
   </ItemGroup>
