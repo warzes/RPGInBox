@@ -46,6 +46,7 @@ struct BattleCell
 			}
 		}
 	}
+	
 
 	bool IsFree()
 	{
@@ -106,6 +107,26 @@ struct BattleMap
 			{
 				if (cells[x][y].currState == BattleCell::state::Target)
 					cells[x][y].currState = BattleCell::state::None;
+			}
+		}
+	}
+
+	void UpdateMember()
+	{
+		for (size_t x = 0; x < BattleMapWidth; x++)
+		{
+			for (size_t y = 0; y < BattleMapHeight; y++)
+			{
+				if (cells[x][y].enemy && cells[x][y].enemy->hp <= 0)
+				{
+					cells[x][y].enemy = nullptr;
+					cells[x][y].type = EntityType::Free;
+				}	
+				if (cells[x][y].player && cells[x][y].player->hp <= 0)
+				{
+					cells[x][y].player = nullptr;
+					cells[x][y].type = EntityType::Free;
+				}
 			}
 		}
 	}

@@ -88,14 +88,27 @@ struct PlayerActionMachine
 
 			printf("\nвыберите цель: 1-%d; или 0 для отмены\n", num);
 			std::cin >> inputValue;
-			if (inputValue == 0) // отмена
+			if (inputValue == 0 || num == 0 || inputValue >= target.size()) // отмена
 			{
 				state = State::selectAction;
 				map->ResetSelectState();
 			}
 			else 
 			{
-
+				inputValue--;
+				Hero* hero = map->cells[curMemberX][curMemberY].player;
+				Enemy* enemy = map->cells[target[inputValue].x][target[inputValue].y].enemy;
+				if (hero && enemy)
+				{
+					printf("\nАтака\n");
+					rules.MeleeAttack(hero, enemy);
+					map->UpdateMember();
+					printf("Здоровье цели: %d\n", enemy->hp);
+				}
+				else
+				{
+					// TODO: error
+				}				
 			}
 		}
 	}

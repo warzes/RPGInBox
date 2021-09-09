@@ -26,6 +26,7 @@ enum class EntityType
 
 struct Enemy
 {
+	int att = 1;
 	int hp = 10;
 
 	void BattleDraw()
@@ -36,6 +37,7 @@ struct Enemy
 
 struct Hero
 {
+	int att = 1;
 	int hp = 10;
 
 	void BattleDraw()
