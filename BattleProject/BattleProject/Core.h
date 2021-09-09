@@ -7,6 +7,13 @@ constexpr unsigned BattleMapWidth = 3;
 constexpr unsigned BattleMapHeight = 4;
 constexpr unsigned PartySize = 6;
 
+
+struct Point
+{
+	int x = 0;
+	int y = 0;
+};
+
 /******************************************************************************
 * Участники боя
 */

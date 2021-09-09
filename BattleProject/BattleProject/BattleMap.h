@@ -38,11 +38,11 @@ struct BattleCell
 			}
 			else if (currState == state::CurrentAction)
 			{
-				printf("[*]");
+				printf("\x1B[36m[*]\033[0m");
 			}
 			else if (currState == state::Target)
 			{
-				printf("[=]");
+				printf("\x1B[32m[=]\033[0m");
 			}
 		}
 	}
@@ -104,7 +104,8 @@ struct BattleMap
 		{
 			for (size_t y = 0; y < BattleMapHeight; y++)
 			{
-				cells[x][y].currState = BattleCell::state::None;
+				if (cells[x][y].currState == BattleCell::state::Target)
+					cells[x][y].currState = BattleCell::state::None;
 			}
 		}
 	}
@@ -115,9 +116,14 @@ struct BattleMap
 		Get2DIndex(index, x, y);
 		SetState(x, y, newState);
 	}
-	void SetState(unsigned x, unsigned y, BattleCell::state newState)
+	bool SetState(unsigned x, unsigned y, BattleCell::state newState)
 	{
-		cells[x][y].currState = newState;
+		if (cells[x][y].IsAlive())
+		{
+			cells[x][y].currState = newState;
+			return true;
+		}
+		return false;
 	}
 
 	void Draw()
