@@ -24,10 +24,23 @@ enum class EntityType
 	Free
 };
 
-struct Enemy
+struct ICreature
+{
+	virtual ~ICreature() = default;
+
+	virtual int GetHP() const noexcept = 0;
+
+	int hp = 10;
+};
+
+struct Enemy final : public ICreature
 {
 	int att = 1;
-	int hp = 10;
+	
+	int GetHP() const noexcept final
+	{
+		return hp;
+	}
 
 	void BattleDraw()
 	{
@@ -35,10 +48,14 @@ struct Enemy
 	}
 };
 
-struct Hero
+struct Hero final : public ICreature
 {
 	int att = 1;
-	int hp = 10;
+
+	int GetHP() const noexcept final
+	{
+		return hp;
+	}
 
 	void BattleDraw()
 	{
