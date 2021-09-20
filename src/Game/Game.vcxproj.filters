@@ -228,5 +228,8 @@
     <Filter Include="Game\Battle\View">
       <UniqueIdentifier>{2eacdf8e-f47a-4de6-b7b1-9eeae9807dbc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{555400be-4ca8-4346-b605-222b02900047}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
