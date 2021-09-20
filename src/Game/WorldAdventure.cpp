@@ -1,15 +1,15 @@
 ﻿#include "stdafx.h"
-#include "World.h"
+#include "WorldAdventure.h"
 #include "IGameCamera.h"
 #include "EnemyTemplateData.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-World::World(ResourceManager& resources)
+WorldAdventure::WorldAdventure(ResourceManager& resources)
 	: m_resources(resources)
 {
 }
 //-----------------------------------------------------------------------------
-bool World::Init()
+bool WorldAdventure::Init()
 {
 	if (!m_sky.Init())
 		return false;
@@ -21,12 +21,12 @@ bool World::Init()
 	return true;
 }
 //-----------------------------------------------------------------------------
-void World::Update(float deltaTime) noexcept
+void WorldAdventure::Update(float deltaTime) noexcept
 {
 	m_sky.Update(deltaTime);
 }
 //-----------------------------------------------------------------------------
-void World::Draw(IGameCamera* camera) noexcept
+void WorldAdventure::Draw(IGameCamera* camera) noexcept
 {
 	// TODO: для эффективности можно сделать так - сейчас я рендерю в текстуру и стираю ее, но когда открываются окна, не надо стирать текстуру и рендерить ее - а сразу же ее использовать
 	openworld.Draw(camera);
@@ -40,14 +40,14 @@ void World::Draw(IGameCamera* camera) noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void World::Move(const Point2& pos) noexcept
+void WorldAdventure::Move(const Point2& pos) noexcept
 {
 	if (playerParty.Move(pos))
 	{
 	}
 }
 //-----------------------------------------------------------------------------
-EnemyParty World::getTestEnemy()
+EnemyParty WorldAdventure::getTestEnemy()
 {
 	EnemyParty enemys;
 

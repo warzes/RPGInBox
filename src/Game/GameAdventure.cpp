@@ -1,12 +1,12 @@
 ﻿#include "stdafx.h"
 #include "GameAdventure.h"
-#include "World.h"
+#include "WorldAdventure.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 GameAdventure::GameAdventure(GameStateManager& stateManager, ResourceManager& resourceMgr) noexcept
 	: m_stateManager(stateManager)
 	, m_resourceMgr(resourceMgr)
-	, m_world(new World(resourceMgr))
+	, m_world(new WorldAdventure(resourceMgr))
 {
 }
 //-----------------------------------------------------------------------------

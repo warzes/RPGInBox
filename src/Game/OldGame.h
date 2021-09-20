@@ -2,7 +2,7 @@
 
 #include "FreeCamera.h"
 #include "PlayerTurnCamera.h"
-#include "World.h"
+#include "WorldAdventure.h"
 #include "ResourceManager.h"
 
 class Engine;
@@ -27,7 +27,7 @@ private:
 	std::unique_ptr<GameFrame> m_gameFrame = nullptr;
 
 	ResourceManager m_resourceMgr;
-	World* m_world = nullptr;
+	WorldAdventure* m_world = nullptr;
 
 	// camera
 	FreeCamera m_camera;

@@ -5,7 +5,7 @@
 
 class GameStateManager;
 class ResourceManager;
-class World;
+class WorldAdventure;
 
 class GameAdventure final
 {
@@ -19,7 +19,7 @@ public:
 private:
 	GameStateManager& m_stateManager;
 	ResourceManager& m_resourceMgr;
-	World* m_world = nullptr;
+	WorldAdventure* m_world = nullptr;
 
 	// camera
 	FreeCamera m_freeCamera;

@@ -2,7 +2,7 @@
 
 #include "Frustum.h"
 
-class World;
+class WorldAdventure;
 
 class IGameCamera
 {
@@ -26,7 +26,7 @@ public:
 
 	virtual ~IGameCamera() = default;
 
-	virtual void Update(const World& world) noexcept = 0;
+	virtual void Update(const WorldAdventure& world) noexcept = 0;
 
 	void SetCameraPosition(const Vector3& pos, float currentRotateY = 0.0f) noexcept
 	{

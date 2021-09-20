@@ -43,10 +43,10 @@
       <Filter>Game\_OLD</Filter>
     </ClCompile>
     <ClCompile Include="GameAdventure.cpp">
-      <Filter>Game\GameState\Adventure</Filter>
+      <Filter>Game\State\Adventure</Filter>
     </ClCompile>
     <ClCompile Include="GameBattle.cpp">
-      <Filter>Game\GameState\Battle</Filter>
+      <Filter>Game\State\Battle</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Game\Core</Filter>
@@ -60,16 +60,19 @@
     <ClCompile Include="PlayerTurnCamera.cpp">
       <Filter>Game\Core\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="World.cpp">
-      <Filter>Game\GameState\Adventure\World</Filter>
+    <ClCompile Include="WorldAdventure.cpp">
+      <Filter>Game\State\Adventure\World</Filter>
     </ClCompile>
     <ClCompile Include="GameBattleView.cpp">
-      <Filter>Game\GameState\Battle\View</Filter>
+      <Filter>Game\State\Battle\View</Filter>
     </ClCompile>
     <ClCompile Include="EnemyTemplateData.cpp">
-      <Filter>Game\Data</Filter>
+      <Filter>Game\Data\old</Filter>
     </ClCompile>
     <ClCompile Include="HeroTemplateData.cpp">
+      <Filter>Game\Data\old</Filter>
+    </ClCompile>
+    <ClCompile Include="GameData.cpp">
       <Filter>Game\Data</Filter>
     </ClCompile>
   </ItemGroup>
@@ -127,10 +130,10 @@
       <Filter>Game\_OLD</Filter>
     </ClInclude>
     <ClInclude Include="GameAdventure.h">
-      <Filter>Game\GameState\Adventure</Filter>
+      <Filter>Game\State\Adventure</Filter>
     </ClInclude>
     <ClInclude Include="GameBattle.h">
-      <Filter>Game\GameState\Battle</Filter>
+      <Filter>Game\State\Battle</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Game\Core</Filter>
@@ -154,31 +157,34 @@
     <ClInclude Include="IGameCamera.h">
       <Filter>Game\Core\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>Game\GameState\Adventure\World</Filter>
+    <ClInclude Include="WorldAdventure.h">
+      <Filter>Game\State\Adventure\World</Filter>
     </ClInclude>
     <ClInclude Include="GameBattleCore.h">
-      <Filter>Game\GameState\Battle\Core</Filter>
+      <Filter>Game\State\Battle\Core</Filter>
     </ClInclude>
     <ClInclude Include="GameBattleView.h">
-      <Filter>Game\GameState\Battle\View</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyTemplateData.h">
-      <Filter>Game\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="HeroTemplateData.h">
-      <Filter>Game\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Hero.h">
-      <Filter>Game\Data</Filter>
+      <Filter>Game\State\Battle\View</Filter>
     </ClInclude>
     <ClInclude Include="Stats.h">
-      <Filter>Game\Data</Filter>
+      <Filter>Game\Data\old</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\Data\old</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTemplateData.h">
+      <Filter>Game\Data\old</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>Game\Data\old</Filter>
+    </ClInclude>
+    <ClInclude Include="HeroTemplateData.h">
+      <Filter>Game\Data\old</Filter>
     </ClInclude>
     <ClInclude Include="ICreature.h">
+      <Filter>Game\Data\old</Filter>
+    </ClInclude>
+    <ClInclude Include="GameData.h">
       <Filter>Game\Data</Filter>
     </ClInclude>
   </ItemGroup>
@@ -204,29 +210,32 @@
     <Filter Include="Game\Core\Camera">
       <UniqueIdentifier>{a0012e67-0be8-40da-9bdf-c87d67f22863}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameState">
-      <UniqueIdentifier>{33351ee0-f6b7-4fd4-84aa-a0b311d96033}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Data">
       <UniqueIdentifier>{c8640b4b-9a1f-444e-9448-97f269cacae2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameState\Adventure">
+    <Filter Include="Game\State">
+      <UniqueIdentifier>{33351ee0-f6b7-4fd4-84aa-a0b311d96033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\State\Adventure">
       <UniqueIdentifier>{ea90e9e2-121e-4f58-bf54-77067996d3d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameState\Adventure\World">
+    <Filter Include="Game\State\Adventure\World">
       <UniqueIdentifier>{3fe34853-30de-449c-855d-ce49c7845cbd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameState\Battle">
+    <Filter Include="Game\State\Battle">
       <UniqueIdentifier>{2f0e2061-49da-4983-b07a-b1ac00c43ece}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameState\Battle\BattleLogic">
+    <Filter Include="Game\State\Battle\BattleLogic">
       <UniqueIdentifier>{cafa4145-ab29-4091-9bc5-da8030600179}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameState\Battle\Core">
+    <Filter Include="Game\State\Battle\Core">
       <UniqueIdentifier>{e952a136-0839-4bef-8bf3-fe9bd9d901fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameState\Battle\View">
+    <Filter Include="Game\State\Battle\View">
       <UniqueIdentifier>{2eacdf8e-f47a-4de6-b7b1-9eeae9807dbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Data\old">
+      <UniqueIdentifier>{d900a031-ab40-4c8f-bd21-86285c019a11}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

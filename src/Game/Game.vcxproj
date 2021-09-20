@@ -187,6 +187,7 @@
     <ClCompile Include="GameAdventure.cpp" />
     <ClCompile Include="GameBattle.cpp" />
     <ClCompile Include="GameBattleView.cpp" />
+    <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -206,7 +207,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tile.cpp" />
-    <ClCompile Include="World.cpp" />
+    <ClCompile Include="WorldAdventure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h" />
@@ -224,6 +225,7 @@
     <ClInclude Include="GameBattle.h" />
     <ClInclude Include="GameBattleCore.h" />
     <ClInclude Include="GameBattleView.h" />
+    <ClInclude Include="GameData.h" />
     <ClInclude Include="GameFrame.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="Hero.h" />
@@ -245,7 +247,7 @@
     <ClInclude Include="Stats.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tile.h" />
-    <ClInclude Include="World.h" />
+    <ClInclude Include="WorldAdventure.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,10 +5,10 @@
 #include "BattleEngine.h"
 #include "Sky.h"
 
-class World final : NonCopyable, NonMovable
+class WorldAdventure final : NonCopyable, NonMovable
 {
 public:
-	World(ResourceManager& resources);
+	WorldAdventure(ResourceManager& resources);
 
 	bool Init();
 

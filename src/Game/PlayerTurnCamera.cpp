@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "PlayerTurnCamera.h"
-#include "World.h"
+#include "WorldAdventure.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 //constexpr Vector2 DirectionLookup[4] =
@@ -20,7 +20,7 @@ void PlayerTurnCamera::Setup(const float fovY, const Vector3& position, const fl
 	m_viewCamera.projection = CAMERA_PERSPECTIVE;
 }
 //-----------------------------------------------------------------------------
-void PlayerTurnCamera::Update(const World& world) noexcept
+void PlayerTurnCamera::Update(const WorldAdventure& world) noexcept
 {
 	if (!m_isTurning)
 	{

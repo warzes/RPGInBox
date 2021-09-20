@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 OldGame::OldGame(Engine& engine) noexcept
 	: m_engine(engine)
-	, m_world(new World(m_resourceMgr))
+	, m_world(new WorldAdventure(m_resourceMgr))
 {
 }
 //-----------------------------------------------------------------------------
