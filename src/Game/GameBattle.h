@@ -12,6 +12,8 @@ public:
 	GameBattle(GameStateManager& stateManager, ResourceManager& resourceMgr) noexcept;
 	bool Init() noexcept;
 
+	void StartBattle() noexcept;
+
 	void Update(float deltaTime) noexcept;
 	void Frame() noexcept;
 

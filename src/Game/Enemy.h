@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Stats.h"
+#include "ICreature.h"
 
-class Enemy
+class Enemy final : public ICreature
 {
 public:
 	std::string name;

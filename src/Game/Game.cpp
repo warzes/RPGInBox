@@ -19,8 +19,7 @@ bool Game::Init() noexcept
 	if (!m_gameState.Init())
 		return false;
 
-	m_gameState.SetState(GameState::Battle);
-
+	m_gameState.SetState(GameState::BeginBattle);
 	return true;
 }
 //-----------------------------------------------------------------------------

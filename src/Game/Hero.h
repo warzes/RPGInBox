@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Stats.h"
+#include "ICreature.h"
 
 enum class HeroClass
 {
@@ -9,7 +10,7 @@ enum class HeroClass
 	Wizard
 };
 
-class Hero final
+class Hero final : public ICreature
 {
 public:
 	// Base

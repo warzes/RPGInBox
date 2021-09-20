@@ -6,6 +6,10 @@
 enum class GameState
 {
 	Adventure,
+
+	//-------------------------------------------------------------------------
+	// Battle state
+	BeginBattle,
 	Battle
 };
 

@@ -228,6 +228,7 @@
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="HeroTemplateData.h" />
+    <ClInclude Include="ICreature.h" />
     <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugNew.h" />

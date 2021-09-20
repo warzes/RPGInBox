@@ -20,9 +20,18 @@ bool GameStateManager::Init() noexcept
 void GameStateManager::Update(float deltaTime) noexcept
 {
 	if (m_state == GameState::Adventure)
+	{
 		m_adventureState.Update(deltaTime);
+	}		
+	else if (m_state == GameState::BeginBattle)
+	{
+		m_battleState.StartBattle();
+		SetState(GameState::Battle);		
+	}
 	else if (m_state == GameState::Battle)
+	{
 		m_battleState.Update(deltaTime);
+	}
 }
 //-----------------------------------------------------------------------------
 void GameStateManager::Frame() noexcept
