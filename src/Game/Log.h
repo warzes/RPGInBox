@@ -2,15 +2,14 @@
 
 class Log final : NonCopyable, NonMovable
 {
-	friend class Engine;
 public:
+	Log(const char* fileName) noexcept;
 	~Log();
+
 	void Print(const char* text) noexcept;
 	void Error(const char* text) noexcept;
 
-private:
-	Log() = default;
-	bool open(const char* fileName) noexcept;
+private:	
 	void outputDebugString(const char* text) noexcept;
 	void printIntFile(const char* text) noexcept;
 

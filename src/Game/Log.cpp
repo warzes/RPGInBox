@@ -23,13 +23,22 @@ extern "C" __declspec(dllimport) int __stdcall MessageBoxA(void*, const char*, c
 #	endif
 #endif // SE_PLATFORM_WINDOWS
 //-----------------------------------------------------------------------------
+Log::Log(const char* fileName) noexcept
+{
+#if SE_PLATFORM_DESKTOP
+	m_stream.open(fileName, std::ios::out);
+#endif
+}
+//-----------------------------------------------------------------------------
 Log::~Log()
 {
+#if SE_PLATFORM_DESKTOP
 	if (m_stream.good())
 	{
 		m_stream.flush();
 		m_stream.close();
 	}
+#endif
 }
 //-----------------------------------------------------------------------------
 void Log::Print(const char* text) noexcept
@@ -57,16 +66,6 @@ void Log::Error(const char* text) noexcept
 #endif
 
 	printIntFile(formatText.c_str());
-}
-//-----------------------------------------------------------------------------
-bool Log::open(const char* fileName) noexcept
-{
-#if SE_PLATFORM_DESKTOP
-	m_stream.open(fileName, std::ios::out);
-	if (m_stream.fail())
-		return false;
-#endif
-	return true;
 }
 //-----------------------------------------------------------------------------
 void Log::outputDebugString(const char* text) noexcept

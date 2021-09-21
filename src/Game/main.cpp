@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "OldGame.h"
 #include "Game.h"
-#include "Engine.h"
+#include "Log.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 #if SE_COMPILER_MSVC
@@ -11,7 +11,20 @@
 #	endif
 #endif // SE_COMPILER_MSVC
 //-----------------------------------------------------------------------------
-void GameMain() noexcept
+#if SE_PLATFORM_WINDOWS
+extern "C"
+{
+	// NVIDIA: Force usage of NVidia GPU in case there is an integrated graphics unit as well, if we don't do this we risk getting the integrated graphics unit and hence a horrible performance
+	// -> See "Enabling High Performance Graphics Rendering on Optimus Systems" http://developer.download.nvidia.com/devzone/devcenter/gamegraphics/files/OptimusRenderingPolicies.pdf
+	_declspec(dllexport) auto NvOptimusEnablement = 0x00000001UL;
+
+	// AMD: Force usage of AMD GPU in case there is an integrated graphics unit as well, if we don't do this we risk getting the integrated graphics unit and hence a horrible performance
+	// -> Named "Dynamic Switchable Graphics", found no official documentation, only https://community.amd.com/message/1307599#comment-1307599 - "Can an OpenGL app default to the discrete GPU on an Enduro system?"
+	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
+#endif
+//-----------------------------------------------------------------------------
+inline void Main() noexcept
 {
 #if SE_DEBUG && SE_COMPILER_MSVC && SE_PLATFORM_WINDOWS
 	int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG); // Get current flag
@@ -21,25 +34,41 @@ void GameMain() noexcept
 #endif
 
 	{
-		EngineConfig engineConfig;
-		engineConfig.window.width = 1024;
-		engineConfig.window.height = 768;
-		engineConfig.window.vsync = true;
+		bool error = false;
+		Log log("Log.txt");
+		log.Print("Engine Init...");
 
-		Engine engine;
-		if (engine.Init(engineConfig))
+		InitWindow(1024, 768, "Game");
+		if (!IsWindowReady())
+		{
+			log.Error("InitWindow failed!");
+			error = true;
+		}
+		//SetTargetFPS(60);
+
+		InitAudioDevice();
+		if (!IsAudioDeviceReady())
+		{
+			log.Error("Audio device failed!");
+			error = true;
+		}
+		if (!error)
 		{
 			//OldGame game(engine);
 			Game game;
 			if (game.Init())
 			{
-				while (!engine.IsEnd() && !game.IsEnd())
+				while (!WindowShouldClose() && !game.IsEnd())
 				{
-					game.Update(engine.GetDeltaTime());
+					game.Update(GetFrameTime());
 					game.Frame();
 				}
 			}
 		}
+
+		CloseAudioDevice();
+		CloseWindowRaylib();
+		log.Print("Engine end.");
 	}
 
 #if SE_DEBUG && SE_COMPILER_MSVC && SE_PLATFORM_WINDOWS
@@ -49,7 +78,7 @@ void GameMain() noexcept
 //-----------------------------------------------------------------------------
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
-	GameMain();
+	Main();
 	return 0;
 }
 //-----------------------------------------------------------------------------
@@ -60,7 +89,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 //	[[maybe_unused]] _In_ LPWSTR lpCmdLine,
 //	[[maybe_unused]] _In_ int nCmdShow)
 //{
-//	GameMain();
+//	Main();
 //	return 0;
 //}
 #endif // SE_PLATFORM_WINDOWS

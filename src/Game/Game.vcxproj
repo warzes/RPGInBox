@@ -190,7 +190,6 @@
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="Log.cpp" />
-    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="OldGame.cpp" />
@@ -234,7 +233,6 @@
     <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugNew.h" />
-    <ClInclude Include="Engine.h" />
     <ClInclude Include="EngineMath.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="Map.h" />

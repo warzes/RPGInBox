@@ -27,6 +27,9 @@ bool GameBattle::Init() noexcept
 
 	return true;
 }
+void GameBattle::StartBattle() noexcept
+{
+}
 //-----------------------------------------------------------------------------
 void GameBattle::Update(float deltaTime) noexcept
 {
