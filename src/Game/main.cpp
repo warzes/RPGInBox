@@ -1,6 +1,5 @@
 ﻿#include "stdafx.h"
-#include "OldGame.h"
-#include "Game.h"
+#include "GameApp.h"
 #include "Log.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
@@ -35,6 +34,7 @@ inline void Main() noexcept
 
 	{
 		bool error = false;
+
 		Log log("Log.txt");
 		log.Print("Engine Init...");
 
@@ -54,8 +54,7 @@ inline void Main() noexcept
 		}
 		if (!error)
 		{
-			//OldGame game(engine);
-			Game game;
+			GameApp game;
 			if (game.Init())
 			{
 				while (!WindowShouldClose() && !game.IsEnd())

@@ -1,7 +1,8 @@
 ﻿#include "stdafx.h"
 #include "GameStateManager.h"
+#include "DebugNew.h"
 //-----------------------------------------------------------------------------
-GameStateManager::GameStateManager(ResourceManager& resourceMgr) noexcept
+GameStateManager::GameStateManager(ResourceManager& resourceMgr, DataManager& data) noexcept
 	: m_adventureState(*this, resourceMgr)
 	, m_battleState(*this, resourceMgr)
 {

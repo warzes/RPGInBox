@@ -4,16 +4,13 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Frustum.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Framework</Filter>
     </ClCompile>
     <ClCompile Include="Sky.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Framework</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">
-      <Filter>Engine\Core</Filter>
+      <Filter>Framework\Core</Filter>
     </ClCompile>
     <ClCompile Include="BattleCell.cpp">
       <Filter>Game\_OLD</Filter>
@@ -22,9 +19,6 @@
       <Filter>Game\_OLD</Filter>
     </ClCompile>
     <ClCompile Include="BattlePlayerAction.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="OldGame.cpp">
       <Filter>Game\_OLD</Filter>
     </ClCompile>
     <ClCompile Include="EnemyParty.cpp">
@@ -45,17 +39,11 @@
     <ClCompile Include="GameBattle.cpp">
       <Filter>Game\_OLD\State\Battle</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Game\_OLD\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStateManager.cpp">
-      <Filter>Game\_OLD\Core</Filter>
-    </ClCompile>
     <ClCompile Include="FreeCamera.cpp">
-      <Filter>Game\_OLD\Core\Camera</Filter>
+      <Filter>Framework\Camera</Filter>
     </ClCompile>
     <ClCompile Include="PlayerTurnCamera.cpp">
-      <Filter>Game\_OLD\Core\Camera</Filter>
+      <Filter>Framework\Camera</Filter>
     </ClCompile>
     <ClCompile Include="WorldAdventure.cpp">
       <Filter>Game\_OLD\State\Adventure\World</Filter>
@@ -72,29 +60,41 @@
     <ClCompile Include="GameData.cpp">
       <Filter>Game\_OLD\Data</Filter>
     </ClCompile>
+    <ClCompile Include="GameApp.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateManager.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Game\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Game\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\Data\DataType</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Frustum.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Engine</Filter>
+      <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="Sky.h">
-      <Filter>Engine</Filter>
+      <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="Base.h">
-      <Filter>Engine\Base</Filter>
+      <Filter>Framework\Base</Filter>
     </ClInclude>
     <ClInclude Include="DebugNew.h">
-      <Filter>Engine\Base</Filter>
+      <Filter>Framework\Base</Filter>
     </ClInclude>
     <ClInclude Include="Log.h">
-      <Filter>Engine\Core</Filter>
+      <Filter>Framework\Core</Filter>
     </ClInclude>
     <ClInclude Include="EngineMath.h">
-      <Filter>Engine\Core</Filter>
+      <Filter>Framework\Core</Filter>
     </ClInclude>
     <ClInclude Include="BattleCell.h">
       <Filter>Game\_OLD</Filter>
@@ -106,9 +106,6 @@
       <Filter>Game\_OLD</Filter>
     </ClInclude>
     <ClInclude Include="BattlePlayerAction.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="OldGame.h">
       <Filter>Game\_OLD</Filter>
     </ClInclude>
     <ClInclude Include="EnemyParty.h">
@@ -129,27 +126,18 @@
     <ClInclude Include="GameBattle.h">
       <Filter>Game\_OLD\State\Battle</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Game\_OLD\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="GameFrame.h">
-      <Filter>Game\_OLD\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStateManager.h">
-      <Filter>Game\_OLD\Core</Filter>
-    </ClInclude>
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="NonCopyable.h">
-      <Filter>Engine\Base</Filter>
+      <Filter>Framework\Base</Filter>
     </ClInclude>
     <ClInclude Include="FreeCamera.h">
-      <Filter>Game\_OLD\Core\Camera</Filter>
+      <Filter>Framework\Camera</Filter>
     </ClInclude>
     <ClInclude Include="PlayerTurnCamera.h">
-      <Filter>Game\_OLD\Core\Camera</Filter>
+      <Filter>Framework\Camera</Filter>
     </ClInclude>
     <ClInclude Include="IGameCamera.h">
-      <Filter>Game\_OLD\Core\Camera</Filter>
+      <Filter>Framework\Camera</Filter>
     </ClInclude>
     <ClInclude Include="WorldAdventure.h">
       <Filter>Game\_OLD\State\Adventure\World</Filter>
@@ -175,34 +163,37 @@
     <ClInclude Include="HeroTemplateData.h">
       <Filter>Game\_OLD\Data\old</Filter>
     </ClInclude>
-    <ClInclude Include="ICreature.h">
-      <Filter>Game\_OLD\Data\old</Filter>
-    </ClInclude>
     <ClInclude Include="GameData.h">
       <Filter>Game\_OLD\Data</Filter>
     </ClInclude>
+    <ClInclude Include="GameStateManager.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameApp.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ICreature.h">
+      <Filter>Game\Data\DataType</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManager.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\Data\DataType</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{ffcc11f5-d7b0-418e-8e21-b20065f6cfe3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{b903b1c5-8d84-47e3-b210-df120b397669}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Base">
-      <UniqueIdentifier>{fd61a4e8-a2af-4aa5-bb37-489b94604bea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Core">
-      <UniqueIdentifier>{02c60f5e-1f80-4955-beaf-7fc43f3c62d3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\_OLD">
       <UniqueIdentifier>{b5ec1bda-790e-486d-8290-e3eb7513c743}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\_OLD\Core">
       <UniqueIdentifier>{19e6457f-3a2e-45c1-82b2-bf3072a3d341}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\_OLD\Core\Camera">
-      <UniqueIdentifier>{a0012e67-0be8-40da-9bdf-c87d67f22863}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\_OLD\Data">
       <UniqueIdentifier>{c8640b4b-9a1f-444e-9448-97f269cacae2}</UniqueIdentifier>
@@ -230,6 +221,27 @@
     </Filter>
     <Filter Include="Game\_OLD\State\Battle\View">
       <UniqueIdentifier>{2eacdf8e-f47a-4de6-b7b1-9eeae9807dbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Data">
+      <UniqueIdentifier>{5a723fba-d12a-41fe-93ce-462590530007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\State">
+      <UniqueIdentifier>{0e2827a1-dfe0-4cb6-8d0c-88b2602a8ce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{ffcc11f5-d7b0-418e-8e21-b20065f6cfe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Base">
+      <UniqueIdentifier>{fd61a4e8-a2af-4aa5-bb37-489b94604bea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Core">
+      <UniqueIdentifier>{02c60f5e-1f80-4955-beaf-7fc43f3c62d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Camera">
+      <UniqueIdentifier>{a0012e67-0be8-40da-9bdf-c87d67f22863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Data\DataType">
+      <UniqueIdentifier>{5855cbff-9093-46ce-b76e-ca6cde431f4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -3,8 +3,12 @@
 #include "GameAdventure.h"
 #include "GameBattle.h"
 
+class DataManager;
+
 enum class GameState
 {
+	MainMenu,
+
 	Adventure,
 
 	//-------------------------------------------------------------------------
@@ -16,7 +20,7 @@ enum class GameState
 class GameStateManager final
 {
 public:
-	GameStateManager(ResourceManager& resourceMgr) noexcept;
+	GameStateManager(ResourceManager& resourceMgr, DataManager& data) noexcept;
 	bool Init() noexcept;
 
 	void Update(float deltaTime) noexcept;

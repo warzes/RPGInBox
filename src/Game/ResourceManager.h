@@ -1,5 +1,6 @@
 #pragma once
 
+// хранилище ассетов (текстуры, модели, звуки и т.д.) игры
 class ResourceManager final : NonCopyable, NonMovable
 {
 public:
