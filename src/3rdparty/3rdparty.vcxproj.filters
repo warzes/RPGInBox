@@ -1,37 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="raylib\core.c">
-      <Filter>raylib</Filter>
-    </ClCompile>
-    <ClCompile Include="raylib\models.c">
-      <Filter>raylib</Filter>
-    </ClCompile>
+    <ClCompile Include="GLFWImpl.c" />
     <ClCompile Include="raylib\raudio.c">
       <Filter>raylib</Filter>
     </ClCompile>
-    <ClCompile Include="raylib\shapes.c">
+    <ClCompile Include="raylib\rcore.c">
       <Filter>raylib</Filter>
     </ClCompile>
-    <ClCompile Include="raylib\text.c">
+    <ClCompile Include="raylib\rmodels.c">
       <Filter>raylib</Filter>
     </ClCompile>
-    <ClCompile Include="raylib\textures.c">
+    <ClCompile Include="raylib\rshapes.c">
+      <Filter>raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="raylib\rtext.c">
+      <Filter>raylib</Filter>
+    </ClCompile>
+    <ClCompile Include="raylib\rtextures.c">
       <Filter>raylib</Filter>
     </ClCompile>
     <ClCompile Include="raylib\utils.c">
       <Filter>raylib</Filter>
     </ClCompile>
-    <ClCompile Include="GLFWImpl.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="raylib\camera.h">
+    <Filter Include="raylib">
+      <UniqueIdentifier>{a4b0fbc9-54fa-4b10-b632-68b68d19e20d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="raylib\utils.h">
       <Filter>raylib</Filter>
     </ClInclude>
     <ClInclude Include="raylib\config.h">
-      <Filter>raylib</Filter>
-    </ClInclude>
-    <ClInclude Include="raylib\gestures.h">
       <Filter>raylib</Filter>
     </ClInclude>
     <ClInclude Include="raylib\raudio.h">
@@ -43,16 +45,14 @@
     <ClInclude Include="raylib\raymath.h">
       <Filter>raylib</Filter>
     </ClInclude>
+    <ClInclude Include="raylib\rcamera.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\rgestures.h">
+      <Filter>raylib</Filter>
+    </ClInclude>
     <ClInclude Include="raylib\rlgl.h">
       <Filter>raylib</Filter>
     </ClInclude>
-    <ClInclude Include="raylib\utils.h">
-      <Filter>raylib</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="raylib">
-      <UniqueIdentifier>{a4b0fbc9-54fa-4b10-b632-68b68d19e20d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

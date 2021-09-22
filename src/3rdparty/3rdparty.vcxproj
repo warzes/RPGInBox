@@ -173,21 +173,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GLFWImpl.c" />
-    <ClCompile Include="raylib\core.c" />
-    <ClCompile Include="raylib\models.c" />
     <ClCompile Include="raylib\raudio.c" />
-    <ClCompile Include="raylib\shapes.c" />
-    <ClCompile Include="raylib\text.c" />
-    <ClCompile Include="raylib\textures.c" />
+    <ClCompile Include="raylib\rcore.c" />
+    <ClCompile Include="raylib\rmodels.c" />
+    <ClCompile Include="raylib\rshapes.c" />
+    <ClCompile Include="raylib\rtext.c" />
+    <ClCompile Include="raylib\rtextures.c" />
     <ClCompile Include="raylib\utils.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="raylib\camera.h" />
     <ClInclude Include="raylib\config.h" />
-    <ClInclude Include="raylib\gestures.h" />
     <ClInclude Include="raylib\raudio.h" />
     <ClInclude Include="raylib\raylib.h" />
     <ClInclude Include="raylib\raymath.h" />
+    <ClInclude Include="raylib\rcamera.h" />
+    <ClInclude Include="raylib\rgestures.h" />
     <ClInclude Include="raylib\rlgl.h" />
     <ClInclude Include="raylib\utils.h" />
   </ItemGroup>

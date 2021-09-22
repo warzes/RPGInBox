@@ -26,7 +26,7 @@ bool GameApp::Init() noexcept
 	if (!m_battleState.Init())
 		return false;
 
-	SetState(GameState::BeginBattle);
+	SetState(GameState::Adventure);
 	return true;
 }
 //-----------------------------------------------------------------------------

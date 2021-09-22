@@ -1,6 +1,6 @@
 /**********************************************************************************************
 *
-*   raylib.models - Basic functions to deal with 3d shapes and 3d models
+*   rmodels - Basic functions to draw 3d shapes and load and draw 3d models
 *
 *   CONFIGURATION:
 *
@@ -70,11 +70,13 @@
 
     #define CGLTF_IMPLEMENTATION
     #include "external/cgltf.h"         // glTF file format loading
-    #include "external/stb_image.h"     // glTF texture images loading
 #endif
 
 #if defined(SUPPORT_FILEFORMAT_VOX)
-    // TODO: Support custom memory allocators
+    #define VOX_MALLOC RL_MALLOC
+    #define VOX_CALLOC RL_CALLOC
+    #define VOX_REALLOC RL_REALLOC
+    #define VOX_FREE RL_FREE
 
     #define VOX_LOADER_IMPLEMENTATION
     #include "external/vox_loader.h"    // vox file format loading (MagikaVoxel)
@@ -126,11 +128,11 @@ static Model LoadOBJ(const char *fileName);     // Load OBJ mesh data
 #endif
 #if defined(SUPPORT_FILEFORMAT_IQM)
 static Model LoadIQM(const char *fileName);     // Load IQM mesh data
-static ModelAnimation *LoadIQMModelAnimations(const char *fileName, int *animCount);    // Load IQM animation data
+static ModelAnimation *LoadIQMModelAnimations(const char *fileName, unsigned int *animCount);    // Load IQM animation data
 #endif
 #if defined(SUPPORT_FILEFORMAT_GLTF)
 static Model LoadGLTF(const char *fileName);    // Load GLTF mesh data
-static ModelAnimation *LoadGLTFModelAnimations(const char *fileName, int *animCount);    // Load GLTF animation data
+static ModelAnimation *LoadGLTFModelAnimations(const char *fileName, unsigned int *animCount);    // Load GLTF animation data
 static void LoadGLTFMaterial(Model *model, const char *fileName, const cgltf_data *data);
 static void LoadGLTFMesh(cgltf_data *data, cgltf_mesh *mesh, Model *outModel, Matrix currentTransform, int *primitiveIndex, const char *fileName);
 static void LoadGLTFNode(cgltf_data *data, cgltf_node *node, Model *outModel, Matrix currentTransform, int *primitiveIndex, const char *fileName);
@@ -1605,7 +1607,7 @@ void SetModelMeshMaterial(Model *model, int meshId, int materialId)
 }
 
 // Load model animations from file
-ModelAnimation *LoadModelAnimations(const char *fileName, int *animCount)
+ModelAnimation *LoadModelAnimations(const char *fileName, unsigned int *animCount)
 {
     ModelAnimation *animations = NULL;
 
@@ -3095,10 +3097,13 @@ void DrawBillboard(Camera camera, Texture2D texture, Vector3 position, float siz
 // Draw a billboard (part of a texture defined by a rectangle)
 void DrawBillboardRec(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint)
 {
-    DrawBillboardPro(camera, texture, source, position, size, Vector2Zero(), 0.0f, tint);
+    // NOTE: Billboard locked on axis-Y
+    Vector3 up = { 0.0f, 1.0f, 0.0f };
+	
+    DrawBillboardPro(camera, texture, source, position, up, size, Vector2Zero(), 0.0f, tint);
 }
 
-void DrawBillboardPro(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Vector2 origin, float rotation, Color tint)
+void DrawBillboardPro(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint)
 {
     // NOTE: Billboard size will maintain source rectangle aspect ratio, size will represent billboard width
     Vector2 sizeRatio = { size.y, size.x*(float)source.height/source.width };
@@ -3107,9 +3112,6 @@ void DrawBillboardPro(Camera camera, Texture2D texture, Rectangle source, Vector
 
     Vector3 right = { matView.m0, matView.m4, matView.m8 };
     //Vector3 up = { matView.m1, matView.m5, matView.m9 };
-
-    // NOTE: Billboard locked on axis-Y
-    Vector3 up = { 0.0f, 1.0f, 0.0f };
 
     Vector3 rightScaled = Vector3Scale(right, sizeRatio.x/2);
     Vector3 upScaled = Vector3Scale(up, sizeRatio.y/2);
@@ -3560,13 +3562,22 @@ static Model LoadOBJ(const char *fileName)
         model.meshMaterial = (int *)RL_CALLOC(model.meshCount, sizeof(int));
 
         // Count the faces for each material
-        int *matFaces = RL_CALLOC(materialCount, sizeof(int));
+        int *matFaces = RL_CALLOC(model.meshCount, sizeof(int));
 
-        for (int fi = 0; fi< attrib.num_faces; fi++)
+        // iff no materials are present use all faces on one mesh
+        if (materialCount > 0)
         {
-            //tinyobj_vertex_index_t face = attrib.faces[fi];
-            int idx = attrib.material_ids[fi];
-            matFaces[idx]++;
+            for (int fi = 0; fi< attrib.num_faces; fi++)
+            {
+                //tinyobj_vertex_index_t face = attrib.faces[fi];
+                int idx = attrib.material_ids[fi];
+                matFaces[idx]++;
+            }
+
+        }
+        else
+        {
+            matFaces[0] = attrib.num_faces;
         }
 
         //--------------------------------------
@@ -4061,7 +4072,7 @@ static Model LoadIQM(const char *fileName)
 }
 
 // Load IQM animation data
-static ModelAnimation* LoadIQMModelAnimations(const char *fileName, int *animCount)
+static ModelAnimation* LoadIQMModelAnimations(const char *fileName, unsigned int *animCount)
 {
 #define IQM_MAGIC       "INTERQUAKEMODEL"   // IQM file magic number
 #define IQM_VERSION     2                   // only IQM version 2 supported
@@ -4371,15 +4382,8 @@ static Image LoadImageFromCgltfImage(cgltf_image *image, const char *texPath, Co
                 int size = 0;
                 unsigned char *data = DecodeBase64(image->uri + i + 1, &size);
 
-                int width, height;
-                unsigned char *raw = stbi_load_from_memory(data, size, &width, &height, NULL, 4);
+                rimage = LoadImageFromMemory(".png", data, size);
                 RL_FREE(data);
-
-                rimage.data = raw;
-                rimage.width = width;
-                rimage.height = height;
-                rimage.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
-                rimage.mipmaps = 1;
 
                 // TODO: Tint shouldn't be applied here!
                 ImageColorTint(&rimage, tint);
@@ -4405,15 +4409,8 @@ static Image LoadImageFromCgltfImage(cgltf_image *image, const char *texPath, Co
             n += stride;
         }
 
-        int width, height;
-        unsigned char *raw = stbi_load_from_memory(data, (int)image->buffer_view->size, &width, &height, NULL, 4);
+        rimage = LoadImageFromMemory(".png", data, (int)image->buffer_view->size);
         RL_FREE(data);
-
-        rimage.data = raw;
-        rimage.width = width;
-        rimage.height = height;
-        rimage.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
-        rimage.mipmaps = 1;
 
         // TODO: Tint shouldn't be applied here!
         ImageColorTint(&rimage, tint);
@@ -5070,7 +5067,7 @@ static void BindGLTFPrimitiveToBones(Model *model, const cgltf_data *data, int p
 }
 
 // LoadGLTF loads in animation data from given filename
-static ModelAnimation *LoadGLTFModelAnimations(const char *fileName, int *animCount)
+static ModelAnimation *LoadGLTFModelAnimations(const char *fileName, unsigned int *animCount)
 {
     /***********************************************************************************
 
@@ -5105,7 +5102,7 @@ static ModelAnimation *LoadGLTFModelAnimations(const char *fileName, int *animCo
         result = cgltf_load_buffers(&options, data, fileName);
         if (result != cgltf_result_success) TRACELOG(LOG_WARNING, "MODEL: [%s] unable to load glTF animations data", fileName);
         animations = RL_MALLOC(data->animations_count*sizeof(ModelAnimation));
-        *animCount = (int)data->animations_count;
+        *animCount = (unsigned int)data->animations_count;
 
         for (unsigned int a = 0; a < data->animations_count; a++)
         {
@@ -5520,24 +5517,38 @@ static void GetGLTFPrimitiveCount(cgltf_node *node, int *outCount)
 #endif
 
 #if defined(SUPPORT_FILEFORMAT_VOX)
-// Load VOX (MagikaVoxel) mesh data
+// Load VOX (MagicaVoxel) mesh data
 static Model LoadVOX(const char *fileName)
 {
     Model model = { 0 };
     int nbvertices = 0;
     int meshescount = 0;
+    unsigned int readed = 0;
+    unsigned char* fileData;
     
+    //Read vox file into buffer
+    fileData = LoadFileData(fileName, &readed);
+    if (fileData == 0)
+    {
+        TRACELOG(LOG_WARNING, "MODEL: [%s] Failed to load VOX file", fileName);
+        return model;
+    }
+
+    //Read and build voxarray description
     VoxArray3D voxarray = { 0 };
-    int ret = Vox_LoadFileName(fileName, &voxarray);
+    int ret = Vox_LoadFromMemory(fileData, readed, &voxarray);
 
     if (ret != VOX_SUCCESS)
     {
+        // Error
+        UnloadFileData(fileData);
+
         TRACELOG(LOG_WARNING, "MODEL: [%s] Failed to load VOX data", fileName);
         return model;
     }
     else
     {
-        // Compute meshes count
+        // Success: Compute meshes count
         nbvertices = voxarray.vertices.used;
         meshescount = 1 + (nbvertices/65536);
 
@@ -5602,7 +5613,9 @@ static Model LoadVOX(const char *fileName)
         pcolors += verticesMax;
     }
 
+    //Free buffers
     Vox_FreeArrays(&voxarray);
+    UnloadFileData(fileData);
 
     return model;
 }

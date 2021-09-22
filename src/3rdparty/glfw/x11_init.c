@@ -1407,8 +1407,8 @@ void _glfwPlatformTerminate(void)
         _glfw.x11.hiddenCursorHandle = (Cursor) 0;
     }
 
-    free(_glfw.x11.primarySelectionString);
-    free(_glfw.x11.clipboardString);
+    _glfw_free(_glfw.x11.primarySelectionString);
+    _glfw_free(_glfw.x11.clipboardString);
 
     XUnregisterIMInstantiateCallback(_glfw.x11.display,
                                      NULL, NULL, NULL,
@@ -1484,10 +1484,8 @@ void _glfwPlatformTerminate(void)
 const char* _glfwPlatformGetVersionString(void)
 {
     return _GLFW_VERSION_NUMBER " X11 GLX EGL OSMesa"
-#if defined(_POSIX_TIMERS) && defined(_POSIX_MONOTONIC_CLOCK)
-        " clock_gettime"
-#else
-        " gettimeofday"
+#if defined(_POSIX_MONOTONIC_CLOCK)
+        " monotonic"
 #endif
 #if defined(__linux__)
         " evdev"

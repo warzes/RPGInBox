@@ -1,11 +1,7 @@
 ﻿Текущий внесенный коммит рейлиба
 	
-
-Commits on Sep 3, 2021
-
-    Update shell.html 
-
-
+Commits on Sep 22, 2021
+    Use unsigned int for animation count.
 
 
 Мои изменения:

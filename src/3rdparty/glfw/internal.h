@@ -46,7 +46,7 @@
 #endif
 
 #define GLFW_INCLUDE_NONE
-#include "glfw/glfw3.h"
+#include "../include/GLFW/glfw3.h"
 
 #define _GLFW_INSERT_FIRST      0
 #define _GLFW_INSERT_LAST       1
@@ -527,6 +527,7 @@ struct _GLFWmutex
 struct _GLFWlibrary
 {
     GLFWbool            initialized;
+    GLFWallocator       allocator;
 
     struct {
         _GLFWinitconfig init;
@@ -781,6 +782,7 @@ void _glfwAllocGammaArrays(GLFWgammaramp* ramp, unsigned int size);
 void _glfwFreeGammaArrays(GLFWgammaramp* ramp);
 void _glfwSplitBPP(int bpp, int* red, int* green, int* blue);
 
+void _glfwInitGamepadMappings(void);
 _GLFWjoystick* _glfwAllocJoystick(const char* name,
                                   const char* guid,
                                   int axisCount,
@@ -796,4 +798,8 @@ const char* _glfwGetVulkanResultString(VkResult result);
 char* _glfw_strdup(const char* source);
 float _glfw_fminf(float a, float b);
 float _glfw_fmaxf(float a, float b);
+
+void* _glfw_calloc(size_t count, size_t size);
+void* _glfw_realloc(void* pointer, size_t size);
+void _glfw_free(void* pointer);
 

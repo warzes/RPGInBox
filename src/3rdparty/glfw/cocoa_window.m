@@ -114,10 +114,11 @@ static void updateCursorMode(_GLFWwindow* window)
     else if (_glfw.ns.disabledCursorWindow == window)
     {
         _glfw.ns.disabledCursorWindow = NULL;
-        CGAssociateMouseAndMouseCursorPosition(true);
         _glfwPlatformSetCursorPos(window,
                                   _glfw.ns.restoreCursorPosX,
                                   _glfw.ns.restoreCursorPosY);
+        // NOTE: The matching CGAssociateMouseAndMouseCursorPosition call is
+        //       made in _glfwPlatformSetCursorPos as part of a workaround
     }
 
     if (cursorInContentArea(window))
@@ -646,7 +647,7 @@ static const NSRange kEmptyRange = { NSNotFound, 0 };
     const NSUInteger count = [urls count];
     if (count)
     {
-        char** paths = calloc(count, sizeof(char*));
+        char** paths = _glfw_calloc(count, sizeof(char*));
 
         for (NSUInteger i = 0;  i < count;  i++)
             paths[i] = _glfw_strdup([urls[i] fileSystemRepresentation]);
@@ -654,8 +655,8 @@ static const NSRange kEmptyRange = { NSNotFound, 0 };
         _glfwInputDrop(window, (int) count, (const char**) paths);
 
         for (NSUInteger i = 0;  i < count;  i++)
-            free(paths[i]);
-        free(paths);
+            _glfw_free(paths[i]);
+        _glfw_free(paths);
     }
 
     return YES;
@@ -1518,6 +1519,11 @@ void _glfwPlatformSetCursorPos(_GLFWwindow* window, double x, double y)
                                               _glfwTransformYNS(globalPoint.y)));
     }
 
+    // HACK: Calling this right after setting the cursor position prevents macOS
+    //       from freezing the cursor for a fraction of a second afterwards
+    if (window->cursorMode != GLFW_CURSOR_DISABLED)
+        CGAssociateMouseAndMouseCursorPosition(true);
+
     } // autoreleasepool
 }
 
@@ -1536,7 +1542,7 @@ const char* _glfwPlatformGetScancodeName(int scancode)
     if (scancode < 0 || scancode > 0xff ||
         _glfw.ns.keycodes[scancode] == GLFW_KEY_UNKNOWN)
     {
-        _glfwInputError(GLFW_INVALID_VALUE, "Invalid scancode");
+        _glfwInputError(GLFW_INVALID_VALUE, "Invalid scancode %i", scancode);
         return NULL;
     }
 
@@ -1747,7 +1753,7 @@ const char* _glfwPlatformGetClipboardString(void)
         return NULL;
     }
 
-    free(_glfw.ns.clipboardString);
+    _glfw_free(_glfw.ns.clipboardString);
     _glfw.ns.clipboardString = _glfw_strdup([object UTF8String]);
 
     return _glfw.ns.clipboardString;
@@ -1775,7 +1781,7 @@ EGLenum _glfwPlatformGetEGLPlatform(EGLint** attribs)
 
         if (type)
         {
-            *attribs = calloc(3, sizeof(EGLint));
+            *attribs = _glfw_calloc(3, sizeof(EGLint));
             (*attribs)[0] = EGL_PLATFORM_ANGLE_TYPE_ANGLE;
             (*attribs)[1] = type;
             (*attribs)[2] = EGL_NONE;
