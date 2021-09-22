@@ -12,7 +12,7 @@ class BattleEngine final : NonCopyable, NonMovable
 public:
 	BattleEngine(PlayerParty& player) noexcept : m_playerParty(player) {}
 
-	void StartBattle(ResourceManager& resources, const EnemyParty& enemy) noexcept;
+	void StartBattle(ResourceManager& resources, const oEnemyParty& enemy) noexcept;
 
 	void Update(float deltaTime) noexcept;
 	void Draw() noexcept;
@@ -37,7 +37,7 @@ private:
 	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
 
 	PlayerParty& m_playerParty;
-	EnemyParty m_enemyParty;
+	oEnemyParty m_enemyParty;
 
 	enum class roundState
 	{

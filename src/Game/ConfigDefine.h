@@ -2,6 +2,7 @@
 
 constexpr auto MaxNumberState = 999;
 constexpr auto MaxNumCharacterInPlayerParty = 4u;
+constexpr auto MaxNumCharacterInEnemyParty = 6u;
 
 #define TURN_STEP 1
 

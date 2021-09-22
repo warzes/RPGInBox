@@ -20,7 +20,7 @@ public:
 	PlayerParty playerParty;
 	Map openworld;
 private:
-	EnemyParty getTestEnemy(); // TODO: ïåðåíåñòè â Map, òàê êàê çàâèñèò îò êàðòû
+	oEnemyParty getTestEnemy(); // TODO: ïåðåíåñòè â Map, òàê êàê çàâèñèò îò êàðòû
 
 	ResourceManager& m_resources;
 

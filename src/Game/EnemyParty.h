@@ -6,7 +6,7 @@
 /*
 * монстры также собраны в группу как и герои, это позволит подбирать их по тематике
 */
-class EnemyParty
+class oEnemyParty
 {
 public:
 	std::vector<oEnemy> enemys;

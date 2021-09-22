@@ -47,7 +47,7 @@
 //-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
-void BattleEngine::StartBattle(ResourceManager& resources, const EnemyParty& enemys) noexcept
+void BattleEngine::StartBattle(ResourceManager& resources, const oEnemyParty& enemys) noexcept
 {
 	// сброс и установка переменных
 	m_state = roundState::BeginRound;

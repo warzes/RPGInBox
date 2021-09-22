@@ -47,9 +47,9 @@ void WorldAdventure::Move(const Point2& pos) noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-EnemyParty WorldAdventure::getTestEnemy()
+oEnemyParty WorldAdventure::getTestEnemy()
 {
-	EnemyParty enemys;
+	oEnemyParty enemys;
 
 	{
 		enemys.enemys.emplace_back(EnemyTemplateData::CreateTest());
