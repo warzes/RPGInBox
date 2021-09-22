@@ -223,7 +223,6 @@
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameAdventure.h" />
     <ClInclude Include="GameBattle.h" />
-    <ClInclude Include="GameBattleCore.h" />
     <ClInclude Include="GameBattleView.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="Hero.h" />

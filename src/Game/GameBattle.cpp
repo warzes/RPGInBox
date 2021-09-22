@@ -1,20 +1,9 @@
 ﻿#include "stdafx.h"
 #include "GameBattle.h"
 #include "DebugNew.h"
-
-/*
-* Начало боя
-*	Вызывается метод StartBattle, в который передается группа игрока в виде ссылки и копия группы врага
-* 
-* BattleDraw
-*	сделать координаты всех элементов
-*/
-
-
-
 //-----------------------------------------------------------------------------
-GameBattle::GameBattle(GameApp& gameApp, ResourceManager& resourceMgr) noexcept
-	: m_gameApp(gameApp)
+GameBattle::GameBattle(Player& player, ResourceManager& resourceMgr) noexcept
+	: m_player(player)
 	, m_resourceMgr(resourceMgr)
 	, m_view(resourceMgr)
 {
@@ -27,8 +16,10 @@ bool GameBattle::Init() noexcept
 
 	return true;
 }
-void GameBattle::StartBattle() noexcept
+//-----------------------------------------------------------------------------
+void GameBattle::StartBattle(const EnemyParty& enemys) noexcept
 {
+	m_enemys = enemys;
 }
 //-----------------------------------------------------------------------------
 void GameBattle::Update(float deltaTime) noexcept

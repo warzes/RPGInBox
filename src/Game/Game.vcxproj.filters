@@ -36,9 +36,6 @@
     <ClCompile Include="GameAdventure.cpp">
       <Filter>Game\_OLD\State\Adventure</Filter>
     </ClCompile>
-    <ClCompile Include="GameBattle.cpp">
-      <Filter>Game\_OLD\State\Battle</Filter>
-    </ClCompile>
     <ClCompile Include="FreeCamera.cpp">
       <Filter>Framework\Camera</Filter>
     </ClCompile>
@@ -49,7 +46,7 @@
       <Filter>Game\_OLD\State\Adventure\World</Filter>
     </ClCompile>
     <ClCompile Include="GameBattleView.cpp">
-      <Filter>Game\_OLD\State\Battle\View</Filter>
+      <Filter>Game\State\Battle\View</Filter>
     </ClCompile>
     <ClCompile Include="EnemyTemplateData.cpp">
       <Filter>Game\_OLD\Data\old</Filter>
@@ -71,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="Creature.cpp">
       <Filter>Game\Data\DataType</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBattle.cpp">
+      <Filter>Game\State\Battle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,9 +120,6 @@
     <ClInclude Include="GameAdventure.h">
       <Filter>Game\_OLD\State\Adventure</Filter>
     </ClInclude>
-    <ClInclude Include="GameBattle.h">
-      <Filter>Game\_OLD\State\Battle</Filter>
-    </ClInclude>
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="NonCopyable.h">
       <Filter>Framework\Base</Filter>
@@ -139,11 +136,8 @@
     <ClInclude Include="WorldAdventure.h">
       <Filter>Game\_OLD\State\Adventure\World</Filter>
     </ClInclude>
-    <ClInclude Include="GameBattleCore.h">
-      <Filter>Game\_OLD\State\Battle\Core</Filter>
-    </ClInclude>
     <ClInclude Include="GameBattleView.h">
-      <Filter>Game\_OLD\State\Battle\View</Filter>
+      <Filter>Game\State\Battle\View</Filter>
     </ClInclude>
     <ClInclude Include="Stats.h">
       <Filter>Game\_OLD\Data\old</Filter>
@@ -174,6 +168,9 @@
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Game\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBattle.h">
+      <Filter>Game\State\Battle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +207,6 @@
     <Filter Include="Game\_OLD\State\Battle\Core">
       <UniqueIdentifier>{e952a136-0839-4bef-8bf3-fe9bd9d901fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\_OLD\State\Battle\View">
-      <UniqueIdentifier>{2eacdf8e-f47a-4de6-b7b1-9eeae9807dbc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Data">
       <UniqueIdentifier>{5a723fba-d12a-41fe-93ce-462590530007}</UniqueIdentifier>
     </Filter>
@@ -233,6 +227,12 @@
     </Filter>
     <Filter Include="Game\Data\DataType">
       <UniqueIdentifier>{5855cbff-9093-46ce-b76e-ca6cde431f4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\State\Battle">
+      <UniqueIdentifier>{4a2615ff-3f0a-4c01-a6d7-a9546368f51b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\State\Battle\View">
+      <UniqueIdentifier>{2eacdf8e-f47a-4de6-b7b1-9eeae9807dbc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
