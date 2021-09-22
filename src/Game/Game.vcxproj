@@ -180,6 +180,7 @@
     <ClCompile Include="BattleCell.cpp" />
     <ClCompile Include="BattleEngine.cpp" />
     <ClCompile Include="BattlePlayerAction.cpp" />
+    <ClCompile Include="Creature.cpp" />
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="EnemyParty.cpp" />
     <ClCompile Include="EnemyTemplateData.cpp" />
@@ -192,7 +193,6 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerParty.cpp" />
     <ClCompile Include="PlayerTurnCamera.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -228,7 +228,7 @@
     <ClInclude Include="GameData.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="HeroTemplateData.h" />
-    <ClInclude Include="ICreature.h" />
+    <ClInclude Include="Creature.h" />
     <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugNew.h" />
@@ -236,7 +236,6 @@
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="NonCopyable.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerParty.h" />
     <ClInclude Include="PlayerTurnCamera.h" />
     <ClInclude Include="ResourceManager.h" />

@@ -13,7 +13,7 @@ public:
 
 	bool Move(const Point2& pos) noexcept;
 
-	Hero characters[MaxNumCharacterInPlayerParty];
+	oHero characters[MaxNumCharacterInPlayerParty];
 	Point2 positionCharactersInParty[MaxNumCharacterInPlayerParty];
 
 	// statistics

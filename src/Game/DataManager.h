@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Player.h"
+#include "Creature.h"
 
 // хранилище всех игровых данных
 class DataManager final

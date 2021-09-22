@@ -2,9 +2,9 @@
 #include "HeroTemplateData.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-Hero HeroTemplateData::CreateWarrior(const char* name) noexcept
+oHero HeroTemplateData::CreateWarrior(const char* name) noexcept
 {
-	Hero hero;
+	oHero hero;
 	hero.name = name;
 	//hero.
 

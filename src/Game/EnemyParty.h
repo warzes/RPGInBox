@@ -9,6 +9,6 @@
 class EnemyParty
 {
 public:
-	std::vector<Enemy> enemys;
+	std::vector<oEnemy> enemys;
 	std::vector<Point2> positionCharactersInParty;
 };

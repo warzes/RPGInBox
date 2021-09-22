@@ -2,9 +2,9 @@
 #include "EnemyTemplateData.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-Enemy EnemyTemplateData::CreateTest() noexcept
+oEnemy EnemyTemplateData::CreateTest() noexcept
 {
-	Enemy enemy;
+	oEnemy enemy;
 	{
 		enemy.name = "Test monstr";
 		enemy.statistics.hp = 10;

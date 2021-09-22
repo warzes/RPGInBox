@@ -5,5 +5,5 @@
 class HeroTemplateData final
 {
 public:
-	static Hero CreateWarrior(const char* name) noexcept;
+	static oHero CreateWarrior(const char* name) noexcept;
 };

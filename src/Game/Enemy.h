@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Stats.h"
-#include "ICreature.h"
+#include "Creature.h"
 
-class Enemy final : public ICreature
+class oEnemy final : public ICreature
 {
 public:
 	std::string name;
+	CreatureType GetType() const noexcept final { return CreatureType::Enemy; }
 
 	// Statistics
 	struct

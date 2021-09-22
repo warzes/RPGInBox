@@ -19,14 +19,14 @@ bool GameApp::Init() noexcept
 {
 	createFrame();
 
-	m_data.player.StartDefaultParty();
+	m_data.player.CreateDefaultParty();
 
 	if (!m_adventureState.Init())
 		return false;
 	if (!m_battleState.Init())
 		return false;
 
-	SetState(GameState::Adventure);
+	SetState(GameState::BeginBattle);
 	return true;
 }
 //-----------------------------------------------------------------------------

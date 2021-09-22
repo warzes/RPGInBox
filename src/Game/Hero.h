@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Stats.h"
-#include "ICreature.h"
+#include "Creature.h"
 
 enum class HeroClass
 {
@@ -10,9 +10,11 @@ enum class HeroClass
 	Wizard
 };
 
-class Hero final : public ICreature
+class oHero final : public ICreature
 {
 public:
+	CreatureType GetType() const noexcept final { return CreatureType::Hero; }
+
 	// Base
 	HeroClass characterClass = HeroClass::Warrior;
 	std::string name;

@@ -69,7 +69,7 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Game\Data</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="Creature.cpp">
       <Filter>Game\Data\DataType</Filter>
     </ClCompile>
   </ItemGroup>
@@ -166,7 +166,7 @@
     <ClInclude Include="GameApp.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="ICreature.h">
+    <ClInclude Include="Creature.h">
       <Filter>Game\Data\DataType</Filter>
     </ClInclude>
     <ClInclude Include="DataManager.h">
@@ -174,9 +174,6 @@
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Game\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Game\Data\DataType</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

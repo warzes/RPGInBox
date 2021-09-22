@@ -5,5 +5,5 @@
 class EnemyTemplateData final
 {
 public:
-	static Enemy CreateTest() noexcept;
+	static oEnemy CreateTest() noexcept;
 };
