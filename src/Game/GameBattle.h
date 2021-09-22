@@ -3,13 +3,13 @@
 #include "GameBattleCore.h"
 #include "GameBattleView.h"
 
-class GameStateManager;
+class GameApp;
 class ResourceManager;
 
 class GameBattle final
 {
 public:
-	GameBattle(GameStateManager& stateManager, ResourceManager& resourceMgr) noexcept;
+	GameBattle(GameApp& gameApp, ResourceManager& resourceMgr) noexcept;
 	bool Init() noexcept;
 
 	void StartBattle() noexcept;
@@ -18,7 +18,7 @@ public:
 	void Frame() noexcept;
 
 private:
-	GameStateManager& m_stateManager;
+	GameApp& m_gameApp;
 	ResourceManager& m_resourceMgr;
 
 	GameBattleView m_view;

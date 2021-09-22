@@ -189,7 +189,6 @@
     <ClCompile Include="GameBattle.cpp" />
     <ClCompile Include="GameBattleView.cpp" />
     <ClCompile Include="GameData.cpp" />
-    <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -227,7 +226,6 @@
     <ClInclude Include="GameBattleCore.h" />
     <ClInclude Include="GameBattleView.h" />
     <ClInclude Include="GameData.h" />
-    <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="HeroTemplateData.h" />
     <ClInclude Include="ICreature.h" />

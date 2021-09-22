@@ -3,21 +3,21 @@
 #include "FreeCamera.h"
 #include "PlayerTurnCamera.h"
 
-class GameStateManager;
+class GameApp;
 class ResourceManager;
 class WorldAdventure;
 
 class GameAdventure final
 {
 public:
-	GameAdventure(GameStateManager& stateManager, ResourceManager& m_resourceMgr) noexcept;
+	GameAdventure(GameApp& gameApp, ResourceManager& m_resourceMgr) noexcept;
 	bool Init() noexcept;
 
 	void Update(float deltaTime) noexcept;
 	void Frame() noexcept;
 
 private:
-	GameStateManager& m_stateManager;
+	GameApp& m_gameApp;
 	ResourceManager& m_resourceMgr;
 	WorldAdventure* m_world = nullptr;
 

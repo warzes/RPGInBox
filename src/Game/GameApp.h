@@ -1,8 +1,21 @@
 ﻿#pragma once
 
-#include "GameStateManager.h"
 #include "ResourceManager.h"
 #include "DataManager.h"
+#include "GameAdventure.h"
+#include "GameBattle.h"
+
+enum class GameState
+{
+	MainMenu,
+
+	Adventure,
+
+	//-------------------------------------------------------------------------
+	// Battle state
+	BeginBattle,
+	Battle
+};
 
 class GameApp final : NonCopyable, NonMovable
 {
@@ -15,7 +28,10 @@ public:
 	void Update(float deltaTime) noexcept;
 	void Frame() noexcept;
 
-	bool IsEnd() const noexcept { return m_gameState.IsEnd(); }
+	bool IsEnd() const noexcept { return m_isEnd; }
+	void End() noexcept { m_isEnd = true; }
+
+	void SetState(GameState state) noexcept;
 
 private:
 	void createFrame() noexcept;
@@ -24,7 +40,11 @@ private:
 
 	DataManager m_data;
 	ResourceManager m_resourceMgr;
-	GameStateManager m_gameState;
+
+	GameState m_state = GameState::Adventure;
+	GameAdventure m_adventureState;
+	GameBattle m_battleState;
+	bool m_isEnd = false;
 
 #if MAIN_FRAME_TO_RENDER_TEXTURE
 	RenderTexture2D m_target = {};

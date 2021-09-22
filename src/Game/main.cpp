@@ -1,4 +1,5 @@
-﻿#include "stdafx.h"
+﻿
+#include "stdafx.h"
 #include "GameApp.h"
 #include "Log.h"
 #include "DebugNew.h"
@@ -35,9 +36,15 @@ inline void Main() noexcept
 	{
 		bool error = false;
 
+		//---------------------------------------------------------------------
+		// Core Init
+		//---------------------------------------------------------------------
 		Log log("Log.txt");
 		log.Print("Engine Init...");
 
+		//---------------------------------------------------------------------
+		// Raylib Init
+		//---------------------------------------------------------------------
 		InitWindow(1024, 768, "Game");
 		if (!IsWindowReady())
 		{
@@ -45,13 +52,16 @@ inline void Main() noexcept
 			error = true;
 		}
 		//SetTargetFPS(60);
-
 		InitAudioDevice();
 		if (!IsAudioDeviceReady())
 		{
 			log.Error("Audio device failed!");
 			error = true;
 		}
+
+		//---------------------------------------------------------------------
+		// Game MainLoop
+		//---------------------------------------------------------------------
 		if (!error)
 		{
 			GameApp game;
@@ -65,6 +75,8 @@ inline void Main() noexcept
 			}
 		}
 
+		//---------------------------------------------------------------------
+		// Close
 		CloseAudioDevice();
 		CloseWindowRaylib();
 		log.Print("Engine end.");

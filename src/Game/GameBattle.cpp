@@ -13,8 +13,8 @@
 
 
 //-----------------------------------------------------------------------------
-GameBattle::GameBattle(GameStateManager& stateManager, ResourceManager& resourceMgr) noexcept
-	: m_stateManager(stateManager)
+GameBattle::GameBattle(GameApp& gameApp, ResourceManager& resourceMgr) noexcept
+	: m_gameApp(gameApp)
 	, m_resourceMgr(resourceMgr)
 	, m_view(resourceMgr)
 {

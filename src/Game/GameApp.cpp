@@ -3,7 +3,8 @@
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 GameApp::GameApp() noexcept
-	: m_gameState(m_resourceMgr, m_data)
+	: m_adventureState(*this, m_resourceMgr)
+	, m_battleState(*this, m_resourceMgr)
 {
 }
 //-----------------------------------------------------------------------------
@@ -20,23 +21,46 @@ bool GameApp::Init() noexcept
 
 	m_data.player.StartDefaultParty();
 
-	if (!m_gameState.Init())
+	if (!m_adventureState.Init())
+		return false;
+	if (!m_battleState.Init())
 		return false;
 
-	m_gameState.SetState(GameState::BeginBattle);
+	SetState(GameState::BeginBattle);
 	return true;
 }
 //-----------------------------------------------------------------------------
 void GameApp::Update(float deltaTime) noexcept
 {
-	m_gameState.Update(deltaTime);
+	if (m_state == GameState::Adventure)
+	{
+		m_adventureState.Update(deltaTime);
+	}
+	else if (m_state == GameState::BeginBattle)
+	{
+		m_battleState.StartBattle();
+		SetState(GameState::Battle);
+	}
+	else if (m_state == GameState::Battle)
+	{
+		m_battleState.Update(deltaTime);
+	}
 }
 //-----------------------------------------------------------------------------
 void GameApp::Frame() noexcept
 {
 	beginFrame();
-	m_gameState.Frame();
+	{
+		m_adventureState.Frame(); // сцена приключения рисуется даже в других режимах
+		if (m_state == GameState::Battle)
+			m_battleState.Frame();
+	}
 	endFrame();
+}
+//-----------------------------------------------------------------------------
+void GameApp::SetState(GameState state) noexcept
+{
+	m_state = state;
 }
 //-----------------------------------------------------------------------------
 void GameApp::createFrame() noexcept

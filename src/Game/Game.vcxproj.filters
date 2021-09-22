@@ -63,9 +63,6 @@
     <ClCompile Include="GameApp.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="GameStateManager.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="DataManager.cpp">
       <Filter>Game\Data</Filter>
     </ClCompile>
@@ -165,9 +162,6 @@
     </ClInclude>
     <ClInclude Include="GameData.h">
       <Filter>Game\_OLD\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStateManager.h">
-      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="GameApp.h">
       <Filter>Game</Filter>
