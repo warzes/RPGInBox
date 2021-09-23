@@ -3,9 +3,9 @@
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 GameBattle::GameBattle(Player& player, ResourceManager& resourceMgr) noexcept
-	: m_player(player)
-	, m_resourceMgr(resourceMgr)
+	: m_resourceMgr(resourceMgr)
 	, m_view(resourceMgr)
+	, m_player(player)	
 {
 }
 //-----------------------------------------------------------------------------
@@ -17,9 +17,9 @@ bool GameBattle::Init() noexcept
 	return true;
 }
 //-----------------------------------------------------------------------------
-void GameBattle::StartBattle(const EnemyParty& enemys) noexcept
+void GameBattle::StartBattle(const EnemyParty& enemies) noexcept
 {
-	m_enemys = enemys;
+	m_enemies = enemies;
 }
 //-----------------------------------------------------------------------------
 void GameBattle::Update(float deltaTime) noexcept

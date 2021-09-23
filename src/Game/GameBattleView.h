@@ -2,6 +2,15 @@
 
 class ResourceManager;
 
+class UIBattlePanelBG
+{
+public:
+	void Create(ResourceManager* resourceMgr);
+	void Draw();
+private:
+	std::shared_ptr<Texture2D> m_patchTexture = nullptr;
+};
+
 class GameBattleView final
 {
 public:
@@ -16,8 +25,8 @@ private:
 
 	ResourceManager& m_resourceMgr;
 
-	std::shared_ptr<Texture2D> m_patchTexture = nullptr;
-	NPatchInfo m_ninePatchInfo = { { 0.0f, 0.0f, 64.0f, 64.0f }, 6, 6, 6, 6, NPATCH_NINE_PATCH };
+	UIBattlePanelBG m_background;
+	
 	std::shared_ptr<Texture2D> m_textureUI_character = nullptr;
 	NPatchInfo m_ninePatchInfo_character = { { 0.0f, 0.0f, 64.0f, 64.0f }, 6, 6, 6, 6, NPATCH_NINE_PATCH };
 

@@ -19,7 +19,7 @@ void Player::CreateDefaultParty() noexcept
 //-----------------------------------------------------------------------------
 void EnemyParty::CreateDefaultParty() noexcept
 {
-	enemys.resize(MaxNumCharacterInPlayerParty);
+	enemys.resize(MaxNumCharacterInEnemyParty);
 
 	// первый ряд
 	grid[0][0] = &enemys[0];
