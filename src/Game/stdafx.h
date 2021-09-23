@@ -23,6 +23,7 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 #include <string>
 #include <algorithm>
 #include <functional>
+#include <array>
 #include <vector>
 #include <map>
 #include <unordered_map>

@@ -23,11 +23,7 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 	m_view.ResetCells();
 	m_rules.StartBattle(&m_player, m_enemies);
 
-	m_playerMenu.Reset();
-	m_playerMenu.AddElement("Attack");
-	m_playerMenu.AddElement("Skill");
-	m_playerMenu.AddElement("Magic");
-	m_playerMenu.AddElement("Defence");
+	m_playerMenu.AddElements(PlayerActionMainMenu);	
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Update(float deltaTime) noexcept

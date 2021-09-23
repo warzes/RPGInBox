@@ -12,6 +12,17 @@ public:
 	void AddElement(const std::string& text) noexcept;
 	void SetSelect(int sel) noexcept;
 	void SetEnable(bool enable, int idElement) noexcept;
+
+
+	template <typename T>
+	void AddElements(const T& array) noexcept
+	{
+		Reset();
+		for (size_t i = 0; i < array.size(); i++)
+		{
+			AddElement(array[i]);
+		}
+	}
 private:
 	struct element
 	{
