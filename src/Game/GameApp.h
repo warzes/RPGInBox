@@ -44,6 +44,7 @@ private:
 	GameState m_state = GameState::Adventure;
 	GameAdventure m_adventureState;
 	GameBattle m_battleState;
+	EnemyParty m_enemies;
 	bool m_isEnd = false;
 
 #if MAIN_FRAME_TO_RENDER_TEXTURE

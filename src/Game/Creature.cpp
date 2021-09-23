@@ -1,10 +1,16 @@
 #include "stdafx.h"
 #include "Creature.h"
+#include "ResourceManager.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-void Player::CreateDefaultParty() noexcept
+void Player::CreateDefaultParty(ResourceManager* resourceMgr) noexcept
 {
 	heroes.resize(MaxNumCharacterInPlayerParty);
+
+	heroes[0].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-rogue3.png");
+	heroes[1].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-rogue3.png");
+	heroes[2].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-rogue3.png");
+	heroes[3].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-rogue3.png");
 
 	// первый ряд
 	grid[0][0] = &heroes[0];
@@ -17,9 +23,17 @@ void Player::CreateDefaultParty() noexcept
 	grid[2][1] = nullptr;
 }
 //-----------------------------------------------------------------------------
-void EnemyParty::CreateDefaultParty() noexcept
+void EnemyParty::CreateDefaultParty(ResourceManager* resourceMgr) noexcept
 {
+	enemys.clear();
 	enemys.resize(MaxNumCharacterInEnemyParty);
+
+	enemys[0].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-goblin.png");
+	enemys[1].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-goblin.png");
+	enemys[2].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-goblin.png");
+	enemys[3].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-goblin.png");
+	enemys[4].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-goblin.png");
+	enemys[5].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-goblin.png");
 
 	// первый ряд
 	grid[0][0] = &enemys[0];

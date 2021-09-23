@@ -3,7 +3,7 @@
 #include "EnemyParty.h"
 #include "PlayerParty.h"
 #include "BattlePlayerAction.h"
-#include "BattleCore.h"
+#include "oBattleCore.h"
 
 class ResourceManager;
 

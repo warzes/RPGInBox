@@ -19,7 +19,7 @@ bool GameApp::Init() noexcept
 {
 	createFrame();
 
-	m_data.player.CreateDefaultParty();
+	m_data.player.CreateDefaultParty(&m_resourceMgr);
 
 	if (!m_adventureState.Init())
 		return false;
@@ -39,9 +39,8 @@ void GameApp::Update(float deltaTime) noexcept
 	else if (m_state == GameState::BeginBattle)
 	{
 		// TODO: пока тут, в будущем же партия врагов должна создаваться из шаблона мира-сеттинга
-		EnemyParty enemies;
-		enemies.CreateDefaultParty();
-		m_battleState.StartBattle(enemies);
+		m_enemies.CreateDefaultParty(&m_resourceMgr);
+		m_battleState.StartBattle(&m_enemies);
 		SetState(GameState::Battle);
 	}
 	else if (m_state == GameState::Battle)

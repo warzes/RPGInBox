@@ -1,5 +1,7 @@
 #pragma once
 
+class ResourceManager;
+
 enum class CreatureType
 {
 	Hero,
@@ -21,6 +23,8 @@ public:
 	// TODO: проверять остальные стейты типа окаменения
 	bool IsAction() const noexcept { return true; }
 
+	std::shared_ptr<Texture2D> battleTexture = nullptr;
+
 	int hp = 10;
 };
 
@@ -40,7 +44,7 @@ public:
 class Player final
 {
 public:
-	void CreateDefaultParty() noexcept;
+	void CreateDefaultParty(ResourceManager* resourceMgr) noexcept;
 
 
 	Hero* grid[3][2] = { nullptr }; // расположение героев. [1-3][0] - первый ряд; [1-3][1] - второй ряд
@@ -51,7 +55,7 @@ public:
 class EnemyParty final
 {
 public:
-	void CreateDefaultParty() noexcept;
+	void CreateDefaultParty(ResourceManager* resourceMgr) noexcept;
 
 	Enemy* grid[3][2] = { nullptr }; // расположение врагов. [1-3][0] - первый ряд; [1-3][1] - второй ряд
 	std::vector<Enemy> enemys;

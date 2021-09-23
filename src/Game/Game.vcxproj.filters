@@ -201,15 +201,6 @@
     <Filter Include="Game\_OLD\State\Adventure\World">
       <UniqueIdentifier>{3fe34853-30de-449c-855d-ce49c7845cbd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\_OLD\State\Battle">
-      <UniqueIdentifier>{2f0e2061-49da-4983-b07a-b1ac00c43ece}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\_OLD\State\Battle\BattleLogic">
-      <UniqueIdentifier>{cafa4145-ab29-4091-9bc5-da8030600179}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\_OLD\State\Battle\Core">
-      <UniqueIdentifier>{e952a136-0839-4bef-8bf3-fe9bd9d901fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Data">
       <UniqueIdentifier>{5a723fba-d12a-41fe-93ce-462590530007}</UniqueIdentifier>
     </Filter>

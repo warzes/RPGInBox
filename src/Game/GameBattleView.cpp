@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameBattleView.h"
 #include "ResourceManager.h"
+#include "Creature.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 void UIBattlePanelBG::Create(ResourceManager* resourceMgr)
@@ -27,11 +28,11 @@ bool GameBattleView::Init() noexcept
 	return true;
 }
 //-----------------------------------------------------------------------------
-void GameBattleView::Frame() noexcept
+void GameBattleView::Frame(const Player& player, EnemyParty* enemies) noexcept
 {
 	drawBackground();
 	drawPanels();
-	drawCells();
+	drawCells(player, enemies);
 }
 //-----------------------------------------------------------------------------
 void GameBattleView::SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept
@@ -93,7 +94,7 @@ void GameBattleView::drawPanels() noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattleView::drawCells() noexcept
+void GameBattleView::drawCells(const Player& player, EnemyParty* enemies) noexcept
 {
 	Vector3 cellPos;
 	for (size_t x = 0; x < 3; x++)
@@ -101,9 +102,9 @@ void GameBattleView::drawCells() noexcept
 		for (size_t y = 0; y < 4; y++)
 		{			
 			cellPos.x = LeftTopCoordCells.x + (SizeCoordCells.x + OffsetCoordCells.x) * x;
-
 			cellPos.y = LeftTopCoordCells.y + 5 + (SizeCoordCells.y + OffsetCoordCells.y) * y;
 
+			// cell
 			switch (m_cells[x][y])
 			{
 			case BattleCellStatus::Normal: 
@@ -122,6 +123,23 @@ void GameBattleView::drawCells() noexcept
 				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 100, 100, 100, 180 });
 				break;
 			default: break;
+			}
+
+			// enemy creature
+			if (y < 2)
+			{
+				if (enemies->grid[x][y] != nullptr && enemies->grid[x][y]->IsAlive())
+				{
+					DrawTexture(*enemies->grid[x][y]->battleTexture, cellPos.x, cellPos.y, WHITE);
+				}
+			}
+			else
+			{
+				size_t ny = y - 2;
+				if (player.grid[x][ny] != nullptr  && player.grid[x][ny]->IsAlive())
+				{
+					DrawTexture(*player.grid[x][ny]->battleTexture, cellPos.x, cellPos.y, WHITE);
+				}
 			}
 		}
 	}

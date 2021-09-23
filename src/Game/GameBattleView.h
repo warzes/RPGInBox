@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BattleCore.h"
+#include "Creature.h"
 
 class ResourceManager;
 
@@ -28,7 +29,7 @@ public:
 	GameBattleView(ResourceManager& resourceMgr) noexcept;
 	bool Init() noexcept;
 
-	void Frame() noexcept;
+	void Frame(const Player& player, EnemyParty* enemies) noexcept;
 
 	void SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
 	void ResetCells() noexcept;
@@ -36,7 +37,7 @@ public:
 private:
 	void drawBackground() noexcept;
 	void drawPanels() noexcept;
-	void drawCells() noexcept;
+	void drawCells(const Player& player, EnemyParty* enemies) noexcept;
 
 	BattleCellStatus m_cells[3][4] = { BattleCellStatus::Normal };
 
