@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 #include "BattlePlayerAction.h"
-#include "BattleCore.h"
+#include "oBattleCore.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 void BattlePlayerAction::Reset() noexcept

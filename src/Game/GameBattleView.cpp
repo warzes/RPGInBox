@@ -2,25 +2,6 @@
 #include "GameBattleView.h"
 #include "ResourceManager.h"
 #include "DebugNew.h"
-// позиции клеток
-constexpr Rectangle battleCell[] =
-{
-	{ 262.0f,  44.0f, 160.0f, 160.0f }, // 1x1
-	{ 432.0f,  44.0f, 160.0f, 160.0f }, // 2x1
-	{ 602.0f,  44.0f, 160.0f, 160.0f }, // 3x1
-
-	{ 262.0f, 214.0f, 160.0f, 160.0f }, // 1x2
-	{ 432.0f, 214.0f, 160.0f, 160.0f }, // 2x2
-	{ 602.0f, 214.0f, 160.0f, 160.0f }, // 3x2
-
-	{ 262.0f, 394.0f, 160.0f, 160.0f }, // 1x3
-	{ 432.0f, 394.0f, 160.0f, 160.0f }, // 2x3
-	{ 602.0f, 394.0f, 160.0f, 160.0f }, // 3x3
-
-	{ 262.0f, 564.0f, 160.0f, 160.0f }, // 1x4
-	{ 432.0f, 564.0f, 160.0f, 160.0f }, // 2x4
-	{ 602.0f, 564.0f, 160.0f, 160.0f }, // 3x4
-};
 //-----------------------------------------------------------------------------
 void UIBattlePanelBG::Create(ResourceManager* resourceMgr)
 {
@@ -30,11 +11,7 @@ void UIBattlePanelBG::Create(ResourceManager* resourceMgr)
 void UIBattlePanelBG::Draw()
 {
 	constexpr NPatchInfo ninePatchInfo = { { 0.0f, 0.0f, 64.0f, 64.0f }, 6, 6, 6, 6, NPATCH_NINE_PATCH };
-
-	Rectangle dest = { 20.0f, 20.0f, 0.0f, 0.0f };
-	dest.width = (float)GetScreenWidth() - dest.x * 2.0f;
-	dest.height = (float)GetScreenHeight() - dest.y * 2.0f;
-
+	const Rectangle dest = { 20.0f, 20.0f, (float)GetScreenWidth() - dest.x * 2.0f, (float)GetScreenHeight() - dest.y * 2.0f };
 	DrawTextureNPatch(*m_patchTexture, ninePatchInfo, dest, { 0.0f, 0.0f }, 0.0f, { 255, 255, 255, 180 });
 }
 //-----------------------------------------------------------------------------
@@ -46,10 +23,7 @@ GameBattleView::GameBattleView(ResourceManager& resourceMgr) noexcept
 bool GameBattleView::Init() noexcept
 {
 	m_background.Create(&m_resourceMgr);
-
-	m_textureUI_character = m_resourceMgr.GetTexture("../data/ui/battleui_member.png");
 	m_battleBackGround = m_resourceMgr.GetTexture("../data/temp/textures/character/plains-ground.png");
-
 	return true;
 }
 //-----------------------------------------------------------------------------
@@ -57,6 +31,24 @@ void GameBattleView::Frame() noexcept
 {
 	drawBackground();
 	drawPanels();
+	drawCells();
+}
+//-----------------------------------------------------------------------------
+void GameBattleView::SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept
+{
+	if (x >= 3 || y >= 4) return;
+	m_cells[x][y] = status;
+}
+//-----------------------------------------------------------------------------
+void GameBattleView::ResetCells() noexcept
+{
+	for (size_t x = 0; x < 3; x++)
+	{
+		for (size_t y = 0; y < 4; y++)
+		{
+			m_cells[x][y] = BattleCellStatus::Normal;
+		}
+	}
 }
 //-----------------------------------------------------------------------------
 void GameBattleView::drawBackground() noexcept
@@ -65,10 +57,10 @@ void GameBattleView::drawBackground() noexcept
 	m_background.Draw();
 
 	// отрисовка пола
-	DrawTextureTiled(*m_battleBackGround, { 0,0,64,64 }, { battleCell[0].x, battleCell[0].y,500,680 }, { 0,0 }, 0.0, 1.0, WHITE);
+	DrawTextureTiled(*m_battleBackGround, { 0,0,64,64 }, { LeftTopCoordCells.x, LeftTopCoordCells.y,500,680 }, { 0,0 }, 0.0, 1.0, WHITE);
 
 	// отрисовка линии разделения поля боя
-	DrawRectangle((int)battleCell[0].x, 383, 500, 3, WHITE);
+	DrawRectangle((int)LeftTopCoordCells.x, 383, 500, 3, WHITE);
 }
 //-----------------------------------------------------------------------------
 void GameBattleView::drawPanels() noexcept
@@ -98,6 +90,40 @@ void GameBattleView::drawPanels() noexcept
 	// правая нижняя панель
 	{
 		DrawRectangle(765, 390, 230, 335, { 0, 0, 0, 180 });
+	}
+}
+//-----------------------------------------------------------------------------
+void GameBattleView::drawCells() noexcept
+{
+	Vector3 cellPos;
+	for (size_t x = 0; x < 3; x++)
+	{
+		for (size_t y = 0; y < 4; y++)
+		{			
+			cellPos.x = LeftTopCoordCells.x + (SizeCoordCells.x + OffsetCoordCells.x) * x;
+
+			cellPos.y = LeftTopCoordCells.y + 5 + (SizeCoordCells.y + OffsetCoordCells.y) * y;
+
+			switch (m_cells[x][y])
+			{
+			case BattleCellStatus::Normal: 
+				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 255, 255, 255, 180 });
+				break;
+			case BattleCellStatus::Yellow:
+				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 255, 210, 80, 180 });
+				break;
+			case BattleCellStatus::Green:
+				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 70, 255, 20, 180 });
+				break;
+			case BattleCellStatus::Red:
+				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 255, 30, 30, 180 });
+				break;
+			case BattleCellStatus::Grey:
+				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 100, 100, 100, 180 });
+				break;
+			default: break;
+			}
+		}
 	}
 }
 //-----------------------------------------------------------------------------

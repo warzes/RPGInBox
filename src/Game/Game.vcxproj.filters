@@ -96,7 +96,7 @@
     <ClInclude Include="BattleCell.h">
       <Filter>Game\_OLD</Filter>
     </ClInclude>
-    <ClInclude Include="BattleCore.h">
+    <ClInclude Include="oBattleCore.h">
       <Filter>Game\_OLD</Filter>
     </ClInclude>
     <ClInclude Include="BattleEngine.h">
@@ -170,6 +170,9 @@
       <Filter>Game\Data</Filter>
     </ClInclude>
     <ClInclude Include="GameBattle.h">
+      <Filter>Game\State\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleCore.h">
       <Filter>Game\State\Battle</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,6 +20,9 @@ bool GameBattle::Init() noexcept
 void GameBattle::StartBattle(const EnemyParty& enemies) noexcept
 {
 	m_enemies = enemies;
+	m_view.ResetCells();
+
+	m_view.SetStatusCell(1, 2, BattleCellStatus::Red);
 }
 //-----------------------------------------------------------------------------
 void GameBattle::Update(float deltaTime) noexcept

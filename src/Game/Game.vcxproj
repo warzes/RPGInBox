@@ -212,6 +212,7 @@
     <ClInclude Include="Base.h" />
     <ClInclude Include="BattleCell.h" />
     <ClInclude Include="BattleCore.h" />
+    <ClInclude Include="oBattleCore.h" />
     <ClInclude Include="BattleEngine.h" />
     <ClInclude Include="BattlePlayerAction.h" />
     <ClInclude Include="ConfigDefine.h" />
