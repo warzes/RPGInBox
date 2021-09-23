@@ -16,6 +16,7 @@ public:
 	void Frame() noexcept;
 
 private:
+	Point2 selectCell() noexcept;
 	ResourceManager& m_resourceMgr;
 	GameBattleView m_view;
 	Player& m_player;

@@ -2,6 +2,7 @@
 #include "GameBattleView.h"
 #include "ResourceManager.h"
 #include "Creature.h"
+#include "EngineMath.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 void UIBattlePanelBG::Create(ResourceManager* resourceMgr)
@@ -58,7 +59,7 @@ void GameBattleView::drawBackground() noexcept
 	m_background.Draw();
 
 	// отрисовка пола
-	DrawTextureTiled(*m_battleBackGround, { 0,0,64,64 }, { LeftTopCoordCells.x, LeftTopCoordCells.y,500,680 }, { 0,0 }, 0.0, 1.0, WHITE);
+	DrawTextureTiled(*m_battleBackGround, { 0.0f,0.0f,64.0f,64.0f }, { (float)LeftTopCoordCells.x, (float)LeftTopCoordCells.y,500.0f,680.0f }, { 0.0f,0.0f }, 0.0f, 1.0f, WHITE);
 
 	// отрисовка линии разделения поля боя
 	DrawRectangle((int)LeftTopCoordCells.x, 383, 500, 3, WHITE);
@@ -96,13 +97,13 @@ void GameBattleView::drawPanels() noexcept
 //-----------------------------------------------------------------------------
 void GameBattleView::drawCells(const Player& player, EnemyParty* enemies) noexcept
 {
-	Vector3 cellPos;
+	Point2 cellPos;
 	for (size_t x = 0; x < 3; x++)
 	{
 		for (size_t y = 0; y < 4; y++)
 		{			
-			cellPos.x = LeftTopCoordCells.x + (SizeCoordCells.x + OffsetCoordCells.x) * x;
-			cellPos.y = LeftTopCoordCells.y + 5 + (SizeCoordCells.y + OffsetCoordCells.y) * y;
+			cellPos.x = LeftTopCoordCells.x + (SizeCoordCells.x + OffsetCoordCells.x) * (int)x;
+			cellPos.y = LeftTopCoordCells.y + 5 + (SizeCoordCells.y + OffsetCoordCells.y) * (int)y;
 
 			// cell
 			switch (m_cells[x][y])
