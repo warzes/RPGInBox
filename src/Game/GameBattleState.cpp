@@ -22,11 +22,19 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 	m_enemies = enemies;
 	m_view.ResetCells();
 	m_rules.StartBattle(&m_player, m_enemies);
+
+	m_playerMenu.Reset();
+	m_playerMenu.AddElement("Attack");
+	m_playerMenu.AddElement("Skill");
+	m_playerMenu.AddElement("Magic");
+	m_playerMenu.AddElement("Defence");
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Update(float deltaTime) noexcept
 {
 	m_rules.Run();
+	int i = m_playerMenu.Run();
+	if (i >= 0) m_playerMenu.SetSelect(i);
 	//auto p = selectCell();
 	//if (p.x >= 0 && p.y >= 0)
 	//{	
@@ -38,6 +46,7 @@ void GameBattleState::Update(float deltaTime) noexcept
 void GameBattleState::Frame() noexcept
 {
 	m_view.Frame(m_player, m_enemies);
+	m_playerMenu.Draw();
 }
 //-----------------------------------------------------------------------------
 Point2 GameBattleState::selectCell() noexcept // TODO: возможно перенести в класс правил

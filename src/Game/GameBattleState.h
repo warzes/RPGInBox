@@ -2,6 +2,7 @@
 
 #include "GameBattleView.h"
 #include "GameBattleRules.h"
+#include "GameBattlePlayerMenu.h"
 
 class ResourceManager;
 
@@ -23,4 +24,5 @@ private:
 	Player& m_player;
 	EnemyParty* m_enemies = nullptr;
 	GameBattleRules m_rules;
+	GameBattlePlayerMenu m_playerMenu;
 };
