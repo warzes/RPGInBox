@@ -187,9 +187,9 @@
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameAdventure.cpp" />
-    <ClCompile Include="GameBattle.cpp" />
+    <ClCompile Include="GameBattleRules.cpp" />
+    <ClCompile Include="GameBattleState.cpp" />
     <ClCompile Include="GameBattleView.cpp" />
-    <ClCompile Include="GameData.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -212,6 +212,7 @@
     <ClInclude Include="Base.h" />
     <ClInclude Include="BattleCell.h" />
     <ClInclude Include="BattleCore.h" />
+    <ClInclude Include="GameBattleRules.h" />
     <ClInclude Include="oBattleCore.h" />
     <ClInclude Include="BattleEngine.h" />
     <ClInclude Include="BattlePlayerAction.h" />
@@ -223,9 +224,8 @@
     <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameAdventure.h" />
-    <ClInclude Include="GameBattle.h" />
+    <ClInclude Include="GameBattleState.h" />
     <ClInclude Include="GameBattleView.h" />
-    <ClInclude Include="GameData.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="HeroTemplateData.h" />
     <ClInclude Include="Creature.h" />

@@ -1,15 +1,15 @@
 ﻿#include "stdafx.h"
-#include "GameBattle.h"
+#include "GameBattleState.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-GameBattle::GameBattle(Player& player, ResourceManager& resourceMgr) noexcept
+GameBattleState::GameBattleState(Player& player, ResourceManager& resourceMgr) noexcept
 	: m_resourceMgr(resourceMgr)
 	, m_view(resourceMgr)
 	, m_player(player)	
 {
 }
 //-----------------------------------------------------------------------------
-bool GameBattle::Init() noexcept
+bool GameBattleState::Init() noexcept
 {
 	if (!m_view.Init())
 		return false;
@@ -17,13 +17,13 @@ bool GameBattle::Init() noexcept
 	return true;
 }
 //-----------------------------------------------------------------------------
-void GameBattle::StartBattle(EnemyParty* enemies) noexcept
+void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 {
 	m_enemies = enemies;
 	m_view.ResetCells();
 }
 //-----------------------------------------------------------------------------
-void GameBattle::Update(float deltaTime) noexcept
+void GameBattleState::Update(float deltaTime) noexcept
 {
 	auto p = selectCell();
 	if (p.x >= 0 && p.y >= 0)
@@ -33,12 +33,12 @@ void GameBattle::Update(float deltaTime) noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattle::Frame() noexcept
+void GameBattleState::Frame() noexcept
 {
 	m_view.Frame(m_player, m_enemies);
 }
 //-----------------------------------------------------------------------------
-Point2 GameBattle::selectCell() noexcept
+Point2 GameBattleState::selectCell() noexcept
 {
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 	{

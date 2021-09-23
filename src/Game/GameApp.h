@@ -3,7 +3,7 @@
 #include "ResourceManager.h"
 #include "DataManager.h"
 #include "GameAdventure.h"
-#include "GameBattle.h"
+#include "GameBattleState.h"
 
 enum class GameState
 {
@@ -43,7 +43,7 @@ private:
 
 	GameState m_state = GameState::Adventure;
 	GameAdventure m_adventureState;
-	GameBattle m_battleState;
+	GameBattleState m_battleState;
 	EnemyParty m_enemies;
 	bool m_isEnd = false;
 

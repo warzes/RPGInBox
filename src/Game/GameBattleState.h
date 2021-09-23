@@ -1,13 +1,14 @@
 #pragma once
 
 #include "GameBattleView.h"
+#include "GameBattleRules.h"
 
 class ResourceManager;
 
-class GameBattle final
+class GameBattleState final
 {
 public:
-	GameBattle(Player& player, ResourceManager& resourceMgr) noexcept;
+	GameBattleState(Player& player, ResourceManager& resourceMgr) noexcept;
 	bool Init() noexcept;
 
 	void StartBattle(EnemyParty* enemies) noexcept;
@@ -20,5 +21,6 @@ private:
 	ResourceManager& m_resourceMgr;
 	GameBattleView m_view;
 	Player& m_player;
-	EnemyParty* m_enemies;
+	EnemyParty* m_enemies = nullptr;
+	GameBattleRules m_rules;
 };

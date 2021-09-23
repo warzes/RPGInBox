@@ -45,17 +45,11 @@
     <ClCompile Include="WorldAdventure.cpp">
       <Filter>Game\_OLD\State\Adventure\World</Filter>
     </ClCompile>
-    <ClCompile Include="GameBattleView.cpp">
-      <Filter>Game\State\Battle\View</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyTemplateData.cpp">
       <Filter>Game\_OLD\Data\old</Filter>
     </ClCompile>
     <ClCompile Include="HeroTemplateData.cpp">
       <Filter>Game\_OLD\Data\old</Filter>
-    </ClCompile>
-    <ClCompile Include="GameData.cpp">
-      <Filter>Game\_OLD\Data</Filter>
     </ClCompile>
     <ClCompile Include="GameApp.cpp">
       <Filter>Game</Filter>
@@ -69,7 +63,13 @@
     <ClCompile Include="Creature.cpp">
       <Filter>Game\Data\DataType</Filter>
     </ClCompile>
-    <ClCompile Include="GameBattle.cpp">
+    <ClCompile Include="GameBattleState.cpp">
+      <Filter>Game\State\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBattleView.cpp">
+      <Filter>Game\State\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBattleRules.cpp">
       <Filter>Game\State\Battle</Filter>
     </ClCompile>
   </ItemGroup>
@@ -136,9 +136,6 @@
     <ClInclude Include="WorldAdventure.h">
       <Filter>Game\_OLD\State\Adventure\World</Filter>
     </ClInclude>
-    <ClInclude Include="GameBattleView.h">
-      <Filter>Game\State\Battle\View</Filter>
-    </ClInclude>
     <ClInclude Include="Stats.h">
       <Filter>Game\_OLD\Data\old</Filter>
     </ClInclude>
@@ -154,9 +151,6 @@
     <ClInclude Include="HeroTemplateData.h">
       <Filter>Game\_OLD\Data\old</Filter>
     </ClInclude>
-    <ClInclude Include="GameData.h">
-      <Filter>Game\_OLD\Data</Filter>
-    </ClInclude>
     <ClInclude Include="GameApp.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -169,10 +163,16 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>Game\Data</Filter>
     </ClInclude>
-    <ClInclude Include="GameBattle.h">
+    <ClInclude Include="GameBattleState.h">
       <Filter>Game\State\Battle</Filter>
     </ClInclude>
     <ClInclude Include="BattleCore.h">
+      <Filter>Game\State\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBattleView.h">
+      <Filter>Game\State\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBattleRules.h">
       <Filter>Game\State\Battle</Filter>
     </ClInclude>
   </ItemGroup>
@@ -182,9 +182,6 @@
     </Filter>
     <Filter Include="Game\_OLD">
       <UniqueIdentifier>{b5ec1bda-790e-486d-8290-e3eb7513c743}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\_OLD\Core">
-      <UniqueIdentifier>{19e6457f-3a2e-45c1-82b2-bf3072a3d341}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\_OLD\Data">
       <UniqueIdentifier>{c8640b4b-9a1f-444e-9448-97f269cacae2}</UniqueIdentifier>
@@ -224,9 +221,6 @@
     </Filter>
     <Filter Include="Game\State\Battle">
       <UniqueIdentifier>{4a2615ff-3f0a-4c01-a6d7-a9546368f51b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\State\Battle\View">
-      <UniqueIdentifier>{2eacdf8e-f47a-4de6-b7b1-9eeae9807dbc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
