@@ -21,16 +21,18 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 {
 	m_enemies = enemies;
 	m_view.ResetCells();
+	m_rules.StartBattle(&m_player, m_enemies);
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Update(float deltaTime) noexcept
 {
-	auto p = selectCell();
-	if (p.x >= 0 && p.y >= 0)
-	{	
-		m_view.ResetCells();
-		m_view.SetStatusCell(p.x, p.y, BattleCellStatus::Yellow);
-	}
+	m_rules.Run();
+	//auto p = selectCell();
+	//if (p.x >= 0 && p.y >= 0)
+	//{	
+	//	m_view.ResetCells();
+	//	m_view.SetStatusCell(p.x, p.y, BattleCellStatus::Yellow);
+	//}
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Frame() noexcept
@@ -38,7 +40,7 @@ void GameBattleState::Frame() noexcept
 	m_view.Frame(m_player, m_enemies);
 }
 //-----------------------------------------------------------------------------
-Point2 GameBattleState::selectCell() noexcept
+Point2 GameBattleState::selectCell() noexcept // TODO: возможно перенести в класс правил
 {
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 	{

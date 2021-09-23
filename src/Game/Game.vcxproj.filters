@@ -72,6 +72,9 @@
     <ClCompile Include="GameBattleRules.cpp">
       <Filter>Game\State\Battle</Filter>
     </ClCompile>
+    <ClCompile Include="GameBattlePlayerMenu.cpp">
+      <Filter>Game\State\Battle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -173,6 +176,9 @@
       <Filter>Game\State\Battle</Filter>
     </ClInclude>
     <ClInclude Include="GameBattleRules.h">
+      <Filter>Game\State\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBattlePlayerMenu.h">
       <Filter>Game\State\Battle</Filter>
     </ClInclude>
   </ItemGroup>

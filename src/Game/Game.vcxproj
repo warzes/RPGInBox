@@ -187,6 +187,7 @@
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameAdventure.cpp" />
+    <ClCompile Include="GameBattlePlayerMenu.cpp" />
     <ClCompile Include="GameBattleRules.cpp" />
     <ClCompile Include="GameBattleState.cpp" />
     <ClCompile Include="GameBattleView.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="Base.h" />
     <ClInclude Include="BattleCell.h" />
     <ClInclude Include="BattleCore.h" />
+    <ClInclude Include="GameBattlePlayerMenu.h" />
     <ClInclude Include="GameBattleRules.h" />
     <ClInclude Include="oBattleCore.h" />
     <ClInclude Include="BattleEngine.h" />

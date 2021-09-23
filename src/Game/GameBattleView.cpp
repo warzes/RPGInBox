@@ -34,6 +34,7 @@ void GameBattleView::Frame(const Player& player, EnemyParty* enemies) noexcept
 	drawBackground();
 	drawPanels();
 	drawCells(player, enemies);
+	drawPlayerMenu();
 }
 //-----------------------------------------------------------------------------
 void GameBattleView::SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept
@@ -144,5 +145,19 @@ void GameBattleView::drawCells(const Player& player, EnemyParty* enemies) noexce
 			}
 		}
 	}
+}
+//-----------------------------------------------------------------------------
+void GameBattleView::drawPlayerMenu() noexcept
+{
+	//for (size_t i = 0; i < Countof(playerCommandRect); i++)
+	//	DrawRectangleLinesEx(playerCommandRect[i], 1.0f, WHITE);
+
+	//if (m_selectPlayerCommand >= 0)
+	//	DrawText(">>>            <<<", 770, 420 + m_selectPlayerCommand * 40, 30, GREEN);
+
+	DrawText("Attack", 820, 420, 30, WHITE);
+	DrawText("Skill", 820, 460, 30, WHITE);
+	DrawText("Magic", 820, 500, 30, WHITE);
+	DrawText("Defence", 820, 540, 30, WHITE);
 }
 //-----------------------------------------------------------------------------

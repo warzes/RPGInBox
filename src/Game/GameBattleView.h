@@ -38,6 +38,7 @@ private:
 	void drawBackground() noexcept;
 	void drawPanels() noexcept;
 	void drawCells(const Player& player, EnemyParty* enemies) noexcept;
+	void drawPlayerMenu() noexcept;
 
 	BattleCellStatus m_cells[3][4] = { BattleCellStatus::Normal };
 
