@@ -23,14 +23,13 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 	m_view.ResetCells();
 	m_rules.StartBattle(&m_player, m_enemies);
 
-	m_playerMenu.AddElements(PlayerActionMainMenu);	
+	m_playerMenu.AddElements({ 810, 415 }, PlayerActionMainMenu);
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Update(float deltaTime) noexcept
 {
 	m_rules.Run();
-	int i = m_playerMenu.Run();
-	if (i >= 0) m_playerMenu.SetSelect(i);
+	m_playerMenu.Run();
 	//auto p = selectCell();
 	//if (p.x >= 0 && p.y >= 0)
 	//{	
