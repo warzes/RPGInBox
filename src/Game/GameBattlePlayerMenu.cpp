@@ -43,9 +43,6 @@ void GameBattlePlayerMenu::Run() noexcept
 			}				
 		}
 	}
-
-	if (m_select >= 0)
-		printf("%d", m_select);
 }
 //-----------------------------------------------------------------------------
 void GameBattlePlayerMenu::Reset(const Point2& leftUpPos) noexcept

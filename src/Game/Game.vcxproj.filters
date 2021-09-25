@@ -12,18 +12,6 @@
     <ClCompile Include="Log.cpp">
       <Filter>Framework\Core</Filter>
     </ClCompile>
-    <ClCompile Include="BattleCell.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleEngine.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="BattlePlayerAction.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyParty.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerParty.cpp">
       <Filter>Game\_OLD</Filter>
     </ClCompile>
@@ -96,19 +84,7 @@
     <ClInclude Include="EngineMath.h">
       <Filter>Framework\Core</Filter>
     </ClInclude>
-    <ClInclude Include="BattleCell.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
     <ClInclude Include="oBattleCore.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleEngine.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="BattlePlayerAction.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyParty.h">
       <Filter>Game\_OLD</Filter>
     </ClInclude>
     <ClInclude Include="PlayerParty.h">

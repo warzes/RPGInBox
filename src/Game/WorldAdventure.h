@@ -2,7 +2,7 @@
 
 #include "PlayerParty.h"
 #include "Map.h"
-#include "BattleEngine.h"
+
 #include "Sky.h"
 
 class WorldAdventure final : NonCopyable, NonMovable
@@ -20,7 +20,6 @@ public:
 	PlayerParty playerParty;
 	Map openworld;
 private:
-	oEnemyParty getTestEnemy(); // TODO: ïåðåíåñòè â Map, òàê êàê çàâèñèò îò êàðòû
 
 	ResourceManager& m_resources;
 

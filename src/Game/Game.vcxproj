@@ -177,12 +177,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BattleCell.cpp" />
-    <ClCompile Include="BattleEngine.cpp" />
-    <ClCompile Include="BattlePlayerAction.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="DataManager.cpp" />
-    <ClCompile Include="EnemyParty.cpp" />
     <ClCompile Include="EnemyTemplateData.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameApp.cpp" />
@@ -211,17 +207,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h" />
-    <ClInclude Include="BattleCell.h" />
     <ClInclude Include="BattleCore.h" />
     <ClInclude Include="GameBattlePlayerMenu.h" />
     <ClInclude Include="GameBattleRules.h" />
     <ClInclude Include="oBattleCore.h" />
-    <ClInclude Include="BattleEngine.h" />
-    <ClInclude Include="BattlePlayerAction.h" />
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnemyParty.h" />
     <ClInclude Include="EnemyTemplateData.h" />
     <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="GameApp.h" />
