@@ -1,7 +1,6 @@
 ﻿#include "stdafx.h"
 #include "WorldAdventure.h"
 #include "IGameCamera.h"
-#include "EnemyTemplateData.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 WorldAdventure::WorldAdventure(ResourceManager& resources)

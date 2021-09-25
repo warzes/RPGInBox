@@ -33,12 +33,6 @@
     <ClCompile Include="WorldAdventure.cpp">
       <Filter>Game\_OLD\State\Adventure\World</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyTemplateData.cpp">
-      <Filter>Game\_OLD\Data\old</Filter>
-    </ClCompile>
-    <ClCompile Include="HeroTemplateData.cpp">
-      <Filter>Game\_OLD\Data\old</Filter>
-    </ClCompile>
     <ClCompile Include="GameApp.cpp">
       <Filter>Game</Filter>
     </ClCompile>
@@ -84,9 +78,6 @@
     <ClInclude Include="EngineMath.h">
       <Filter>Framework\Core</Filter>
     </ClInclude>
-    <ClInclude Include="oBattleCore.h">
-      <Filter>Game\_OLD</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerParty.h">
       <Filter>Game\_OLD</Filter>
     </ClInclude>
@@ -115,21 +106,6 @@
     <ClInclude Include="WorldAdventure.h">
       <Filter>Game\_OLD\State\Adventure\World</Filter>
     </ClInclude>
-    <ClInclude Include="Stats.h">
-      <Filter>Game\_OLD\Data\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\_OLD\Data\old</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyTemplateData.h">
-      <Filter>Game\_OLD\Data\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Hero.h">
-      <Filter>Game\_OLD\Data\old</Filter>
-    </ClInclude>
-    <ClInclude Include="HeroTemplateData.h">
-      <Filter>Game\_OLD\Data\old</Filter>
-    </ClInclude>
     <ClInclude Include="GameApp.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -157,6 +133,15 @@
     <ClInclude Include="GameBattlePlayerMenu.h">
       <Filter>Game\State\Battle</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\_OLD\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>Game\_OLD\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Stats.h">
+      <Filter>Game\_OLD\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -167,9 +152,6 @@
     </Filter>
     <Filter Include="Game\_OLD\Data">
       <UniqueIdentifier>{c8640b4b-9a1f-444e-9448-97f269cacae2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\_OLD\Data\old">
-      <UniqueIdentifier>{d900a031-ab40-4c8f-bd21-86285c019a11}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\_OLD\State">
       <UniqueIdentifier>{33351ee0-f6b7-4fd4-84aa-a0b311d96033}</UniqueIdentifier>
