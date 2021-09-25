@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "GameBattlePlayerMenu.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
@@ -25,6 +25,7 @@ void GameBattlePlayerMenu::Draw() noexcept
 void GameBattlePlayerMenu::Run() noexcept
 {
 	m_select = -1;
+	// Ð²Ñ‹Ð±Ð¾Ñ€ Ð¼ÐµÐ½ÑŽ Ð¼Ñ‹ÑˆÐºÐ¾Ð¹
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 	{
 		auto pos = GetMousePosition();
@@ -37,11 +38,34 @@ void GameBattlePlayerMenu::Run() noexcept
 
 			if (pos.x <= m_commonSize.width && iy < m_elements.size())
 			{
-				if (iy == m_actionElement) // äàííûé ýëåìåíò óæå âûáðàí, çíà÷èò èãðîê âûáðàë ýòî ìåíþ
+				if (iy == m_actionElement) // Ð´Ð°Ð½Ð½Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ ÑƒÐ¶Ðµ Ð²Ñ‹Ð±Ñ€Ð°Ð½, Ð·Ð½Ð°Ñ‡Ð¸Ñ‚ Ð¸Ð³Ñ€Ð¾Ðº Ð²Ñ‹Ð±Ñ€Ð°Ð» ÑÑ‚Ð¾ Ð¼ÐµÐ½ÑŽ
 					m_select = m_actionElement;
 				m_actionElement = iy;
 			}				
 		}
+	}
+	if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
+	{
+		if (m_actionElement == 0)
+		{
+			m_actionElement = m_elements.size() - 1;
+		}
+		else
+			--m_actionElement;
+	}
+	if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S))
+	{
+		if (m_actionElement >= m_elements.size() - 1)
+		{
+			m_actionElement = 0;
+		}
+		else
+			++m_actionElement;
+	}
+	// Ð²Ñ‹Ð±Ð¾Ñ€ Ð¼ÐµÐ½ÑŽ ÐºÐ»Ð°Ð²Ð¸ÑˆÐ°Ð¼Ð¸
+	if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_ENTER))
+	{
+		m_select = m_actionElement;
 	}
 }
 //-----------------------------------------------------------------------------
