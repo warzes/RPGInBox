@@ -1,4 +1,8 @@
-﻿Текущий внесенный коммит рейлиба
+﻿Разное по рейлибу
+https://githubmemory.com/repo/Rabios/awesome-raylib
+
+
+Текущий внесенный коммит рейлиба
 	
 Commits on Sep 24, 2021
     [models] Animation System Fix Part 1 
