@@ -177,7 +177,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="oCreature.cpp" />
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameApp.cpp" />
@@ -217,7 +217,7 @@
     <ClInclude Include="GameBattleState.h" />
     <ClInclude Include="GameBattleView.h" />
     <ClInclude Include="Hero.h" />
-    <ClInclude Include="Creature.h" />
+    <ClInclude Include="oCreature.h" />
     <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugNew.h" />

@@ -42,7 +42,7 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Game\Data</Filter>
     </ClCompile>
-    <ClCompile Include="Creature.cpp">
+    <ClCompile Include="oCreature.cpp">
       <Filter>Game\Data\DataType</Filter>
     </ClCompile>
     <ClCompile Include="GameBattleState.cpp">
@@ -109,7 +109,7 @@
     <ClInclude Include="GameApp.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Creature.h">
+    <ClInclude Include="oCreature.h">
       <Filter>Game\Data\DataType</Filter>
     </ClInclude>
     <ClInclude Include="DataManager.h">
@@ -185,6 +185,9 @@
     </Filter>
     <Filter Include="Game\State\Battle">
       <UniqueIdentifier>{4a2615ff-3f0a-4c01-a6d7-a9546368f51b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\RPG">
+      <UniqueIdentifier>{6144f92b-f8b4-4eba-8687-e8528ad7c911}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

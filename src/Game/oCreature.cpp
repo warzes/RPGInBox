@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Creature.h"
+#include "oCreature.h"
 #include "ResourceManager.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
