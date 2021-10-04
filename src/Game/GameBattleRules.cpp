@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 #include "GameBattleRules.h"
-#include "Creature.h"
+#include "oCreature.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 void GameBattleRules::StartBattle(Player* player, EnemyParty* enemies) noexcept

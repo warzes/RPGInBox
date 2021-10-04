@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BattleCore.h"
-#include "Creature.h"
+#include "oCreature.h"
 
 class ResourceManager;
 

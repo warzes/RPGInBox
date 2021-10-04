@@ -8,10 +8,10 @@ enum class CreatureType
 	Enemy
 };
 
-class ICreature
+class oICreature
 {
 public:
-	virtual ~ICreature() = default;
+	virtual ~oICreature() = default;
 
 	virtual int GetHP() const noexcept { return hp; }
 	virtual CreatureType GetType() const noexcept = 0;
@@ -28,13 +28,13 @@ public:
 	int hp = 10;
 };
 
-class Hero final : public ICreature
+class Hero final : public oICreature
 {
 public:
 	CreatureType GetType() const noexcept final { return CreatureType::Hero; }
 };
 
-class Enemy final : public ICreature
+class Enemy final : public oICreature
 {
 public:
 	CreatureType GetType() const noexcept final { return CreatureType::Enemy; }

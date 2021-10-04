@@ -42,9 +42,6 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Game\Data</Filter>
     </ClCompile>
-    <ClCompile Include="oCreature.cpp">
-      <Filter>Game\Data\DataType</Filter>
-    </ClCompile>
     <ClCompile Include="GameBattleState.cpp">
       <Filter>Game\State\Battle</Filter>
     </ClCompile>
@@ -56,6 +53,12 @@
     </ClCompile>
     <ClCompile Include="GameBattlePlayerMenu.cpp">
       <Filter>Game\State\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="Creature.cpp">
+      <Filter>Game\RPG</Filter>
+    </ClCompile>
+    <ClCompile Include="oCreature.cpp">
+      <Filter>Game\RPG\old</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,9 +112,6 @@
     <ClInclude Include="GameApp.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="oCreature.h">
-      <Filter>Game\Data\DataType</Filter>
-    </ClInclude>
     <ClInclude Include="DataManager.h">
       <Filter>Game\Data</Filter>
     </ClInclude>
@@ -133,14 +133,20 @@
     <ClInclude Include="GameBattlePlayerMenu.h">
       <Filter>Game\State\Battle</Filter>
     </ClInclude>
+    <ClInclude Include="Creature.h">
+      <Filter>Game\RPG</Filter>
+    </ClInclude>
+    <ClInclude Include="oCreature.h">
+      <Filter>Game\RPG\old</Filter>
+    </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>Game\_OLD\Data</Filter>
+      <Filter>Game\RPG\old</Filter>
     </ClInclude>
     <ClInclude Include="Hero.h">
-      <Filter>Game\_OLD\Data</Filter>
+      <Filter>Game\RPG\old</Filter>
     </ClInclude>
     <ClInclude Include="Stats.h">
-      <Filter>Game\_OLD\Data</Filter>
+      <Filter>Game\RPG\old</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +155,6 @@
     </Filter>
     <Filter Include="Game\_OLD">
       <UniqueIdentifier>{b5ec1bda-790e-486d-8290-e3eb7513c743}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\_OLD\Data">
-      <UniqueIdentifier>{c8640b4b-9a1f-444e-9448-97f269cacae2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\_OLD\State">
       <UniqueIdentifier>{33351ee0-f6b7-4fd4-84aa-a0b311d96033}</UniqueIdentifier>
@@ -188,6 +191,9 @@
     </Filter>
     <Filter Include="Game\RPG">
       <UniqueIdentifier>{6144f92b-f8b4-4eba-8687-e8528ad7c911}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\RPG\old">
+      <UniqueIdentifier>{2be3f2e6-00db-4f40-8459-f136871ce9e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
