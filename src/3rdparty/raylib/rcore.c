@@ -196,7 +196,6 @@
     // Support retrieving native window handlers
     #if defined(_WIN32)
         #define GLFW_EXPOSE_NATIVE_WIN32
-        //#include "GLFW/glfw3native.h"       // WARNING: It requires customization to avoid windows.h inclusion!
 
         #if defined(SUPPORT_WINMM_HIGHRES_TIMER) && !defined(SUPPORT_BUSY_WAIT_LOOP)
             // NOTE: Those functions require linking with winmm library
@@ -2285,7 +2284,7 @@ Shader LoadShader(const char *vsFileName, const char *fsFileName)
 
     char *vShaderStr = NULL;
     char *fShaderStr = NULL;
-    
+
     if (vsFileName != NULL) vShaderStr = LoadFileText(vsFileName);
     if (fsFileName != NULL) fShaderStr = LoadFileText(fsFileName);
 
@@ -2518,6 +2517,8 @@ Vector2 GetWorldToScreenEx(Vector3 position, Camera camera, int width, int heigh
 
     // Calculate view matrix from camera look at (and transpose it)
     Matrix matView = MatrixLookAt(camera.position, camera.target, camera.up);
+
+    // TODO: Why not use Vector3Transform(Vector3 v, Matrix mat)?
 
     // Convert world position vector to quaternion
     Quaternion worldPos = { position.x, position.y, position.z, 1.0f };
@@ -3579,9 +3580,9 @@ Vector2 GetTouchPosition(int index)
 int GetTouchPointId(int index)
 {
     int id = -1;
-    
+
     if (index < MAX_TOUCH_POINTS) id = CORE.Input.Touch.pointId[index];
-    
+
     return id;
 }
 
@@ -3910,8 +3911,13 @@ static bool InitGraphicsDevice(int width, int height)
 #if defined(DEFAULT_GRAPHIC_DEVICE_DRM)
     CORE.Window.fd = open(DEFAULT_GRAPHIC_DEVICE_DRM, O_RDWR);
 #else
-    TRACELOG(LOG_INFO, "DISPLAY: No graphic card set, trying card1");
-    CORE.Window.fd = open("/dev/dri/card1", O_RDWR); // VideoCore VI (Raspberry Pi 4)
+    TRACELOG(LOG_INFO, "DISPLAY: No graphic card set, trying platform-gpu-card");
+    CORE.Window.fd = open("/dev/dri/by-path/platform-gpu-card",  O_RDWR); // VideoCore VI (Raspberry Pi 4)
+    if ((-1 == CORE.Window.fd) || (drmModeGetResources(CORE.Window.fd) == NULL))
+    {
+        TRACELOG(LOG_INFO, "DISPLAY: Failed to open platform-gpu-card, trying card1");
+        CORE.Window.fd = open("/dev/dri/card1", O_RDWR); // Other Embedded 
+    }
     if ((-1 == CORE.Window.fd) || (drmModeGetResources(CORE.Window.fd) == NULL))
     {
         TRACELOG(LOG_INFO, "DISPLAY: Failed to open graphic card1, trying card0");
@@ -4887,7 +4893,7 @@ static void WindowSizeCallback(GLFWwindow *window, int width, int height)
     // Set current screen size
     CORE.Window.screen.width = width;
     CORE.Window.screen.height = height;
-    
+
     // NOTE: Postprocessing texture is not scaled to new size
 }
 
@@ -5300,10 +5306,10 @@ static int32_t AndroidInputCallback(struct android_app *app, AInputEvent *event)
 
         return 0;
     }
-    
+
     // Register touch points count
     CORE.Input.Touch.pointCount = AMotionEvent_getPointerCount(event);
-    
+
     for (int i = 0; (i < CORE.Input.Touch.pointCount) && (i < MAX_TOUCH_POINTS); i++)
     {
         // Register touch points id
@@ -5311,7 +5317,7 @@ static int32_t AndroidInputCallback(struct android_app *app, AInputEvent *event)
 
         // Register touch points position
         CORE.Input.Touch.position[i] = (Vector2){ AMotionEvent_getX(event, i), AMotionEvent_getY(event, i) };
-        
+
         // Normalize CORE.Input.Touch.position[x] for screenWidth and screenHeight
         CORE.Input.Touch.position[i].x /= (float)GetScreenWidth();
         CORE.Input.Touch.position[i].y /= (float)GetScreenHeight();
@@ -5325,7 +5331,7 @@ static int32_t AndroidInputCallback(struct android_app *app, AInputEvent *event)
 
 #if defined(SUPPORT_GESTURES_SYSTEM)        // PLATFORM_ANDROID
     GestureEvent gestureEvent = { 0 };
-    
+
     gestureEvent.pointCount = CORE.Input.Touch.pointCount;
 
     // Register touch actions
@@ -5361,14 +5367,14 @@ static EM_BOOL EmscriptenTouchCallback(int eventType, const EmscriptenTouchEvent
 {
     // Register touch points count
     CORE.Input.Touch.pointCount = touchEvent->numTouches;
-    
+
     double canvasWidth = 0.0;
     double canvasHeight = 0.0;
     // NOTE: emscripten_get_canvas_element_size() returns canvas.width and canvas.height but
     // we are looking for actual CSS size: canvas.style.width and canvas.style.height
     //EMSCRIPTEN_RESULT res = emscripten_get_canvas_element_size("#canvas", &canvasWidth, &canvasHeight);
     emscripten_get_element_css_size("#canvas", &canvasWidth, &canvasHeight);
-    
+
     for (int i = 0; (i < CORE.Input.Touch.pointCount) && (i < MAX_TOUCH_POINTS); i++)
     {
         // Register touch points id
@@ -5380,14 +5386,14 @@ static EM_BOOL EmscriptenTouchCallback(int eventType, const EmscriptenTouchEvent
         // Normalize gestureEvent.position[x] for CORE.Window.screen.width and CORE.Window.screen.height
         CORE.Input.Touch.position[i].x *= ((float)GetScreenWidth()/(float)canvasWidth);
         CORE.Input.Touch.position[i].y *= ((float)GetScreenHeight()/(float)canvasHeight);
-        
+
         if (eventType == EMSCRIPTEN_EVENT_TOUCHSTART) CORE.Input.Touch.currentTouchState[i] = 1;
         else if (eventType == EMSCRIPTEN_EVENT_TOUCHEND) CORE.Input.Touch.currentTouchState[i] = 0;
     }
 
 #if defined(SUPPORT_GESTURES_SYSTEM)        // PLATFORM_WEB
     GestureEvent gestureEvent = { 0 };
-    
+
     gestureEvent.pointCount = CORE.Input.Touch.pointCount;
 
     // Register touch actions
@@ -5425,7 +5431,7 @@ static EM_BOOL EmscriptenGamepadCallback(int eventType, const EmscriptenGamepadE
     {
         CORE.Input.Gamepad.ready[gamepadEvent->index] = true;
         sprintf(CORE.Input.Gamepad.name[gamepadEvent->index],"%s",gamepadEvent->id);
-    } 
+    }
     else CORE.Input.Gamepad.ready[gamepadEvent->index] = false;
 
     // TODO: Test gamepadEvent->index

@@ -111,9 +111,9 @@
 
 #if defined(_WIN32)
     #if defined(BUILD_LIBTYPE_SHARED)
-        #define RLAPI __declspec(dllexport)         // We are building raylib as a Win32 shared library (.dll)
+        #define RLAPI __declspec(dllexport)         // We are building rlgl as a Win32 shared library (.dll)
     #elif defined(USE_LIBTYPE_SHARED)
-        #define RLAPI __declspec(dllimport)         // We are using raylib as a Win32 shared library (.dll)
+        #define RLAPI __declspec(dllimport)         // We are using rlgl as a Win32 shared library (.dll)
     #endif
 #endif
 
@@ -2548,8 +2548,15 @@ bool rlCheckRenderBatchLimit(int vCount)
     if ((RLGL.currentBatch->vertexBuffer[RLGL.currentBatch->currentBuffer].vCounter + vCount) >=
         (RLGL.currentBatch->vertexBuffer[RLGL.currentBatch->currentBuffer].elementCount*4))
     {
+        int currentMode = RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].mode;
+        int currentTexture = RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].textureId;
+
         overflow = true;
         rlDrawRenderBatch(RLGL.currentBatch);    // NOTE: Stereo rendering is checked inside
+
+        // restore state of last batch so we can continue adding vertices
+        RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].mode = currentMode;
+        RLGL.currentBatch->draws[RLGL.currentBatch->drawCounter - 1].textureId = currentTexture;
     }
 #endif
 
