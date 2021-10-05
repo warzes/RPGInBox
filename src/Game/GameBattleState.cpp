@@ -7,6 +7,9 @@
 #include "EngineMath.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
+constexpr std::array<const char*, 4> PlayerActionMainMenu = { "Attack" , "Skill", "Magic", "Defence" };
+constexpr std::array<const char*, 3> PlayerActionMainMenu_Attack = { "Melee" , "Shoot", "Cancel" };
+//-----------------------------------------------------------------------------
 GameBattleState::GameBattleState(Player& player, ResourceManager& resourceMgr) noexcept
 	: m_resourceMgr(resourceMgr)
 	, m_player(player)
@@ -23,6 +26,31 @@ bool GameBattleState::Init() noexcept
 
 	return true;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+проделать каждую функцию по отдельности без учета остального - например функция выбора одной цели - выделить активного, выделить допустимые клетки, ждать команды. И уже с них собирать боевку.
+
+каждую возможно описать словами  -например:
+	выбор цели ближней атаки()
+		подсветить текущего бойца желтым
+		подсветить допустивые клетки-цели зеленым
+		ждать команды
+		вернуть номер клетки и/или цель
+
+
+
+
 //-----------------------------------------------------------------------------
 void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 {
