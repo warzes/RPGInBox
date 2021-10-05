@@ -22,7 +22,7 @@ bool GameAdventure::Init() noexcept
 	if (!m_world->Init())
 		return false;
 
-	auto playerPos = m_world->playerParty.GetPosition();
+	auto playerPos = m_world->player.GetPosition();
 	m_cameraTurn.SetCameraPosition({ (float)playerPos.x, 0.0f, (float)playerPos.y }, 0.0f);
 
 	return true;

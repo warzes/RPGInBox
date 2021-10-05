@@ -30,6 +30,13 @@ void GameBattleState::Update(float deltaTime) noexcept
 {
 	m_rules.Run();
 	m_playerMenu.Run();
+
+	if (m_playerMenu.IsSelect() == 0)
+	{
+		выбрана атака - показать меню атаки
+	}
+
+
 	//auto p = selectCell();
 	//if (p.x >= 0 && p.y >= 0)
 	//{	

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "PlayerParty.h"
+#include "Player.h"
 #include "Map.h"
 
 #include "Sky.h"
@@ -17,7 +17,7 @@ public:
 
 	void Move(const Point2& pos) noexcept;
 
-	PlayerParty playerParty;
+	Player player;
 	Map openworld;
 private:
 

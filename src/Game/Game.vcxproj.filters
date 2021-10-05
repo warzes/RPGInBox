@@ -12,9 +12,6 @@
     <ClCompile Include="Log.cpp">
       <Filter>Framework\Core</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerParty.cpp">
-      <Filter>Game\_OLD</Filter>
-    </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Game\_OLD</Filter>
     </ClCompile>
@@ -35,9 +32,6 @@
     </ClCompile>
     <ClCompile Include="GameApp.cpp">
       <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Game\Data</Filter>
     </ClCompile>
     <ClCompile Include="GameBattleState.cpp">
       <Filter>Game\State\Battle</Filter>
@@ -60,6 +54,9 @@
     <ClCompile Include="EnemyTemplate.cpp">
       <Filter>Game\RPG</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -80,9 +77,6 @@
     </ClInclude>
     <ClInclude Include="EngineMath.h">
       <Filter>Framework\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerParty.h">
-      <Filter>Game\_OLD</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Game\_OLD</Filter>
@@ -112,9 +106,6 @@
     <ClInclude Include="GameApp.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Game\Data</Filter>
-    </ClInclude>
     <ClInclude Include="GameBattleState.h">
       <Filter>Game\State\Battle</Filter>
     </ClInclude>
@@ -139,6 +130,9 @@
     <ClInclude Include="EnemyTemplate.h">
       <Filter>Game\RPG</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -155,9 +149,6 @@
     </Filter>
     <Filter Include="Game\_OLD\State\Adventure\World">
       <UniqueIdentifier>{3fe34853-30de-449c-855d-ce49c7845cbd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Data">
-      <UniqueIdentifier>{5a723fba-d12a-41fe-93ce-462590530007}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\State">
       <UniqueIdentifier>{0e2827a1-dfe0-4cb6-8d0c-88b2602a8ce0}</UniqueIdentifier>

@@ -190,7 +190,6 @@
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerParty.cpp" />
     <ClCompile Include="PlayerTurnCamera.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sky.cpp" />
@@ -225,7 +224,6 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="NonCopyable.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerParty.h" />
     <ClInclude Include="PlayerTurnCamera.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sky.h" />

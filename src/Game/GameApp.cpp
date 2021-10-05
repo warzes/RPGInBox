@@ -22,7 +22,7 @@ bool GameApp::Init() noexcept
 	if (!initGameData())
 		return false;
 
-	SetState(GameState::Adventure);
+	SetState(GameState::BeginBattle);
 	return true;
 }
 //-----------------------------------------------------------------------------

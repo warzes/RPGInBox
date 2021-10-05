@@ -13,7 +13,7 @@ bool WorldAdventure::Init()
 	if (!m_sky.Init())
 		return false;
 
-	playerParty.SetPosition({ 0, 0 });
+	player.SetPosition({ 0, 0 });
 	if (!openworld.InitTest(m_resources))
 		return false;
 
@@ -33,7 +33,7 @@ void WorldAdventure::Draw(IGameCamera* camera) noexcept
 
 	// Text
 	{
-		auto pos = playerParty.GetPosition();
+		auto pos = player.GetPosition();
 		const std::string text = "Player pos {x=" + std::to_string(pos.x) + " y=" + std::to_string(pos.y) + "}";
 		DrawText(text.c_str(), 10, 30, 20, WHITE);
 	}
@@ -41,7 +41,7 @@ void WorldAdventure::Draw(IGameCamera* camera) noexcept
 //-----------------------------------------------------------------------------
 void WorldAdventure::Move(const Point2& pos) noexcept
 {
-	if (playerParty.Move(pos))
+	if (player.Move(pos))
 	{
 	}
 }
