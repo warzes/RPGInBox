@@ -139,15 +139,6 @@
     <ClInclude Include="Creature.h">
       <Filter>Game\RPG</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\RPG\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Hero.h">
-      <Filter>Game\RPG\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Stats.h">
-      <Filter>Game\RPG\old</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Game\RPG</Filter>
     </ClInclude>
@@ -197,9 +188,6 @@
     </Filter>
     <Filter Include="Game\RPG">
       <UniqueIdentifier>{6144f92b-f8b4-4eba-8687-e8528ad7c911}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\RPG\old">
-      <UniqueIdentifier>{2be3f2e6-00db-4f40-8459-f136871ce9e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -3,9 +3,8 @@
 #include "WorldAdventure.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-GameAdventure::GameAdventure(GameApp& gameApp, ResourceManager& resourceMgr) noexcept
-	: m_gameApp(gameApp)
-	, m_resourceMgr(resourceMgr)
+GameAdventure::GameAdventure(ResourceManager& resourceMgr) noexcept
+	: m_resourceMgr(resourceMgr)
 	, m_world(new WorldAdventure(resourceMgr))
 {
 }

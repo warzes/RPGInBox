@@ -214,13 +214,11 @@
     <ClInclude Include="GameBattleRules.h" />
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="DataManager.h" />
-    <ClInclude Include="Enemy.h" />
     <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameAdventure.h" />
     <ClInclude Include="GameBattleState.h" />
     <ClInclude Include="GameBattleView.h" />
-    <ClInclude Include="Hero.h" />
     <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugNew.h" />
@@ -233,7 +231,6 @@
     <ClInclude Include="PlayerTurnCamera.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sky.h" />
-    <ClInclude Include="Stats.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="WorldAdventure.h" />

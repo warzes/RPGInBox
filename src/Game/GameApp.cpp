@@ -3,7 +3,7 @@
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 GameApp::GameApp() noexcept
-	: m_adventureState(*this, m_resourceMgr)
+	: m_adventureState(m_resourceMgr)
 	, m_battleState(m_data.player, m_resourceMgr)
 {
 }
@@ -26,7 +26,7 @@ bool GameApp::Init() noexcept
 	if (!m_battleState.Init())
 		return false;
 
-	SetState(GameState::BeginBattle);
+	SetState(GameState::Adventure);
 	return true;
 }
 //-----------------------------------------------------------------------------

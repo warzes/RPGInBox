@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Hero.h"
 #include "EngineMath.h"
 
 class PlayerParty final : NonCopyable, NonMovable
@@ -12,9 +11,6 @@ public:
 	void SetPosition(const Point2& pos) noexcept { m_position = m_oldPosition = pos; }
 
 	bool Move(const Point2& pos) noexcept;
-
-	ooHero characters[MaxNumCharacterInPlayerParty];
-	Point2 positionCharactersInParty[MaxNumCharacterInPlayerParty];
 
 	// statistics
 	unsigned level = 1;

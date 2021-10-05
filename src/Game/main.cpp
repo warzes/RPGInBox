@@ -1,5 +1,4 @@
-﻿
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "GameApp.h"
 #include "Log.h"
 #include "DebugNew.h"
@@ -8,8 +7,6 @@
 //http://shrines.rpgclassics.com/nes/ff1/whitemagic.shtml
 //http://shrines.rpgclassics.com/pc/mm2/characters.shtml
 //http://shrines.rpgclassics.com/pc/
-//
-//
 //https://gamefaqs.gamespot.com/pc/564789-pools-of-darkness/faqs/8566
 //https://media.wizards.com/2018/dnd/downloads/DnD_BasicRules_2018.pdf
 
@@ -61,13 +58,17 @@ inline void Main() noexcept
 			log.Error("InitWindow failed!");
 			error = true;
 		}
-		//SetTargetFPS(60);
-		InitAudioDevice();
-		if (!IsAudioDeviceReady())
+		
+		if (!error)
 		{
-			log.Error("Audio device failed!");
-			error = true;
-		}
+			//SetTargetFPS(60);
+			InitAudioDevice();
+			if (!IsAudioDeviceReady())
+			{
+				log.Error("Audio device failed!");
+				error = true;
+			}
+		}		
 
 		//---------------------------------------------------------------------
 		// Game MainLoop
