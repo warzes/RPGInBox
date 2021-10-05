@@ -33,18 +33,6 @@
     <ClCompile Include="GameApp.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="GameBattleState.cpp">
-      <Filter>Game\State\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="GameBattleView.cpp">
-      <Filter>Game\State\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="GameBattleRules.cpp">
-      <Filter>Game\State\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="GameBattlePlayerMenu.cpp">
-      <Filter>Game\State\Battle</Filter>
-    </ClCompile>
     <ClCompile Include="Creature.cpp">
       <Filter>Game\RPG</Filter>
     </ClCompile>
@@ -56,6 +44,15 @@
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBattleState.cpp">
+      <Filter>Game\State\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="UIBattlePlayerMenu.cpp">
+      <Filter>Game\State\Battle\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="UIBattlePanelBG.cpp">
+      <Filter>Game\State\Battle\gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,21 +103,6 @@
     <ClInclude Include="GameApp.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="GameBattleState.h">
-      <Filter>Game\State\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleCore.h">
-      <Filter>Game\State\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="GameBattleView.h">
-      <Filter>Game\State\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="GameBattleRules.h">
-      <Filter>Game\State\Battle</Filter>
-    </ClInclude>
-    <ClInclude Include="GameBattlePlayerMenu.h">
-      <Filter>Game\State\Battle</Filter>
-    </ClInclude>
     <ClInclude Include="Creature.h">
       <Filter>Game\RPG</Filter>
     </ClInclude>
@@ -132,6 +114,15 @@
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBattleState.h">
+      <Filter>Game\State\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBattlePlayerMenu.h">
+      <Filter>Game\State\Battle\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBattlePanelBG.h">
+      <Filter>Game\State\Battle\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +161,9 @@
     </Filter>
     <Filter Include="Game\RPG">
       <UniqueIdentifier>{6144f92b-f8b4-4eba-8687-e8528ad7c911}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\State\Battle\gui">
+      <UniqueIdentifier>{e89eff30-b289-4730-938b-17d3ea77c9a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

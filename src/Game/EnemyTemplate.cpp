@@ -6,7 +6,7 @@
 void EnemyParty::CreateDefaultParty(ResourceManager* resourceMgr) noexcept
 {
 	enemys.clear();
-	enemys.resize(MaxNumCharacterInEnemyParty);
+	enemys.resize(MaxEnemyPartySize);
 
 	enemys[0].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-goblin.png");
 	enemys[1].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-goblin.png");

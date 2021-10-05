@@ -1,6 +1,6 @@
 #pragma once
 
-class GameBattlePlayerMenu final
+class UIBattlePlayerMenu final
 {
 public:
 	void Draw() noexcept;
@@ -10,7 +10,6 @@ public:
 
 	void Reset(const Point2& leftUpPos) noexcept;
 	void AddElement(const std::string& text) noexcept;
-	//void SetEnable(bool enable, int idElement) noexcept;
 
 	template <typename T>
 	void AddElements(const Point2& leftUpPos, const T& array) noexcept

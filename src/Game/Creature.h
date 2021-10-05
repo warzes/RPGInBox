@@ -2,7 +2,7 @@
 
 class ResourceManager;
 
-enum class CreatureType
+enum class PartyType
 {
 	Enemy,
 	Hero
@@ -13,7 +13,7 @@ class ICreature
 public:
 	virtual ~ICreature() = default;
 
-	virtual CreatureType GetCreatureType() const = 0;
+	virtual PartyType GetPartyType() const = 0;
 
 	// Get Stats
 	virtual int GetHP() const noexcept { return stats.HP; }
@@ -41,10 +41,10 @@ enum class HeroClass
 	Wizard
 };
 
-class Hero : public ICreature
+class Hero final : public ICreature
 {
 public:
-	CreatureType GetCreatureType() const final { return CreatureType::Hero; }
+	PartyType GetPartyType() const final { return PartyType::Hero; }
 
 	HeroClass mainClass = HeroClass::Warrior;
 
@@ -58,8 +58,8 @@ public:
 	} attributes;	
 };
 
-class Enemy : public ICreature
+class Enemy final : public ICreature
 {
 public:
-	CreatureType GetCreatureType() const final { return CreatureType::Enemy; }
+	PartyType GetPartyType() const final { return PartyType::Enemy; }
 };

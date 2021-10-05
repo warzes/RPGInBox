@@ -1,8 +1,8 @@
 ﻿#include "stdafx.h"
-#include "GameBattlePlayerMenu.h"
+#include "UIBattlePlayerMenu.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-void GameBattlePlayerMenu::Draw() noexcept
+void UIBattlePlayerMenu::Draw() noexcept
 {
 	for (size_t i = 0; i < m_elements.size(); i++)
 	{
@@ -22,7 +22,7 @@ void GameBattlePlayerMenu::Draw() noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattlePlayerMenu::Run() noexcept
+void UIBattlePlayerMenu::Run() noexcept
 {
 	m_select = -1;
 	// выбор меню мышкой
@@ -69,22 +69,16 @@ void GameBattlePlayerMenu::Run() noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattlePlayerMenu::Reset(const Point2& leftUpPos) noexcept
+void UIBattlePlayerMenu::Reset(const Point2& leftUpPos) noexcept
 {
 	m_elements.clear();
 	m_leftUpPos = leftUpPos;
 	m_commonSize = { 140, 40 };
 }
 //-----------------------------------------------------------------------------
-void GameBattlePlayerMenu::AddElement(const std::string& text) noexcept
+void UIBattlePlayerMenu::AddElement(const std::string& text) noexcept
 {
 	const int y = m_elements.size() * 40;
 	m_elements.push_back({ text, {m_leftUpPos.x, m_leftUpPos.y+y}, m_commonSize });
 }
-//-----------------------------------------------------------------------------
-//void GameBattlePlayerMenu::SetEnable(bool enable, int idElement) noexcept
-//{
-//	if (idElement >= 0 && idElement < m_elements.size())
-//		m_elements[idElement].enable = enable;
-//}
 //-----------------------------------------------------------------------------

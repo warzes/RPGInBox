@@ -182,10 +182,8 @@
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameAdventure.cpp" />
-    <ClCompile Include="GameBattlePlayerMenu.cpp" />
-    <ClCompile Include="GameBattleRules.cpp" />
+    <ClCompile Include="UIBattlePlayerMenu.cpp" />
     <ClCompile Include="GameBattleState.cpp" />
-    <ClCompile Include="GameBattleView.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -201,21 +199,19 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="UIBattlePanelBG.cpp" />
     <ClCompile Include="WorldAdventure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h" />
-    <ClInclude Include="BattleCore.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="EnemyTemplate.h" />
-    <ClInclude Include="GameBattlePlayerMenu.h" />
-    <ClInclude Include="GameBattleRules.h" />
+    <ClInclude Include="UIBattlePlayerMenu.h" />
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameAdventure.h" />
     <ClInclude Include="GameBattleState.h" />
-    <ClInclude Include="GameBattleView.h" />
     <ClInclude Include="IGameCamera.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugNew.h" />
@@ -229,6 +225,7 @@
     <ClInclude Include="Sky.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="UIBattlePanelBG.h" />
     <ClInclude Include="WorldAdventure.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

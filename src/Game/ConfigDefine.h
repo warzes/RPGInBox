@@ -1,8 +1,8 @@
 #pragma once
 
 constexpr auto MaxNumberState = 999;
-constexpr auto MaxNumCharacterInPlayerParty = 4u;
-constexpr auto MaxNumCharacterInEnemyParty = 6u;
+constexpr auto HeroPartySize = 4u;
+constexpr auto MaxEnemyPartySize = 6u;
 
 #define TURN_STEP 1
 

@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 void Player::CreateDefaultParty(ResourceManager* resourceMgr) noexcept
 {
-	heroes.resize(MaxNumCharacterInPlayerParty);
+	heroes.resize(HeroPartySize);
 
 	// первый герой
 	heroes[0].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-rogue3.png");
