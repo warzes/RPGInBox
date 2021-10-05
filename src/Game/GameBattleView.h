@@ -1,8 +1,9 @@
 #pragma once
 
 #include "BattleCore.h"
-#include "oCreature.h"
 
+class Player;
+class EnemyParty;
 class ResourceManager;
 
 class UIBattlePanelBG

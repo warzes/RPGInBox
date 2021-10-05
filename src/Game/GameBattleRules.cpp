@@ -1,6 +1,8 @@
 ﻿#include "stdafx.h"
 #include "GameBattleRules.h"
-#include "oCreature.h"
+#include "Creature.h"
+#include "Player.h"
+#include "EnemyTemplate.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 void GameBattleRules::StartBattle(Player* player, EnemyParty* enemies) noexcept
@@ -28,7 +30,7 @@ void GameBattleRules::Run() noexcept
 	{
 		// TODO: игрок может управлять не только своими существами, а например очарованными. Или наоборот некоторые его герои будут неконтролируемыми
 		bool isPlayer = false;
-		if (m_members[m_currentMember]->GetType() == CreatureType::Hero)
+		if (m_members[m_currentMember]->GetCreatureType() == CreatureType::Hero)
 			selectPlayerAction();
 		else
 			selectEnemyAction();

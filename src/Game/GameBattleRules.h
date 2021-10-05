@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-class oICreature;
+class ICreature;
 class Player;
 class EnemyParty;
 
@@ -31,7 +31,7 @@ private:
 	// текущее состояние боя
 	BattleState m_state = BattleState::NewRound;
 	// все участники боя (в будущем возможно будут сортироваться по инициативе)
-	std::vector<oICreature*> m_members;
+	std::vector<ICreature*> m_members;
 	// текущий участник боя
 	unsigned m_currentMember = 0;
 };

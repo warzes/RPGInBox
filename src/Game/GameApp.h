@@ -4,6 +4,7 @@
 #include "DataManager.h"
 #include "GameAdventure.h"
 #include "GameBattleState.h"
+#include "EnemyTemplate.h"
 
 enum class GameState
 {

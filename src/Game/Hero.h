@@ -1,19 +1,14 @@
 #pragma once
 
 #include "Stats.h"
-#include "oCreature.h"
+#include "Creature.h"
 
-enum class HeroClass
-{
-	Warrior,
-	Cleric,
-	Wizard
-};
 
-class oHero final : public oICreature
+
+class ooHero final : public ICreature
 {
 public:
-	CreatureType GetType() const noexcept final { return CreatureType::Hero; }
+	CreatureType GetCreatureType() const noexcept final { return CreatureType::Hero; }
 
 	// Base
 	HeroClass characterClass = HeroClass::Warrior;

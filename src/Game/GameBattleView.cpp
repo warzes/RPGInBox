@@ -2,6 +2,8 @@
 #include "GameBattleView.h"
 #include "ResourceManager.h"
 #include "Creature.h"
+#include "Player.h"
+#include "EnemyTemplate.h"
 #include "EngineMath.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------

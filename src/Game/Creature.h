@@ -1,23 +1,63 @@
 ﻿#pragma once
 
-// сила, ловкость, выносливость, интеллект
-struct Attributes
-{
+class ResourceManager;
 
+enum class CreatureType
+{
+	Enemy,
+	Hero
 };
 
-// очки здоровья, магии, защита и т.
-struct Stats
+enum class HeroClass
 {
-
+	Warrior,
+	Cleric,
+	Wizard
 };
 
+class ICreature
+{
+public:
+	virtual ~ICreature() = default;
 
-https://gamefaqs.gamespot.com/pc/564785-pool-of-radiance/faqs/73869
-http://shrines.rpgclassics.com/nes/ff1/whitemagic.shtml
-http://shrines.rpgclassics.com/pc/mm2/characters.shtml
-http://shrines.rpgclassics.com/pc/
+	virtual CreatureType GetCreatureType() const = 0;
+
+	// Get Stats
+	virtual int GetHP() const noexcept { return stats.HP; }
 
 
-https://gamefaqs.gamespot.com/pc/564789-pools-of-darkness/faqs/8566
-https://media.wizards.com/2018/dnd/downloads/DnD_BasicRules_2018.pdf
+	// TODO: сравнивать еще и со стейтом существа "мертв"
+	bool IsAlive() const noexcept { return GetHP() > 0; }
+	// TODO: проверять остальные стейты типа окаменения
+	bool IsAction() const noexcept { return true; }
+
+	std::shared_ptr<Texture2D> battleTexture = nullptr;
+
+	struct Stats
+	{
+		int HP = 10;
+		int MeleeAttack = 0;
+		int PhysicsArmor = 0;
+	} stats;
+};
+
+class Hero : public ICreature
+{
+public:
+	CreatureType GetCreatureType() const final { return CreatureType::Hero; }
+
+	struct
+	{
+		int Strenght = 0;
+		int Dexterity = 0;
+		int Toughness = 0;
+		int Knowledge = 0;
+		int Willpower = 0;
+	} attributes;	
+};
+
+class Enemy : public ICreature
+{
+public:
+	CreatureType GetCreatureType() const final { return CreatureType::Enemy; }
+};
