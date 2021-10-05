@@ -179,7 +179,6 @@
   <ItemGroup>
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="EnemyTemplate.cpp" />
-    <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameAdventure.cpp" />
@@ -213,7 +212,6 @@
     <ClInclude Include="GameBattlePlayerMenu.h" />
     <ClInclude Include="GameBattleRules.h" />
     <ClInclude Include="ConfigDefine.h" />
-    <ClInclude Include="DataManager.h" />
     <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameAdventure.h" />

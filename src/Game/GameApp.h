@@ -1,10 +1,10 @@
 ﻿#pragma once
 
 #include "ResourceManager.h"
-#include "DataManager.h"
 #include "GameAdventure.h"
 #include "GameBattleState.h"
 #include "EnemyTemplate.h"
+#include "Player.h"
 
 enum class GameState
 {
@@ -36,10 +36,11 @@ public:
 
 private:
 	void createFrame() noexcept;
+	bool initGameData() noexcept;
 	void beginFrame() noexcept;
 	void endFrame() noexcept;
 
-	DataManager m_data;
+	Player m_player;
 	ResourceManager m_resourceMgr;
 
 	GameState m_state = GameState::Adventure;

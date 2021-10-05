@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------
 GameApp::GameApp() noexcept
 	: m_adventureState(m_resourceMgr)
-	, m_battleState(m_data.player, m_resourceMgr)
+	, m_battleState(m_player, m_resourceMgr)
 {
 }
 //-----------------------------------------------------------------------------
@@ -19,11 +19,7 @@ bool GameApp::Init() noexcept
 {
 	createFrame();
 
-	m_data.player.CreateDefaultParty(&m_resourceMgr);
-
-	if (!m_adventureState.Init())
-		return false;
-	if (!m_battleState.Init())
+	if (!initGameData())
 		return false;
 
 	SetState(GameState::Adventure);
@@ -86,6 +82,18 @@ void GameApp::createFrame() noexcept
 	m_sourceRec = { 0.0f, 0.0f, (float)m_target.texture.width, -(float)m_target.texture.height };
 	m_destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
 #endif // MAIN_FRAME_TO_RENDER_TEXTURE
+}
+//-----------------------------------------------------------------------------
+bool GameApp::initGameData() noexcept
+{
+	m_player.CreateDefaultParty(&m_resourceMgr);
+
+	if (!m_adventureState.Init())
+		return false;
+	if (!m_battleState.Init())
+		return false;
+
+	return true;
 }
 //-----------------------------------------------------------------------------
 void GameApp::beginFrame() noexcept

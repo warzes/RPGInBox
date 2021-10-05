@@ -36,9 +36,6 @@
     <ClCompile Include="GameApp.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="DataManager.cpp">
-      <Filter>Game\Data</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Game\Data</Filter>
     </ClCompile>
@@ -115,9 +112,6 @@
     <ClInclude Include="GameApp.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="DataManager.h">
-      <Filter>Game\Data</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Game\Data</Filter>
     </ClInclude>
@@ -179,9 +173,6 @@
     </Filter>
     <Filter Include="Framework\Camera">
       <UniqueIdentifier>{a0012e67-0be8-40da-9bdf-c87d67f22863}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Data\DataType">
-      <UniqueIdentifier>{5855cbff-9093-46ce-b76e-ca6cde431f4e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\State\Battle">
       <UniqueIdentifier>{4a2615ff-3f0a-4c01-a6d7-a9546368f51b}</UniqueIdentifier>

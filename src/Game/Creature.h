@@ -8,13 +8,6 @@ enum class CreatureType
 	Hero
 };
 
-enum class HeroClass
-{
-	Warrior,
-	Cleric,
-	Wizard
-};
-
 class ICreature
 {
 public:
@@ -41,10 +34,19 @@ public:
 	} stats;
 };
 
+enum class HeroClass
+{
+	Warrior,
+	Cleric,
+	Wizard
+};
+
 class Hero : public ICreature
 {
 public:
 	CreatureType GetCreatureType() const final { return CreatureType::Hero; }
+
+	HeroClass mainClass = HeroClass::Warrior;
 
 	struct
 	{
