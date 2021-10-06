@@ -206,6 +206,7 @@
     <ClInclude Include="Base.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="EnemyTemplate.h" />
+    <ClInclude Include="STLUtils.h" />
     <ClInclude Include="UIBattlePlayerMenu.h" />
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="FreeCamera.h" />

@@ -12,15 +12,10 @@ constexpr Point2 SizeCoordCells = { 160, 160 };
 constexpr Point2 LeftTopCoordPlayerCommand = { 810, 415 };
 constexpr Point2 SizeCoordPlayerCommand = { 140, 40 };
 
-
-
-
 class ICreature;
 class Player;
 class EnemyParty;
 class ResourceManager;
-
-
 
 enum class BattleCellStatus
 {
@@ -34,13 +29,9 @@ enum class BattleCellStatus
 enum class BattleState
 {
 	NewRound,
+
 	SelectAction
 };
-
-
-
-
-class ResourceManager;
 
 class GameBattleState final
 {
@@ -54,12 +45,35 @@ public:
 	void Frame() noexcept;
 
 private:
-	void selectPlayerTargetMeleeAttack() noexcept;
-
-	Point2 selectCell() noexcept;
 	ResourceManager& m_resourceMgr;
 	Player& m_player;
 	EnemyParty* m_enemies = nullptr;
+	// текущий раунд
+	unsigned m_round = 0;
+	// текущее состояние боя
+	BattleState m_battleState = BattleState::NewRound;
+	// все участники боя (в будущем возможно будут сортироваться по инициативе)
+	std::vector<ICreature*> m_members;
+	// текущий участник боя
+	unsigned m_currentMember = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+	void selectPlayerTargetMeleeAttack() noexcept;
+
+	Point2 selectCell() noexcept;
+	
+	
+	
 
 	enum class PlayerMenu
 	{
@@ -85,12 +99,8 @@ private:
 
 
 	void newRound() noexcept;
-	// текущий раунд
-	unsigned m_round = 0;
-	// текущее состояние боя
-	BattleState m_state = BattleState::NewRound;
-	// все участники боя (в будущем возможно будут сортироваться по инициативе)
-	std::vector<ICreature*> m_members;
-	// текущий участник боя
-	unsigned m_currentMember = 0;
+	
+	
+	
+	
 };

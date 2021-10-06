@@ -7,8 +7,10 @@
 #include "EngineMath.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-constexpr std::array<const char*, 4> PlayerActionMainMenu = { "Attack" , "Skill", "Magic", "Defence" };
-constexpr std::array<const char*, 3> PlayerActionMainMenu_Attack = { "Melee" , "Shoot", "Cancel" };
+constexpr auto PlayerActionMainMenu = MakeArray<const char*>("Attack", "Skill", "Magic", "Defence");
+static_assert(PlayerActionMainMenu.size() == 4);
+constexpr auto PlayerActionMainMenu_Attack = MakeArray<const char*>("Melee", "Shoot", "Cancel");
+static_assert(PlayerActionMainMenu_Attack.size() == 3);
 //-----------------------------------------------------------------------------
 GameBattleState::GameBattleState(Player& player, ResourceManager& resourceMgr) noexcept
 	: m_resourceMgr(resourceMgr)
@@ -18,47 +20,23 @@ GameBattleState::GameBattleState(Player& player, ResourceManager& resourceMgr) n
 //-----------------------------------------------------------------------------
 bool GameBattleState::Init() noexcept
 {
+	// загрузка текстур
 	m_background.Create(&m_resourceMgr);
 	m_battleBackGround = m_resourceMgr.GetTexture("../data/temp/textures/character/plains-ground.png");
 
+	// создание меню
 	m_playerMenu.AddElements({ 810, 415 }, PlayerActionMainMenu);
 	m_playerMenu_attack.AddElements({ 810, 415 }, PlayerActionMainMenu_Attack);
 
 	return true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-проделать каждую функцию по отдельности без учета остального - например функция выбора одной цели - выделить активного, выделить допустимые клетки, ждать команды. И уже с них собирать боевку.
-
-каждую возможно описать словами  -например:
-	выбор цели ближней атаки()
-		подсветить текущего бойца желтым
-		подсветить допустивые клетки-цели зеленым
-		ждать команды
-		вернуть номер клетки и/или цель
-
-
-
-
 //-----------------------------------------------------------------------------
 void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 {
 	m_enemies = enemies;
-	ResetCells();
+	// сброс всех переменных
 	m_round = 0;
-	m_state = BattleState::NewRound;
-
+	m_battleState = BattleState::NewRound;
 	m_members.clear();
 	for (size_t i = 0; i < m_player.heroes.size(); i++)
 		m_members.push_back(&m_player.heroes[i]);
@@ -66,17 +44,36 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 		m_members.push_back(&enemies->enemys[i]);
 	m_currentMember = 0;
 
+
+
+	ResetCells();
 	m_currentPlayerMenu = &m_playerMenu;
 	m_playerMenuStage = PlayerMenu::Main;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //-----------------------------------------------------------------------------
 void GameBattleState::Update(float deltaTime) noexcept
 {
-	if (m_state == BattleState::NewRound)
+	if (m_battleState == BattleState::NewRound)
 	{
 		newRound();
 	}
-	else if (m_state == BattleState::SelectAction)
+	else if (m_battleState == BattleState::SelectAction)
 	{
 		// TODO: игрок может управлять не только своими существами, а например очарованными. Или наоборот некоторые его герои будут неконтролируемыми
 		bool isPlayer = false;
@@ -122,10 +119,6 @@ void GameBattleState::Frame() noexcept
 //-----------------------------------------------------------------------------
 void GameBattleState::selectPlayerTargetMeleeAttack() noexcept
 {
-	
-
-
-
 	//m_view.ResetCells();
 
 
@@ -279,5 +272,5 @@ void GameBattleState::ResetCells() noexcept
 void GameBattleState::newRound() noexcept
 {
 	m_currentMember = 0; // первый участник боя в новом раунде начинает
-	m_state = BattleState::SelectAction; // ожидание выбора действия
+	m_battleState = BattleState::SelectAction; // ожидание выбора действия
 }
