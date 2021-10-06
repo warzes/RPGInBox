@@ -34,7 +34,7 @@ private:
 	int m_actionElement = 0;
 
 	Point2 m_leftUpPos = { 0 };
-	Size2 m_commonSize = { 0 };
+	const Size2 m_commonSize = { 140, 40 };
 
 	int m_select = -1;
 };

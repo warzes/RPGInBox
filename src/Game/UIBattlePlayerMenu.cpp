@@ -32,11 +32,10 @@ void UIBattlePlayerMenu::Run() noexcept
 		pos.x -= m_leftUpPos.x;
 		pos.y -= m_leftUpPos.y;
 
-		if (pos.x >= 0 && pos.y >= 0)
+		if (pos.x >= 0 && pos.x <= m_commonSize.width && pos.y >= 0)
 		{
 			int iy = pos.y / m_commonSize.height;
-
-			if (pos.x <= m_commonSize.width && iy < m_elements.size())
+			if (iy < m_elements.size())
 			{
 				if (iy == m_actionElement) // данный элемент уже выбран, значит игрок выбрал это меню
 					m_select = m_actionElement;
@@ -47,18 +46,14 @@ void UIBattlePlayerMenu::Run() noexcept
 	if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
 	{
 		if (m_actionElement == 0)
-		{
 			m_actionElement = m_elements.size() - 1;
-		}
 		else
 			--m_actionElement;
 	}
 	if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S))
 	{
 		if (m_actionElement >= m_elements.size() - 1)
-		{
 			m_actionElement = 0;
-		}
 		else
 			++m_actionElement;
 	}
@@ -66,6 +61,7 @@ void UIBattlePlayerMenu::Run() noexcept
 	if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_ENTER))
 	{
 		m_select = m_actionElement;
+		m_actionElement = 0; // сброс выбора пункта меню
 	}
 }
 //-----------------------------------------------------------------------------
@@ -73,12 +69,11 @@ void UIBattlePlayerMenu::Reset(const Point2& leftUpPos) noexcept
 {
 	m_elements.clear();
 	m_leftUpPos = leftUpPos;
-	m_commonSize = { 140, 40 };
 }
 //-----------------------------------------------------------------------------
 void UIBattlePlayerMenu::AddElement(const std::string& text) noexcept
 {
-	const int y = m_elements.size() * 40;
-	m_elements.push_back({ text, {m_leftUpPos.x, m_leftUpPos.y+y}, m_commonSize });
+	const int yOffset = m_elements.size() * 40;
+	m_elements.push_back({ text, {m_leftUpPos.x, m_leftUpPos.y + yOffset}, m_commonSize });
 }
 //-----------------------------------------------------------------------------

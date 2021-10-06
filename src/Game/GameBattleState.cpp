@@ -10,6 +10,7 @@
 constexpr Point2 LeftTopCoordCells = { 262, 44 };
 constexpr Point2 OffsetCoordCells = { 10, 10 };
 constexpr Point2 SizeCoordCells = { 160, 160 };
+constexpr Point2 PlayerMenuLeftTopPos = { 810, 415 };
 
 // пункты меню
 struct PlayerMenuLabel { enum { Attack, Skill, Magic, Defence }; };
@@ -32,8 +33,8 @@ bool GameBattleState::Init() noexcept
 	m_battleBackGround = m_resourceMgr.GetTexture("../data/temp/textures/character/plains-ground.png");
 
 	// создание меню
-	m_playerMenu.AddElements({ 810, 415 }, PlayerActionMainMenu);
-	m_playerMenu_attack.AddElements({ 810, 415 }, PlayerActionMainMenu_Attack);
+	m_playerMenu.AddElements(PlayerMenuLeftTopPos, PlayerActionMainMenu);
+	m_playerMenu_attack.AddElements(PlayerMenuLeftTopPos, PlayerActionMainMenu_Attack);
 
 	return true;
 }
@@ -132,7 +133,7 @@ void GameBattleState::drawBackground() noexcept
 	m_background.Draw();
 
 	// отрисовка пола
-	DrawTextureTiled(*m_battleBackGround, { 0.0f,0.0f,64.0f,64.0f }, { (float)LeftTopCoordCells.x, (float)LeftTopCoordCells.y,500.0f, 680.0f }, { 0.0f, 0.0f }, 0.0f, 1.0f, WHITE);
+	DrawTextureTiled(*m_battleBackGround, { 0.0f, 0.0f, 64.0f, 64.0f }, { (float)LeftTopCoordCells.x, (float)LeftTopCoordCells.y, 500.0f, 680.0f }, { 0.0f, 0.0f }, 0.0f, 1.0f, WHITE);
 
 	// отрисовка линии разделения поля боя
 	DrawRectangle((int)LeftTopCoordCells.x, 383, 500, 3, WHITE);
