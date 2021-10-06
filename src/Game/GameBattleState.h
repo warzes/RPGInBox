@@ -27,7 +27,12 @@ enum class BattleState
 	NewRound,          // начинается новый раунд
 
 	WaitAction,        // ожидание выбора команды, переходит в WaitActionPlayer или WaitActionEnemy в зависимости от того чей ход
+
 	WaitActionPlayer,  // ожидание выбора команды от игрока
+	WaitActionPlayer_SelectComand_Main,// ожидание выбора команды из начального меню игрока
+	WaitActionPlayer_SelectComand_Attack,// ожидание выбора команды из меню атаки игрока
+	WaitActionPlayer_SelectTargetMeleeAttack,// ожидание выбора цели ближнего удара от игрока
+
 	WaitActionEnemy,   // ожидание выбора команды от ИИ
 };
 
@@ -49,6 +54,7 @@ private:
 	void drawCells() noexcept;
 	void newRound() noexcept;
 	void nextMembers() noexcept;
+	void setStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
 
 	ResourceManager& m_resourceMgr;
 	Player& m_player;
@@ -66,7 +72,9 @@ private:
 	UIBattlePanelBG m_background;
 	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
 
-
+	UIBattlePlayerMenu m_playerMenu;
+	UIBattlePlayerMenu m_playerMenu_attack;
+	UIBattlePlayerMenu* m_currentPlayerMenu = nullptr;
 
 
 
@@ -75,32 +83,6 @@ private:
 
 
 	void selectPlayerTargetMeleeAttack() noexcept;
-
 	Point2 selectCell() noexcept;
-	
-	
-	
-
-	enum class PlayerMenu
-	{
-		Main,
-		Attack
-	} m_playerMenuStage;
-
-	UIBattlePlayerMenu m_playerMenu;
-	UIBattlePlayerMenu m_playerMenu_attack;
-	UIBattlePlayerMenu* m_currentPlayerMenu = nullptr;
-
-	void SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
-	
-
-	
-	
-
-
-	
-	
-	
-	
 	
 };

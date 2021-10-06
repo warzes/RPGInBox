@@ -2,7 +2,7 @@
 #include "UIBattlePlayerMenu.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-void UIBattlePlayerMenu::Draw() noexcept
+void UIBattlePlayerMenu::Draw() const noexcept
 {
 	for (size_t i = 0; i < m_elements.size(); i++)
 	{
@@ -16,7 +16,7 @@ void UIBattlePlayerMenu::Draw() noexcept
 
 		DrawText(m_elements[i].text.c_str(), m_elements[i].pos.x + 10, m_elements[i].pos.y + 5, 30, color);
 	}
-	if (m_actionElement >= 0 && m_actionElement < m_elements.size())
+	if (m_actionElement < m_elements.size())
 	{
 		DrawText(">>>            <<<", m_leftUpPos.x-40, m_leftUpPos.y + 5 + m_actionElement * m_commonSize.height, 30, GREEN);
 	}
@@ -34,7 +34,7 @@ void UIBattlePlayerMenu::Run() noexcept
 
 		if (pos.x >= 0 && pos.x <= m_commonSize.width && pos.y >= 0)
 		{
-			int iy = pos.y / m_commonSize.height;
+			size_t iy = pos.y / m_commonSize.height;
 			if (iy < m_elements.size())
 			{
 				if (iy == m_actionElement) // данный элемент уже выбран, значит игрок выбрал это меню
@@ -58,7 +58,7 @@ void UIBattlePlayerMenu::Run() noexcept
 			++m_actionElement;
 	}
 	// выбор меню клавишами
-	if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_ENTER))
+	if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_Z))
 	{
 		m_select = m_actionElement;
 		m_actionElement = 0; // сброс выбора пункта меню

@@ -3,7 +3,7 @@
 class UIBattlePlayerMenu final
 {
 public:
-	void Draw() noexcept;
+	void Draw() const noexcept;
 
 	void Run() noexcept;
 
@@ -31,7 +31,7 @@ private:
 		Size2 size;
 	};
 	std::vector<element> m_elements;
-	int m_actionElement = 0;
+	size_t m_actionElement = 0;
 
 	Point2 m_leftUpPos = { 0 };
 	const Size2 m_commonSize = { 140, 40 };

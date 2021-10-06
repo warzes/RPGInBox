@@ -52,60 +52,75 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 		m_members.push_back(&enemies->enemys[i]);
 	m_currentMember = 0;
 	resetCells();
-		
-	m_currentPlayerMenu = &m_playerMenu;
-	m_playerMenuStage = PlayerMenu::Main;
+	m_currentPlayerMenu = nullptr;
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Update(float deltaTime) noexcept
 {
-	if (m_battleState == BattleState::NewRound)
+	if (m_currentPlayerMenu) m_currentPlayerMenu->Run();
+
+	if (m_battleState == BattleState::NewRound) // новый раунд
 	{
 		newRound();
 	}
-	else if (m_battleState == BattleState::WaitAction)
+	else if (m_battleState == BattleState::WaitAction) // определение, чей сейчас ход
 	{
+		m_currentPlayerMenu = nullptr;
+		resetCells();
 		if (m_members[m_currentMember]->GetPartyType() == PartyType::Hero)
 			m_battleState = BattleState::WaitActionPlayer;
 		else
 			m_battleState = BattleState::WaitActionEnemy;
 	}
-	else if (m_battleState == BattleState::WaitActionPlayer)
+	else if (m_battleState == BattleState::WaitActionPlayer) // ожидание действий игрока
 	{
+		m_currentPlayerMenu = &m_playerMenu;
+		m_battleState = BattleState::WaitActionPlayer_SelectComand_Main;
+
+		int cellX = m_currentMember % 3;
+		int cellY = m_currentMember / 3 + 2;
+		setStatusCell(cellX, cellY, BattleCellStatus::Yellow);
 	}
-	else if (m_battleState == BattleState::WaitActionEnemy)
+	else if (m_battleState == BattleState::WaitActionPlayer_SelectComand_Main) // ожидание выбора команды в меню игрока
+	{
+		switch (m_currentPlayerMenu->IsSelect())
+		{
+		case PlayerMenuLabel::Attack: 
+			m_battleState = BattleState::WaitActionPlayer_SelectComand_Attack;
+			m_currentPlayerMenu = &m_playerMenu_attack; 
+			break;
+		default:
+			break;
+		}
+	}
+	else if (m_battleState == BattleState::WaitActionPlayer_SelectComand_Attack)// ожидание выбора команды в меню атаки игрока
+	{
+		switch (m_currentPlayerMenu->IsSelect())
+		{
+		case PlayerMenuAttackLabel::Melee:
+			m_battleState = BattleState::WaitActionPlayer_SelectTargetMeleeAttack;
+			m_currentPlayerMenu = nullptr;
+			for (int i = 0; i < 3; i++) // подсветить доступные цели
+			{
+				setStatusCell(i, 1, BattleCellStatus::Green);
+			}
+			break;
+		case PlayerMenuAttackLabel::Cancel:
+			m_battleState = BattleState::WaitActionPlayer_SelectComand_Main;
+			m_currentPlayerMenu = &m_playerMenu;
+			break;
+		default:
+			break;
+		}
+	}
+	else if (m_battleState == BattleState::WaitActionPlayer_SelectTargetMeleeAttack) // выбор цели для ближнего удара от игрока
+	{
+		
+	}
+	else if (m_battleState == BattleState::WaitActionEnemy) // ожидание действий ИИ
 	{
 		nextMembers();
 	}
-	//else if (m_battleState == BattleState::SelectAction)
-	//{
-	//	// TODO: игрок может управлять не только своими существами, а например очарованными. Или наоборот некоторые его герои будут неконтролируемыми
-	//	bool isPlayer = false;
-	//	//if (m_members[m_currentMember]->GetPartyType() == PartyType::Hero)
-	//	//	selectPlayerAction();
-	//	//else
-	//	//	selectEnemyAction();
-	//}
-	//m_currentPlayerMenu->Run();
-
-	//if (m_playerMenuStage == PlayerMenu::Main) // начальное меню команд
-	//{
-	//	switch (m_currentPlayerMenu->IsSelect())
-	//	{
-	//	case PlayerMenuLabel::Attack: m_playerMenuStage = PlayerMenu::Attack; m_currentPlayerMenu = &m_playerMenu_attack; break;
-	//	default:
-	//		break;
-	//	}
-	//}
-	//else if (m_playerMenuStage == PlayerMenu::Attack) //  меню команд атак
-	//{
-	//	switch (m_currentPlayerMenu->IsSelect())
-	//	{
-	//	case PlayerMenuAttackLabel::Cancel: m_playerMenuStage = PlayerMenu::Main; m_currentPlayerMenu = &m_playerMenu; break;
-	//	default:
-	//		break;
-	//	}
-	//}
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Frame() noexcept
@@ -113,7 +128,14 @@ void GameBattleState::Frame() noexcept
 	drawBackground(); // отрисовка фона
 	drawPanels(); // отрисовка панелей
 	drawCells(); // отрисовка клеток и персонажей
-	//m_currentPlayerMenu->Draw();
+	if (m_currentPlayerMenu) m_currentPlayerMenu->Draw();
+
+	// отрисовка сообщения помощи при выборе цели
+	if (m_battleState == BattleState::WaitActionPlayer_SelectTargetMeleeAttack)
+	{
+		DrawText("Z - Select", PlayerMenuLeftTopPos.x - 20, PlayerMenuLeftTopPos.y, 38, GREEN);
+		DrawText("X - Cancel", PlayerMenuLeftTopPos.x - 20, PlayerMenuLeftTopPos.y + 40, 38, GREEN);
+	}
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::resetCells() noexcept
@@ -252,9 +274,13 @@ void GameBattleState::nextMembers() noexcept
 		}
 	}
 }
-
-
-
+//-----------------------------------------------------------------------------
+void GameBattleState::setStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept
+{
+	if (x >= 3 || y >= 4) return;
+	m_statusCells[x][y] = status;
+}
+//-----------------------------------------------------------------------------
 
 
 
@@ -299,15 +325,4 @@ Point2 GameBattleState::selectCell() noexcept // TODO: возможно пере
 	}
 	return {-1,-1};
 }
-
-
-
-
 //-----------------------------------------------------------------------------
-void GameBattleState::SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept
-{
-	if (x >= 3 || y >= 4) return;
-	m_statusCells[x][y] = status;
-}
-
-
