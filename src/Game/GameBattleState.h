@@ -4,10 +4,6 @@
 #include "UIBattlePanelBG.h"
 #include "UIBattlePlayerMenu.h"
 
-constexpr Point2 LeftTopCoordCells = { 262, 44 };
-constexpr Point2 OffsetCoordCells = { 10, 10 };
-constexpr Point2 SizeCoordCells = { 160, 160 };
-
 // позиции команд игрока
 constexpr Point2 LeftTopCoordPlayerCommand = { 810, 415 };
 constexpr Point2 SizeCoordPlayerCommand = { 140, 40 };
@@ -19,7 +15,7 @@ class ResourceManager;
 
 enum class BattleCellStatus
 {
-	Normal,	// ничего не рисует
+	Normal,	// ничего не дорисовывает
 	Yellow,	// выдел€ет желтым цветом (например текущий персонаж)
 	Green,	// выдел€ет зеленым цветом (например возможные клетки дл€ выбора)
 	Red,	// выдел€ет красным цветом (например недоступные клетки дл€ выбора)
@@ -28,9 +24,11 @@ enum class BattleCellStatus
 
 enum class BattleState
 {
-	NewRound,
+	NewRound,          // начинаетс€ новый раунд
 
-	SelectAction
+	WaitAction,        // ожидание выбора команды, переходит в WaitActionPlayer или WaitActionEnemy в зависимости от того чей ход
+	WaitActionPlayer,  // ожидание выбора команды от игрока
+	WaitActionEnemy,   // ожидание выбора команды от »»
 };
 
 class GameBattleState final
@@ -45,6 +43,13 @@ public:
 	void Frame() noexcept;
 
 private:
+	void resetCells() noexcept;
+	void drawBackground() noexcept;
+	void drawPanels() noexcept;
+	void drawCells() noexcept;
+	void newRound() noexcept;
+	void nextMembers() noexcept;
+
 	ResourceManager& m_resourceMgr;
 	Player& m_player;
 	EnemyParty* m_enemies = nullptr;
@@ -56,9 +61,10 @@ private:
 	std::vector<ICreature*> m_members;
 	// текущий участник бо€
 	unsigned m_currentMember = 0;
+	BattleCellStatus m_statusCells[3][4] = { BattleCellStatus::Normal };
 
-
-
+	UIBattlePanelBG m_background;
+	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
 
 
 
@@ -85,20 +91,14 @@ private:
 	UIBattlePlayerMenu m_playerMenu_attack;
 	UIBattlePlayerMenu* m_currentPlayerMenu = nullptr;
 
-	// view
-	void drawBackground() noexcept;
-	void drawPanels() noexcept;
-	void drawCells(const Player& player, EnemyParty* enemies) noexcept;
-	void drawPlayerMenu() noexcept;
 	void SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
-	void ResetCells() noexcept;
+	
 
-	BattleCellStatus m_cells[3][4] = { BattleCellStatus::Normal };
-	UIBattlePanelBG m_background;
-	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
+	
+	
 
 
-	void newRound() noexcept;
+	
 	
 	
 	

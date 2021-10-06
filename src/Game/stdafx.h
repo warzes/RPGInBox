@@ -32,5 +32,4 @@ SE_PRAGMA_WARNING_POP
 
 #include "ConfigDefine.h"
 #include "NonCopyable.h"
-#include "STLUtils.h"
 #include "EngineMath.h"

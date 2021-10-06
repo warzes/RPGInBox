@@ -124,9 +124,6 @@
     <ClInclude Include="UIBattlePanelBG.h">
       <Filter>Game\State\Battle\gui</Filter>
     </ClInclude>
-    <ClInclude Include="STLUtils.h">
-      <Filter>Framework\Base</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">

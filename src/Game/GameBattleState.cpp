@@ -7,9 +7,12 @@
 #include "EngineMath.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-constexpr auto PlayerActionMainMenu = MakeArray<const char*>("Attack", "Skill", "Magic", "Defence");
+constexpr Point2 LeftTopCoordCells = { 262, 44 };
+constexpr Point2 OffsetCoordCells = { 10, 10 };
+constexpr Point2 SizeCoordCells = { 160, 160 };
+constexpr std::array PlayerActionMainMenu{ "Attack", "Skill", "Magic", "Defence" };
 static_assert(PlayerActionMainMenu.size() == 4);
-constexpr auto PlayerActionMainMenu_Attack = MakeArray<const char*>("Melee", "Shoot", "Cancel");
+constexpr std::array PlayerActionMainMenu_Attack = { "Melee", "Shoot", "Cancel" };
 static_assert(PlayerActionMainMenu_Attack.size() == 3);
 //-----------------------------------------------------------------------------
 GameBattleState::GameBattleState(Player& player, ResourceManager& resourceMgr) noexcept
@@ -43,29 +46,11 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 	for (size_t i = 0; i < enemies->enemys.size(); i++)
 		m_members.push_back(&enemies->enemys[i]);
 	m_currentMember = 0;
-
-
-
-	ResetCells();
+	resetCells();
+		
 	m_currentPlayerMenu = &m_playerMenu;
 	m_playerMenuStage = PlayerMenu::Main;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //-----------------------------------------------------------------------------
 void GameBattleState::Update(float deltaTime) noexcept
 {
@@ -73,85 +58,68 @@ void GameBattleState::Update(float deltaTime) noexcept
 	{
 		newRound();
 	}
-	else if (m_battleState == BattleState::SelectAction)
+	else if (m_battleState == BattleState::WaitAction)
 	{
-		// TODO: игрок может управлять не только своими существами, а например очарованными. Или наоборот некоторые его герои будут неконтролируемыми
-		bool isPlayer = false;
-		//if (m_members[m_currentMember]->GetPartyType() == PartyType::Hero)
-		//	selectPlayerAction();
-		//else
-		//	selectEnemyAction();
+		if (m_members[m_currentMember]->GetPartyType() == PartyType::Hero)
+			m_battleState = BattleState::WaitActionPlayer;
+		else
+			m_battleState = BattleState::WaitActionEnemy;
 	}
-	m_currentPlayerMenu->Run();
-
-	if (m_playerMenuStage == PlayerMenu::Main) // начальное меню команд
+	else if (m_battleState == BattleState::WaitActionPlayer)
 	{
-		switch (m_currentPlayerMenu->IsSelect())
-		{
-		case 0: m_playerMenuStage = PlayerMenu::Attack; m_currentPlayerMenu = &m_playerMenu_attack; break;
-		default:
-			break;
-		}
 	}
-	else if (m_playerMenuStage == PlayerMenu::Attack) //  меню команд атак
+	else if (m_battleState == BattleState::WaitActionEnemy)
 	{
-		switch (m_currentPlayerMenu->IsSelect())
-		{
-		case 2: m_playerMenuStage = PlayerMenu::Main; m_currentPlayerMenu = &m_playerMenu; break;
-		default:
-			break;
-		}
+		nextMembers();
 	}
-	
+	//else if (m_battleState == BattleState::SelectAction)
+	//{
+	//	// TODO: игрок может управлять не только своими существами, а например очарованными. Или наоборот некоторые его герои будут неконтролируемыми
+	//	bool isPlayer = false;
+	//	//if (m_members[m_currentMember]->GetPartyType() == PartyType::Hero)
+	//	//	selectPlayerAction();
+	//	//else
+	//	//	selectEnemyAction();
+	//}
+	//m_currentPlayerMenu->Run();
 
-
-	
+	//if (m_playerMenuStage == PlayerMenu::Main) // начальное меню команд
+	//{
+	//	switch (m_currentPlayerMenu->IsSelect())
+	//	{
+	//	case 0: m_playerMenuStage = PlayerMenu::Attack; m_currentPlayerMenu = &m_playerMenu_attack; break;
+	//	default:
+	//		break;
+	//	}
+	//}
+	//else if (m_playerMenuStage == PlayerMenu::Attack) //  меню команд атак
+	//{
+	//	switch (m_currentPlayerMenu->IsSelect())
+	//	{
+	//	case 2: m_playerMenuStage = PlayerMenu::Main; m_currentPlayerMenu = &m_playerMenu; break;
+	//	default:
+	//		break;
+	//	}
+	//}
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Frame() noexcept
 {
-	drawBackground();
-	drawPanels();
-	drawCells(m_player, m_enemies);
-	drawPlayerMenu();
-	m_currentPlayerMenu->Draw();
+	drawBackground(); // отрисовка фона
+	drawPanels(); // отрисовка панелей
+	drawCells(); // отрисовка клеток и персонажей
+	//m_currentPlayerMenu->Draw();
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::selectPlayerTargetMeleeAttack() noexcept
+void GameBattleState::resetCells() noexcept
 {
-	//m_view.ResetCells();
-
-
-	//auto p = selectCell();
-	//if (p.x >= 0 && p.y >= 0)
-	//{	
-	//	
-	//	m_view.SetStatusCell(p.x, p.y, BattleCellStatus::Yellow);
-	//}
-}
-//-----------------------------------------------------------------------------
-Point2 GameBattleState::selectCell() noexcept // TODO: возможно перенести в класс правил
-{
-	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+	for (size_t x = 0; x < 3; x++)
 	{
-		auto pos = GetMousePosition();
-
-		pos.x -= LeftTopCoordCells.x;
-		pos.y -= LeftTopCoordCells.y;
-		if (pos.x > 0 && pos.y > 0)
+		for (size_t y = 0; y < 4; y++)
 		{
-			Point2 p;
-			p.x = (int)pos.x / (SizeCoordCells.x + OffsetCoordCells.x);
-			p.y = (int)pos.y / (SizeCoordCells.y + OffsetCoordCells.y);
-			if (p.x < 3 && p.y < 4)
-				return p;
+			m_statusCells[x][y] = BattleCellStatus::Normal;
 		}
 	}
-	else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-	{
-		ResetCells();
-	}
-	return {-1,-1};
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::drawBackground() noexcept
@@ -160,7 +128,7 @@ void GameBattleState::drawBackground() noexcept
 	m_background.Draw();
 
 	// отрисовка пола
-	DrawTextureTiled(*m_battleBackGround, { 0.0f,0.0f,64.0f,64.0f }, { (float)LeftTopCoordCells.x, (float)LeftTopCoordCells.y,500.0f,680.0f }, { 0.0f,0.0f }, 0.0f, 1.0f, WHITE);
+	DrawTextureTiled(*m_battleBackGround, { 0.0f,0.0f,64.0f,64.0f }, { (float)LeftTopCoordCells.x, (float)LeftTopCoordCells.y,500.0f, 680.0f }, { 0.0f, 0.0f }, 0.0f, 1.0f, WHITE);
 
 	// отрисовка линии разделения поля боя
 	DrawRectangle((int)LeftTopCoordCells.x, 383, 500, 3, WHITE);
@@ -196,7 +164,7 @@ void GameBattleState::drawPanels() noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::drawCells(const Player& player, EnemyParty* enemies) noexcept
+void GameBattleState::drawCells() noexcept
 {
 	Point2 cellPos;
 	for (size_t x = 0; x < 3; x++)
@@ -207,7 +175,7 @@ void GameBattleState::drawCells(const Player& player, EnemyParty* enemies) noexc
 			cellPos.y = LeftTopCoordCells.y + 5 + (SizeCoordCells.y + OffsetCoordCells.y) * (int)y;
 
 			// cell
-			switch (m_cells[x][y])
+			switch (m_statusCells[x][y])
 			{
 			case BattleCellStatus::Normal:
 				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 255, 255, 255, 180 });
@@ -227,50 +195,114 @@ void GameBattleState::drawCells(const Player& player, EnemyParty* enemies) noexc
 			default: break;
 			}
 
-			// enemy creature
+			// enemy
 			if (y < 2)
 			{
-				if (enemies->grid[x][y] != nullptr && enemies->grid[x][y]->IsAlive())
+				if (m_enemies->grid[x][y] != nullptr && m_enemies->grid[x][y]->IsAlive())
 				{
-					DrawTexture(*enemies->grid[x][y]->battleTexture, cellPos.x, cellPos.y, WHITE);
+					DrawTexture(*m_enemies->grid[x][y]->battleTexture, cellPos.x, cellPos.y, WHITE);
 				}
 			}
+			// hero
 			else
 			{
-				size_t ny = y - 2;
-				if (player.grid[x][ny] != nullptr && player.grid[x][ny]->IsAlive())
+				const size_t ny = y - 2;
+				if (m_player.grid[x][ny] != nullptr && m_player.grid[x][ny]->IsAlive())
 				{
-					DrawTexture(*player.grid[x][ny]->battleTexture, cellPos.x, cellPos.y, WHITE);
+					DrawTexture(*m_player.grid[x][ny]->battleTexture, cellPos.x, cellPos.y, WHITE);
 				}
 			}
 		}
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::drawPlayerMenu() noexcept
+void GameBattleState::newRound() noexcept
 {
-}
-//-----------------------------------------------------------------------------
-void GameBattleState::SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept
-{
-	if (x >= 3 || y >= 4) return;
-	m_cells[x][y] = status;
-}
-//-----------------------------------------------------------------------------
-void GameBattleState::ResetCells() noexcept
-{
-	for (size_t x = 0; x < 3; x++)
+	m_currentMember = m_members.size(); // первый участник боя в новом раунде
+	for (size_t i = 0; i < m_members.size(); i++) // ищем первого живого участника боя
 	{
-		for (size_t y = 0; y < 4; y++)
+		if (m_members[i]->IsAlive())
 		{
-			m_cells[x][y] = BattleCellStatus::Normal;
+			m_currentMember = i;
+			break;
+		}
+	}
+	
+	m_battleState = BattleState::WaitAction; // ожидание выбора действия
+}
+//-----------------------------------------------------------------------------
+void GameBattleState::nextMembers() noexcept
+{
+	while (true)
+	{
+		m_currentMember++;
+		if (m_currentMember >= m_members.size()) // всех перебрали, новый раунд
+		{
+			newRound();
+			break;
+		}
+		if (m_members[m_currentMember]->IsAlive())
+		{
+			break;
 		}
 	}
 }
 
+
+
+
+
+
+
+
+
+
 //-----------------------------------------------------------------------------
-void GameBattleState::newRound() noexcept
+void GameBattleState::selectPlayerTargetMeleeAttack() noexcept
 {
-	m_currentMember = 0; // первый участник боя в новом раунде начинает
-	m_battleState = BattleState::SelectAction; // ожидание выбора действия
+	//m_view.ResetCells();
+
+
+	//auto p = selectCell();
+	//if (p.x >= 0 && p.y >= 0)
+	//{	
+	//	
+	//	m_view.SetStatusCell(p.x, p.y, BattleCellStatus::Yellow);
+	//}
 }
+//-----------------------------------------------------------------------------
+Point2 GameBattleState::selectCell() noexcept // TODO: возможно перенести в класс правил
+{
+	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+	{
+		auto pos = GetMousePosition();
+
+		pos.x -= LeftTopCoordCells.x;
+		pos.y -= LeftTopCoordCells.y;
+		if (pos.x > 0 && pos.y > 0)
+		{
+			Point2 p;
+			p.x = (int)pos.x / (SizeCoordCells.x + OffsetCoordCells.x);
+			p.y = (int)pos.y / (SizeCoordCells.y + OffsetCoordCells.y);
+			if (p.x < 3 && p.y < 4)
+				return p;
+		}
+	}
+	else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+	{
+		resetCells();
+	}
+	return {-1,-1};
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+void GameBattleState::SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept
+{
+	if (x >= 3 || y >= 4) return;
+	m_statusCells[x][y] = status;
+}
+
+
