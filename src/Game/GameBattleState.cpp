@@ -10,8 +10,12 @@
 constexpr Point2 LeftTopCoordCells = { 262, 44 };
 constexpr Point2 OffsetCoordCells = { 10, 10 };
 constexpr Point2 SizeCoordCells = { 160, 160 };
+
+// пункты меню
+struct PlayerMenuLabel { enum { Attack, Skill, Magic, Defence }; };
 constexpr std::array PlayerActionMainMenu{ "Attack", "Skill", "Magic", "Defence" };
 static_assert(PlayerActionMainMenu.size() == 4);
+struct PlayerMenuAttackLabel { enum { Melee, Shoot, Cancel }; };
 constexpr std::array PlayerActionMainMenu_Attack = { "Melee", "Shoot", "Cancel" };
 static_assert(PlayerActionMainMenu_Attack.size() == 3);
 //-----------------------------------------------------------------------------
@@ -87,7 +91,7 @@ void GameBattleState::Update(float deltaTime) noexcept
 	//{
 	//	switch (m_currentPlayerMenu->IsSelect())
 	//	{
-	//	case 0: m_playerMenuStage = PlayerMenu::Attack; m_currentPlayerMenu = &m_playerMenu_attack; break;
+	//	case PlayerMenuLabel::Attack: m_playerMenuStage = PlayerMenu::Attack; m_currentPlayerMenu = &m_playerMenu_attack; break;
 	//	default:
 	//		break;
 	//	}
@@ -96,7 +100,7 @@ void GameBattleState::Update(float deltaTime) noexcept
 	//{
 	//	switch (m_currentPlayerMenu->IsSelect())
 	//	{
-	//	case 2: m_playerMenuStage = PlayerMenu::Main; m_currentPlayerMenu = &m_playerMenu; break;
+	//	case PlayerMenuAttackLabel::Cancel: m_playerMenuStage = PlayerMenu::Main; m_currentPlayerMenu = &m_playerMenu; break;
 	//	default:
 	//		break;
 	//	}

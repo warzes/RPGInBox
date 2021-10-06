@@ -1,11 +1,10 @@
-#pragma once
+п»ї#pragma once
 
 class UIBattlePlayerMenu final
 {
 public:
 	void Draw() noexcept;
 
-	// возвращает -1 если ничего еще не выбрано, иначе номер индекса
 	void Run() noexcept;
 
 	void Reset(const Point2& leftUpPos) noexcept;
@@ -21,7 +20,7 @@ public:
 		}
 	}
 
-	// если -1 то ничего не выбрано, иначе номер пункта меню начиная с 0
+	// РµСЃР»Рё -1 С‚Рѕ РЅРёС‡РµРіРѕ РЅРµ РІС‹Р±СЂР°РЅРѕ, РёРЅР°С‡Рµ РЅРѕРјРµСЂ РїСѓРЅРєС‚Р° РјРµРЅСЋ [0, n]
 	int IsSelect() const { return m_select; }
 private:
 	struct element
