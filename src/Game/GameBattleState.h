@@ -19,6 +19,7 @@ enum class BattleCellStatus
 	Yellow,	// выделяет желтым цветом (например текущий персонаж)
 	Green,	// выделяет зеленым цветом (например возможные клетки для выбора)
 	Red,	// выделяет красным цветом (например недоступные клетки для выбора)
+	Blue,	// выделяет красным цветом (например текущий выбор)
 	Grey	// выделяет серым цветом
 };
 
@@ -32,6 +33,7 @@ enum class BattleState
 	WaitActionPlayer_SelectComand_Main,// ожидание выбора команды из начального меню игрока
 	WaitActionPlayer_SelectComand_Attack,// ожидание выбора команды из меню атаки игрока
 	WaitActionPlayer_SelectTargetMeleeAttack,// ожидание выбора цели ближнего удара от игрока
+	WaitActionPlayer_MeleeAttack,// выполнение ближней атаки по цели
 
 	WaitActionEnemy,   // ожидание выбора команды от ИИ
 };

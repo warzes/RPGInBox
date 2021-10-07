@@ -57,6 +57,7 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 //-----------------------------------------------------------------------------
 void GameBattleState::Update(float deltaTime) noexcept
 {
+	static int selectTarget = 0;
 	if (m_currentPlayerMenu) m_currentPlayerMenu->Run();
 
 	if (m_battleState == BattleState::NewRound) // новый раунд
@@ -100,10 +101,7 @@ void GameBattleState::Update(float deltaTime) noexcept
 		case PlayerMenuAttackLabel::Melee:
 			m_battleState = BattleState::WaitActionPlayer_SelectTargetMeleeAttack;
 			m_currentPlayerMenu = nullptr;
-			for (int i = 0; i < 3; i++) // подсветить доступные цели
-			{
-				setStatusCell(i, 1, BattleCellStatus::Green);
-			}
+			selectTarget = 0;
 			break;
 		case PlayerMenuAttackLabel::Cancel:
 			m_battleState = BattleState::WaitActionPlayer_SelectComand_Main;
@@ -112,15 +110,52 @@ void GameBattleState::Update(float deltaTime) noexcept
 		default:
 			break;
 		}
+		if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_X)) // отмена выбора цели
+		{
+			m_battleState = BattleState::WaitActionPlayer_SelectComand_Main;
+			m_currentPlayerMenu = &m_playerMenu;
+		}
 	}
 	else if (m_battleState == BattleState::WaitActionPlayer_SelectTargetMeleeAttack) // выбор цели для ближнего удара от игрока
 	{
-		
+		for (int i = 0; i < 3; i++) // подсветить доступные цели
+		{
+			if (selectTarget == i)
+				setStatusCell(i, 1, BattleCellStatus::Blue);
+			else
+				setStatusCell(i, 1, BattleCellStatus::Green);
+		}
+
+		if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
+		{
+			if (selectTarget > 0) selectTarget--;
+		}
+		if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_S))
+		{
+			if (selectTarget < 2) selectTarget++;
+		}
+		if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_X)) // отмена выбора цели
+		{
+			m_battleState = BattleState::WaitActionPlayer_SelectComand_Attack;
+			m_currentPlayerMenu = &m_playerMenu_attack;
+			selectTarget = 0;
+			resetCells();
+		}
+		if (IsKeyPressed(KEY_Z) || IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) // атака по цели
+		{
+			m_battleState = BattleState::WaitActionPlayer_MeleeAttack;
+			resetCells();
+		}
+	}
+	else if (m_battleState == BattleState::WaitActionPlayer_MeleeAttack) // выполнение атаки
+	{
 	}
 	else if (m_battleState == BattleState::WaitActionEnemy) // ожидание действий ИИ
 	{
 		nextMembers();
 	}
+
+	// TODO: разбить это на части
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Frame() noexcept
@@ -202,25 +237,18 @@ void GameBattleState::drawCells() noexcept
 			cellPos.y = LeftTopCoordCells.y + 5 + (SizeCoordCells.y + OffsetCoordCells.y) * (int)y;
 
 			// cell
+			Color colorCell = WHITE;
 			switch (m_statusCells[x][y])
 			{
-			case BattleCellStatus::Normal:
-				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 255, 255, 255, 180 });
-				break;
-			case BattleCellStatus::Yellow:
-				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 255, 210, 80, 180 });
-				break;
-			case BattleCellStatus::Green:
-				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 70, 255, 20, 180 });
-				break;
-			case BattleCellStatus::Red:
-				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 255, 30, 30, 180 });
-				break;
-			case BattleCellStatus::Grey:
-				DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, { 100, 100, 100, 180 });
-				break;
+			case BattleCellStatus::Normal: colorCell = { 255, 255, 255, 180 }; break;
+			case BattleCellStatus::Yellow: colorCell = { 255, 210, 80, 180 }; break;
+			case BattleCellStatus::Green: colorCell = { 70, 255, 20, 180 }; break;
+			case BattleCellStatus::Red: colorCell = { 255, 30, 30, 180 }; break;
+			case BattleCellStatus::Blue: colorCell = { 100, 30, 255, 180 }; break;
+			case BattleCellStatus::Grey: colorCell = { 100, 100, 100, 180 }; break;
 			default: break;
 			}
+			DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, colorCell);
 
 			// enemy
 			if (y < 2)
