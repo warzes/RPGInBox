@@ -6,6 +6,7 @@
 #include "EnemyTemplate.h"
 #include "EngineMath.h"
 #include "GameInput.h"
+#include "BattleRule.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 constexpr Point2 LeftTopCoordCells = { 262, 44 };
@@ -77,17 +78,6 @@ void GameBattleState::Frame() noexcept
 	drawPanels(); // отрисовка панелей
 	drawCells(); // отрисовка клеток и персонажей
 	if (m_currentPlayerMenu) m_currentPlayerMenu->Draw();
-}
-//-----------------------------------------------------------------------------
-void GameBattleState::resetCells() noexcept
-{
-	for (size_t x = 0; x < 3; x++)
-	{
-		for (size_t y = 0; y < 4; y++)
-		{
-			m_statusCells[x][y] = BattleCellStatus::Normal;
-		}
-	}
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::drawBackground() noexcept
@@ -305,6 +295,8 @@ void GameBattleState::actionsPlayer() noexcept
 		resetCells();
 		m_actionPlayerState = ActionPlayerState::SelectMainCommand;
 		m_currentPlayerMenu = &m_playerMenu;
+		
+		//BattleRule::MeleeDamage(*m_members[m_currentMember], );
 	}
 }
 //-----------------------------------------------------------------------------

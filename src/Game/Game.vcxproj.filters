@@ -60,6 +60,12 @@
     <ClCompile Include="UIAnimSwords.cpp">
       <Filter>Game\State\Battle\gui</Filter>
     </ClCompile>
+    <ClCompile Include="BattleRule.cpp">
+      <Filter>Game\Rules</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleCell.cpp">
+      <Filter>Game\State\Battle\impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -136,6 +142,12 @@
     <ClInclude Include="UIAnimSwords.h">
       <Filter>Game\State\Battle\gui</Filter>
     </ClInclude>
+    <ClInclude Include="BattleRule.h">
+      <Filter>Game\Rules</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleCell.h">
+      <Filter>Game\State\Battle\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -176,6 +188,12 @@
     </Filter>
     <Filter Include="Game\State\Battle\gui">
       <UniqueIdentifier>{e89eff30-b289-4730-938b-17d3ea77c9a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Rules">
+      <UniqueIdentifier>{ef31d4c7-ad62-45b7-90d1-f1b02bb0205d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\State\Battle\impl">
+      <UniqueIdentifier>{ce910b99-3210-464c-aed5-95bff213aac1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

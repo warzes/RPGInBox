@@ -4,6 +4,7 @@
 #include "UIBattlePanelBG.h"
 #include "UIBattlePlayerMenu.h"
 #include "UIAnimSwords.h"
+#include "BattleCell.h"
 
 // позиции команд игрока
 constexpr Point2 LeftTopCoordPlayerCommand = { 810, 415 };
@@ -13,16 +14,6 @@ class ICreature;
 class Player;
 class EnemyParty;
 class ResourceManager;
-
-enum class BattleCellStatus
-{
-	Normal,	// ничего не дорисовывает
-	Yellow,	// выделяет желтым цветом (например текущий персонаж)
-	Green,	// выделяет зеленым цветом (например возможные клетки для выбора)
-	Red,	// выделяет красным цветом (например недоступные клетки для выбора)
-	Blue,	// выделяет красным цветом (например текущий выбор)
-	Grey	// выделяет серым цветом
-};
 
 enum class BattleState
 {
@@ -53,10 +44,8 @@ public:
 	void Frame() noexcept;
 
 private:
-	void resetCells() noexcept;
 	void drawBackground() noexcept;
 	void drawPanels() noexcept;
-	void drawCells() noexcept;
 	void newRound() noexcept;
 	void beginWaitAction() noexcept;
 	void actionsPlayer() noexcept;
@@ -75,7 +64,8 @@ private:
 	std::vector<ICreature*> m_members;
 	// текущий участник боя
 	unsigned m_currentMember = 0;
-	BattleCellStatus m_statusCells[3][4] = { BattleCellStatus::Normal };
+	
+	BattleCells battleCells;
 
 	UIBattlePanelBG m_background;
 	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;

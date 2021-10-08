@@ -177,6 +177,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BattleCell.cpp" />
+    <ClCompile Include="BattleRule.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="EnemyTemplate.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
@@ -206,6 +208,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h" />
+    <ClInclude Include="BattleCell.h" />
+    <ClInclude Include="BattleRule.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="EnemyTemplate.h" />
     <ClInclude Include="GameInput.h" />

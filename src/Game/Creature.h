@@ -15,9 +15,16 @@ public:
 
 	virtual PartyType GetPartyType() const = 0;
 
+	// Modify Stats
+	virtual void Damage(int damage) noexcept
+	{
+		stats.HP -= damage;
+	}
+
 	// Get Stats
 	virtual int GetHP() const noexcept { return stats.HP; }
 
+	
 
 	// TODO: сравнивать еще и со стейтом существа "мертв"
 	bool IsAlive() const noexcept { return GetHP() > 0; }

@@ -3,6 +3,8 @@
 #include "ResourceManager.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
+constexpr auto speedAnim = 150.0f;
+//-----------------------------------------------------------------------------
 bool UIAnimSwords::Init(ResourceManager& resourceMgr) noexcept
 {
 	m_texture = resourceMgr.GetTexture("../data/ui/sword.png");
@@ -13,8 +15,8 @@ void UIAnimSwords::Draw(float deltaTime, const Point2& pos, float scale) noexcep
 {
 	if (m_runAnim == true)
 	{
-		m_rot1 -= 70.0f * deltaTime;
-		m_rot2 += 70.0f * deltaTime;
+		m_rot1 -= speedAnim * deltaTime;
+		m_rot2 += speedAnim * deltaTime;
 	}
 
 	const Rectangle source = { 0.0f, 0.0f, (float)m_texture->width, (float)m_texture->height };
