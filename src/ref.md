@@ -1,4 +1,6 @@
-﻿https://github.com/andrewgasson/roguelike-7drl-2021
+﻿https://lospec.com/palette-list
+
+https://github.com/andrewgasson/roguelike-7drl-2021
 http://rlgclub.ru/wiki/Давайте_сделаем_рогалик_-_Ричард_Д._Кларк
 https://bfnightly.bracketproductions.com/rustbook/chapter_2.html
 https://www.grey-elf.com

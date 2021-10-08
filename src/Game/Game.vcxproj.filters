@@ -57,6 +57,9 @@
     <ClCompile Include="GameInput.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="UIAnimSwords.cpp">
+      <Filter>Game\State\Battle\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -129,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="GameInput.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="UIAnimSwords.h">
+      <Filter>Game\State\Battle\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

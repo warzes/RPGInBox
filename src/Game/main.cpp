@@ -82,7 +82,8 @@ inline void Main() noexcept
 			{
 				while (!WindowShouldClose() && !game.IsEnd())
 				{
-					game.Update(GetFrameTime());
+					const float dt = GetFrameTime();
+					game.Update(dt);
 					game.Frame();
 				}
 			}
