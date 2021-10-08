@@ -29,13 +29,11 @@ enum class BattleState
 
 	WaitAction,        // ожидание выбора команды, переходит в WaitActionPlayer или WaitActionEnemy в зависимости от того чей ход
 
-	WaitActionPlayer,  // ожидание выбора команды от игрока
 	WaitActionPlayer_SelectComand_Main,// ожидание выбора команды из начального меню игрока
 	WaitActionPlayer_SelectComand_Attack,// ожидание выбора команды из меню атаки игрока
 	WaitActionPlayer_SelectTargetMeleeAttack,// ожидание выбора цели ближнего удара от игрока
 	WaitActionPlayer_MeleeAttack,// выполнение ближней атаки по цели
 
-	WaitActionEnemy,   // ожидание выбора команды от ИИ
 };
 
 class GameBattleState final
@@ -55,6 +53,7 @@ private:
 	void drawPanels() noexcept;
 	void drawCells() noexcept;
 	void newRound() noexcept;
+	void waitAction() noexcept;
 	void nextMembers() noexcept;
 	void setStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
 
@@ -78,13 +77,6 @@ private:
 	UIBattlePlayerMenu m_playerMenu_attack;
 	UIBattlePlayerMenu* m_currentPlayerMenu = nullptr;
 
-
-
-
-
-
-
 	void selectPlayerTargetMeleeAttack() noexcept;
 	Point2 selectCell() noexcept;
-	
 };

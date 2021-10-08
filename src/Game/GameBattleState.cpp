@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "EnemyTemplate.h"
 #include "EngineMath.h"
+#include "GameInput.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 constexpr Point2 LeftTopCoordCells = { 262, 44 };
@@ -16,9 +17,9 @@ constexpr Point2 PlayerMenuLeftTopPos = { 810, 415 };
 struct PlayerMenuLabel { enum { Attack, Skill, Magic, Defence }; };
 constexpr std::array PlayerActionMainMenu{ "Attack", "Skill", "Magic", "Defence" };
 static_assert(PlayerActionMainMenu.size() == 4);
-struct PlayerMenuAttackLabel { enum { Melee, Shoot, Cancel }; };
-constexpr std::array PlayerActionMainMenu_Attack = { "Melee", "Shoot", "Cancel" };
-static_assert(PlayerActionMainMenu_Attack.size() == 3);
+struct PlayerMenuAttackLabel { enum { Melee, Shoot }; };
+constexpr std::array PlayerActionMainMenu_Attack = { "Melee", "Shoot" };
+static_assert(PlayerActionMainMenu_Attack.size() == 2);
 //-----------------------------------------------------------------------------
 GameBattleState::GameBattleState(Player& player, ResourceManager& resourceMgr) noexcept
 	: m_resourceMgr(resourceMgr)
@@ -64,23 +65,9 @@ void GameBattleState::Update(float deltaTime) noexcept
 	{
 		newRound();
 	}
-	else if (m_battleState == BattleState::WaitAction) // определение, чей сейчас ход
-	{
-		m_currentPlayerMenu = nullptr;
-		resetCells();
-		if (m_members[m_currentMember]->GetPartyType() == PartyType::Hero)
-			m_battleState = BattleState::WaitActionPlayer;
-		else
-			m_battleState = BattleState::WaitActionEnemy;
-	}
-	else if (m_battleState == BattleState::WaitActionPlayer) // ожидание действий игрока
-	{
-		m_currentPlayerMenu = &m_playerMenu;
-		m_battleState = BattleState::WaitActionPlayer_SelectComand_Main;
-
-		int cellX = m_currentMember % 3;
-		int cellY = m_currentMember / 3 + 2;
-		setStatusCell(cellX, cellY, BattleCellStatus::Yellow);
+	else if (m_battleState == BattleState::WaitAction) // ожидание действия
+	{	
+		waitAction();
 	}
 	else if (m_battleState == BattleState::WaitActionPlayer_SelectComand_Main) // ожидание выбора команды в меню игрока
 	{
@@ -103,14 +90,10 @@ void GameBattleState::Update(float deltaTime) noexcept
 			m_currentPlayerMenu = nullptr;
 			selectTarget = 0;
 			break;
-		case PlayerMenuAttackLabel::Cancel:
-			m_battleState = BattleState::WaitActionPlayer_SelectComand_Main;
-			m_currentPlayerMenu = &m_playerMenu;
-			break;
 		default:
 			break;
 		}
-		if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_X)) // отмена выбора цели
+		if (Input::IsPressed(GameKey::Cancel)) // отмена выбора цели
 		{
 			m_battleState = BattleState::WaitActionPlayer_SelectComand_Main;
 			m_currentPlayerMenu = &m_playerMenu;
@@ -126,22 +109,22 @@ void GameBattleState::Update(float deltaTime) noexcept
 				setStatusCell(i, 1, BattleCellStatus::Green);
 		}
 
-		if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
+		if (Input::IsPressed(GameKey::Left))
 		{
 			if (selectTarget > 0) selectTarget--;
 		}
-		if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_S))
+		if (Input::IsPressed(GameKey::Right))
 		{
 			if (selectTarget < 2) selectTarget++;
 		}
-		if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_X)) // отмена выбора цели
+		if (Input::IsPressed(GameKey::Cancel)) // отмена выбора цели
 		{
 			m_battleState = BattleState::WaitActionPlayer_SelectComand_Attack;
 			m_currentPlayerMenu = &m_playerMenu_attack;
 			selectTarget = 0;
 			resetCells();
 		}
-		if (IsKeyPressed(KEY_Z) || IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) // атака по цели
+		if (Input::IsPressed(GameKey::Ok)) // атака по цели
 		{
 			m_battleState = BattleState::WaitActionPlayer_MeleeAttack;
 			resetCells();
@@ -149,10 +132,6 @@ void GameBattleState::Update(float deltaTime) noexcept
 	}
 	else if (m_battleState == BattleState::WaitActionPlayer_MeleeAttack) // выполнение атаки
 	{
-	}
-	else if (m_battleState == BattleState::WaitActionEnemy) // ожидание действий ИИ
-	{
-		nextMembers();
 	}
 
 	// TODO: разбить это на части
@@ -284,6 +263,25 @@ void GameBattleState::newRound() noexcept
 	}
 	
 	m_battleState = BattleState::WaitAction; // ожидание выбора действия
+}
+//-----------------------------------------------------------------------------
+void GameBattleState::waitAction() noexcept
+{
+	resetCells();
+	if (m_members[m_currentMember]->GetPartyType() == PartyType::Hero) // ожидание действия героя
+	{
+		m_currentPlayerMenu = &m_playerMenu;
+		m_battleState = BattleState::WaitActionPlayer_SelectComand_Main;
+
+		int cellX = m_currentMember % 3;
+		int cellY = m_currentMember / 3 + 2;
+		setStatusCell(cellX, cellY, BattleCellStatus::Yellow);
+	}
+	else // ожидание действия ИИ
+	{
+		m_currentPlayerMenu = nullptr;
+		nextMembers();
+	}
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::nextMembers() noexcept

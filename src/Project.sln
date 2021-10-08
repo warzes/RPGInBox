@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{DDA958D7-BE3
 	ProjectSection(SolutionItems) = preProject
 		docRaylib.md = docRaylib.md
 		GameIdea.md = GameIdea.md
+		HISTORY.MD = HISTORY.MD
 		otherIdea.md = otherIdea.md
 		ref.md = ref.md
 		todo.md = todo.md

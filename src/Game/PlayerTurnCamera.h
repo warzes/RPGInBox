@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IGameCamera.h"
+#include "GameInput.h"
 
 class Map;
 
@@ -29,9 +30,9 @@ private:
 		Right
 	};
 
-	bool keyDown(int key) noexcept
+	bool keyDown(GameKey key) noexcept
 	{
-		return m_continuedWalk && !m_isMoving && !m_isTurning ? IsKeyDown(key) : IsKeyReleased(key);
+		return m_continuedWalk && !m_isMoving && !m_isTurning ? Input::IsDown(key) : Input::IsReleased(key);
 	}
 
 	bool isBlocked(const Vector3& newPosition, const Map& map) noexcept;

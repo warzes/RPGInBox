@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
 #include "UIBattlePlayerMenu.h"
+#include "GameInput.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 void UIBattlePlayerMenu::Draw() const noexcept
@@ -43,14 +44,14 @@ void UIBattlePlayerMenu::Run() noexcept
 			}				
 		}
 	}
-	if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
+	if (Input::IsPressed(GameKey::Up))
 	{
 		if (m_actionElement == 0)
 			m_actionElement = m_elements.size() - 1;
 		else
 			--m_actionElement;
 	}
-	if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S))
+	if (Input::IsPressed(GameKey::Down))
 	{
 		if (m_actionElement >= m_elements.size() - 1)
 			m_actionElement = 0;
@@ -58,7 +59,7 @@ void UIBattlePlayerMenu::Run() noexcept
 			++m_actionElement;
 	}
 	// выбор меню клавишами
-	if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_Z))
+	if (Input::IsPressed(GameKey::Ok))
 	{
 		m_select = m_actionElement;
 		m_actionElement = 0; // сброс выбора пункта меню

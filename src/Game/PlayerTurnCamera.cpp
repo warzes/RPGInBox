@@ -26,15 +26,14 @@ void PlayerTurnCamera::Update(const WorldAdventure& world) noexcept
 	{
 		if (!m_isMoving) // во время вращения камеры нельзя двигаться, поэтому условие вложенное
 		{
-			if (keyDown(m_controlsKeys[MOVE_FRONT]) || keyDown(m_controlsKeys[TURN_UP])) move(moveDir::Forward, world.openworld);
-			if (keyDown(m_controlsKeys[MOVE_BACK]) || keyDown(m_controlsKeys[TURN_DOWN])) move(moveDir::Back, world.openworld);
-
-			if (keyDown(m_controlsKeys[MOVE_UP])) move(moveDir::Left, world.openworld);
-			if (keyDown(m_controlsKeys[MOVE_DOWN])) move(moveDir::Right, world.openworld);
+			if (keyDown(GameKey::Up)) move(moveDir::Forward, world.openworld);
+			if (keyDown(GameKey::Down)) move(moveDir::Back, world.openworld);
+			if (keyDown(GameKey::StrafeLeft)) move(moveDir::Left, world.openworld);
+			if (keyDown(GameKey::StrafeRight)) move(moveDir::Right, world.openworld);
 		}
 
-		if (keyDown(m_controlsKeys[MOVE_LEFT]) || keyDown(m_controlsKeys[TURN_LEFT])) turn(rotateDirY::Left);
-		if (keyDown(m_controlsKeys[MOVE_RIGHT]) || keyDown(m_controlsKeys[TURN_RIGHT])) turn(rotateDirY::Right);
+		if (keyDown(GameKey::Left)) turn(rotateDirY::Left);
+		if (keyDown(GameKey::Right)) turn(rotateDirY::Right);
 	}
 	if (m_isMoving)
 	{
@@ -97,8 +96,8 @@ void PlayerTurnCamera::move(moveDir dir, const Map& map) noexcept
 
 	if (dir == moveDir::Forward)    m_direction = { round(forward.x),  0.0f, round(forward.z) };
 	else if (dir == moveDir::Back)  m_direction = { round(-forward.x), 0.0f, round(-forward.z) };
-	else if (dir == moveDir::Left)  m_direction = { round(-forward.z), 0.0f, round(forward.x) };
-	else if (dir == moveDir::Right) m_direction = { round(forward.z),  0.0f, round(-forward.x) };
+	else if (dir == moveDir::Right) m_direction = { round(-forward.z), 0.0f, round(forward.x) };
+	else if (dir == moveDir::Left)  m_direction = { round(forward.z),  0.0f, round(-forward.x) };
 
 	const Vector3 targetPos = Vector3Add(m_cameraPosition, m_direction);
 	if (!isBlocked(targetPos, map) && dir != moveDir::No)

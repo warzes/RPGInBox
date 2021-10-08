@@ -7,23 +7,6 @@ class WorldAdventure;
 class IGameCamera
 {
 public:
-	enum CameraControls
-	{
-		MOVE_FRONT = 0,
-		MOVE_BACK,
-		MOVE_RIGHT,
-		MOVE_LEFT,
-		MOVE_UP,
-		MOVE_DOWN,
-		TURN_LEFT,
-		TURN_RIGHT,
-		TURN_UP,
-		TURN_DOWN,
-		SPRINT,
-		LAST_CONTROL
-	};
-	IGameCamera() : m_controlsKeys{ 'W', 'S', 'D', 'A', 'E', 'Q', KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_LEFT_SHIFT }	{}
-
 	virtual ~IGameCamera() = default;
 
 	virtual void Update(const WorldAdventure& world) noexcept = 0;
@@ -51,8 +34,6 @@ public:
 
 protected:
 	const float m_playerEyesPosition = 0.75f;       // Player eyes position from ground (in meters)
-
-	int m_controlsKeys[LAST_CONTROL] = { 0 };
 
 	Vector3 m_cameraPosition = { 0.0f, 0.0f, 0.0f };
 	Camera m_viewCamera = {};

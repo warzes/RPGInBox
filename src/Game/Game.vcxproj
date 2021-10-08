@@ -182,6 +182,7 @@
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameAdventure.cpp" />
+    <ClCompile Include="GameInput.cpp" />
     <ClCompile Include="UIBattlePlayerMenu.cpp" />
     <ClCompile Include="GameBattleState.cpp" />
     <ClCompile Include="Log.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Base.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="EnemyTemplate.h" />
+    <ClInclude Include="GameInput.h" />
     <ClInclude Include="UIBattlePlayerMenu.h" />
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="FreeCamera.h" />

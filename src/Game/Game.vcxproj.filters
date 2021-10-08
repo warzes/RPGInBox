@@ -54,6 +54,9 @@
     <ClCompile Include="UIBattlePanelBG.cpp">
       <Filter>Game\State\Battle\gui</Filter>
     </ClCompile>
+    <ClCompile Include="GameInput.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -123,6 +126,9 @@
     </ClInclude>
     <ClInclude Include="UIBattlePanelBG.h">
       <Filter>Game\State\Battle\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInput.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
