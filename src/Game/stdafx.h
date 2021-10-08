@@ -22,6 +22,7 @@ SE_PRAGMA_WARNING_PUSH_LEVEL(0)
 #include <chrono>
 #include <string>
 #include <algorithm>
+#include <iterator>
 #include <functional>
 #include <array>
 #include <vector>

@@ -1,10 +1,10 @@
-#pragma once
+п»ї#pragma once
 
 #include "EngineMath.h"
 #include "UIBattlePanelBG.h"
 #include "UIBattlePlayerMenu.h"
 
-// позиции команд игрока
+// РїРѕР·РёС†РёРё РєРѕРјР°РЅРґ РёРіСЂРѕРєР°
 constexpr Point2 LeftTopCoordPlayerCommand = { 810, 415 };
 constexpr Point2 SizeCoordPlayerCommand = { 140, 40 };
 
@@ -15,25 +15,28 @@ class ResourceManager;
 
 enum class BattleCellStatus
 {
-	Normal,	// ничего не дорисовывает
-	Yellow,	// выделяет желтым цветом (например текущий персонаж)
-	Green,	// выделяет зеленым цветом (например возможные клетки для выбора)
-	Red,	// выделяет красным цветом (например недоступные клетки для выбора)
-	Blue,	// выделяет красным цветом (например текущий выбор)
-	Grey	// выделяет серым цветом
+	Normal,	// РЅРёС‡РµРіРѕ РЅРµ РґРѕСЂРёСЃРѕРІС‹РІР°РµС‚
+	Yellow,	// РІС‹РґРµР»СЏРµС‚ Р¶РµР»С‚С‹Рј С†РІРµС‚РѕРј (РЅР°РїСЂРёРјРµСЂ С‚РµРєСѓС‰РёР№ РїРµСЂСЃРѕРЅР°Р¶)
+	Green,	// РІС‹РґРµР»СЏРµС‚ Р·РµР»РµРЅС‹Рј С†РІРµС‚РѕРј (РЅР°РїСЂРёРјРµСЂ РІРѕР·РјРѕР¶РЅС‹Рµ РєР»РµС‚РєРё РґР»СЏ РІС‹Р±РѕСЂР°)
+	Red,	// РІС‹РґРµР»СЏРµС‚ РєСЂР°СЃРЅС‹Рј С†РІРµС‚РѕРј (РЅР°РїСЂРёРјРµСЂ РЅРµРґРѕСЃС‚СѓРїРЅС‹Рµ РєР»РµС‚РєРё РґР»СЏ РІС‹Р±РѕСЂР°)
+	Blue,	// РІС‹РґРµР»СЏРµС‚ РєСЂР°СЃРЅС‹Рј С†РІРµС‚РѕРј (РЅР°РїСЂРёРјРµСЂ С‚РµРєСѓС‰РёР№ РІС‹Р±РѕСЂ)
+	Grey	// РІС‹РґРµР»СЏРµС‚ СЃРµСЂС‹Рј С†РІРµС‚РѕРј
 };
 
 enum class BattleState
 {
-	NewRound,          // начинается новый раунд
+	NewRound,          // РЅР°С‡РёРЅР°РµС‚СЃСЏ РЅРѕРІС‹Р№ СЂР°СѓРЅРґ
+	BeginWaitAction,   // СЃС‚Р°СЂС‚ РѕР¶РёРґР°РЅРёСЏ РІС‹Р±РѕСЂР° РєРѕРјР°РЅРґС‹, РїРµСЂРµС…РѕРґРёС‚ РІ WaitActionPlayer РёР»Рё WaitActionEnemy РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РѕРіРѕ С‡РµР№ С…РѕРґ	
+	WaitActionPlayer,
+	WaitActionEnemy
+};
 
-	WaitAction,        // ожидание выбора команды, переходит в WaitActionPlayer или WaitActionEnemy в зависимости от того чей ход
-
-	WaitActionPlayer_SelectComand_Main,// ожидание выбора команды из начального меню игрока
-	WaitActionPlayer_SelectComand_Attack,// ожидание выбора команды из меню атаки игрока
-	WaitActionPlayer_SelectTargetMeleeAttack,// ожидание выбора цели ближнего удара от игрока
-	WaitActionPlayer_MeleeAttack,// выполнение ближней атаки по цели
-
+enum class ActionPlayerState
+{
+	WaitActionPlayer_SelectComand_Main,// РѕР¶РёРґР°РЅРёРµ РІС‹Р±РѕСЂР° РєРѕРјР°РЅРґС‹ РёР· РЅР°С‡Р°Р»СЊРЅРѕРіРѕ РјРµРЅСЋ РёРіСЂРѕРєР°
+	WaitActionPlayer_SelectComand_Attack,// РѕР¶РёРґР°РЅРёРµ РІС‹Р±РѕСЂР° РєРѕРјР°РЅРґС‹ РёР· РјРµРЅСЋ Р°С‚Р°РєРё РёРіСЂРѕРєР°
+	WaitActionPlayer_SelectTargetMeleeAttack,// РѕР¶РёРґР°РЅРёРµ РІС‹Р±РѕСЂР° С†РµР»Рё Р±Р»РёР¶РЅРµРіРѕ СѓРґР°СЂР° РѕС‚ РёРіСЂРѕРєР°
+	WaitActionPlayer_MeleeAttack,// РІС‹РїРѕР»РЅРµРЅРёРµ Р±Р»РёР¶РЅРµР№ Р°С‚Р°РєРё РїРѕ С†РµР»Рё
 };
 
 class GameBattleState final
@@ -53,20 +56,22 @@ private:
 	void drawPanels() noexcept;
 	void drawCells() noexcept;
 	void newRound() noexcept;
-	void waitAction() noexcept;
+	void beginWaitAction() noexcept;
+	void waitActionPlayer() noexcept;
 	void nextMembers() noexcept;
 	void setStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
 
 	ResourceManager& m_resourceMgr;
 	Player& m_player;
 	EnemyParty* m_enemies = nullptr;
-	// текущий раунд
+	// С‚РµРєСѓС‰РёР№ СЂР°СѓРЅРґ
 	unsigned m_round = 0;
-	// текущее состояние боя
+	// С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ Р±РѕСЏ
 	BattleState m_battleState = BattleState::NewRound;
-	// все участники боя (в будущем возможно будут сортироваться по инициативе)
+	ActionPlayerState m_actionPlayerState = ActionPlayerState::WaitActionPlayer_SelectComand_Main;
+	// РІСЃРµ СѓС‡Р°СЃС‚РЅРёРєРё Р±РѕСЏ (РІ Р±СѓРґСѓС‰РµРј РІРѕР·РјРѕР¶РЅРѕ Р±СѓРґСѓС‚ СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊСЃСЏ РїРѕ РёРЅРёС†РёР°С‚РёРІРµ)
 	std::vector<ICreature*> m_members;
-	// текущий участник боя
+	// С‚РµРєСѓС‰РёР№ СѓС‡Р°СЃС‚РЅРёРє Р±РѕСЏ
 	unsigned m_currentMember = 0;
 	BattleCellStatus m_statusCells[3][4] = { BattleCellStatus::Normal };
 
