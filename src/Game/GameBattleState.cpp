@@ -34,7 +34,7 @@ bool GameBattleState::Init() noexcept
 	m_background.Create(&m_resourceMgr);
 	m_battleBackGround = m_resourceMgr.GetTexture("../data/temp/textures/character/plains-ground.png");
 
-	if (!battleCells.Init(m_resourceMgr))
+	if (!m_battleCells.Init(m_resourceMgr))
 		return false;
 
 	// создание меню
@@ -48,7 +48,7 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 {
 	m_enemies = enemies;
 	// сброс всех переменных
-	battleCells.SetCreature(&m_player, m_enemies);
+	m_battleCells.SetCreature(&m_player, m_enemies);
 	m_round = 0;
 	m_currentPlayerMenu = nullptr;
 	m_battleState = BattleState::NewRound;
@@ -68,13 +68,22 @@ void GameBattleState::Update(float deltaTime) noexcept
 		actionsPlayer();
 	//else if (m_battleState == BattleState::ActionEnemy)
 	//	waitActionEnemy();
+
+	if (m_battleCells.GetHero() == 0)
+	{
+		// проигрыш битвы
+	}
+	if (m_battleCells.GetEnemy() == 0)
+	{
+		// победа в битве
+	}
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Frame() noexcept
 {
 	drawBackground(); // отрисовка фона
 	drawPanels(); // отрисовка панелей
-	battleCells.Draw(m_deltaTime);
+	m_battleCells.Draw(m_deltaTime);
 	if (m_currentPlayerMenu) m_currentPlayerMenu->Draw();
 }
 //-----------------------------------------------------------------------------
@@ -123,19 +132,18 @@ void GameBattleState::drawPanels() noexcept
 void GameBattleState::newRound() noexcept
 {
 	m_round++; // увеличивается счетчик кол-ва раундов
-	battleCells.SetFirstMember();
+	m_battleCells.SetFirstMember();
 	m_battleState = BattleState::BeginWaitAction; // ожидание выбора действия
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::beginWaitAction() noexcept
 {
-	battleCells.ResetCells();
+	m_battleCells.ResetCells();
 
-	if (battleCells.GetMember().creature->GetPartyType() == PartyType::Hero) // ожидание действия героя
+	if (m_battleCells.GetCurrentMember().creature->GetPartyType() == PartyType::Hero) // ожидание действия героя
 	{
 		// выделение клетки активного героя
-		battleCells.SetStatusCell(battleCells.GetMember().posInCell.x, battleCells.GetMember().posInCell.y, BattleCellStatus::Yellow);
-
+		m_battleCells.ViewSelectMember();
 		m_currentPlayerMenu = &m_playerMenu;
 		m_battleState = BattleState::ActionsPlayer;
 		m_actionPlayerState = ActionPlayerState::SelectMainCommand;
@@ -186,8 +194,7 @@ void GameBattleState::actionsPlayer() noexcept
 	}
 	else if (m_actionPlayerState == ActionPlayerState::SelectTargetMeleeAttack) // выбор цели для ближнего удара от игрока
 	{
-		battleCells.ResetAnimSword();
-		battleCells.ViewMeleeAttack(selectTargetCell);
+		m_battleCells.ViewMeleeAttack(selectTargetCell);
 
 		if (Input::IsPressed(GameKey::Left))
 		{
@@ -202,7 +209,7 @@ void GameBattleState::actionsPlayer() noexcept
 			m_actionPlayerState = ActionPlayerState::Attack;
 			m_currentPlayerMenu = &m_playerMenu_attack;
 			selectTargetCell = 0;
-			battleCells.ResetCells();
+			m_battleCells.ResetCells();
 		}
 		if (Input::IsPressed(GameKey::Ok)) // атака по цели
 		{
@@ -211,14 +218,14 @@ void GameBattleState::actionsPlayer() noexcept
 	}
 	else if (m_actionPlayerState == ActionPlayerState::MeleeAttack) // выполнение атаки
 	{
-		if (battleCells.IsFinalAnimSworld())
+		if (m_battleCells.IsFinalAnimSworld())
 		{
 			m_actionPlayerState = ActionPlayerState::EndMeleeAttack;
 		}			
 	}
 	else if (m_actionPlayerState == ActionPlayerState::EndMeleeAttack)
 	{
-		battleCells.ResetCells();
+		m_battleCells.ResetCells();
 		m_actionPlayerState = ActionPlayerState::SelectMainCommand;
 		m_currentPlayerMenu = &m_playerMenu;
 		
@@ -228,7 +235,7 @@ void GameBattleState::actionsPlayer() noexcept
 //-----------------------------------------------------------------------------
 void GameBattleState::nextMembers() noexcept
 {
-	int currentMember = battleCells.NextMembers();
+	int currentMember = m_battleCells.NextMembers();
 	if (currentMember == -1)
 		newRound();
 }
@@ -265,7 +272,7 @@ Point2 GameBattleState::selectCell() noexcept // TODO: возможно пере
 	}
 	else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
 	{
-		battleCells.ResetCells();
+		m_battleCells.ResetCells();
 	}
 	return {-1,-1};
 }

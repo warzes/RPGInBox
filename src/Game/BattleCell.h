@@ -50,13 +50,24 @@ public:
 	void SetFirstMember() noexcept;
 	int NextMembers() noexcept;
 
-	CreatureInCell& GetMember() noexcept;
+	CreatureInCell& GetCurrentMember() noexcept;
 
-	void ResetAnimSword() noexcept;
 	bool IsFinalAnimSworld() noexcept;
 
 	bool ViewMeleeAttack(int selectTargetCell) noexcept;
+
+	void ViewSelectMember() noexcept;
+
+
+	bool IsMeleeAttack() const noexcept; // может ли персонаж бить ближней атакой
+	bool IsRangeAttack() const noexcept; // может ли персонаж бить дальней атакой
+
+	int GetHero() const noexcept;
+	int GetEnemy() const noexcept;
+
 private:
+	void resetAnimSword() noexcept;
+
 	// при этом первые два ряда - противника, вторые - героев.
 	BattleCell m_cells[3][4];
 	std::vector<CreatureInCell*> m_members;

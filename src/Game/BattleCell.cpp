@@ -124,15 +124,9 @@ int BattleCells::NextMembers() noexcept
 	return m_currentMember;
 }
 //-----------------------------------------------------------------------------
-CreatureInCell& BattleCells::GetMember() noexcept
+CreatureInCell& BattleCells::GetCurrentMember() noexcept
 {
 	return *m_members[m_currentMember];
-}
-//-----------------------------------------------------------------------------
-void BattleCells::ResetAnimSword() noexcept
-{
-	m_isAnimSwords = false;
-	m_animSwords.Reset();
 }
 //-----------------------------------------------------------------------------
 bool BattleCells::IsFinalAnimSworld() noexcept
@@ -147,6 +141,7 @@ bool BattleCells::IsFinalAnimSworld() noexcept
 //-----------------------------------------------------------------------------
 bool BattleCells::ViewMeleeAttack(int selectTargetCell) noexcept
 {
+	resetAnimSword();
 	int y = m_members[m_currentMember]->posInCell.y - 1;
 	bool inFirstLine = false;
 	for (int i = 0; i < 3; i++) // подсветить доступные цели для ближней атаки
@@ -172,5 +167,16 @@ bool BattleCells::ViewMeleeAttack(int selectTargetCell) noexcept
 		}
 	}
 	return inFirstLine;
+}
+//-----------------------------------------------------------------------------
+void BattleCells::ViewSelectMember() noexcept
+{
+	SetStatusCell(GetCurrentMember().posInCell.x, GetCurrentMember().posInCell.y, BattleCellStatus::Yellow);
+}
+//-----------------------------------------------------------------------------
+void BattleCells::resetAnimSword() noexcept
+{
+	m_isAnimSwords = false;
+	m_animSwords.Reset();
 }
 //-----------------------------------------------------------------------------

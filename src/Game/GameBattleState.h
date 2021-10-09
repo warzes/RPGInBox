@@ -60,7 +60,7 @@ private:
 	BattleState m_battleState = BattleState::NewRound;
 	ActionPlayerState m_actionPlayerState = ActionPlayerState::SelectMainCommand;
 	
-	BattleCells battleCells;
+	BattleCells m_battleCells;
 
 	UIBattlePanelBG m_background;
 	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
