@@ -50,7 +50,6 @@ private:
 	void beginWaitAction() noexcept;
 	void actionsPlayer() noexcept;
 	void nextMembers() noexcept;
-	void setStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
 
 	ResourceManager& m_resourceMgr;
 	Player& m_player;
@@ -60,18 +59,11 @@ private:
 	// текущее состояние боя
 	BattleState m_battleState = BattleState::NewRound;
 	ActionPlayerState m_actionPlayerState = ActionPlayerState::SelectMainCommand;
-	// все участники боя (в будущем возможно будут сортироваться по инициативе)
-	std::vector<ICreature*> m_members;
-	// текущий участник боя
-	unsigned m_currentMember = 0;
 	
 	BattleCells battleCells;
 
 	UIBattlePanelBG m_background;
 	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
-
-	UIAnimSwords m_animSwords;
-	bool m_isAnimSwords = false;
 
 	UIBattlePlayerMenu m_playerMenu;
 	UIBattlePlayerMenu m_playerMenu_attack;

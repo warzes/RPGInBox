@@ -34,7 +34,7 @@ bool GameBattleState::Init() noexcept
 	m_background.Create(&m_resourceMgr);
 	m_battleBackGround = m_resourceMgr.GetTexture("../data/temp/textures/character/plains-ground.png");
 
-	if (!m_animSwords.Init(m_resourceMgr))
+	if (!battleCells.Init(m_resourceMgr))
 		return false;
 
 	// создание меню
@@ -48,9 +48,7 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 {
 	m_enemies = enemies;
 	// сброс всех переменных
-	m_members.clear();
-	for (size_t i = 0; i < m_player.heroes.size(); i++) m_members.push_back(&m_player.heroes[i]);
-	for (size_t i = 0; i < enemies->enemys.size(); i++) m_members.push_back(&enemies->enemys[i]);
+	battleCells.SetCreature(&m_player, m_enemies);
 	m_round = 0;
 	m_currentPlayerMenu = nullptr;
 	m_battleState = BattleState::NewRound;
@@ -76,7 +74,7 @@ void GameBattleState::Frame() noexcept
 {
 	drawBackground(); // отрисовка фона
 	drawPanels(); // отрисовка панелей
-	drawCells(); // отрисовка клеток и персонажей
+	battleCells.Draw(m_deltaTime);
 	if (m_currentPlayerMenu) m_currentPlayerMenu->Draw();
 }
 //-----------------------------------------------------------------------------
@@ -122,81 +120,21 @@ void GameBattleState::drawPanels() noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::drawCells() noexcept
-{
-	Point2 cellPos;
-	for (size_t x = 0; x < 3; x++)
-	{
-		for (size_t y = 0; y < 4; y++)
-		{
-			cellPos.x = LeftTopCoordCells.x + (SizeCoordCells.x + OffsetCoordCells.x) * (int)x;
-			cellPos.y = LeftTopCoordCells.y + 5 + (SizeCoordCells.y + OffsetCoordCells.y) * (int)y;
-
-			// cell
-			Color colorCell = WHITE;
-			switch (m_statusCells[x][y])
-			{
-			case BattleCellStatus::Normal: colorCell = { 255, 255, 255, 180 }; break;
-			case BattleCellStatus::Yellow: colorCell = { 255, 210, 80, 180 }; break;
-			case BattleCellStatus::Green: colorCell = { 70, 255, 20, 180 }; break;
-			case BattleCellStatus::Red: colorCell = { 255, 30, 30, 180 }; break;
-			case BattleCellStatus::Blue: colorCell = { 100, 30, 255, 180 }; break;
-			case BattleCellStatus::Grey: colorCell = { 100, 100, 100, 180 }; break;
-			default: break;
-			}
-			DrawRectangle(cellPos.x, cellPos.y, SizeCoordCells.x, SizeCoordCells.y, colorCell);
-
-			// enemy
-			if (y < 2)
-			{
-				if (m_enemies->grid[x][y] != nullptr && m_enemies->grid[x][y]->IsAlive())
-				{
-					DrawTexture(*m_enemies->grid[x][y]->battleTexture, cellPos.x, cellPos.y, WHITE);
-				}
-			}
-			// hero
-			else
-			{
-				const size_t ny = y - 2;
-				if (m_player.grid[x][ny] != nullptr && m_player.grid[x][ny]->IsAlive())
-				{
-					DrawTexture(*m_player.grid[x][ny]->battleTexture, cellPos.x, cellPos.y, WHITE);
-				}
-			}
-			// Draw Melee Attack
-
-			if ((m_isAnimSwords == false && m_statusCells[x][y] == BattleCellStatus::Green) || m_statusCells[x][y] == BattleCellStatus::Blue)
-				m_animSwords.Draw(m_deltaTime, { cellPos.x + 20, cellPos.y + 20 }, (SizeCoordCells.x - 40) / 32.0f);
-		}
-	}
-}
-//-----------------------------------------------------------------------------
 void GameBattleState::newRound() noexcept
 {
 	m_round++; // увеличивается счетчик кол-ва раундов
-	m_currentMember = m_members.size(); // первый участник боя в новом раунде
-	for (size_t i = 0; i < m_members.size(); i++) // ищем первого живого участника боя
-	{
-		if (m_members[i]->IsAlive())
-		{
-			m_currentMember = i;
-			break;
-		}
-	}
-	
+	battleCells.SetFirstMember();
 	m_battleState = BattleState::BeginWaitAction; // ожидание выбора действия
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::beginWaitAction() noexcept
 {
-	resetCells();
+	battleCells.ResetCells();
 
-	if (m_members[m_currentMember]->GetPartyType() == PartyType::Hero) // ожидание действия героя
+	if (battleCells.GetMember().creature->GetPartyType() == PartyType::Hero) // ожидание действия героя
 	{
 		// выделение клетки активного героя
-		const int cellX = m_currentMember % 3;
-		const int cellY = m_currentMember / 3 + 2;
-		setStatusCell(cellX, cellY, BattleCellStatus::Yellow);
+		battleCells.SetStatusCell(battleCells.GetMember().posInCell.x, battleCells.GetMember().posInCell.y, BattleCellStatus::Yellow);
 
 		m_currentPlayerMenu = &m_playerMenu;
 		m_battleState = BattleState::ActionsPlayer;
@@ -248,15 +186,8 @@ void GameBattleState::actionsPlayer() noexcept
 	}
 	else if (m_actionPlayerState == ActionPlayerState::SelectTargetMeleeAttack) // выбор цели для ближнего удара от игрока
 	{
-		m_isAnimSwords = false;
-		m_animSwords.Reset();
-		for (int i = 0; i < 3; i++) // подсветить доступные цели
-		{
-			if (selectTargetCell == i)
-				setStatusCell(i, 1, BattleCellStatus::Blue);
-			else
-				setStatusCell(i, 1, BattleCellStatus::Green);
-		}
+		battleCells.ResetAnimSword();
+		battleCells.ViewMeleeAttack(selectTargetCell);
 
 		if (Input::IsPressed(GameKey::Left))
 		{
@@ -271,7 +202,7 @@ void GameBattleState::actionsPlayer() noexcept
 			m_actionPlayerState = ActionPlayerState::Attack;
 			m_currentPlayerMenu = &m_playerMenu_attack;
 			selectTargetCell = 0;
-			resetCells();
+			battleCells.ResetCells();
 		}
 		if (Input::IsPressed(GameKey::Ok)) // атака по цели
 		{
@@ -280,19 +211,14 @@ void GameBattleState::actionsPlayer() noexcept
 	}
 	else if (m_actionPlayerState == ActionPlayerState::MeleeAttack) // выполнение атаки
 	{
-		if (m_isAnimSwords == false)
-		{
-			m_isAnimSwords = true;
-			m_animSwords.Start();
-		}		
-		if (m_animSwords.IsFinal())
+		if (battleCells.IsFinalAnimSworld())
 		{
 			m_actionPlayerState = ActionPlayerState::EndMeleeAttack;
 		}			
 	}
 	else if (m_actionPlayerState == ActionPlayerState::EndMeleeAttack)
 	{
-		resetCells();
+		battleCells.ResetCells();
 		m_actionPlayerState = ActionPlayerState::SelectMainCommand;
 		m_currentPlayerMenu = &m_playerMenu;
 		
@@ -302,25 +228,9 @@ void GameBattleState::actionsPlayer() noexcept
 //-----------------------------------------------------------------------------
 void GameBattleState::nextMembers() noexcept
 {
-	while (true)
-	{
-		m_currentMember++;
-		if (m_currentMember >= m_members.size()) // всех перебрали, новый раунд
-		{
-			newRound();
-			break;
-		}
-		if (m_members[m_currentMember]->IsAlive())
-		{
-			break;
-		}
-	}
-}
-//-----------------------------------------------------------------------------
-void GameBattleState::setStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept
-{
-	if (x >= 3 || y >= 4) return;
-	m_statusCells[x][y] = status;
+	int currentMember = battleCells.NextMembers();
+	if (currentMember == -1)
+		newRound();
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::selectPlayerTargetMeleeAttack() noexcept
@@ -355,7 +265,7 @@ Point2 GameBattleState::selectCell() noexcept // TODO: возможно пере
 	}
 	else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
 	{
-		resetCells();
+		battleCells.ResetCells();
 	}
 	return {-1,-1};
 }

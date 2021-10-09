@@ -1,35 +1,67 @@
-#pragma once
+п»ї#pragma once
+
+#include "UIAnimSwords.h"
 
 class ICreature;
+class Player;
+class EnemyParty;
+class ResourceManager;
 
 enum class BattleCellStatus
 {
-	Normal,	// ничего не дорисовывает
-	Yellow,	// выделяет желтым цветом (например текущий персонаж)
-	Green,	// выделяет зеленым цветом (например возможные клетки для выбора)
-	Red,	// выделяет красным цветом (например недоступные клетки для выбора)
-	Blue,	// выделяет красным цветом (например текущий выбор)
-	Grey	// выделяет серым цветом
+	Normal,	// РЅРёС‡РµРіРѕ РЅРµ РґРѕСЂРёСЃРѕРІС‹РІР°РµС‚
+	Yellow,	// РІС‹РґРµР»СЏРµС‚ Р¶РµР»С‚С‹Рј С†РІРµС‚РѕРј (РЅР°РїСЂРёРјРµСЂ С‚РµРєСѓС‰РёР№ РїРµСЂСЃРѕРЅР°Р¶)
+	Green,	// РІС‹РґРµР»СЏРµС‚ Р·РµР»РµРЅС‹Рј С†РІРµС‚РѕРј (РЅР°РїСЂРёРјРµСЂ РІРѕР·РјРѕР¶РЅС‹Рµ РєР»РµС‚РєРё РґР»СЏ РІС‹Р±РѕСЂР°)
+	Red,	// РІС‹РґРµР»СЏРµС‚ РєСЂР°СЃРЅС‹Рј С†РІРµС‚РѕРј (РЅР°РїСЂРёРјРµСЂ РЅРµРґРѕСЃС‚СѓРїРЅС‹Рµ РєР»РµС‚РєРё РґР»СЏ РІС‹Р±РѕСЂР°)
+	Blue,	// РІС‹РґРµР»СЏРµС‚ РєСЂР°СЃРЅС‹Рј С†РІРµС‚РѕРј (РЅР°РїСЂРёРјРµСЂ С‚РµРєСѓС‰РёР№ РІС‹Р±РѕСЂ)
+	Grey	// РІС‹РґРµР»СЏРµС‚ СЃРµСЂС‹Рј С†РІРµС‚РѕРј
 };
 
+struct CreatureInCell
+{
+	ICreature* creature = nullptr;
+	Point2 posInCell;
+};
 
 class BattleCell final
 {
+	friend class BattleCells;
 public:
 	void ResetCellStatus() noexcept;
-	void Draw(const Point2& pos) const noexcept;
+	void Draw(float deltaTime, const Point2& pos, bool isAnimSwords, UIAnimSwords &animSwords) const noexcept;
 
 private:
 	BattleCellStatus m_status = BattleCellStatus::Normal;
-	ICreature* m_creature = nullptr;
+	CreatureInCell m_creature;
 };
 
 class BattleCells final
 {
 public:
-	void ResetCells() noexcept;
-	void Draw() const noexcept;
+	bool Init(ResourceManager& resourceMgr) noexcept;
 
+	void SetCreature(Player* player, EnemyParty* enemy) noexcept;
+
+	void ResetCells() noexcept;
+	void SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
+
+	void Draw(float deltaTime) noexcept;
+
+	void SetFirstMember() noexcept;
+	int NextMembers() noexcept;
+
+	CreatureInCell& GetMember() noexcept;
+
+	void ResetAnimSword() noexcept;
+	bool IsFinalAnimSworld() noexcept;
+
+	bool ViewMeleeAttack(int selectTargetCell) noexcept;
 private:
+	// РїСЂРё СЌС‚РѕРј РїРµСЂРІС‹Рµ РґРІР° СЂСЏРґР° - РїСЂРѕС‚РёРІРЅРёРєР°, РІС‚РѕСЂС‹Рµ - РіРµСЂРѕРµРІ.
 	BattleCell m_cells[3][4];
+	std::vector<CreatureInCell*> m_members;
+	unsigned m_currentMember = 0;
+
+	UIAnimSwords m_animSwords;
+	bool m_isAnimSwords = false;
 };
