@@ -139,7 +139,7 @@ inline void Main() noexcept
 		//---------------------------------------------------------------------
 		// Close
 		CloseAudioDevice();
-		CloseWindowRaylib();
+		CloseRaylib();
 		log.Print("Engine end.");
 	}
 
