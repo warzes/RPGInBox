@@ -21,8 +21,8 @@ void EnemyParty::CreateDefaultParty(ResourceManager* resourceMgr, size_t number)
 	grid[2][0] = &enemys[2];
 
 	// первый ряд // TODO: поменять местами
-	grid[0][1] = &enemys[3];
-	grid[1][1] = &enemys[4];
-	grid[2][1] = &enemys[5];
+	//grid[0][1] = &enemys[3];
+	//grid[1][1] = &enemys[4];
+	//grid[2][1] = &enemys[5];
 }
 //-----------------------------------------------------------------------------

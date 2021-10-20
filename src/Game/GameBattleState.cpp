@@ -8,6 +8,17 @@
 #include "GameInput.h"
 #include "BattleRule.h"
 #include "DebugNew.h"
+
+/*
+TODO:
+- может ли текущее существо бить ближней атакой
+- вернуть массив целей для ближней атаки (вместо цифры). возвращать BattleCell[] чтобы сразу же менять статус извне, а не изнутри
+- также и для дальней атаки
+- пропуск хода должен давать броню
+- конец битвы
+- ход врага
+*/
+
 //-----------------------------------------------------------------------------
 constexpr Point2 LeftTopCoordCells = { 262, 44 };
 constexpr Point2 OffsetCoordCells = { 10, 10 };
@@ -74,10 +85,12 @@ void GameBattleState::Update(float deltaTime) noexcept
 	if (m_battleCells.GetNumberHero() == 0)
 	{
 		// проигрыш битвы
+		m_battleState = BattleState::EndBattleAndLose;
 	}
 	if (m_battleCells.GetNumberEnemy() == 0)
 	{
 		// победа в битве
+		m_battleState = BattleState::EndBattleAndWin;
 	}
 }
 //-----------------------------------------------------------------------------
@@ -157,6 +170,7 @@ void GameBattleState::beginWaitAction() noexcept
 void GameBattleState::actionsPlayer() noexcept
 {
 	static int selectTargetCell = 0;
+	static std::vector<BattleCell*> selectCellAttack = {};
 
 	if (m_actionPlayerState == ActionPlayerState::SelectMainCommand) // ожидание выбора команды в меню игрока
 	{
@@ -180,6 +194,7 @@ void GameBattleState::actionsPlayer() noexcept
 		case PlayerMenuAttackLabel::Melee:
 			selectPlayerTargetMeleeAttack();
 			selectTargetCell = 0;
+			selectCellAttack = m_battleCells.GetTargetMeleeAttack();
 			break;
 		default:
 			break;
@@ -191,31 +206,45 @@ void GameBattleState::actionsPlayer() noexcept
 		}
 	}
 	else if (m_actionPlayerState == ActionPlayerState::SelectTargetMeleeAttack) // выбор цели для ближнего удара от игрока
-	{
-		if (Input::IsPressed(GameKey::Left))
-		{
-			if (selectTargetCell > 0) selectTargetCell--;
-		}
-		if (Input::IsPressed(GameKey::Right))
-		{
-			if (selectTargetCell < 2) selectTargetCell++;
-		}
-
-		bool viewMembers = m_battleCells.ViewMeleeAttack(selectTargetCell);
-		if (!viewMembers)
-		{
-			// TODO: конец боя?
-		}
-
-		if (Input::IsPressed(GameKey::Cancel)) // отмена выбора цели
+	{	
+		m_battleCells.ResetAnimSword();
+		if (selectCellAttack.size() == 0)
 		{
 			m_battleCells.ResetStatusCells();
-			activePlayerMenuAttack();			
+			activePlayerMenuAttack();
 		}
-		if (Input::IsPressed(GameKey::Ok)) // атака по цели
+		else
 		{
-			m_actionPlayerState = ActionPlayerState::MeleeAttack;			
+			for (int i = 0; i < selectCellAttack.size(); i++)
+			{
+				selectCellAttack[i]->SetStatus(BattleCellStatus::Green);
+			}
+
+			if (Input::IsPressed(GameKey::Left))
+			{
+				selectTargetCell--;
+				if (selectTargetCell < 0) selectTargetCell = selectCellAttack.size() - 1;
+			}
+			if (Input::IsPressed(GameKey::Right))
+			{
+				selectTargetCell++;
+				if (selectTargetCell >= selectCellAttack.size()) selectTargetCell = 0;
+			}
+
+			selectCellAttack[selectTargetCell]->SetStatus(BattleCellStatus::Blue);			
+
+			if (Input::IsPressed(GameKey::Cancel)) // отмена выбора цели
+			{
+				m_battleCells.ResetStatusCells();
+				activePlayerMenuAttack();
+			}
+			if (Input::IsPressed(GameKey::Ok)) // атака по цели
+			{
+				m_actionPlayerState = ActionPlayerState::MeleeAttack;
+			}
 		}
+
+		
 	}
 	else if (m_actionPlayerState == ActionPlayerState::MeleeAttack) // выполнение атаки
 	{

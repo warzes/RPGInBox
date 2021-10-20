@@ -42,6 +42,14 @@ void GameApp::Update(float deltaTime) noexcept
 	else if (m_state == GameState::Battle)
 	{
 		m_battleState.Update(deltaTime);
+		if (m_battleState.IsWinEndBattle())
+		{
+			m_state = GameState::Adventure;
+		}
+		if (m_battleState.IsLoseEndBattle())
+		{
+			m_state = GameState::Adventure;
+		}
 	}
 }
 //-----------------------------------------------------------------------------

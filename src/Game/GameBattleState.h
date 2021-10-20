@@ -20,7 +20,9 @@ enum class BattleState
 	NewRound,          // начинается новый раунд
 	BeginWaitAction,   // старт ожидания выбора команды, переходит в WaitActionPlayer или WaitActionEnemy в зависимости от того чей ход	
 	ActionsPlayer,
-	ActionsEnemy
+	ActionsEnemy,
+	EndBattleAndWin,
+	EndBattleAndLose
 };
 
 enum class ActionPlayerState
@@ -39,6 +41,8 @@ public:
 	bool Init() noexcept;
 
 	void StartBattle(EnemyParty* enemies) noexcept;
+	bool IsWinEndBattle() const noexcept { return m_battleState == BattleState::EndBattleAndWin; }
+	bool IsLoseEndBattle() const noexcept { return m_battleState == BattleState::EndBattleAndLose; }
 
 	void Update(float deltaTime) noexcept;
 	void Frame() noexcept;

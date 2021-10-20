@@ -30,6 +30,7 @@ public:
 	void ResetCellStatus() noexcept;
 	void Draw(float deltaTime, const Point2& pos, bool isAnimSwords, UIAnimSwords &animSwords) const noexcept;
 
+	void SetStatus(BattleCellStatus status) { m_status = status; }
 	BattleCellStatus GetStatus() const { return m_status; }
 	CreatureInCell* GetCreature() { return &m_creature; }
 private:
@@ -55,21 +56,9 @@ public:
 	void ResetStatusCells() noexcept;
 	void SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
 
-	bool ViewMeleeAttack(int& selectTargetCell) noexcept;
-
 	void Draw(float deltaTime) noexcept;
 
 	bool IsFinalAnimSworld() noexcept;
-	
-
-	
-
-	
-
-	
-
-	
-
 
 	bool IsMeleeAttack() const noexcept; // может ли персонаж бить ближней атакой
 	bool IsRangeAttack() const noexcept; // может ли персонаж бить дальней атакой
@@ -77,8 +66,11 @@ public:
 	int GetNumberHero() const noexcept;
 	int GetNumberEnemy() const noexcept;
 
+	std::vector<BattleCell*> GetTargetMeleeAttack() noexcept;
+
+	void ResetAnimSword() noexcept;
+
 private:
-	void resetAnimSword() noexcept;
 
 	// при этом первые два ряда - противника, вторые - героев.
 	BattleCell m_cells[3][4];
