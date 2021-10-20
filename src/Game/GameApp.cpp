@@ -35,7 +35,7 @@ void GameApp::Update(float deltaTime) noexcept
 	else if (m_state == GameState::BeginBattle)
 	{
 		// TODO: пока тут, в будущем же партия врагов должна создаваться из шаблона мира-сеттинга
-		m_enemies.CreateDefaultParty(&m_resourceMgr);
+		m_enemies.CreateDefaultParty(&m_resourceMgr, MaxEnemyPartySize);
 		m_battleState.StartBattle(&m_enemies);
 		SetState(GameState::Battle);
 	}

@@ -23,7 +23,7 @@ public:
 	// inventory
 	unsigned gold = 0;
 
-	Hero* grid[3][2] = { nullptr }; // расположение героев. [1-3][0] - первый ряд; [1-3][1] - второй ряд
+	Hero* grid[3][2] = { nullptr }; // расположение героев. [0-2][0] - первый ряд; [0-2][1] - второй ряд
 	std::vector<Hero> heroes;
 
 private:

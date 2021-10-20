@@ -21,7 +21,7 @@ enum class GameKey
 	K6,
 };
 
-class Input
+class Input final
 {
 public:
 	static bool IsDown(GameKey key) noexcept;

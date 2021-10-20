@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "EnemyTemplate.h"
 #include "DebugNew.h"
+//-----------------------------------------------------------------------------
 constexpr Point2 LeftTopCoordCells = { 262, 44 };
 constexpr Point2 OffsetCoordCells = { 10, 10 };
 constexpr Point2 SizeCoordCells = { 160, 160 };
@@ -50,10 +51,10 @@ void BattleCells::SetCreature(Player* player, EnemyParty* enemy) noexcept
 		for (size_t y = 0; y < 2; y++)
 		{
 			m_cells[x][y].m_creature.creature = enemy->grid[x][y];
-			m_cells[x][y].m_creature.posInCell = { (int)x, (int)y };
+			m_cells[x][y].m_creature.position = { (int)x, (int)y };
 
 			m_cells[x][y + 2].m_creature.creature = player->grid[x][y];
-			m_cells[x][y + 2].m_creature.posInCell = { (int)x, (int)y+2 };
+			m_cells[x][y + 2].m_creature.position = { (int)x, (int)y+2 };
 		}
 	}
 
@@ -67,7 +68,33 @@ void BattleCells::SetCreature(Player* player, EnemyParty* enemy) noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void BattleCells::ResetCells() noexcept
+void BattleCells::SetFirstMember() noexcept
+{
+	m_currentMember = m_members.size();
+	for (size_t i = 0; i < m_members.size(); i++) // ищем первого живого участника боя
+	{
+		if (m_members[i]->creature && m_members[i]->creature->IsAlive())
+		{
+			m_currentMember = i;
+			break;
+		}
+	}
+}
+//-----------------------------------------------------------------------------
+int BattleCells::NextMembers() noexcept
+{
+	while (true)
+	{
+		m_currentMember++;
+		if (m_currentMember >= m_members.size()) // всех перебрали, новый раунд
+			return -1;
+		if (m_members[m_currentMember]->creature && m_members[m_currentMember]->creature->IsAlive())
+			break;
+	}
+	return m_currentMember;
+}
+//-----------------------------------------------------------------------------
+void BattleCells::ResetStatusCells() noexcept
 {
 	for (size_t x = 0; x < 3; x++)
 	{
@@ -98,32 +125,6 @@ void BattleCells::Draw(float deltaTime) noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void BattleCells::SetFirstMember() noexcept
-{
-	m_currentMember = m_members.size(); // первый участник боя в новом раунде
-	for (size_t i = 0; i < m_members.size(); i++) // ищем первого живого участника боя
-	{
-		if (m_members[i]->creature && m_members[i]->creature->IsAlive())
-		{
-			m_currentMember = i;
-			break;
-		}
-	}
-}
-//-----------------------------------------------------------------------------
-int BattleCells::NextMembers() noexcept
-{
-	while (true)
-	{
-		m_currentMember++;
-		if (m_currentMember >= m_members.size()) // всех перебрали, новый раунд
-			return -1;
-		if (m_members[m_currentMember]->creature && m_members[m_currentMember]->creature->IsAlive())
-			break;
-	}
-	return m_currentMember;
-}
-//-----------------------------------------------------------------------------
 CreatureInCell& BattleCells::GetCurrentMember() noexcept
 {
 	return *m_members[m_currentMember];
@@ -142,7 +143,7 @@ bool BattleCells::IsFinalAnimSworld() noexcept
 bool BattleCells::ViewMeleeAttack(int selectTargetCell) noexcept
 {
 	resetAnimSword();
-	int y = m_members[m_currentMember]->posInCell.y - 1;
+	int y = m_members[m_currentMember]->position.y - 1;
 	bool inFirstLine = false;
 	for (int i = 0; i < 3; i++) // подсветить доступные цели для ближней атаки
 	{
@@ -171,7 +172,7 @@ bool BattleCells::ViewMeleeAttack(int selectTargetCell) noexcept
 //-----------------------------------------------------------------------------
 void BattleCells::ViewSelectMember() noexcept
 {
-	SetStatusCell(GetCurrentMember().posInCell.x, GetCurrentMember().posInCell.y, BattleCellStatus::Yellow);
+	SetStatusCell(GetCurrentMember().position.x, GetCurrentMember().position.y, BattleCellStatus::Yellow);
 }
 //-----------------------------------------------------------------------------
 void BattleCells::resetAnimSword() noexcept
@@ -180,3 +181,11 @@ void BattleCells::resetAnimSword() noexcept
 	m_animSwords.Reset();
 }
 //-----------------------------------------------------------------------------
+int BattleCells::GetNumberHero() const noexcept
+{
+	return 0;
+}
+int BattleCells::GetNumberEnemy() const noexcept
+{
+	return 0;
+}

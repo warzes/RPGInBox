@@ -15,23 +15,13 @@ public:
 
 	virtual PartyType GetPartyType() const = 0;
 
-	// Modify Stats
-	virtual void Damage(int damage) noexcept
-	{
-		stats.HP -= damage;
-	}
-
 	// Get Stats
 	virtual int GetHP() const noexcept { return stats.HP; }
-
-	
 
 	// TODO: сравнивать еще и со стейтом существа "мертв"
 	bool IsAlive() const noexcept { return GetHP() > 0; }
 	// TODO: проверять остальные стейты типа окаменения
 	bool IsAction() const noexcept { return true; }
-
-	std::shared_ptr<Texture2D> battleTexture = nullptr;
 
 	struct Stats
 	{
@@ -39,6 +29,8 @@ public:
 		int MeleeAttack = 0;
 		int PhysicsArmor = 0;
 	} stats;
+
+	std::shared_ptr<Texture2D> battleTexture = nullptr;
 };
 
 enum class HeroClass

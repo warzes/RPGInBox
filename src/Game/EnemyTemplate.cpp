@@ -3,10 +3,10 @@
 #include "ResourceManager.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-void EnemyParty::CreateDefaultParty(ResourceManager* resourceMgr) noexcept
+void EnemyParty::CreateDefaultParty(ResourceManager* resourceMgr, size_t number) noexcept
 {
 	enemys.clear();
-	enemys.resize(MaxEnemyPartySize);
+	enemys.resize(number);
 
 	enemys[0].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-goblin.png");
 	enemys[1].battleTexture = resourceMgr->GetTexture("../data/temp/textures/character/mon-goblin.png");

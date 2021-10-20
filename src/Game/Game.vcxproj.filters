@@ -33,15 +33,6 @@
     <ClCompile Include="GameApp.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Creature.cpp">
-      <Filter>Game\RPG</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Game\RPG</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyTemplate.cpp">
-      <Filter>Game\RPG</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
@@ -61,10 +52,19 @@
       <Filter>Game\State\Battle\gui</Filter>
     </ClCompile>
     <ClCompile Include="BattleRule.cpp">
-      <Filter>Game\Rules</Filter>
+      <Filter>Game\RPG\Rules</Filter>
     </ClCompile>
     <ClCompile Include="BattleCell.cpp">
       <Filter>Game\State\Battle\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTemplate.cpp">
+      <Filter>Game\RPG\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\RPG\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Creature.cpp">
+      <Filter>Game\RPG\Data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -115,15 +115,6 @@
     <ClInclude Include="GameApp.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Creature.h">
-      <Filter>Game\RPG</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Game\RPG</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyTemplate.h">
-      <Filter>Game\RPG</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Framework</Filter>
     </ClInclude>
@@ -143,10 +134,19 @@
       <Filter>Game\State\Battle\gui</Filter>
     </ClInclude>
     <ClInclude Include="BattleRule.h">
-      <Filter>Game\Rules</Filter>
+      <Filter>Game\RPG\Rules</Filter>
     </ClInclude>
     <ClInclude Include="BattleCell.h">
       <Filter>Game\State\Battle\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\RPG\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Creature.h">
+      <Filter>Game\RPG\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTemplate.h">
+      <Filter>Game\RPG\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -189,11 +189,14 @@
     <Filter Include="Game\State\Battle\gui">
       <UniqueIdentifier>{e89eff30-b289-4730-938b-17d3ea77c9a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Rules">
-      <UniqueIdentifier>{ef31d4c7-ad62-45b7-90d1-f1b02bb0205d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\State\Battle\impl">
       <UniqueIdentifier>{ce910b99-3210-464c-aed5-95bff213aac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\RPG\Rules">
+      <UniqueIdentifier>{ef31d4c7-ad62-45b7-90d1-f1b02bb0205d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\RPG\Data">
+      <UniqueIdentifier>{e950904c-29ea-4163-ae44-8f92421d6440}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -54,6 +54,7 @@ private:
 	ResourceManager& m_resourceMgr;
 	Player& m_player;
 	EnemyParty* m_enemies = nullptr;
+
 	// текущий раунд
 	unsigned m_round = 0;
 	// текущее состояние боя
@@ -62,12 +63,12 @@ private:
 	
 	BattleCells m_battleCells;
 
-	UIBattlePanelBG m_background;
-	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
-
 	UIBattlePlayerMenu m_playerMenu;
 	UIBattlePlayerMenu m_playerMenu_attack;
 	UIBattlePlayerMenu* m_currentPlayerMenu = nullptr;
+
+	UIBattlePanelBG m_background;
+	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
 
 	void selectPlayerTargetMeleeAttack() noexcept;
 	Point2 selectCell() noexcept;

@@ -3,7 +3,7 @@
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 template<typename Func> 
-inline bool KeysFuncs(Func func, GameKey key) noexcept
+inline bool keysFuncs(Func func, GameKey key) noexcept
 {
 	switch (key)
 	{
@@ -33,21 +33,21 @@ inline bool KeysFuncs(Func func, GameKey key) noexcept
 //-----------------------------------------------------------------------------
 bool Input::IsDown(GameKey key) noexcept
 {
-	return KeysFuncs(IsKeyDown, key);
+	return keysFuncs(IsKeyDown, key);
 }
 //-----------------------------------------------------------------------------
 bool Input::IsUp(GameKey key) noexcept
 {
-	return KeysFuncs(IsKeyUp, key);
+	return keysFuncs(IsKeyUp, key);
 }
 //-----------------------------------------------------------------------------
 bool Input::IsPressed(GameKey key) noexcept
 {
-	return KeysFuncs(IsKeyPressed, key);
+	return keysFuncs(IsKeyPressed, key);
 }
 //-----------------------------------------------------------------------------
 bool Input::IsReleased(GameKey key) noexcept
 {
-	return KeysFuncs(IsKeyReleased, key);
+	return keysFuncs(IsKeyReleased, key);
 }
 //-----------------------------------------------------------------------------

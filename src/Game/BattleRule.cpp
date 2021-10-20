@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 void BattleRule::MeleeDamage(ICreature& attacking, ICreature& defending) noexcept
 {
-	defending.Damage(5);
+	int damage = 5;
+	defending.stats.HP -= 5;
 }
 //-----------------------------------------------------------------------------

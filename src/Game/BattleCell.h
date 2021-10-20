@@ -20,7 +20,7 @@ enum class BattleCellStatus
 struct CreatureInCell
 {
 	ICreature* creature = nullptr;
-	Point2 posInCell;
+	Point2 position;
 };
 
 class BattleCell final
@@ -42,13 +42,16 @@ public:
 
 	void SetCreature(Player* player, EnemyParty* enemy) noexcept;
 
-	void ResetCells() noexcept;
+	void SetFirstMember() noexcept;
+	int NextMembers() noexcept;
+
+	void ResetStatusCells() noexcept;
 	void SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
 
 	void Draw(float deltaTime) noexcept;
 
-	void SetFirstMember() noexcept;
-	int NextMembers() noexcept;
+	
+	
 
 	CreatureInCell& GetCurrentMember() noexcept;
 
@@ -62,8 +65,8 @@ public:
 	bool IsMeleeAttack() const noexcept; // может ли персонаж бить ближней атакой
 	bool IsRangeAttack() const noexcept; // может ли персонаж бить дальней атакой
 
-	int GetHero() const noexcept;
-	int GetEnemy() const noexcept;
+	int GetNumberHero() const noexcept;
+	int GetNumberEnemy() const noexcept;
 
 private:
 	void resetAnimSword() noexcept;

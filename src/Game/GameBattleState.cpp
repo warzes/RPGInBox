@@ -13,7 +13,7 @@ constexpr Point2 LeftTopCoordCells = { 262, 44 };
 constexpr Point2 OffsetCoordCells = { 10, 10 };
 constexpr Point2 SizeCoordCells = { 160, 160 };
 constexpr Point2 PlayerMenuLeftTopPos = { 810, 415 };
-
+//-----------------------------------------------------------------------------
 // пункты меню
 struct PlayerMenuLabel { enum { Attack, Skill, Magic, Defence }; };
 constexpr std::array PlayerActionMainMenu{ "Attack", "Skill", "Magic", "Defence" };
@@ -48,10 +48,12 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 {
 	m_enemies = enemies;
 	// сброс всех переменных
-	m_battleCells.SetCreature(&m_player, m_enemies);
 	m_round = 0;
-	m_currentPlayerMenu = nullptr;
 	m_battleState = BattleState::NewRound;
+	m_currentPlayerMenu = nullptr;
+
+	// заполнение карты боя существами
+	m_battleCells.SetCreature(&m_player, m_enemies);
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::Update(float deltaTime) noexcept
@@ -69,11 +71,11 @@ void GameBattleState::Update(float deltaTime) noexcept
 	//else if (m_battleState == BattleState::ActionEnemy)
 	//	waitActionEnemy();
 
-	if (m_battleCells.GetHero() == 0)
+	if (m_battleCells.GetNumberHero() == 0)
 	{
 		// проигрыш битвы
 	}
-	if (m_battleCells.GetEnemy() == 0)
+	if (m_battleCells.GetNumberEnemy() == 0)
 	{
 		// победа в битве
 	}
@@ -138,7 +140,7 @@ void GameBattleState::newRound() noexcept
 //-----------------------------------------------------------------------------
 void GameBattleState::beginWaitAction() noexcept
 {
-	m_battleCells.ResetCells();
+	m_battleCells.ResetStatusCells();
 
 	if (m_battleCells.GetCurrentMember().creature->GetPartyType() == PartyType::Hero) // ожидание действия героя
 	{
@@ -209,7 +211,7 @@ void GameBattleState::actionsPlayer() noexcept
 			m_actionPlayerState = ActionPlayerState::Attack;
 			m_currentPlayerMenu = &m_playerMenu_attack;
 			selectTargetCell = 0;
-			m_battleCells.ResetCells();
+			m_battleCells.ResetStatusCells();
 		}
 		if (Input::IsPressed(GameKey::Ok)) // атака по цели
 		{
@@ -225,7 +227,8 @@ void GameBattleState::actionsPlayer() noexcept
 	}
 	else if (m_actionPlayerState == ActionPlayerState::EndMeleeAttack)
 	{
-		m_battleCells.ResetCells();
+		//BattleRule::MeleeDamage();
+		m_battleCells.ResetStatusCells();
 		m_actionPlayerState = ActionPlayerState::SelectMainCommand;
 		m_currentPlayerMenu = &m_playerMenu;
 		
@@ -272,7 +275,7 @@ Point2 GameBattleState::selectCell() noexcept // TODO: возможно пере
 	}
 	else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
 	{
-		m_battleCells.ResetCells();
+		m_battleCells.ResetStatusCells();
 	}
 	return {-1,-1};
 }
