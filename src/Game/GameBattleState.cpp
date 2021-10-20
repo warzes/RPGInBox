@@ -62,11 +62,11 @@ void GameBattleState::Update(float deltaTime) noexcept
 
 	if (m_currentPlayerMenu) m_currentPlayerMenu->Run();
 
-	if (m_battleState == BattleState::NewRound) // новый раунд
+	if (m_battleState == BattleState::NewRound)             // новый раунд
 		newRound();
 	else if (m_battleState == BattleState::BeginWaitAction) // ожидание действия (подготовка)
 		beginWaitAction();
-	else if (m_battleState == BattleState::ActionsPlayer)// действие игрока
+	else if (m_battleState == BattleState::ActionsPlayer)   // действие игрока
 		actionsPlayer();
 	//else if (m_battleState == BattleState::ActionEnemy)
 	//	waitActionEnemy();
@@ -144,11 +144,8 @@ void GameBattleState::beginWaitAction() noexcept
 
 	if (m_battleCells.GetCurrentMember().creature->GetPartyType() == PartyType::Hero) // ожидание действия героя
 	{
-		// выделение клетки активного героя
-		m_battleCells.ViewSelectMember();
-		m_currentPlayerMenu = &m_playerMenu;
 		m_battleState = BattleState::ActionsPlayer;
-		m_actionPlayerState = ActionPlayerState::SelectMainCommand;
+		activePlayerMainMenu();
 	}
 	else // ожидание действия ИИ
 	{
@@ -167,9 +164,10 @@ void GameBattleState::actionsPlayer() noexcept
 		switch (m_playerMenu.IsSelect())
 		{
 		case PlayerMenuLabel::Attack:
-			m_currentPlayerMenu = &m_playerMenu_attack; // переключаем меню на следующее
-			m_actionPlayerState = ActionPlayerState::Attack;			
+			activePlayerMenuAttack();					
 			break;
+		case PlayerMenuLabel::Defence:
+			nextMembers();
 		default:
 			break;
 		}
@@ -180,8 +178,7 @@ void GameBattleState::actionsPlayer() noexcept
 		switch (m_playerMenu_attack.IsSelect())
 		{
 		case PlayerMenuAttackLabel::Melee:
-			m_actionPlayerState = ActionPlayerState::SelectTargetMeleeAttack;
-			m_currentPlayerMenu = nullptr;
+			selectPlayerTargetMeleeAttack();
 			selectTargetCell = 0;
 			break;
 		default:
@@ -190,14 +187,11 @@ void GameBattleState::actionsPlayer() noexcept
 		// отмена
 		if (Input::IsPressed(GameKey::Cancel)) 
 		{
-			m_actionPlayerState = ActionPlayerState::SelectMainCommand;
-			m_currentPlayerMenu = &m_playerMenu;
+			activePlayerMainMenu();
 		}
 	}
 	else if (m_actionPlayerState == ActionPlayerState::SelectTargetMeleeAttack) // выбор цели для ближнего удара от игрока
 	{
-		m_battleCells.ViewMeleeAttack(selectTargetCell);
-
 		if (Input::IsPressed(GameKey::Left))
 		{
 			if (selectTargetCell > 0) selectTargetCell--;
@@ -206,12 +200,17 @@ void GameBattleState::actionsPlayer() noexcept
 		{
 			if (selectTargetCell < 2) selectTargetCell++;
 		}
+
+		bool viewMembers = m_battleCells.ViewMeleeAttack(selectTargetCell);
+		if (!viewMembers)
+		{
+			// TODO: конец боя?
+		}
+
 		if (Input::IsPressed(GameKey::Cancel)) // отмена выбора цели
 		{
-			m_actionPlayerState = ActionPlayerState::Attack;
-			m_currentPlayerMenu = &m_playerMenu_attack;
-			selectTargetCell = 0;
 			m_battleCells.ResetStatusCells();
+			activePlayerMenuAttack();			
 		}
 		if (Input::IsPressed(GameKey::Ok)) // атака по цели
 		{
@@ -227,33 +226,21 @@ void GameBattleState::actionsPlayer() noexcept
 	}
 	else if (m_actionPlayerState == ActionPlayerState::EndMeleeAttack)
 	{
-		//BattleRule::MeleeDamage();
+		auto currentCreature = m_battleCells.GetCurrentMember();
+		auto selectCreature = m_battleCells.GetSelectMember();
+		if (currentCreature.creature && selectCreature && selectCreature->creature) 
+			BattleRule::MeleeDamage(*m_battleCells.GetCurrentMember().creature, *selectCreature->creature);
 		m_battleCells.ResetStatusCells();
-		m_actionPlayerState = ActionPlayerState::SelectMainCommand;
-		m_currentPlayerMenu = &m_playerMenu;
-		
-		//BattleRule::MeleeDamage(*m_members[m_currentMember], );
+		nextMembers();
 	}
 }
 //-----------------------------------------------------------------------------
 void GameBattleState::nextMembers() noexcept
 {
+	m_battleState = BattleState::BeginWaitAction;
 	int currentMember = m_battleCells.NextMembers();
 	if (currentMember == -1)
 		newRound();
-}
-//-----------------------------------------------------------------------------
-void GameBattleState::selectPlayerTargetMeleeAttack() noexcept
-{
-	//m_view.ResetCells();
-
-
-	//auto p = selectCell();
-	//if (p.x >= 0 && p.y >= 0)
-	//{	
-	//	
-	//	m_view.SetStatusCell(p.x, p.y, BattleCellStatus::Yellow);
-	//}
 }
 //-----------------------------------------------------------------------------
 Point2 GameBattleState::selectCell() noexcept // TODO: возможно перенести в класс правил
@@ -278,5 +265,26 @@ Point2 GameBattleState::selectCell() noexcept // TODO: возможно пере
 		m_battleCells.ResetStatusCells();
 	}
 	return {-1,-1};
+}
+//-----------------------------------------------------------------------------
+void GameBattleState::activePlayerMainMenu() noexcept
+{
+	m_battleCells.ViewCurrentMember();
+	m_currentPlayerMenu = &m_playerMenu;
+	m_actionPlayerState = ActionPlayerState::SelectMainCommand;
+}
+//-----------------------------------------------------------------------------
+void GameBattleState::activePlayerMenuAttack() noexcept
+{
+	m_battleCells.ViewCurrentMember();
+	m_currentPlayerMenu = &m_playerMenu_attack;
+	m_actionPlayerState = ActionPlayerState::Attack;
+}
+//-----------------------------------------------------------------------------
+void GameBattleState::selectPlayerTargetMeleeAttack() noexcept
+{
+	m_battleCells.ViewCurrentMember();
+	m_currentPlayerMenu = nullptr;
+	m_actionPlayerState = ActionPlayerState::SelectTargetMeleeAttack;
 }
 //-----------------------------------------------------------------------------

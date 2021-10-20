@@ -110,7 +110,8 @@ inline void Main() noexcept
 		
 		if (!error)
 		{
-			//SetTargetFPS(60);
+			SetTargetFPS(60);
+
 			InitAudioDevice();
 			if (!IsAudioDeviceReady())
 			{

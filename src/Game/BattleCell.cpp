@@ -85,13 +85,38 @@ int BattleCells::NextMembers() noexcept
 {
 	while (true)
 	{
-		m_currentMember++;
+		++m_currentMember;
 		if (m_currentMember >= m_members.size()) // всех перебрали, новый раунд
 			return -1;
 		if (m_members[m_currentMember]->creature && m_members[m_currentMember]->creature->IsAlive())
 			break;
 	}
 	return m_currentMember;
+}
+//-----------------------------------------------------------------------------
+void BattleCells::ViewCurrentMember() noexcept
+{
+	SetStatusCell(GetCurrentMember().position.x, GetCurrentMember().position.y, BattleCellStatus::Yellow);
+}
+//-----------------------------------------------------------------------------
+CreatureInCell& BattleCells::GetCurrentMember() noexcept
+{
+	return *m_members[m_currentMember];
+}
+//-----------------------------------------------------------------------------
+CreatureInCell* BattleCells::GetSelectMember() noexcept
+{
+	for (size_t x = 0; x < 3; x++)
+	{
+		for (size_t y = 0; y < 4; y++)
+		{
+			if (m_cells[x][y].GetStatus() == BattleCellStatus::Blue)
+			{
+				return m_cells[x][y].GetCreature();
+			}
+		}
+	}
+	return nullptr;
 }
 //-----------------------------------------------------------------------------
 void BattleCells::ResetStatusCells() noexcept
@@ -125,11 +150,6 @@ void BattleCells::Draw(float deltaTime) noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-CreatureInCell& BattleCells::GetCurrentMember() noexcept
-{
-	return *m_members[m_currentMember];
-}
-//-----------------------------------------------------------------------------
 bool BattleCells::IsFinalAnimSworld() noexcept
 {
 	if (m_isAnimSwords == false)
@@ -140,22 +160,31 @@ bool BattleCells::IsFinalAnimSworld() noexcept
 	return m_animSwords.IsFinal();
 }
 //-----------------------------------------------------------------------------
-bool BattleCells::ViewMeleeAttack(int selectTargetCell) noexcept
+bool BattleCells::ViewMeleeAttack(int& selectTargetCell) noexcept
 {
 	resetAnimSword();
 	int y = m_members[m_currentMember]->position.y - 1;
+	if (y < 0 || y > 1) return false;
+
+	int tempSelect = selectTargetCell;
 	bool inFirstLine = false;
 	for (int i = 0; i < 3; i++) // подсветить доступные цели для ближней атаки
 	{
 		if (m_cells[i][y].m_creature.creature && m_cells[i][y].m_creature.creature->IsAlive())
 		{
 			inFirstLine = true;
-			if (selectTargetCell == i) SetStatusCell(i, y, BattleCellStatus::Blue);
+			if (selectTargetCell == i) { SetStatusCell(i, y, BattleCellStatus::Blue); }
 			else SetStatusCell(i, y, BattleCellStatus::Green);
 		}
+		else if (selectTargetCell == i) // существо тут мертво
+		{
+			selectTargetCell++;
+			if (selectTargetCell == 3) selectTargetCell = 0;
+		}
 	}
-	if (inFirstLine == false)
+	if (inFirstLine == false && y == 1) // в первом ряду никого нет, тогда выделяем второй ряд
 	{
+		selectTargetCell = tempSelect;
 		y--;
 		for (int i = 0; i < 3; i++) // подсветить доступные цели для ближней атаки
 		{
@@ -165,14 +194,14 @@ bool BattleCells::ViewMeleeAttack(int selectTargetCell) noexcept
 				if (selectTargetCell == i) SetStatusCell(i, y, BattleCellStatus::Blue);
 				else SetStatusCell(i, y, BattleCellStatus::Green);
 			}
+			else if (selectTargetCell == i) // существо тут мертво
+			{
+				selectTargetCell++;
+				if (selectTargetCell == 3) selectTargetCell = 0;
+			}
 		}
 	}
 	return inFirstLine;
-}
-//-----------------------------------------------------------------------------
-void BattleCells::ViewSelectMember() noexcept
-{
-	SetStatusCell(GetCurrentMember().position.x, GetCurrentMember().position.y, BattleCellStatus::Yellow);
 }
 //-----------------------------------------------------------------------------
 void BattleCells::resetAnimSword() noexcept

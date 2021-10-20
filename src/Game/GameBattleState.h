@@ -50,6 +50,9 @@ private:
 	void beginWaitAction() noexcept;
 	void actionsPlayer() noexcept;
 	void nextMembers() noexcept;
+	void activePlayerMainMenu() noexcept;
+	void activePlayerMenuAttack() noexcept;
+	void selectPlayerTargetMeleeAttack() noexcept;
 
 	ResourceManager& m_resourceMgr;
 	Player& m_player;
@@ -70,7 +73,6 @@ private:
 	UIBattlePanelBG m_background;
 	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
 
-	void selectPlayerTargetMeleeAttack() noexcept;
 	Point2 selectCell() noexcept;
 
 	float m_deltaTime = 0.0f;

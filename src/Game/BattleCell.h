@@ -30,6 +30,8 @@ public:
 	void ResetCellStatus() noexcept;
 	void Draw(float deltaTime, const Point2& pos, bool isAnimSwords, UIAnimSwords &animSwords) const noexcept;
 
+	BattleCellStatus GetStatus() const { return m_status; }
+	CreatureInCell* GetCreature() { return &m_creature; }
 private:
 	BattleCellStatus m_status = BattleCellStatus::Normal;
 	CreatureInCell m_creature;
@@ -45,21 +47,28 @@ public:
 	void SetFirstMember() noexcept;
 	int NextMembers() noexcept;
 
+	void ViewCurrentMember() noexcept;
+
+	CreatureInCell& GetCurrentMember() noexcept;
+	CreatureInCell* GetSelectMember() noexcept;
+
 	void ResetStatusCells() noexcept;
 	void SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept;
 
+	bool ViewMeleeAttack(int& selectTargetCell) noexcept;
+
 	void Draw(float deltaTime) noexcept;
 
-	
-	
-
-	CreatureInCell& GetCurrentMember() noexcept;
-
 	bool IsFinalAnimSworld() noexcept;
+	
 
-	bool ViewMeleeAttack(int selectTargetCell) noexcept;
+	
 
-	void ViewSelectMember() noexcept;
+	
+
+	
+
+	
 
 
 	bool IsMeleeAttack() const noexcept; // может ли персонаж бить ближней атакой
