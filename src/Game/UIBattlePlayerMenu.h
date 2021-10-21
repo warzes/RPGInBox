@@ -22,6 +22,7 @@ public:
 
 	// если -1 то ничего не выбрано, иначе номер пункта меню [0, n]
 	int IsSelect() const { return m_select; }
+	void ResetActionElement() noexcept;
 private:
 	struct element
 	{

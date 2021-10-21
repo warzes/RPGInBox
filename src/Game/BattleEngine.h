@@ -1,15 +1,7 @@
 ﻿#pragma once
 
-#include "EngineMath.h"
-#include "UIBattlePanelBG.h"
-#include "UIBattlePlayerMenu.h"
-#include "UIAnimSwords.h"
 #include "BattleCell.h"
 #include "UIBattle.h"
-
-// позиции команд игрока
-constexpr Point2 LeftTopCoordPlayerCommand = { 810, 415 };
-constexpr Point2 SizeCoordPlayerCommand = { 140, 40 };
 
 class ICreature;
 class Player;
@@ -69,13 +61,7 @@ private:
 	
 	BattleCells m_battleCells;
 
-	UIBattlePlayerMenu m_playerMenu;
-	UIBattlePlayerMenu m_playerMenu_attack;
-	UIBattlePlayerMenu* m_currentPlayerMenu = nullptr;
-
 	UIBattle m_ui;
-
-	Point2 selectCell() noexcept;
-
+	
 	float m_deltaTime = 0.0f;
 };

@@ -13,7 +13,7 @@ void BattleCell::ResetCellStatus() noexcept
 	m_status = BattleCellStatus::Normal;
 }
 //-----------------------------------------------------------------------------
-void BattleCell::Draw(float deltaTime, const Point2& pos, bool isAnimSwords, UIAnimSwords& animSwords) const noexcept
+void BattleCell::Draw(float deltaTime, const Point2& pos, bool isAnimSwords, UIAnimSwords& animSwords) noexcept
 {
 	// cell
 	Color colorCell = WHITE;

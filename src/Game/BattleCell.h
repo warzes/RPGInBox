@@ -28,7 +28,7 @@ class BattleCell final
 	friend class BattleCells;
 public:
 	void ResetCellStatus() noexcept;
-	void Draw(float deltaTime, const Point2& pos, bool isAnimSwords, UIAnimSwords &animSwords) const noexcept;
+	void Draw(float deltaTime, const Point2& pos, bool isAnimSwords, UIAnimSwords &animSwords) noexcept;
 
 	void SetStatus(BattleCellStatus status) { m_status = status; }
 	BattleCellStatus GetStatus() const { return m_status; }

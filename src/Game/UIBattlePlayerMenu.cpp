@@ -78,3 +78,8 @@ void UIBattlePlayerMenu::AddElement(const std::string& text) noexcept
 	m_elements.push_back({ text, {m_leftUpPos.x, m_leftUpPos.y + yOffset}, m_commonSize });
 }
 //-----------------------------------------------------------------------------
+void UIBattlePlayerMenu::ResetActionElement() noexcept
+{
+	m_actionElement = 0;
+}
+//-----------------------------------------------------------------------------
