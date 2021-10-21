@@ -38,6 +38,24 @@ private:
 	CreatureInCell m_creature;
 };
 
+class TargetRangeAttack final
+{
+public:
+	TargetRangeAttack() noexcept;
+
+	bool IsZero() const noexcept;
+
+	void SetPos(int x, int y) noexcept;
+	void Update() noexcept;
+
+	std::vector<std::vector<BattleCell*>> target;
+	Point2 selectPos;
+
+private:
+	int findX(int mod) noexcept;
+	int findY(int mod) noexcept;
+};
+
 class BattleCells final
 {
 public:
@@ -60,13 +78,14 @@ public:
 
 	bool IsFinalAnimSworld() noexcept;
 
-	bool IsMeleeAttack() const noexcept; // может ли персонаж бить ближней атакой
-	bool IsRangeAttack() const noexcept; // может ли персонаж бить дальней атакой
+	bool IsMeleeAttack() noexcept; // может ли персонаж бить ближней атакой
+	bool IsRangeAttack() noexcept; // может ли персонаж бить дальней атакой
 
 	int GetNumberHero() const noexcept;
 	int GetNumberEnemy() const noexcept;
 
 	std::vector<BattleCell*> GetTargetMeleeAttack() noexcept;
+	TargetRangeAttack GetTargetRangeAttack() noexcept;
 
 	void ResetAnimSword() noexcept;
 

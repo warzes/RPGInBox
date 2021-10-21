@@ -95,6 +95,7 @@ void BattleEngine::actionsPlayer() noexcept
 {
 	static int selectTargetCell = 0;
 	static std::vector<BattleCell*> selectCellAttack = {};
+	static TargetRangeAttack targetRangeAttack;
 
 	if (m_actionPlayerState == ActionPlayerState::SelectMainCommand) // ожидание выбора команды в меню игрока
 	{
@@ -117,9 +118,20 @@ void BattleEngine::actionsPlayer() noexcept
 		switch (m_ui.SelectMenu())
 		{
 		case PlayerMenuAttackLabel::Melee:
-			selectPlayerTargetMeleeAttack();
-			selectTargetCell = 0;
-			selectCellAttack = m_battleCells.GetTargetMeleeAttack();
+			if (m_battleCells.IsMeleeAttack())
+			{
+				selectPlayerTargetMeleeAttack();
+				selectTargetCell = 0;
+				selectCellAttack = m_battleCells.GetTargetMeleeAttack();
+			}				
+			break;
+		case PlayerMenuAttackLabel::Shoot:
+			if (m_battleCells.IsRangeAttack())
+			{
+				selectPlayerTargetRangeAttack();
+				targetRangeAttack = m_battleCells.GetTargetRangeAttack();
+				targetRangeAttack.SetPos(0, 0);
+			}
 			break;
 		default:
 			break;
@@ -185,6 +197,45 @@ void BattleEngine::actionsPlayer() noexcept
 		m_battleCells.ResetStatusCells();
 		nextMembers();
 	}
+	else if (m_actionPlayerState == ActionPlayerState::SelectTargetRangeAttack) // выбор цели для выстрела от игрока
+	{
+		m_battleCells.ResetAnimSword();
+		if (targetRangeAttack.IsZero())
+		{
+			m_battleCells.ResetStatusCells();
+			activePlayerMenuAttack();
+		}
+		else
+		{
+			targetRangeAttack.Update();			
+
+			if (Input::IsPressed(GameKey::Cancel)) // отмена выбора цели
+			{
+				m_battleCells.ResetStatusCells();
+				activePlayerMenuAttack();
+			}
+			if (Input::IsPressed(GameKey::Ok)) // атака по цели
+			{
+				m_actionPlayerState = ActionPlayerState::RangeAttack;
+			}
+		}
+	}
+	else if (m_actionPlayerState == ActionPlayerState::RangeAttack) // выполнение атаки
+	{
+		if (m_battleCells.IsFinalAnimSworld())
+		{
+			m_actionPlayerState = ActionPlayerState::EndRangeAttack;
+		}
+	}
+	else if (m_actionPlayerState == ActionPlayerState::EndRangeAttack)
+	{
+		auto currentCreature = m_battleCells.GetCurrentMember();
+		auto selectCreature = m_battleCells.GetSelectMember();
+		if (currentCreature.creature && selectCreature && selectCreature->creature)
+			BattleRule::MeleeDamage(*m_battleCells.GetCurrentMember().creature, *selectCreature->creature);
+		m_battleCells.ResetStatusCells();
+		nextMembers();
+	}
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::nextMembers() noexcept
@@ -214,5 +265,12 @@ void BattleEngine::selectPlayerTargetMeleeAttack() noexcept
 	m_battleCells.ViewCurrentMember();
 	m_ui.ResetPlayerMenu();
 	m_actionPlayerState = ActionPlayerState::SelectTargetMeleeAttack;
+}
+//-----------------------------------------------------------------------------
+void BattleEngine::selectPlayerTargetRangeAttack() noexcept
+{
+	m_battleCells.ViewCurrentMember();
+	m_ui.ResetPlayerMenu();
+	m_actionPlayerState = ActionPlayerState::SelectTargetRangeAttack;
 }
 //-----------------------------------------------------------------------------

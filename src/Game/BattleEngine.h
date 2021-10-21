@@ -22,9 +22,14 @@ enum class ActionPlayerState
 {
 	SelectMainCommand,// ожидание выбора команды из начального меню игрока
 	Attack,// ожидание выбора команды из меню атаки игрока
+
 	SelectTargetMeleeAttack,// ожидание выбора цели ближнего удара от игрока
 	MeleeAttack,// выполнение ближней атаки по цели
 	EndMeleeAttack, // конец ближней атаки
+
+	SelectTargetRangeAttack,// ожидание выбора цели выстрела от игрока
+	RangeAttack,// выполнение выстрела по цели
+	EndRangeAttack, // конец выстрела
 };
 
 class BattleEngine final
@@ -48,6 +53,7 @@ private:
 	void activePlayerMainMenu() noexcept;
 	void activePlayerMenuAttack() noexcept;
 	void selectPlayerTargetMeleeAttack() noexcept;
+	void selectPlayerTargetRangeAttack() noexcept;
 
 	ResourceManager& m_resourceMgr;
 	Player& m_player;
