@@ -77,7 +77,7 @@ public:
 private:
 
 	// при этом первые два ряда - противника, вторые - героев.
-	BattleCell m_cells[3][4];
+	BattleCell m_cells[MaxNumberCellInBattle][MaxNumberLineInBattle];
 	std::vector<CreatureInCell*> m_members;
 	unsigned m_currentMember = 0;
 

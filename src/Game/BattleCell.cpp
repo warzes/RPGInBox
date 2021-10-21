@@ -46,22 +46,22 @@ bool BattleCells::Init(ResourceManager& resourceMgr) noexcept
 //-----------------------------------------------------------------------------
 void BattleCells::SetCreature(Player* player, EnemyParty* enemy) noexcept
 {
-	for (size_t x = 0; x < 3; x++)
+	for (size_t x = 0; x < MaxNumberCellInBattle; x++)
 	{
-		for (size_t y = 0; y < 2; y++)
+		for (size_t y = 0; y < MaxNumberHalfLineInBattle; y++)
 		{
 			m_cells[x][y].m_creature.creature = enemy->grid[x][y];
 			m_cells[x][y].m_creature.position = { (int)x, (int)y };
 
-			m_cells[x][y + 2].m_creature.creature = player->grid[x][y];
-			m_cells[x][y + 2].m_creature.position = { (int)x, (int)y + 2 };
+			m_cells[x][y + MaxNumberHalfLineInBattle].m_creature.creature = player->grid[x][y];
+			m_cells[x][y + MaxNumberHalfLineInBattle].m_creature.position = { (int)x, (int)y + (int)MaxNumberHalfLineInBattle };
 		}
 	}
 
 	m_members.clear();
-	for (size_t y = 0; y < 4; y++)
+	for (size_t y = 0; y < MaxNumberLineInBattle; y++)
 	{
-		for (size_t x = 0; x < 3; x++)
+		for (size_t x = 0; x < MaxNumberCellInBattle; x++)
 		{
 			m_members.push_back(&m_cells[x][y].m_creature);
 		}
@@ -106,9 +106,9 @@ CreatureInCell& BattleCells::GetCurrentMember() noexcept
 //-----------------------------------------------------------------------------
 CreatureInCell* BattleCells::GetSelectMember() noexcept
 {
-	for (size_t x = 0; x < 3; x++)
+	for (size_t x = 0; x < MaxNumberCellInBattle; x++)
 	{
-		for (size_t y = 0; y < 4; y++)
+		for (size_t y = 0; y < MaxNumberLineInBattle; y++)
 		{
 			if (m_cells[x][y].GetStatus() == BattleCellStatus::Blue)
 			{
@@ -121,9 +121,9 @@ CreatureInCell* BattleCells::GetSelectMember() noexcept
 //-----------------------------------------------------------------------------
 void BattleCells::ResetStatusCells() noexcept
 {
-	for (size_t x = 0; x < 3; x++)
+	for (size_t x = 0; x < MaxNumberCellInBattle; x++)
 	{
-		for (size_t y = 0; y < 4; y++)
+		for (size_t y = 0; y < MaxNumberLineInBattle; y++)
 		{
 			m_cells[x][y].ResetCellStatus();
 		}
@@ -132,16 +132,16 @@ void BattleCells::ResetStatusCells() noexcept
 //-----------------------------------------------------------------------------
 void BattleCells::SetStatusCell(size_t x, size_t y, BattleCellStatus status) noexcept
 {
-	if (x >= 3 || y >= 4) return;
+	if (x >= MaxNumberCellInBattle || y >= MaxNumberLineInBattle) return;
 	m_cells[x][y].m_status = status;
 }
 //-----------------------------------------------------------------------------
 void BattleCells::Draw(float deltaTime) noexcept
 {
 	Point2 cellPos;
-	for (size_t x = 0; x < 3; x++)
+	for (size_t x = 0; x < MaxNumberCellInBattle; x++)
 	{
-		for (size_t y = 0; y < 4; y++)
+		for (size_t y = 0; y < MaxNumberLineInBattle; y++)
 		{
 			cellPos.x = LeftTopCoordCells.x + (SizeCoordCells.x + OffsetCoordCells.x) * (int)x;
 			cellPos.y = LeftTopCoordCells.y + 5 + (SizeCoordCells.y + OffsetCoordCells.y) * (int)y;
@@ -204,7 +204,7 @@ TargetMeleeAttack BattleCells::GetTargetMeleeAttack() noexcept
 		if (currentPosY < 0) return ret;
 
 		bool inFirstLine = false;
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < MaxNumberCellInBattle; i++)
 		{
 			if (m_cells[i][currentPosY].m_creature.creature && m_cells[i][currentPosY].m_creature.creature->IsAlive())
 			{
@@ -217,7 +217,7 @@ TargetMeleeAttack BattleCells::GetTargetMeleeAttack() noexcept
 		{
 			currentPosY--;
 			if (currentPosY < 0) return ret;
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < MaxNumberCellInBattle; i++)
 			{
 				if (m_cells[i][currentPosY].m_creature.creature && m_cells[i][currentPosY].m_creature.creature->IsAlive())
 				{
@@ -245,9 +245,9 @@ TargetRangeAttack BattleCells::GetTargetRangeAttack() noexcept
 
 	if (currentCreature.creature->GetPartyType() == PartyType::Hero)
 	{
-		for (int y = 0; y < 2; y++)
+		for (int y = 0; y < MaxNumberHalfLineInBattle; y++)
 		{
-			for (int x = 0; x < 3; x++)
+			for (int x = 0; x < MaxNumberCellInBattle; x++)
 			{
 				if (m_cells[x][y].m_creature.creature && m_cells[x][y].m_creature.creature->IsAlive())
 				{
@@ -277,11 +277,11 @@ bool BattleCells::IsMeleeAttack() noexcept
 	if (currentCreature.creature->GetPartyType() == PartyType::Hero)
 	{
 		const int currentPosY = currentCreature.position.y;
-		if (currentPosY == 2) return true; // герой стоит в первом ряду, а значит может бить ближним ударом
-		else if (currentPosY == 3)
+		if (currentPosY == MaxNumberHalfLineInBattle) return true; // герой стоит в первом ряду, а значит может бить ближним ударом
+		else if (currentPosY == MaxNumberCellInBattle)
 		{
 			const int posY = currentPosY - 1;
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < MaxNumberCellInBattle; i++)
 			{
 				if (m_cells[i][posY].m_creature.creature && m_cells[i][posY].m_creature.creature->IsAlive()) // TODO: возможно еще проверять на сознание - типа если без сознания то тыл может бить
 				{
@@ -309,11 +309,11 @@ bool BattleCells::IsRangeAttack() noexcept
 	if (currentCreature.creature->GetPartyType() == PartyType::Hero)
 	{
 		const int currentPosY = currentCreature.position.y;
-		if (currentPosY == 2) return false; // герой стоит в первом ряду, а значит не может стрелять
-		else if (currentPosY == 3)
+		if (currentPosY == MaxNumberHalfLineInBattle) return false; // герой стоит в первом ряду, а значит не может стрелять
+		else if (currentPosY == MaxNumberCellInBattle)
 		{
 			const int posY = currentPosY - 1;
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < MaxNumberCellInBattle; i++)
 			{
 				if (m_cells[i][posY].m_creature.creature && m_cells[i][posY].m_creature.creature->IsAlive()) // TODO: возможно еще проверять на сознание -  если без сознания то тыл может бить
 				{

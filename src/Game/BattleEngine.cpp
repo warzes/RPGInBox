@@ -285,6 +285,6 @@ void BattleEngine::actionsEnemy() noexcept
 	else if (m_actionState == ActionState::EndRangeAttack)
 	{
 	}
-	//nextMembers();
+	nextMembers();
 }
 //-----------------------------------------------------------------------------

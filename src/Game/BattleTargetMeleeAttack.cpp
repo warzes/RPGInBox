@@ -6,8 +6,8 @@
 //-----------------------------------------------------------------------------
 TargetMeleeAttack::TargetMeleeAttack() noexcept
 {
-	target.resize(3);
-	for (int x = 0; x < 3; x++)
+	target.resize(MaxNumberCellInBattle);
+	for (int x = 0; x < MaxNumberCellInBattle; x++)
 	{
 		target[x] = nullptr;
 	}
@@ -15,7 +15,7 @@ TargetMeleeAttack::TargetMeleeAttack() noexcept
 //-----------------------------------------------------------------------------
 bool TargetMeleeAttack::IsZero() const noexcept
 {
-	for (int x = 0; x < 3; x++)
+	for (int x = 0; x < MaxNumberCellInBattle; x++)
 	{
 		if (target[x] != nullptr) return false;
 	}
@@ -31,7 +31,7 @@ void TargetMeleeAttack::SetPos(int x) noexcept
 	else
 	{
 		// TODO: улучшить - чтобы выбирался оптимальный
-		for (int x = 0; x < 3; x++)
+		for (int x = 0; x < MaxNumberCellInBattle; x++)
 		{
 			if (target[x] != nullptr)
 			{
@@ -43,7 +43,7 @@ void TargetMeleeAttack::SetPos(int x) noexcept
 //-----------------------------------------------------------------------------
 void TargetMeleeAttack::Update() noexcept
 {
-	for (int x = 0; x < 3; x++)
+	for (int x = 0; x < MaxNumberCellInBattle; x++)
 	{
 		if (target[x] != nullptr)
 		{
@@ -59,14 +59,14 @@ void TargetMeleeAttack::Update() noexcept
 	{
 		selectPos = findX(1);
 	}
-	if (selectPos >= 0 && selectPos < 3 )
+	if (selectPos >= 0 && selectPos < MaxNumberCellInBattle)
 		target[selectPos]->SetStatus(BattleCellStatus::Blue);
 }
 //-----------------------------------------------------------------------------
 int TargetMeleeAttack::findX(int mod) noexcept
 {
 	int numX = 0;
-	for (int x = 0; x < 3; x++)
+	for (int x = 0; x < MaxNumberCellInBattle; x++)
 	{
 		if (target[x] != nullptr) numX++;
 	}
@@ -82,7 +82,7 @@ int TargetMeleeAttack::findX(int mod) noexcept
 		{
 			err++;
 			if (err > numX) break; // если ушло в бесконечный цикл
-			if (x == 0) x = 2;
+			if (x == 0) x = MaxNumberCellInBattle-1;
 			else x--;
 			if (target[x]) break;
 		}
@@ -94,7 +94,7 @@ int TargetMeleeAttack::findX(int mod) noexcept
 		{
 			err++;
 			if (err > numX) break; // если ушло в бесконечный цикл
-			if (x == 2) x = 0;
+			if (x == MaxNumberCellInBattle - 1) x = 0;
 			else x++;
 			if (target[x]) break;
 		}

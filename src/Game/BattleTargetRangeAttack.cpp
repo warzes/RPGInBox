@@ -6,14 +6,14 @@
 //-----------------------------------------------------------------------------
 TargetRangeAttack::TargetRangeAttack() noexcept
 {
-	target.resize(3);
-	for (int i = 0; i < 3; i++)
+	target.resize(MaxNumberCellInBattle);
+	for (int i = 0; i < MaxNumberCellInBattle; i++)
 	{
-		target[i].resize(2);
+		target[i].resize(MaxNumberHalfLineInBattle);
 	}
-	for (int y = 0; y < 2; y++)
+	for (int y = 0; y < MaxNumberHalfLineInBattle; y++)
 	{
-		for (int x = 0; x < 3; x++)
+		for (int x = 0; x < MaxNumberCellInBattle; x++)
 		{
 			target[x][y] = nullptr;
 		}
@@ -22,9 +22,9 @@ TargetRangeAttack::TargetRangeAttack() noexcept
 //-----------------------------------------------------------------------------
 bool TargetRangeAttack::IsZero() const noexcept
 {
-	for (int y = 0; y < 2; y++)
+	for (int y = 0; y < MaxNumberHalfLineInBattle; y++)
 	{
-		for (int x = 0; x < 3; x++)
+		for (int x = 0; x < MaxNumberCellInBattle; x++)
 		{
 			if (target[x][y] != nullptr) return false;
 		}
@@ -34,7 +34,29 @@ bool TargetRangeAttack::IsZero() const noexcept
 //-----------------------------------------------------------------------------
 void TargetRangeAttack::SetPos(int x, int y) noexcept
 {
-	if (y >= 2) y-=2;
+#if 1
+	int nearest_x = std::clamp(x, 0, (int)MaxNumberCellInBattle-1);
+	int nearest_y = std::clamp(y, 0, (int)MaxNumberHalfLineInBattle-1);
+
+	int min_distance = MaxNumberCellInBattle * MaxNumberCellInBattle + MaxNumberHalfLineInBattle * MaxNumberHalfLineInBattle;
+	for (int _y = 0; _y < MaxNumberHalfLineInBattle; _y++)
+	{
+		for (int _x = 0; _x < MaxNumberCellInBattle; _x++)
+		{
+			int distance = (x - _x) * (x - _x) + (y - _y) * (y - _y);
+			if (target[_x][_y] && min_distance > distance)
+			{
+				min_distance = distance;
+				nearest_x = _x;
+				nearest_y = _y;
+			}
+		}
+	}
+
+	selectPos.x = nearest_x;
+	selectPos.y = nearest_y;
+#else
+	if (y >= MaxNumberHalfLineInBattle) y-= MaxNumberHalfLineInBattle;
 	if (target[x][y] != nullptr)
 	{
 		selectPos.x = x;
@@ -43,9 +65,9 @@ void TargetRangeAttack::SetPos(int x, int y) noexcept
 	else
 	{
 		// TODO: улучшить - чтобы выбирался оптимальный
-		for (int y = 0; y < 2; y++)
+		for (int y = 0; y < MaxNumberHalfLineInBattle; y++)
 		{
-			for (int x = 0; x < 3; x++)
+			for (int x = 0; x < MaxNumberCellInBattle; x++)
 			{
 				if (target[x][y] != nullptr)
 				{
@@ -55,13 +77,14 @@ void TargetRangeAttack::SetPos(int x, int y) noexcept
 			}
 		}
 	}
+#endif
 }
 //-----------------------------------------------------------------------------
 void TargetRangeAttack::Update() noexcept
 {
-	for (int y = 0; y < 2; y++)
+	for (int y = 0; y < MaxNumberHalfLineInBattle; y++)
 	{
-		for (int x = 0; x < 3; x++)
+		for (int x = 0; x < MaxNumberCellInBattle; x++)
 		{
 			if (target[x][y] != nullptr)
 			{
@@ -86,7 +109,7 @@ void TargetRangeAttack::Update() noexcept
 	{
 		selectPos.y = findY(1);
 	}
-	if (selectPos.x >= 0 && selectPos.x < 3 && selectPos.y >= 0 && selectPos.y < 2)
+	if (selectPos.x >= 0 && selectPos.x < MaxNumberCellInBattle && selectPos.y >= 0 && selectPos.y < MaxNumberHalfLineInBattle)
 		target[selectPos.x][selectPos.y]->SetStatus(BattleCellStatus::Blue);
 }
 //-----------------------------------------------------------------------------
@@ -94,7 +117,7 @@ int TargetRangeAttack::findX(int mod) noexcept
 {
 	const int y = selectPos.y;
 	int numX = 0;
-	for (int x = 0; x < 3; x++)
+	for (int x = 0; x < MaxNumberCellInBattle; x++)
 	{
 		if (target[x][y] != nullptr) numX++;
 	}
@@ -135,7 +158,7 @@ int TargetRangeAttack::findY(int mod) noexcept
 {
 	const int x = selectPos.x;
 	int numY = 0;
-	for (int y = 0; y < 2; y++)
+	for (int y = 0; y < MaxNumberHalfLineInBattle; y++)
 	{
 		if (target[x][y] != nullptr) numY++;
 	}
