@@ -18,7 +18,7 @@ enum class BattleState
 	EndBattleAndLose
 };
 
-enum class ActionPlayerState
+enum class ActionState
 {
 	SelectMainCommand,// ожидание выбора команды из начального меню игрока
 	Attack,// ожидание выбора команды из меню атаки игрока
@@ -55,6 +55,8 @@ private:
 	void selectPlayerTargetMeleeAttack() noexcept;
 	void selectPlayerTargetRangeAttack() noexcept;
 
+	void actionsEnemy() noexcept;
+
 	ResourceManager& m_resourceMgr;
 	Player& m_player;
 	EnemyParty* m_enemies = nullptr;
@@ -63,9 +65,11 @@ private:
 	unsigned m_round = 0;
 	// текущее состояние боя
 	BattleState m_battleState = BattleState::NewRound;
-	ActionPlayerState m_actionPlayerState = ActionPlayerState::SelectMainCommand;
+	ActionState m_actionState = ActionState::SelectMainCommand;
 	
 	BattleCells m_battleCells;
+	TargetMeleeAttack m_targetMeleeAttack;
+	TargetRangeAttack m_targetRangeAttack;
 
 	UIBattle m_ui;
 	

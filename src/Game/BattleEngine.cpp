@@ -46,8 +46,8 @@ void BattleEngine::Update(float deltaTime) noexcept
 		beginWaitAction();
 	else if (m_battleState == BattleState::ActionsPlayer)   // действие игрока
 		actionsPlayer();
-	//else if (m_battleState == BattleState::ActionEnemy)
-	//	waitActionEnemy();
+	else if (m_battleState == BattleState::ActionsEnemy)    // действие монстра
+		actionsEnemy();
 
 	if (m_battleCells.GetNumberHero() == 0)
 	{
@@ -65,6 +65,11 @@ void BattleEngine::Frame() noexcept
 {
 	m_ui.Draw();
 	m_battleCells.Draw(m_deltaTime);
+	// Text
+	{
+		const std::string text = "Current round " + std::to_string(m_round);
+		DrawText(text.c_str(), GetScreenWidth() / 2 - MeasureText(text.c_str(), 30) / 2, 10, 30, WHITE);
+	}
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::newRound() noexcept
@@ -78,25 +83,22 @@ void BattleEngine::beginWaitAction() noexcept
 {
 	m_ui.ResetPlayerMenu();
 	m_battleCells.ResetStatusCells();
+	m_actionState = ActionState::SelectMainCommand;
 
 	if (m_battleCells.GetCurrentMember().creature->GetPartyType() == PartyType::Hero) // ожидание действия героя
 	{
-		m_battleState = BattleState::ActionsPlayer;
+		m_battleState = BattleState::ActionsPlayer;		
 		activePlayerMainMenu();
 	}
 	else // ожидание действия ИИ
 	{
-		m_ui.ResetPlayerMenu();
-		nextMembers();
+		m_battleState = BattleState::ActionsEnemy;
 	}
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::actionsPlayer() noexcept
 {
-	static TargetMeleeAttack targetMeleeAttack;
-	static TargetRangeAttack targetRangeAttack;
-
-	if (m_actionPlayerState == ActionPlayerState::SelectMainCommand) // ожидание выбора команды в меню игрока
+	if (m_actionState == ActionState::SelectMainCommand) // ожидание выбора команды в меню игрока
 	{
 		// выбор команды в основном меню игрока
 		switch (m_ui.SelectMenu())
@@ -111,7 +113,7 @@ void BattleEngine::actionsPlayer() noexcept
 			break;
 		}
 	}
-	else if (m_actionPlayerState == ActionPlayerState::Attack)// ожидание выбора команды в меню атаки игрока
+	else if (m_actionState == ActionState::Attack)// ожидание выбора команды в меню атаки игрока
 	{
 		// выбор команды в меню атаки
 		switch (m_ui.SelectMenu())
@@ -120,16 +122,16 @@ void BattleEngine::actionsPlayer() noexcept
 			if (m_battleCells.IsMeleeAttack())
 			{
 				selectPlayerTargetMeleeAttack();
-				targetMeleeAttack = m_battleCells.GetTargetMeleeAttack();
-				targetMeleeAttack.SetPos(m_battleCells.GetCurrentMember().position.x);
+				m_targetMeleeAttack = m_battleCells.GetTargetMeleeAttack();
+				m_targetMeleeAttack.SetPos(m_battleCells.GetCurrentMember().position.x);
 			}				
 			break;
 		case PlayerMenuAttackLabel::Shoot:
 			if (m_battleCells.IsRangeAttack())
 			{
 				selectPlayerTargetRangeAttack();
-				targetRangeAttack = m_battleCells.GetTargetRangeAttack();
-				targetRangeAttack.SetPos(m_battleCells.GetCurrentMember().position.x, 1);
+				m_targetRangeAttack = m_battleCells.GetTargetRangeAttack();
+				m_targetRangeAttack.SetPos(m_battleCells.GetCurrentMember().position.x, 1);
 			}
 			break;
 		default:
@@ -141,17 +143,17 @@ void BattleEngine::actionsPlayer() noexcept
 			activePlayerMainMenu();
 		}
 	}
-	else if (m_actionPlayerState == ActionPlayerState::SelectTargetMeleeAttack) // выбор цели для ближнего удара от игрока
+	else if (m_actionState == ActionState::SelectTargetMeleeAttack) // выбор цели для ближнего удара от игрока
 	{	
 		m_battleCells.ResetAnimSword();
-		if (targetMeleeAttack.IsZero())
+		if (m_targetMeleeAttack.IsZero())
 		{
 			m_battleCells.ResetStatusCells();
 			activePlayerMenuAttack();
 		}
 		else
 		{
-			targetMeleeAttack.Update();	
+			m_targetMeleeAttack.Update();
 
 			if (Input::IsPressed(GameKey::Cancel)) // отмена выбора цели
 			{
@@ -160,18 +162,18 @@ void BattleEngine::actionsPlayer() noexcept
 			}
 			if (Input::IsPressed(GameKey::Ok)) // атака по цели
 			{
-				m_actionPlayerState = ActionPlayerState::MeleeAttack;
+				m_actionState = ActionState::MeleeAttack;
 			}
 		}
 	}
-	else if (m_actionPlayerState == ActionPlayerState::MeleeAttack) // выполнение атаки
+	else if (m_actionState == ActionState::MeleeAttack) // выполнение атаки
 	{
 		if (m_battleCells.IsFinalAnimSworld())
 		{
-			m_actionPlayerState = ActionPlayerState::EndMeleeAttack;
+			m_actionState = ActionState::EndMeleeAttack;
 		}			
 	}
-	else if (m_actionPlayerState == ActionPlayerState::EndMeleeAttack)
+	else if (m_actionState == ActionState::EndMeleeAttack)
 	{
 		auto currentCreature = m_battleCells.GetCurrentMember();
 		auto selectCreature = m_battleCells.GetSelectMember();
@@ -180,17 +182,17 @@ void BattleEngine::actionsPlayer() noexcept
 		m_battleCells.ResetStatusCells();
 		nextMembers();
 	}
-	else if (m_actionPlayerState == ActionPlayerState::SelectTargetRangeAttack) // выбор цели для выстрела от игрока
+	else if (m_actionState == ActionState::SelectTargetRangeAttack) // выбор цели для выстрела от игрока
 	{
 		m_battleCells.ResetAnimSword();
-		if (targetRangeAttack.IsZero())
+		if (m_targetRangeAttack.IsZero())
 		{
 			m_battleCells.ResetStatusCells();
 			activePlayerMenuAttack();
 		}
 		else
 		{
-			targetRangeAttack.Update();			
+			m_targetRangeAttack.Update();
 
 			if (Input::IsPressed(GameKey::Cancel)) // отмена выбора цели
 			{
@@ -199,18 +201,18 @@ void BattleEngine::actionsPlayer() noexcept
 			}
 			if (Input::IsPressed(GameKey::Ok)) // атака по цели
 			{
-				m_actionPlayerState = ActionPlayerState::RangeAttack;
+				m_actionState = ActionState::RangeAttack;
 			}
 		}
 	}
-	else if (m_actionPlayerState == ActionPlayerState::RangeAttack) // выполнение атаки
+	else if (m_actionState == ActionState::RangeAttack) // выполнение атаки
 	{
 		if (m_battleCells.IsFinalAnimSworld())
 		{
-			m_actionPlayerState = ActionPlayerState::EndRangeAttack;
+			m_actionState = ActionState::EndRangeAttack;
 		}
 	}
-	else if (m_actionPlayerState == ActionPlayerState::EndRangeAttack)
+	else if (m_actionState == ActionState::EndRangeAttack)
 	{
 		auto currentCreature = m_battleCells.GetCurrentMember();
 		auto selectCreature = m_battleCells.GetSelectMember();
@@ -233,27 +235,56 @@ void BattleEngine::activePlayerMainMenu() noexcept
 {
 	m_battleCells.ViewCurrentMember();
 	m_ui.ActivePlayerMainMenu();
-	m_actionPlayerState = ActionPlayerState::SelectMainCommand;
+	m_actionState = ActionState::SelectMainCommand;
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::activePlayerMenuAttack() noexcept
 {
 	m_battleCells.ViewCurrentMember();
 	m_ui.ActivePlayerMenuAttack();
-	m_actionPlayerState = ActionPlayerState::Attack;
+	m_actionState = ActionState::Attack;
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::selectPlayerTargetMeleeAttack() noexcept
 {
 	m_battleCells.ViewCurrentMember();
 	m_ui.ResetPlayerMenu();
-	m_actionPlayerState = ActionPlayerState::SelectTargetMeleeAttack;
+	m_actionState = ActionState::SelectTargetMeleeAttack;
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::selectPlayerTargetRangeAttack() noexcept
 {
 	m_battleCells.ViewCurrentMember();
 	m_ui.ResetPlayerMenu();
-	m_actionPlayerState = ActionPlayerState::SelectTargetRangeAttack;
+	m_actionState = ActionState::SelectTargetRangeAttack;
+}
+//-----------------------------------------------------------------------------
+void BattleEngine::actionsEnemy() noexcept
+{
+	if (m_actionState == ActionState::SelectMainCommand)
+	{
+	}
+	else if (m_actionState == ActionState::Attack)
+	{		
+	}
+	else if (m_actionState == ActionState::SelectTargetMeleeAttack)
+	{		
+	}
+	else if (m_actionState == ActionState::MeleeAttack)
+	{
+	}
+	else if (m_actionState == ActionState::EndMeleeAttack)
+	{
+	}
+	else if (m_actionState == ActionState::SelectTargetRangeAttack)
+	{
+	}
+	else if (m_actionState == ActionState::RangeAttack)
+	{
+	}
+	else if (m_actionState == ActionState::EndRangeAttack)
+	{
+	}
+	//nextMembers();
 }
 //-----------------------------------------------------------------------------
