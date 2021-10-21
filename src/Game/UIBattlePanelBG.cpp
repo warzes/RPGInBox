@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 constexpr NPatchInfo ninePatchInfo = { { 0.0f, 0.0f, 64.0f, 64.0f }, 6, 6, 6, 6, NPATCH_NINE_PATCH };
 //-----------------------------------------------------------------------------
-bool UIBattlePanelBG::Create(ResourceManager* resourceMgr) noexcept
+bool UIBattlePanelBG::Init(ResourceManager* resourceMgr) noexcept
 {
 	m_patchTexture = resourceMgr->GetTexture("../data/ui/battleui_background.png");
 	return true;

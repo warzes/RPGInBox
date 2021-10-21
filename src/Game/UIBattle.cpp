@@ -14,7 +14,7 @@ UIBattle::UIBattle(ResourceManager& resourceMgr) noexcept
 bool UIBattle::Init() noexcept
 {
 	// загрузка текстур
-	if (!m_background.Create(&m_resourceMgr))
+	if (!m_background.Init(&m_resourceMgr))
 		return false;
 
 	m_battleBackGround = m_resourceMgr.GetTexture("../data/temp/textures/character/plains-ground.png");
@@ -28,7 +28,7 @@ bool UIBattle::Init() noexcept
 //-----------------------------------------------------------------------------
 void UIBattle::Update() noexcept
 {
-	if (m_currentPlayerMenu) m_currentPlayerMenu->Run();
+	if (m_currentPlayerMenu) m_currentPlayerMenu->Update();
 }
 //-----------------------------------------------------------------------------
 void UIBattle::Draw() const noexcept
@@ -61,13 +61,13 @@ void UIBattle::ResetPlayerMenu() noexcept
 void UIBattle::ActivePlayerMainMenu() noexcept
 {
 	m_currentPlayerMenu = &m_playerMenu;
-	m_currentPlayerMenu->ResetActionElement();
+	m_currentPlayerMenu->ResetActionElement(); // TODO: в будущем подумать над системой сохранения выбора меню, например в виде массива команд
 }
 //-----------------------------------------------------------------------------
 void UIBattle::ActivePlayerMenuAttack() noexcept
 {
 	m_currentPlayerMenu = &m_playerMenu_attack;
-	m_currentPlayerMenu->ResetActionElement();
+	m_currentPlayerMenu->ResetActionElement(); // TODO: в будущем подумать над системой сохранения выбора меню, например в виде массива команд
 }
 //-----------------------------------------------------------------------------
 void UIBattle::drawPanels() const noexcept

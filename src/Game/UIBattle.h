@@ -13,7 +13,7 @@ struct PlayerMenuAttackLabel { enum { Melee, Shoot }; };
 constexpr std::array PlayerActionMainMenu_Attack = { "Melee", "Shoot" };
 static_assert(PlayerActionMainMenu_Attack.size() == 2);
 
-class UIBattle final
+class UIBattle final : NonCopyable, NonMovable
 {
 public:
 	UIBattle(ResourceManager& resourceMgr) noexcept;

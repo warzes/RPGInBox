@@ -3,7 +3,7 @@
 class ResourceManager;
 
 // анимация скрещенных мечей
-class UIAnimSwords final
+class UIAnimSwords final : NonCopyable, NonMovable
 {
 public:
 	bool Init(ResourceManager& resourceMgr) noexcept;
