@@ -36,7 +36,7 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="GameBattleState.cpp">
+    <ClCompile Include="BattleEngine.cpp">
       <Filter>Game\State\Battle</Filter>
     </ClCompile>
     <ClCompile Include="UIBattlePlayerMenu.cpp">
@@ -118,7 +118,7 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="GameBattleState.h">
+    <ClInclude Include="BattleEngine.h">
       <Filter>Game\State\Battle</Filter>
     </ClInclude>
     <ClInclude Include="UIBattlePlayerMenu.h">

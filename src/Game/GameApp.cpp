@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------
 GameApp::GameApp() noexcept
 	: m_adventureState(m_resourceMgr)
-	, m_battleState(m_player, m_resourceMgr)
+	, m_battleEngine(m_player, m_resourceMgr)
 {
 }
 //-----------------------------------------------------------------------------
@@ -36,17 +36,17 @@ void GameApp::Update(float deltaTime) noexcept
 	{
 		// TODO: пока тут, в будущем же партия врагов должна создаваться из шаблона мира-сеттинга
 		m_enemies.CreateDefaultParty(&m_resourceMgr, MaxEnemyPartySize);
-		m_battleState.StartBattle(&m_enemies);
+		m_battleEngine.StartBattle(&m_enemies);
 		SetState(GameState::Battle);
 	}
 	else if (m_state == GameState::Battle)
 	{
-		m_battleState.Update(deltaTime);
-		if (m_battleState.IsWinEndBattle())
+		m_battleEngine.Update(deltaTime);
+		if (m_battleEngine.IsWinEndBattle())
 		{
 			m_state = GameState::Adventure;
 		}
-		if (m_battleState.IsLoseEndBattle())
+		if (m_battleEngine.IsLoseEndBattle())
 		{
 			m_state = GameState::Adventure;
 		}
@@ -59,7 +59,7 @@ void GameApp::Frame() noexcept
 	{
 		m_adventureState.Frame(); // сцена приключения рисуется даже в других режимах
 		if (m_state == GameState::Battle)
-			m_battleState.Frame();
+			m_battleEngine.Frame();
 	}
 	endFrame();
 }
@@ -98,7 +98,7 @@ bool GameApp::initGameData() noexcept
 
 	if (!m_adventureState.Init())
 		return false;
-	if (!m_battleState.Init())
+	if (!m_battleEngine.Init())
 		return false;
 
 	return true;

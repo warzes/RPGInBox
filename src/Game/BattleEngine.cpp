@@ -1,5 +1,5 @@
 ﻿#include "stdafx.h"
-#include "GameBattleState.h"
+#include "BattleEngine.h"
 #include "ResourceManager.h"
 #include "Creature.h"
 #include "Player.h"
@@ -33,16 +33,18 @@ struct PlayerMenuAttackLabel { enum { Melee, Shoot }; };
 constexpr std::array PlayerActionMainMenu_Attack = { "Melee", "Shoot" };
 static_assert(PlayerActionMainMenu_Attack.size() == 2);
 //-----------------------------------------------------------------------------
-GameBattleState::GameBattleState(Player& player, ResourceManager& resourceMgr) noexcept
+BattleEngine::BattleEngine(Player& player, ResourceManager& resourceMgr) noexcept
 	: m_resourceMgr(resourceMgr)
 	, m_player(player)
 {
 }
 //-----------------------------------------------------------------------------
-bool GameBattleState::Init() noexcept
+bool BattleEngine::Init() noexcept
 {
 	// загрузка текстур
-	m_background.Create(&m_resourceMgr);
+	if (!m_background.Create(&m_resourceMgr))
+		return false;
+
 	m_battleBackGround = m_resourceMgr.GetTexture("../data/temp/textures/character/plains-ground.png");
 
 	if (!m_battleCells.Init(m_resourceMgr))
@@ -55,7 +57,7 @@ bool GameBattleState::Init() noexcept
 	return true;
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
+void BattleEngine::StartBattle(EnemyParty* enemies) noexcept
 {
 	m_enemies = enemies;
 	// сброс всех переменных
@@ -67,7 +69,7 @@ void GameBattleState::StartBattle(EnemyParty* enemies) noexcept
 	m_battleCells.SetCreature(&m_player, m_enemies);
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::Update(float deltaTime) noexcept
+void BattleEngine::Update(float deltaTime) noexcept
 {
 	m_deltaTime = deltaTime;
 
@@ -94,7 +96,7 @@ void GameBattleState::Update(float deltaTime) noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::Frame() noexcept
+void BattleEngine::Frame() noexcept
 {
 	drawBackground(); // отрисовка фона
 	drawPanels(); // отрисовка панелей
@@ -102,7 +104,7 @@ void GameBattleState::Frame() noexcept
 	if (m_currentPlayerMenu) m_currentPlayerMenu->Draw();
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::drawBackground() noexcept
+void BattleEngine::drawBackground() noexcept
 {
 	// отрисовка заднего фона окна боя
 	m_background.Draw();
@@ -114,7 +116,7 @@ void GameBattleState::drawBackground() noexcept
 	DrawRectangle((int)LeftTopCoordCells.x, 383, 500, 3, WHITE);
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::drawPanels() noexcept
+void BattleEngine::drawPanels() noexcept
 {
 	// отрисовка боковых панелей
 
@@ -144,14 +146,14 @@ void GameBattleState::drawPanels() noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::newRound() noexcept
+void BattleEngine::newRound() noexcept
 {
 	m_round++; // увеличивается счетчик кол-ва раундов
 	m_battleCells.SetFirstMember();
 	m_battleState = BattleState::BeginWaitAction; // ожидание выбора действия
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::beginWaitAction() noexcept
+void BattleEngine::beginWaitAction() noexcept
 {
 	m_battleCells.ResetStatusCells();
 
@@ -167,7 +169,7 @@ void GameBattleState::beginWaitAction() noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::actionsPlayer() noexcept
+void BattleEngine::actionsPlayer() noexcept
 {
 	static int selectTargetCell = 0;
 	static std::vector<BattleCell*> selectCellAttack = {};
@@ -264,7 +266,7 @@ void GameBattleState::actionsPlayer() noexcept
 	}
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::nextMembers() noexcept
+void BattleEngine::nextMembers() noexcept
 {
 	m_battleState = BattleState::BeginWaitAction;
 	int currentMember = m_battleCells.NextMembers();
@@ -272,7 +274,7 @@ void GameBattleState::nextMembers() noexcept
 		newRound();
 }
 //-----------------------------------------------------------------------------
-Point2 GameBattleState::selectCell() noexcept // TODO: возможно перенести в класс правил
+Point2 BattleEngine::selectCell() noexcept // TODO: возможно перенести в класс правил
 {
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 	{
@@ -296,21 +298,21 @@ Point2 GameBattleState::selectCell() noexcept // TODO: возможно пере
 	return {-1,-1};
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::activePlayerMainMenu() noexcept
+void BattleEngine::activePlayerMainMenu() noexcept
 {
 	m_battleCells.ViewCurrentMember();
 	m_currentPlayerMenu = &m_playerMenu;
 	m_actionPlayerState = ActionPlayerState::SelectMainCommand;
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::activePlayerMenuAttack() noexcept
+void BattleEngine::activePlayerMenuAttack() noexcept
 {
 	m_battleCells.ViewCurrentMember();
 	m_currentPlayerMenu = &m_playerMenu_attack;
 	m_actionPlayerState = ActionPlayerState::Attack;
 }
 //-----------------------------------------------------------------------------
-void GameBattleState::selectPlayerTargetMeleeAttack() noexcept
+void BattleEngine::selectPlayerTargetMeleeAttack() noexcept
 {
 	m_battleCells.ViewCurrentMember();
 	m_currentPlayerMenu = nullptr;

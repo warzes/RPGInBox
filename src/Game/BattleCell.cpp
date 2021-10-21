@@ -34,7 +34,7 @@ void BattleCell::Draw(float deltaTime, const Point2& pos, bool isAnimSwords, UIA
 
 	// Draw Melee Attack
 	if ((isAnimSwords == false && m_status == BattleCellStatus::Green) || m_status == BattleCellStatus::Blue)
-		animSwords.Draw(deltaTime, { pos.x + 20, pos.y + 20 }, (SizeCoordCells.x - 40) / 32.0f);
+		animSwords.UpdateAndDraw(deltaTime, { pos.x + 20, pos.y + 20 }, (SizeCoordCells.x - 40) / 32.0f);
 }
 //-----------------------------------------------------------------------------
 bool BattleCells::Init(ResourceManager& resourceMgr) noexcept

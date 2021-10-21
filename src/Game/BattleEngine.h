@@ -34,10 +34,10 @@ enum class ActionPlayerState
 	EndMeleeAttack, // конец ближней атаки
 };
 
-class GameBattleState final
+class BattleEngine final
 {
 public:
-	GameBattleState(Player& player, ResourceManager& resourceMgr) noexcept;
+	BattleEngine(Player& player, ResourceManager& resourceMgr) noexcept;
 	bool Init() noexcept;
 
 	void StartBattle(EnemyParty* enemies) noexcept;

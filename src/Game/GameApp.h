@@ -2,7 +2,7 @@
 
 #include "ResourceManager.h"
 #include "GameAdventure.h"
-#include "GameBattleState.h"
+#include "BattleEngine.h"
 #include "EnemyTemplate.h"
 #include "Player.h"
 
@@ -45,7 +45,7 @@ private:
 
 	GameState m_state = GameState::Adventure;
 	GameAdventure m_adventureState;
-	GameBattleState m_battleState;
+	BattleEngine m_battleEngine;
 	EnemyParty m_enemies;
 	bool m_isEnd = false;
 
