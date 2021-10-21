@@ -1,6 +1,9 @@
 ﻿#pragma once
 
 #include "UIAnimSwords.h"
+#include "BattleTargetMeleeAttack.h"
+#include "BattleTargetRangeAttack.h"
+
 
 class ICreature;
 class Player;
@@ -17,13 +20,13 @@ enum class BattleCellStatus
 	Grey	// выделяет серым цветом
 };
 
-struct CreatureInCell
+struct CreatureInCell final
 {
 	ICreature* creature = nullptr;
 	Point2 position;
 };
 
-class BattleCell final
+class BattleCell final : NonCopyable, NonMovable
 {
 	friend class BattleCells;
 public:
@@ -38,25 +41,7 @@ private:
 	CreatureInCell m_creature;
 };
 
-class TargetRangeAttack final
-{
-public:
-	TargetRangeAttack() noexcept;
-
-	bool IsZero() const noexcept;
-
-	void SetPos(int x, int y) noexcept;
-	void Update() noexcept;
-
-	std::vector<std::vector<BattleCell*>> target;
-	Point2 selectPos;
-
-private:
-	int findX(int mod) noexcept;
-	int findY(int mod) noexcept;
-};
-
-class BattleCells final
+class BattleCells final : NonCopyable, NonMovable
 {
 public:
 	bool Init(ResourceManager& resourceMgr) noexcept;
@@ -84,7 +69,7 @@ public:
 	int GetNumberHero() const noexcept;
 	int GetNumberEnemy() const noexcept;
 
-	std::vector<BattleCell*> GetTargetMeleeAttack() noexcept;
+	TargetMeleeAttack GetTargetMeleeAttack() noexcept;
 	TargetRangeAttack GetTargetRangeAttack() noexcept;
 
 	void ResetAnimSword() noexcept;

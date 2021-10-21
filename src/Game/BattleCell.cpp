@@ -2,7 +2,6 @@
 #include "BattleCell.h"
 #include "Player.h"
 #include "EnemyTemplate.h"
-#include "GameInput.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
 constexpr Point2 LeftTopCoordCells = { 262, 44 };
@@ -36,177 +35,6 @@ void BattleCell::Draw(float deltaTime, const Point2& pos, bool isAnimSwords, UIA
 	// Draw Melee Attack
 	if ((isAnimSwords == false && m_status == BattleCellStatus::Green) || m_status == BattleCellStatus::Blue)
 		animSwords.UpdateAndDraw(deltaTime, { pos.x + 20, pos.y + 20 }, (SizeCoordCells.x - 40) / 32.0f);
-}
-//-----------------------------------------------------------------------------
-TargetRangeAttack::TargetRangeAttack() noexcept
-{
-	target.resize(3);
-	for (int i = 0; i < 3; i++)
-	{
-		target[i].resize(2);
-	}
-	for (int y = 0; y < 2; y++)
-	{
-		for (int x = 0; x < 3; x++)
-		{
-			target[x][y] = nullptr;
-		}
-	}
-}
-//-----------------------------------------------------------------------------
-bool TargetRangeAttack::IsZero() const noexcept
-{
-	for (int y = 0; y < 2; y++)
-	{
-		for (int x = 0; x < 3; x++)
-		{
-			if (target[x][y] != nullptr) return false;
-		}
-	}
-	return true;
-}
-//-----------------------------------------------------------------------------
-void TargetRangeAttack::SetPos(int x, int y) noexcept
-{
-	if (target[x][y] != nullptr)
-	{
-		selectPos.x = x;
-		selectPos.y = y;
-	}
-	else
-	{
-		// TODO: улучшить - чтобы выбирался оптимальный
-		for (int y = 0; y < 2; y++)
-		{
-			for (int x = 0; x < 3; x++)
-			{
-				if (target[x][y] != nullptr)
-				{
-					selectPos.x = x;
-					selectPos.y = y;
-				}
-			}
-		}
-	}
-}
-//-----------------------------------------------------------------------------
-void TargetRangeAttack::Update() noexcept
-{
-	for (int y = 0; y < 2; y++)
-	{
-		for (int x = 0; x < 3; x++)
-		{
-			if (target[x][y] != nullptr)
-			{
-				target[x][y]->SetStatus(BattleCellStatus::Green);
-			}
-		}
-	}
-
-	if (Input::IsPressed(GameKey::Left))
-	{
-		selectPos.x = findX(-1);
-	}
-	if (Input::IsPressed(GameKey::Right))
-	{
-		selectPos.x = findX(1);
-	}
-	if (Input::IsPressed(GameKey::Up))
-	{
-		selectPos.y = findY(-1);
-	}
-	if (Input::IsPressed(GameKey::Down))
-	{
-		selectPos.y = findY(1);
-	}
-	if (selectPos.x >= 0 && selectPos.x < 3 && selectPos.y >= 0 && selectPos.y < 2)
-		target[selectPos.x][selectPos.y]->SetStatus(BattleCellStatus::Blue);
-}
-//-----------------------------------------------------------------------------
-int TargetRangeAttack::findX(int mod) noexcept
-{
-	const int y = selectPos.y;
-	int numX = 0;
-	for (int x = 0; x < 3; x++)
-	{
-		if (target[x][y] != nullptr) numX++;
-	}
-	if (numX == 0) return -1;          // никого нет в этом ряду
-	if (numX == 1) return selectPos.x; // некуда двигать, он один
-
-	int x = selectPos.x;
-
-	if (mod == -1)
-	{
-		int err = 0;
-		while (1)
-		{
-			err++;
-			if (err > numX) break; // если ушло в бесконечный цикл
-
-			if (x == 0) x = 2;
-			else x--;
-			if (target[x][y]) break;			
-		}
-	}
-	else
-	{
-		int err = 0;
-		while (1)
-		{
-			err++;
-			if (err > numX) break; // если ушло в бесконечный цикл
-
-			if (x == 2) x = 0;
-			else x++;
-			if (target[x][y]) break;
-		}
-	}
-
-	return x;
-}
-//-----------------------------------------------------------------------------
-int TargetRangeAttack::findY(int mod) noexcept
-{
-	const int x = selectPos.x;
-	int numY = 0;
-	for (int y = 0; y < 2; y++)
-	{
-		if (target[x][y] != nullptr) numY++;
-	}
-	if (numY == 0) return -1;          // никого нет в этом ряду
-	if (numY == 1) return selectPos.y; // некуда двигать, он один
-
-	int y = selectPos.y;
-
-	if (mod == -1)
-	{
-		int err = 0;
-		while (1)
-		{
-			err++;
-			if (err > numY) break; // если ушло в бесконечный цикл
-
-			if (y == 0) y = 1;
-			else y--;
-			if (target[x][y]) break;
-		}
-	}
-	else
-	{
-		int err = 0;
-		while (1)
-		{
-			err++;
-			if (err > numY) break; // если ушло в бесконечный цикл
-
-			if (y == 1) y = 0;
-			else y++;
-			if (target[x][y]) break;
-		}
-	}
-
-	return y;
 }
 //-----------------------------------------------------------------------------
 bool BattleCells::Init(ResourceManager& resourceMgr) noexcept
@@ -360,9 +188,10 @@ int BattleCells::GetNumberEnemy() const noexcept
 	return num;
 }
 //-----------------------------------------------------------------------------
-std::vector<BattleCell*> BattleCells::GetTargetMeleeAttack() noexcept
+TargetMeleeAttack BattleCells::GetTargetMeleeAttack() noexcept
 {
-	std::vector<BattleCell*> ret = {};
+	TargetMeleeAttack ret;
+
 	// кто сейчас управляет текущим существом?
 	auto &currentCreature = GetCurrentMember();
 	if (!currentCreature.creature || !currentCreature.creature->IsAlive())
@@ -381,7 +210,7 @@ std::vector<BattleCell*> BattleCells::GetTargetMeleeAttack() noexcept
 			{
 				inFirstLine = true;
 				if (m_cells[i][currentPosY].m_creature.creature->GetPartyType() == PartyType::Enemy) // а нельзя бить своих
-					ret.push_back(&m_cells[i][currentPosY]);
+					ret.target[i] = &m_cells[i][currentPosY];
 			}
 		}		
 		if (inFirstLine == false)
@@ -392,7 +221,7 @@ std::vector<BattleCell*> BattleCells::GetTargetMeleeAttack() noexcept
 			{
 				if (m_cells[i][currentPosY].m_creature.creature && m_cells[i][currentPosY].m_creature.creature->IsAlive())
 				{
-					ret.push_back(&m_cells[i][currentPosY]);
+					ret.target[i] = &m_cells[i][currentPosY];
 				}
 			}
 		}
@@ -486,7 +315,7 @@ bool BattleCells::IsRangeAttack() noexcept
 			const int posY = currentPosY - 1;
 			for (int i = 0; i < 3; i++)
 			{
-				if (m_cells[i][posY].m_creature.creature && m_cells[i][posY].m_creature.creature->IsAlive()) // TODO: возможно еще проверять на сознание - типа если без сознания то тыл может бить
+				if (m_cells[i][posY].m_creature.creature && m_cells[i][posY].m_creature.creature->IsAlive()) // TODO: возможно еще проверять на сознание -  если без сознания то тыл может бить
 				{
 					return true; // перед героем стоит другой герой, а значит этот может стрелять
 				}

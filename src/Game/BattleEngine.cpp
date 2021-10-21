@@ -93,8 +93,7 @@ void BattleEngine::beginWaitAction() noexcept
 //-----------------------------------------------------------------------------
 void BattleEngine::actionsPlayer() noexcept
 {
-	static int selectTargetCell = 0;
-	static std::vector<BattleCell*> selectCellAttack = {};
+	static TargetMeleeAttack targetMeleeAttack;
 	static TargetRangeAttack targetRangeAttack;
 
 	if (m_actionPlayerState == ActionPlayerState::SelectMainCommand) // ожидание выбора команды в меню игрока
@@ -121,8 +120,8 @@ void BattleEngine::actionsPlayer() noexcept
 			if (m_battleCells.IsMeleeAttack())
 			{
 				selectPlayerTargetMeleeAttack();
-				selectTargetCell = 0;
-				selectCellAttack = m_battleCells.GetTargetMeleeAttack();
+				targetMeleeAttack = m_battleCells.GetTargetMeleeAttack();
+				targetMeleeAttack.SetPos(m_battleCells.GetCurrentMember().position.x);
 			}				
 			break;
 		case PlayerMenuAttackLabel::Shoot:
@@ -130,7 +129,7 @@ void BattleEngine::actionsPlayer() noexcept
 			{
 				selectPlayerTargetRangeAttack();
 				targetRangeAttack = m_battleCells.GetTargetRangeAttack();
-				targetRangeAttack.SetPos(0, 0);
+				targetRangeAttack.SetPos(m_battleCells.GetCurrentMember().position.x, 1);
 			}
 			break;
 		default:
@@ -145,30 +144,14 @@ void BattleEngine::actionsPlayer() noexcept
 	else if (m_actionPlayerState == ActionPlayerState::SelectTargetMeleeAttack) // выбор цели для ближнего удара от игрока
 	{	
 		m_battleCells.ResetAnimSword();
-		if (selectCellAttack.size() == 0)
+		if (targetMeleeAttack.IsZero())
 		{
 			m_battleCells.ResetStatusCells();
 			activePlayerMenuAttack();
 		}
 		else
 		{
-			for (size_t i = 0; i < selectCellAttack.size(); i++)
-			{
-				selectCellAttack[i]->SetStatus(BattleCellStatus::Green);
-			}
-
-			if (Input::IsPressed(GameKey::Left))
-			{
-				selectTargetCell--;
-				if (selectTargetCell < 0) selectTargetCell = (int)selectCellAttack.size() - 1;
-			}
-			if (Input::IsPressed(GameKey::Right))
-			{
-				selectTargetCell++;
-				if (selectTargetCell >= (int)selectCellAttack.size()) selectTargetCell = 0;
-			}
-
-			selectCellAttack[(size_t)selectTargetCell]->SetStatus(BattleCellStatus::Blue);			
+			targetMeleeAttack.Update();	
 
 			if (Input::IsPressed(GameKey::Cancel)) // отмена выбора цели
 			{

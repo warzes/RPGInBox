@@ -69,6 +69,12 @@
     <ClCompile Include="UIBattle.cpp">
       <Filter>Game\State\Battle\UI</Filter>
     </ClCompile>
+    <ClCompile Include="BattleTargetRangeAttack.cpp">
+      <Filter>Game\State\Battle\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleTargetMeleeAttack.cpp">
+      <Filter>Game\State\Battle\impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -153,6 +159,12 @@
     </ClInclude>
     <ClInclude Include="UIBattle.h">
       <Filter>Game\State\Battle\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleTargetRangeAttack.h">
+      <Filter>Game\State\Battle\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleTargetMeleeAttack.h">
+      <Filter>Game\State\Battle\impl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
