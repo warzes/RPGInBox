@@ -8,17 +8,6 @@
 #include "GameInput.h"
 #include "BattleRule.h"
 #include "DebugNew.h"
-
-/*
-TODO:
-- может ли текущее существо бить ближней атакой
-- вернуть массив целей для ближней атаки (вместо цифры). возвращать BattleCell[] чтобы сразу же менять статус извне, а не изнутри
-- также и для дальней атаки
-- пропуск хода должен давать броню
-- конец битвы
-- ход врага
-*/
-
 //-----------------------------------------------------------------------------
 constexpr Point2 LeftTopCoordCells = { 262, 44 };
 constexpr Point2 OffsetCoordCells = { 10, 10 };
@@ -36,16 +25,14 @@ static_assert(PlayerActionMainMenu_Attack.size() == 2);
 BattleEngine::BattleEngine(Player& player, ResourceManager& resourceMgr) noexcept
 	: m_resourceMgr(resourceMgr)
 	, m_player(player)
+	, m_ui(resourceMgr)
 {
 }
 //-----------------------------------------------------------------------------
 bool BattleEngine::Init() noexcept
 {
-	// загрузка текстур
-	if (!m_background.Create(&m_resourceMgr))
+	if (!m_ui.Init())
 		return false;
-
-	m_battleBackGround = m_resourceMgr.GetTexture("../data/temp/textures/character/plains-ground.png");
 
 	if (!m_battleCells.Init(m_resourceMgr))
 		return false;
@@ -98,52 +85,9 @@ void BattleEngine::Update(float deltaTime) noexcept
 //-----------------------------------------------------------------------------
 void BattleEngine::Frame() noexcept
 {
-	drawBackground(); // отрисовка фона
-	drawPanels(); // отрисовка панелей
+	m_ui.Draw();
 	m_battleCells.Draw(m_deltaTime);
 	if (m_currentPlayerMenu) m_currentPlayerMenu->Draw();
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::drawBackground() noexcept
-{
-	// отрисовка заднего фона окна боя
-	m_background.Draw();
-
-	// отрисовка пола
-	DrawTextureTiled(*m_battleBackGround, { 0.0f, 0.0f, 64.0f, 64.0f }, { (float)LeftTopCoordCells.x, (float)LeftTopCoordCells.y, 500.0f, 680.0f }, { 0.0f, 0.0f }, 0.0f, 1.0f, WHITE);
-
-	// отрисовка линии разделения поля боя
-	DrawRectangle((int)LeftTopCoordCells.x, 383, 500, 3, WHITE);
-}
-//-----------------------------------------------------------------------------
-void BattleEngine::drawPanels() noexcept
-{
-	// отрисовка боковых панелей
-
-	// левая верхняя панель
-	{
-		DrawRectangle(29, 45, 230, 335, { 0, 0, 0, 180 });
-		DrawText("Enemy", 135, 100, 38, RED);
-		DrawText("Enemy", 135, 270, 38, RED);
-	}
-
-	// левая нижняя панель
-	{
-		DrawRectangle(29, 390, 230, 335, { 0, 0, 0, 180 });
-		DrawText("Player", 125, 450, 38, GREEN);
-		DrawText("Player", 125, 620, 38, GREEN);
-	}
-
-	// правая верхняя панель
-	{
-		DrawRectangle(765, 45, 230, 335, { 0, 0, 0, 180 });
-		DrawText("INFO WINDOW", 775, 50, 30, WHITE);
-	}
-
-	// правая нижняя панель
-	{
-		DrawRectangle(765, 390, 230, 335, { 0, 0, 0, 180 });
-	}
 }
 //-----------------------------------------------------------------------------
 void BattleEngine::newRound() noexcept

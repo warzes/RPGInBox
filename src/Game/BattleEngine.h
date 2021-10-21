@@ -5,6 +5,7 @@
 #include "UIBattlePlayerMenu.h"
 #include "UIAnimSwords.h"
 #include "BattleCell.h"
+#include "UIBattle.h"
 
 // позиции команд игрока
 constexpr Point2 LeftTopCoordPlayerCommand = { 810, 415 };
@@ -48,8 +49,6 @@ public:
 	void Frame() noexcept;
 
 private:
-	void drawBackground() noexcept;
-	void drawPanels() noexcept;
 	void newRound() noexcept;
 	void beginWaitAction() noexcept;
 	void actionsPlayer() noexcept;
@@ -74,8 +73,7 @@ private:
 	UIBattlePlayerMenu m_playerMenu_attack;
 	UIBattlePlayerMenu* m_currentPlayerMenu = nullptr;
 
-	UIBattlePanelBG m_background;
-	std::shared_ptr<Texture2D> m_battleBackGround = nullptr;
+	UIBattle m_ui;
 
 	Point2 selectCell() noexcept;
 

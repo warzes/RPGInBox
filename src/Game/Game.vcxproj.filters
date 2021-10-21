@@ -40,16 +40,16 @@
       <Filter>Game\State\Battle</Filter>
     </ClCompile>
     <ClCompile Include="UIBattlePlayerMenu.cpp">
-      <Filter>Game\State\Battle\gui</Filter>
+      <Filter>Game\State\Battle\UI</Filter>
     </ClCompile>
     <ClCompile Include="UIBattlePanelBG.cpp">
-      <Filter>Game\State\Battle\gui</Filter>
+      <Filter>Game\State\Battle\UI</Filter>
     </ClCompile>
     <ClCompile Include="GameInput.cpp">
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="UIAnimSwords.cpp">
-      <Filter>Game\State\Battle\gui</Filter>
+      <Filter>Game\State\Battle\UI</Filter>
     </ClCompile>
     <ClCompile Include="BattleRule.cpp">
       <Filter>Game\RPG\Rules</Filter>
@@ -65,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="Creature.cpp">
       <Filter>Game\RPG\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="UIBattle.cpp">
+      <Filter>Game\State\Battle\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,16 +125,16 @@
       <Filter>Game\State\Battle</Filter>
     </ClInclude>
     <ClInclude Include="UIBattlePlayerMenu.h">
-      <Filter>Game\State\Battle\gui</Filter>
+      <Filter>Game\State\Battle\UI</Filter>
     </ClInclude>
     <ClInclude Include="UIBattlePanelBG.h">
-      <Filter>Game\State\Battle\gui</Filter>
+      <Filter>Game\State\Battle\UI</Filter>
     </ClInclude>
     <ClInclude Include="GameInput.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="UIAnimSwords.h">
-      <Filter>Game\State\Battle\gui</Filter>
+      <Filter>Game\State\Battle\UI</Filter>
     </ClInclude>
     <ClInclude Include="BattleRule.h">
       <Filter>Game\RPG\Rules</Filter>
@@ -147,6 +150,9 @@
     </ClInclude>
     <ClInclude Include="EnemyTemplate.h">
       <Filter>Game\RPG\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBattle.h">
+      <Filter>Game\State\Battle\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,9 +192,6 @@
     <Filter Include="Game\RPG">
       <UniqueIdentifier>{6144f92b-f8b4-4eba-8687-e8528ad7c911}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\State\Battle\gui">
-      <UniqueIdentifier>{e89eff30-b289-4730-938b-17d3ea77c9a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\State\Battle\impl">
       <UniqueIdentifier>{ce910b99-3210-464c-aed5-95bff213aac1}</UniqueIdentifier>
     </Filter>
@@ -197,6 +200,9 @@
     </Filter>
     <Filter Include="Game\RPG\Data">
       <UniqueIdentifier>{e950904c-29ea-4163-ae44-8f92421d6440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\State\Battle\UI">
+      <UniqueIdentifier>{e89eff30-b289-4730-938b-17d3ea77c9a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
