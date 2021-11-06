@@ -7,13 +7,13 @@
 *       - Multiplatform: Windows, Linux, FreeBSD, OpenBSD, NetBSD, DragonFly,
 *                        MacOS, Haiku, Android, Raspberry Pi, DRM native, HTML5.
 *       - Written in plain C code (C99) in PascalCase/camelCase notation
-*       - Hardware accelerated with OpenGL (1.1, 2.1, 3.3 or ES2 - choose at compile)
+*       - Hardware accelerated with OpenGL (1.1, 2.1, 3.3, 4.3 or ES2 - choose at compile)
 *       - Unique OpenGL abstraction layer (usable as standalone module): [rlgl]
 *       - Multiple Fonts formats supported (TTF, XNA fonts, AngelCode fonts)
 *       - Outstanding texture formats support, including compressed formats (DXT, ETC, ASTC)
 *       - Full 3d support for 3d Shapes, Models, Billboards, Heightmaps and more!
 *       - Flexible Materials system, supporting classic maps and PBR maps
-*       - Animated 3D models supported (skeletal bones animation) (IQM, glTF)
+*       - Animated 3D models supported (skeletal bones animation) (IQM)
 *       - Shaders support, including Model shaders and Postprocessing shaders
 *       - Powerful math module for Vector, Matrix and Quaternion operations: [raymath]
 *       - Audio loading and playing with streaming support (WAV, OGG, MP3, FLAC, XM, MOD)
@@ -36,7 +36,7 @@
 *       [rcore] sinfl (Micha Mettke) for DEFLATE decompression algorythm
 *       [rcore] sdefl (Micha Mettke) for DEFLATE compression algorythm
 *       [rtextures] stb_image (Sean Barret) for images loading (BMP, TGA, PNG, JPEG, HDR...)
-*       [rtextures] stb_image_write (Sean Barret) for image writting (BMP, TGA, PNG, JPG)
+*       [rtextures] stb_image_write (Sean Barret) for image writing (BMP, TGA, PNG, JPG)
 *       [rtextures] stb_image_resize (Sean Barret) for image resizing algorithms
 *       [rtext] stb_truetype (Sean Barret) for ttf fonts loading
 *       [rtext] stb_rect_pack (Sean Barret) for rectangles packing
@@ -331,7 +331,7 @@ typedef struct Mesh {
     // Animation vertex data
     float *animVertices;    // Animated vertex positions (after bones transformations)
     float *animNormals;     // Animated normals (after bones transformations)
-    int *boneIds;           // Vertex bone ids, up to 4 bones influence by vertex (skinning)
+    unsigned char *boneIds; // Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning)
     float *boneWeights;     // Vertex bone weight, up to 4 bones influence by vertex (skinning)
 
     // OpenGL identifiers
@@ -1079,7 +1079,6 @@ RLAPI int GetCharPressed(void);                               // Get char presse
 
 // Input-related functions: gamepads
 RLAPI bool IsGamepadAvailable(int gamepad);                   // Check if a gamepad is available
-RLAPI bool IsGamepadName(int gamepad, const char *name);      // Check gamepad name (if available)
 RLAPI const char *GetGamepadName(int gamepad);                // Get gamepad internal name id
 RLAPI bool IsGamepadButtonPressed(int gamepad, int button);   // Check if a gamepad button has been pressed once
 RLAPI bool IsGamepadButtonDown(int gamepad, int button);      // Check if a gamepad button is being pressed

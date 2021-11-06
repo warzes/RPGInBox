@@ -3,7 +3,7 @@
 #include "Log.h"
 #include "DebugNew.h"
 
-https://assetstore.unity.com/packages/3d/environments/fantasy/fantasy-environment-level-set-18598
+//https://assetstore.unity.com/packages/3d/environments/fantasy/fantasy-environment-level-set-18598
 
 /*
 магия

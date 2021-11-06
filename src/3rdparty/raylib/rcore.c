@@ -440,7 +440,8 @@ typedef struct CoreData {
             float currentWheelMove;         // Registers current mouse wheel variation
             float previousWheelMove;        // Registers previous mouse wheel variation
 #if defined(PLATFORM_RPI) || defined(PLATFORM_DRM)
-            char currentButtonStateEvdev[MAX_MOUSE_BUTTONS];    // Holds the new mouse state for the next polling event to grab (Can't be written directly due to multithreading, app could miss the update)
+            // NOTE: currentButtonState[] can't be written directly due to multithreading, app could miss the update
+            char currentButtonStateEvdev[MAX_MOUSE_BUTTONS]; // Holds the new mouse state for the next polling event to grab
 #endif
         } Mouse;
         struct {
@@ -454,13 +455,13 @@ typedef struct CoreData {
             int lastButtonPressed;          // Register last gamepad button pressed
             int axisCount;                  // Register number of available gamepad axis
             bool ready[MAX_GAMEPADS];       // Flag to know if gamepad is ready
+            char name[MAX_GAMEPADS][64];    // Gamepad name holder
             char currentButtonState[MAX_GAMEPADS][MAX_GAMEPAD_BUTTONS];     // Current gamepad buttons state
             char previousButtonState[MAX_GAMEPADS][MAX_GAMEPAD_BUTTONS];    // Previous gamepad buttons state
             float axisState[MAX_GAMEPADS][MAX_GAMEPAD_AXIS];                // Gamepad axis state
-#if defined(PLATFORM_RPI) || defined(PLATFORM_DRM) || defined(PLATFORM_WEB)
+#if defined(PLATFORM_RPI) || defined(PLATFORM_DRM)
             pthread_t threadId;             // Gamepad reading thread id
             int streamId[MAX_GAMEPADS];     // Gamepad device file descriptor
-            char name[MAX_GAMEPADS][64];                  // Gamepad name holder
 #endif
         } Gamepad;
     } Input;
@@ -2187,7 +2188,7 @@ void BeginScissorMode(int x, int y, int width, int height)
     {
         Vector2 scale = GetWindowScaleDPI();
 
-        rlScissor(x*scale.x, CORE.Window.currentFbo.height - (y + height)*scale.y, width*scale.x, height*scale.y);
+        rlScissor((int)(x*scale.x), (int)(CORE.Window.currentFbo.height - (y + height)*scale.y), (int)(width*scale.x), (int)(height*scale.y));
     }
     else
     {
@@ -3280,7 +3281,6 @@ bool IsKeyPressed(int key)
     bool pressed = false;
 
     if ((CORE.Input.Keyboard.previousKeyState[key] == 0) && (CORE.Input.Keyboard.currentKeyState[key] == 1)) pressed = true;
-    else pressed = false;
 
     return pressed;
 }
@@ -3298,7 +3298,6 @@ bool IsKeyReleased(int key)
     bool released = false;
 
     if ((CORE.Input.Keyboard.previousKeyState[key] == 1) && (CORE.Input.Keyboard.currentKeyState[key] == 0)) released = true;
-    else released = false;
 
     return released;
 }
@@ -3375,18 +3374,6 @@ bool IsGamepadAvailable(int gamepad)
     return result;
 }
 
-// Check gamepad name (if available)
-bool IsGamepadName(int gamepad, const char *name)
-{
-    bool result = false;
-    const char *currentName = NULL;
-
-    if (CORE.Input.Gamepad.ready[gamepad]) currentName = GetGamepadName(gamepad);
-    if ((name != NULL) && (currentName != NULL)) result = (strcmp(name, currentName) == 0);
-
-    return result;
-}
-
 // Get gamepad internal name id
 const char *GetGamepadName(int gamepad)
 {
@@ -3434,7 +3421,6 @@ bool IsGamepadButtonPressed(int gamepad, int button)
 
     if ((gamepad < MAX_GAMEPADS) && CORE.Input.Gamepad.ready[gamepad] && (button < MAX_GAMEPAD_BUTTONS) &&
         (CORE.Input.Gamepad.previousButtonState[gamepad][button] == 0) && (CORE.Input.Gamepad.currentButtonState[gamepad][button] == 1)) pressed = true;
-    else pressed = false;
 
     return pressed;
 }
@@ -3457,7 +3443,6 @@ bool IsGamepadButtonReleased(int gamepad, int button)
 
     if ((gamepad < MAX_GAMEPADS) && CORE.Input.Gamepad.ready[gamepad] && (button < MAX_GAMEPAD_BUTTONS) &&
         (CORE.Input.Gamepad.previousButtonState[gamepad][button] == 1) && (CORE.Input.Gamepad.currentButtonState[gamepad][button] == 0)) released = true;
-    else released = false;
 
     return released;
 }
@@ -3724,8 +3709,8 @@ static bool InitGraphicsDevice(int width, int height)
 
 #if defined(PLATFORM_DESKTOP) || defined(PLATFORM_WEB)
     glfwSetErrorCallback(ErrorCallback);
-    /*
-    // Setup custom allocators to match raylib ones
+/*
+    // TODO: Setup GLFW custom allocators to match raylib ones
     const GLFWallocator allocator = {
         .allocate = MemAlloc,
         .deallocate = MemFree,
@@ -3734,8 +3719,7 @@ static bool InitGraphicsDevice(int width, int height)
     };
 
     glfwInitAllocator(&allocator);
-    */
-
+*/
 #if defined(__APPLE__)
     glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
 #endif
@@ -3858,7 +3842,6 @@ static bool InitGraphicsDevice(int width, int height)
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);          // Choose OpenGL minor version (just hint)
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_FALSE);
-
 #if defined(RLGL_ENABLE_OPENGL_DEBUG_CONTEXT)
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);   // Enable OpenGL Debug Context
 #endif
@@ -3877,7 +3860,7 @@ static bool InitGraphicsDevice(int width, int height)
 
 #if defined(PLATFORM_DESKTOP)
     // NOTE: GLFW 3.4+ defers initialization of the Joystick subsystem on the first call to any Joystick related functions.
-    // Forcing this initialization here avoids doing it on `PollInputEvents` called by `EndDrawing` after first frame has been just drawn.
+    // Forcing this initialization here avoids doing it on PollInputEvents() called by EndDrawing() after first frame has been just drawn.
     // The initialization will still happen and possible delays still occur, but before the window is shown, which is a nicer experience.
     // REF: https://github.com/raysan5/raylib/issues/1554
     if (MAX_GAMEPADS > 0) glfwSetJoystickCallback(NULL);
@@ -3995,6 +3978,38 @@ static bool InitGraphicsDevice(int width, int height)
         glfwSwapInterval(1);
         TRACELOG(LOG_INFO, "DISPLAY: Trying to enable VSYNC");
     }
+    
+    int fbWidth = CORE.Window.screen.width;
+    int fbHeight = CORE.Window.screen.height;
+
+#if defined(PLATFORM_DESKTOP)
+    if ((CORE.Window.flags & FLAG_WINDOW_HIGHDPI) > 0)
+    {
+        // NOTE: On APPLE platforms system should manage window/input scaling and also framebuffer scaling
+        // Framebuffer scaling should be activated with: glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
+    #if !defined(__APPLE__)
+        glfwGetFramebufferSize(CORE.Window.handle, &fbWidth, &fbHeight);
+
+        // Screen scaling matrix is required in case desired screen area is different than display area
+        CORE.Window.screenScale = MatrixScale((float)fbWidth/CORE.Window.screen.width, (float)fbHeight/CORE.Window.screen.height, 1.0f);
+
+        // Mouse input scaling for the new screen size
+        SetMouseScale((float)CORE.Window.screen.width/fbWidth, (float)CORE.Window.screen.height/fbHeight);
+    #endif
+    }
+#endif
+
+    CORE.Window.render.width = fbWidth;
+    CORE.Window.render.height = fbHeight;
+    CORE.Window.currentFbo.width = fbWidth;
+    CORE.Window.currentFbo.height = fbHeight;
+    
+    TRACELOG(LOG_INFO, "DISPLAY: Device initialized successfully");
+    TRACELOG(LOG_INFO, "    > Display size: %i x %i", CORE.Window.display.width, CORE.Window.display.height);
+    TRACELOG(LOG_INFO, "    > Screen size:  %i x %i", CORE.Window.screen.width, CORE.Window.screen.height);
+    TRACELOG(LOG_INFO, "    > Render size:  %i x %i", CORE.Window.render.width, CORE.Window.render.height);
+    TRACELOG(LOG_INFO, "    > Viewport offsets: %i, %i", CORE.Window.renderOffset.x, CORE.Window.renderOffset.y);
+
 #endif  // PLATFORM_DESKTOP || PLATFORM_WEB
 
 #if defined(PLATFORM_ANDROID) || defined(PLATFORM_RPI) || defined(PLATFORM_DRM)
@@ -4396,10 +4411,15 @@ static bool InitGraphicsDevice(int width, int height)
     }
     else
     {
+        CORE.Window.render.width = CORE.Window.screen.width;
+        CORE.Window.render.height = CORE.Window.screen.height;
+        CORE.Window.currentFbo.width = CORE.Window.render.width;
+        CORE.Window.currentFbo.height = CORE.Window.render.height;
+        
         TRACELOG(LOG_INFO, "DISPLAY: Device initialized successfully");
         TRACELOG(LOG_INFO, "    > Display size: %i x %i", CORE.Window.display.width, CORE.Window.display.height);
-        TRACELOG(LOG_INFO, "    > Render size:  %i x %i", CORE.Window.render.width, CORE.Window.render.height);
         TRACELOG(LOG_INFO, "    > Screen size:  %i x %i", CORE.Window.screen.width, CORE.Window.screen.height);
+        TRACELOG(LOG_INFO, "    > Render size:  %i x %i", CORE.Window.render.width, CORE.Window.render.height);
         TRACELOG(LOG_INFO, "    > Viewport offsets: %i, %i", CORE.Window.renderOffset.x, CORE.Window.renderOffset.y);
     }
 #endif  // PLATFORM_ANDROID || PLATFORM_RPI || PLATFORM_DRM
@@ -4412,45 +4432,13 @@ static bool InitGraphicsDevice(int width, int height)
     rlLoadExtensions(eglGetProcAddress);
 #endif
 
-    int fbWidth = CORE.Window.screen.width;
-    int fbHeight = CORE.Window.screen.height;
-
-#if defined(PLATFORM_DESKTOP)
-    if ((CORE.Window.flags & FLAG_WINDOW_HIGHDPI) > 0)
-    {
-        // NOTE: On APPLE platforms system should manage window/input scaling and also framebuffer scaling
-        // Framebuffer scaling should be activated with: glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
-    #if !defined(__APPLE__)
-        glfwGetFramebufferSize(CORE.Window.handle, &fbWidth, &fbHeight);
-
-        // Screen scaling matrix is required in case desired screen area is different than display area
-        CORE.Window.screenScale = MatrixScale((float)fbWidth/CORE.Window.screen.width, (float)fbHeight/CORE.Window.screen.height, 1.0f);
-
-        // Mouse input scaling for the new screen size
-        SetMouseScale((float)CORE.Window.screen.width/fbWidth, (float)CORE.Window.screen.height/fbHeight);
-    #endif
-    }
-#endif
-
-    CORE.Window.currentFbo.width = fbWidth;
-    CORE.Window.currentFbo.height = fbHeight;
-    CORE.Window.render.width = CORE.Window.currentFbo.width;
-    CORE.Window.render.height = CORE.Window.currentFbo.height;
-
     // Initialize OpenGL context (states and resources)
     // NOTE: CORE.Window.currentFbo.width and CORE.Window.currentFbo.height not used, just stored as globals in rlgl
     rlglInit(CORE.Window.currentFbo.width, CORE.Window.currentFbo.height);
 
     // Setup default viewport
-    SetupViewport(fbWidth, fbHeight);
-
-    TRACELOG(LOG_INFO, "DISPLAY: Device initialized successfully");
-#if defined(PLATFORM_DESKTOP)
-    TRACELOG(LOG_INFO, "    > Display size: %i x %i", CORE.Window.display.width, CORE.Window.display.height);
-#endif
-    TRACELOG(LOG_INFO, "    > Screen size:  %i x %i", CORE.Window.screen.width, CORE.Window.screen.height);
-    TRACELOG(LOG_INFO, "    > Render size:  %i x %i", CORE.Window.render.width, CORE.Window.render.height);
-    TRACELOG(LOG_INFO, "    > Viewport offsets: %i, %i", CORE.Window.renderOffset.x, CORE.Window.renderOffset.y);
+    // NOTE: It updated CORE.Window.render.width and CORE.Window.render.height
+    SetupViewport(CORE.Window.currentFbo.width, CORE.Window.currentFbo.height);
 
     ClearBackground(RAYWHITE);      // Default background color for raylib games :P
 
@@ -4730,7 +4718,7 @@ void PollInputEvents(void)
     // Register previous mouse states
     CORE.Input.Mouse.previousWheelMove = CORE.Input.Mouse.currentWheelMove;
     CORE.Input.Mouse.currentWheelMove = 0.0f;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < MAX_MOUSE_BUTTONS; i++)
     {
         CORE.Input.Mouse.previousButtonState[i] = CORE.Input.Mouse.currentButtonState[i];
         CORE.Input.Mouse.currentButtonState[i] = CORE.Input.Mouse.currentButtonStateEvdev[i];
@@ -4754,7 +4742,7 @@ void PollInputEvents(void)
     for (int i = 0; i < MAX_KEYBOARD_KEYS; i++) CORE.Input.Keyboard.previousKeyState[i] = CORE.Input.Keyboard.currentKeyState[i];
 
     // Register previous mouse states
-    for (int i = 0; i < 3; i++) CORE.Input.Mouse.previousButtonState[i] = CORE.Input.Mouse.currentButtonState[i];
+    for (int i = 0; i < MAX_MOUSE_BUTTONS; i++) CORE.Input.Mouse.previousButtonState[i] = CORE.Input.Mouse.currentButtonState[i];
 
     // Register previous mouse wheel state
     CORE.Input.Mouse.previousWheelMove = CORE.Input.Mouse.currentWheelMove;
@@ -4766,6 +4754,11 @@ void PollInputEvents(void)
 
     // Register previous touch states
     for (int i = 0; i < MAX_TOUCH_POINTS; i++) CORE.Input.Touch.previousTouchState[i] = CORE.Input.Touch.currentTouchState[i];
+    
+    // Reset touch positions
+    // TODO: It resets on PLATFORM_WEB the mouse position and not filled again until a move-event,
+    // so, if mouse is not moved it returns a (0, 0) position... this behaviour should be reviewed!
+    //for (int i = 0; i < MAX_TOUCH_POINTS; i++) CORE.Input.Touch.position[i] = (Vector2){ 0, 0 };
 
 #if defined(PLATFORM_DESKTOP)
     // Check if gamepads are ready
@@ -4855,6 +4848,10 @@ void PollInputEvents(void)
     glfwPollEvents();       // Register keyboard/mouse events (callbacks)... and window events!
 #endif
 #endif  // PLATFORM_DESKTOP
+
+#if defined(PLATFORM_WEB)
+    CORE.Window.resizedLastFrame = false;
+#endif  // PLATFORM_WEB
 
 // Gamepad support using emscripten API
 // NOTE: GLFW3 joystick functionality not available in web
@@ -5023,8 +5020,8 @@ static void WindowSizeCallback(GLFWwindow *window, int width, int height)
     {
         Vector2 windowScaleDPI = GetWindowScaleDPI();
 
-        CORE.Window.screen.width = width/windowScaleDPI.x;
-        CORE.Window.screen.height = height/windowScaleDPI.y;
+        CORE.Window.screen.width = (unsigned int)(width/windowScaleDPI.x);
+        CORE.Window.screen.height = (unsigned int)(height/windowScaleDPI.y);
     }
     else
     {
@@ -5062,16 +5059,24 @@ static void WindowFocusCallback(GLFWwindow *window, int focused)
 // GLFW3 Keyboard Callback, runs on key pressed
 static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    //TRACELOG(LOG_DEBUG, "Key Callback: KEY:%i(%c) - SCANCODE:%i (STATE:%i)", key, key, scancode, action);
+    // WARNING: GLFW could return GLFW_REPEAT, we need to consider it as 1
+    // to work properly with our implementation (IsKeyDown/IsKeyUp checks)
+    if (action == GLFW_RELEASE) CORE.Input.Keyboard.currentKeyState[key] = 0;
+    else CORE.Input.Keyboard.currentKeyState[key] = 1;
 
-    if (key == CORE.Input.Keyboard.exitKey && action == GLFW_PRESS)
+    // Check if there is space available in the key queue
+    if ((CORE.Input.Keyboard.keyPressedQueueCount < MAX_KEY_PRESSED_QUEUE) && (action == GLFW_PRESS))
     {
-        glfwSetWindowShouldClose(CORE.Window.handle, GLFW_TRUE);
-
-        // NOTE: Before closing window, while loop must be left!
+        // Add character to the queue
+        CORE.Input.Keyboard.keyPressedQueue[CORE.Input.Keyboard.keyPressedQueueCount] = key;
+        CORE.Input.Keyboard.keyPressedQueueCount++;
     }
+    
+    // Check the exit key to set close window
+    if ((key == CORE.Input.Keyboard.exitKey) && (action == GLFW_PRESS)) glfwSetWindowShouldClose(CORE.Window.handle, GLFW_TRUE);
+
 #if defined(SUPPORT_SCREEN_CAPTURE)
-    else if (key == GLFW_KEY_F12 && action == GLFW_PRESS)
+    if ((key == GLFW_KEY_F12) && (action == GLFW_PRESS))
     {
 #if defined(SUPPORT_GIF_RECORDING)
         if (mods == GLFW_MOD_CONTROL)
@@ -5112,15 +5117,16 @@ static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
         }
     }
 #endif  // SUPPORT_SCREEN_CAPTURE
+
 #if defined(SUPPORT_EVENTS_AUTOMATION)
-    else if (key == GLFW_KEY_F11 && action == GLFW_PRESS)
+    if ((key == GLFW_KEY_F11) && (action == GLFW_PRESS))
     {
         eventsRecording = !eventsRecording;
 
         // On finish recording, we export events into a file
         if (!eventsRecording) ExportAutomationEvents("eventsrec.rep");
     }
-    else if (key == GLFW_KEY_F9 && action == GLFW_PRESS)
+    else if ((key == GLFW_KEY_F9) && (action == GLFW_PRESS))
     {
         LoadAutomationEvents("eventsrec.rep");
         eventsPlaying = true;
@@ -5128,21 +5134,6 @@ static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, i
         TRACELOG(LOG_WARNING, "eventsPlaying enabled!");
     }
 #endif
-    else
-    {
-        // WARNING: GLFW could return GLFW_REPEAT, we need to consider it as 1
-        // to work properly with our implementation (IsKeyDown/IsKeyUp checks)
-        if (action == GLFW_RELEASE) CORE.Input.Keyboard.currentKeyState[key] = 0;
-        else CORE.Input.Keyboard.currentKeyState[key] = 1;
-
-        // Check if there is space available in the key queue
-        if ((CORE.Input.Keyboard.keyPressedQueueCount < MAX_KEY_PRESSED_QUEUE) && (action == GLFW_PRESS))
-        {
-            // Add character to the queue
-            CORE.Input.Keyboard.keyPressedQueue[CORE.Input.Keyboard.keyPressedQueueCount] = key;
-            CORE.Input.Keyboard.keyPressedQueueCount++;
-        }
-    }
 }
 
 // GLFW3 Char Key Callback, runs on key down (gets equivalent unicode char value)
