@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 WorldAdventure::WorldAdventure(ResourceManager& resources)
 	: m_resources(resources)
+	, openworld(resources)
 {
 }
 //-----------------------------------------------------------------------------
@@ -14,7 +15,7 @@ bool WorldAdventure::Init()
 		return false;
 
 	player.SetPosition({ 0, 0 });
-	if (!openworld.InitTest(m_resources))
+	if (!openworld.InitTest())
 		return false;
 
 	return true;

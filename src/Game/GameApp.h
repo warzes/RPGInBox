@@ -35,7 +35,7 @@ public:
 	void SetState(GameState state) noexcept;
 
 private:
-	void createFrame() noexcept;
+	bool createFrame() noexcept;
 	bool initGameData() noexcept;
 	void beginFrame() noexcept;
 	void endFrame() noexcept;

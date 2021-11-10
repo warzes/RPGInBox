@@ -90,9 +90,7 @@ inline void Main() noexcept
 #endif
 
 	{
-		bool error = false;
-
-		
+		bool error = false;		
 
 		//---------------------------------------------------------------------
 		// Core Init

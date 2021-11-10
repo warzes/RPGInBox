@@ -17,12 +17,16 @@ GameApp::~GameApp()
 //-----------------------------------------------------------------------------
 bool GameApp::Init() noexcept
 {
-	createFrame();
+	if (!m_resourceMgr.Init())
+		return false;
+
+	if (!createFrame())
+		return false;
 
 	if (!initGameData())
 		return false;
 
-	SetState(GameState::BeginBattle);
+	//SetState(GameState::BeginBattle);
 	return true;
 }
 //-----------------------------------------------------------------------------
@@ -56,10 +60,10 @@ void GameApp::Update(float deltaTime) noexcept
 void GameApp::Frame() noexcept
 {
 	beginFrame();
-	{
+	{		
 		m_adventureState.Frame(); // сцена приключения рисуется даже в других режимах
 		if (m_state == GameState::Battle)
-			m_battleEngine.Frame();
+			m_battleEngine.Frame();		
 	}
 	endFrame();
 }
@@ -69,7 +73,7 @@ void GameApp::SetState(GameState state) noexcept
 	m_state = state;
 }
 //-----------------------------------------------------------------------------
-void GameApp::createFrame() noexcept
+bool GameApp::createFrame() noexcept
 {
 #if MAIN_FRAME_TO_RENDER_TEXTURE
 	const int screenWidth = GetScreenWidth();
@@ -90,6 +94,7 @@ void GameApp::createFrame() noexcept
 	m_sourceRec = { 0.0f, 0.0f, (float)m_target.texture.width, -(float)m_target.texture.height };
 	m_destRec = { -virtualRatio, -virtualRatio, screenWidth + (virtualRatio * 2), screenHeight + (virtualRatio * 2) };
 #endif // MAIN_FRAME_TO_RENDER_TEXTURE
+	return true;
 }
 //-----------------------------------------------------------------------------
 bool GameApp::initGameData() noexcept

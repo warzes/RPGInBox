@@ -4,8 +4,8 @@ https://githubmemory.com/repo/Rabios/awesome-raylib
 
 Текущий внесенный коммит рейлиба
 	
-Commits on Nov 6, 2021
-    Updated the raylib.v binding to the latest version (#2103) 
+Commits on Nov 10, 2021
+Update parser files 
 
 
 Мои изменения:

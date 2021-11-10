@@ -1,9 +1,15 @@
 #include "stdafx.h"
 #include "Map.h"
 #include "IGameCamera.h"
+#include "ResourceManager.h"
 #include "DebugNew.h"
 //-----------------------------------------------------------------------------
-bool Map::InitTest(ResourceManager& resources) noexcept
+Map::Map(ResourceManager& resources) noexcept
+	: m_resources(resources)
+{
+}
+//-----------------------------------------------------------------------------
+bool Map::InitTest() noexcept
 {
 	for (int x = 0; x < MapSize; x++)
 	{
@@ -19,7 +25,7 @@ bool Map::InitTest(ResourceManager& resources) noexcept
 			t = rand() % 40;
 			if (t < 2) decor = TileDecorType::Tree2;
 
-			tiles[x][y] = Tile::Create(resources, type, decor);
+			tiles[x][y] = Tile::Create(m_resources, type, decor);
 		}
 	}
 	return true;
@@ -28,6 +34,7 @@ bool Map::InitTest(ResourceManager& resources) noexcept
 void Map::Draw(IGameCamera* camera) noexcept
 {
 	BeginMode3D(camera->GetCamera());
+
 	camera->ExtractFrustum();
 
 	//не нужно перебирать всю карту, у меня есть направление камеры, вот начиная от игрока и в глубь идти (можно даже прерывать если точно за текущим тайлом не будет видно остальных - типа стены в данже)
@@ -48,6 +55,7 @@ void Map::Draw(IGameCamera* camera) noexcept
 			}
 		}
 	}
+
 
 	EndMode3D();
 }

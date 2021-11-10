@@ -7,12 +7,14 @@ constexpr size_t MapSize = 50;
 class Map final : NonCopyable, NonMovable
 {
 public:
-	bool InitTest(ResourceManager& resources) noexcept;
+	Map(ResourceManager& resources) noexcept;
+
+	bool InitTest() noexcept;
 
 	void Draw(IGameCamera* camera) noexcept;
 
 	Tile tiles[MapSize][MapSize];
 
 private:
-
+	ResourceManager& m_resources;
 };
