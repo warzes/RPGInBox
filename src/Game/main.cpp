@@ -3,6 +3,17 @@
 #include "Log.h"
 #include "DebugNew.h"
 
+план
+собрать тестовые тайлы (поискать что-нибудь с майнкрафта)
+собрать карту первой локации в тайлед
+
+возможная завязка:
+Мир - летающие острова
+
+
+
+
+
 //https://assetstore.unity.com/packages/3d/environments/fantasy/fantasy-environment-level-set-18598
 
 /*

@@ -18,9 +18,6 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Game\_OLD</Filter>
     </ClCompile>
-    <ClCompile Include="GameAdventure.cpp">
-      <Filter>Game\_OLD\State\Adventure</Filter>
-    </ClCompile>
     <ClCompile Include="FreeCamera.cpp">
       <Filter>Framework\Camera</Filter>
     </ClCompile>
@@ -75,6 +72,9 @@
     <ClCompile Include="BattleTargetMeleeAttack.cpp">
       <Filter>Game\State\Battle\impl</Filter>
     </ClCompile>
+    <ClCompile Include="GameAdventure.cpp">
+      <Filter>Game\State\Adventure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -101,9 +101,6 @@
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Game\_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="GameAdventure.h">
-      <Filter>Game\_OLD\State\Adventure</Filter>
     </ClInclude>
     <ClInclude Include="ConfigDefine.h" />
     <ClInclude Include="NonCopyable.h">
@@ -166,6 +163,9 @@
     <ClInclude Include="BattleTargetMeleeAttack.h">
       <Filter>Game\State\Battle\impl</Filter>
     </ClInclude>
+    <ClInclude Include="GameAdventure.h">
+      <Filter>Game\State\Adventure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -215,6 +215,9 @@
     </Filter>
     <Filter Include="Game\State\Battle\UI">
       <UniqueIdentifier>{e89eff30-b289-4730-938b-17d3ea77c9a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\State\Adventure">
+      <UniqueIdentifier>{9130d7d7-9d3e-46fa-b3c0-dc22234b1237}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

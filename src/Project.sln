@@ -21,6 +21,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{DDA958D7-BE3
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3rdparty", "3rdparty\3rdparty.vcxproj", "{2BCB95B4-D6B1-4906-99C4-FB61985B09A3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameDoc", "GameDoc", "{D82A795D-281E-4764-9657-28996AB56CC6}"
+	ProjectSection(SolutionItems) = preProject
+		GameDoc\Adventure.md = GameDoc\Adventure.md
+		GameDoc\Battle.md = GameDoc\Battle.md
+		GameDoc\Heroes.md = GameDoc\Heroes.md
+		GameDoc\World.md = GameDoc\World.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

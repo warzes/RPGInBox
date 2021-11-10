@@ -2,7 +2,7 @@
 
 #include "Tile.h"
 
-constexpr size_t MapSize = 50;
+constexpr size_t MapSize = 100;
 
 class Map final : NonCopyable, NonMovable
 {
